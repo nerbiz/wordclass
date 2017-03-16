@@ -2,10 +2,12 @@
     "name": "nerbiz/wordclass",
     "description": "Class-based functions.php, utilities and helpers for Wordpress",
     "license": "Unlicence",
-    "authors": {
-        "name": "Sybren Dijkstra",
-        "role": "Developer"
-    },
+    "authors": [
+        {
+            "name": "Sybren Dijkstra",
+            "role": "Developer"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "Wordclass\\": "src/"
