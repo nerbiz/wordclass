@@ -33,8 +33,8 @@ class Widgets {
 
             register_sidebar([
                 'id'            => $id,
-                'name'          => __($name, static::$_textDomainStatic),
-                'description'   => __('Sidebar: ' . $description, static::$_textDomainStatic),
+                'name'          => __($name, static::$_textDomain),
+                'description'   => __('Sidebar: ' . $description, static::$_textDomain),
                 'before_widget' => @$widget['before']  ?:  '<aside id="%1$s" class="widget %2$s">',
                 'after_widget'  => @$widget['after']  ?:  '</aside>',
                 'before_title'  => @$title['before']  ?:  '<h1 class="widget-title">',

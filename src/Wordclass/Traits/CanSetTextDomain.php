@@ -7,8 +7,7 @@ trait CanSetTextDomain {
      * The text domain for translating the theme (static and on instance)
      * @var String
      */
-    private static $_textDomainStatic = 'text_domain';
-    private $_textDomain = 'text_domain';
+    private static $_textDomain = 'text_domain';
 
 
 
@@ -17,7 +16,7 @@ trait CanSetTextDomain {
      * @param  String  $domain
      */
     public static function setTextDomain($domain) {
-        static::$_textDomainStatic = $domain;
+        static::$_textDomain = $domain;
     }
 
 
@@ -27,7 +26,7 @@ trait CanSetTextDomain {
      * @return $this
      */
     public function textDomain($domain) {
-        $this->_textDomain = $domain;
+        static::$_textDomain = $domain;
 
         return $this;
     }

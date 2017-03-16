@@ -31,7 +31,7 @@ class Metabox {
             // ID of the metabox
             'id'               => $id,
             // Title of the metabox
-            'title'            => __($title, static::$_textDomainStatic),
+            'title'            => __($title, static::$_textDomain),
             // Post type(s)
             'object_types'     => $posttypes,
 
@@ -78,10 +78,10 @@ class Metabox {
      */
     public function addField($options) {
         // Translate before adding
-        $options['name'] = __($options['name'], static::$_textDomainStatic);
+        $options['name'] = __($options['name'], static::$_textDomain);
         // @todo: This should be appended, when encountering new field options
         if(isset($options['text']['add_upload_file_text']))
-            $options['text']['add_upload_file_text'] = __($options['text']['add_upload_file_text'], static::$_textDomainStatic);
+            $options['text']['add_upload_file_text'] = __($options['text']['add_upload_file_text'], static::$_textDomain);
 
         $this->_fields[] = $options;
 

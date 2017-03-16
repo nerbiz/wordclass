@@ -146,31 +146,31 @@ class PostType {
      */
     public function labels($labels=[]) {
         $this->_labels = array_replace_recursive([
-            'name'                  => _x($this->_name, 'Post Type General Name', $this->_textDomain),
-            'singular_name'         => _x($this->_singular, 'Post Type Singular Name', $this->_textDomain),
-            'menu_name'             => __($this->_name, $this->_textDomain),
-            'name_admin_bar'        => __($this->_pluralName, $this->_textDomain),
-            'archives'              => __($this->_pluralName . ' Archive', $this->_textDomain),
-            'parent_item_colon'     => __('Parent Item:', $this->_textDomain),
-            'all_items'             => __('All Items', $this->_textDomain),
-            'add_new_item'          => __('Add New Item', $this->_textDomain),
-            'add_new'               => __('Add New', $this->_textDomain),
-            'new_item'              => __('New Item', $this->_textDomain),
-            'edit_item'             => __('Edit Item', $this->_textDomain),
-            'update_item'           => __('Update Item', $this->_textDomain),
-            'view_item'             => __('View Item', $this->_textDomain),
-            'search_items'          => __('Search Item', $this->_textDomain),
-            'not_found'             => __('Not found', $this->_textDomain),
-            'not_found_in_trash'    => __('Not found in Trash', $this->_textDomain),
-            'featured_image'        => __('Featured Image', $this->_textDomain),
-            'set_featured_image'    => __('Set featured image', $this->_textDomain),
-            'remove_featured_image' => __('Remove featured image', $this->_textDomain),
-            'use_featured_image'    => __('Use as featured image', $this->_textDomain),
-            'insert_into_item'      => __('Insert into item', $this->_textDomain),
-            'uploaded_to_this_item' => __('Uploaded to this item', $this->_textDomain),
-            'items_list'            => __('Items list', $this->_textDomain),
-            'items_list_navigation' => __('Items list navigation', $this->_textDomain),
-            'filter_items_list'     => __('Filter items list', $this->_textDomain)
+            'name'                  => _x($this->_name, 'Post Type General Name', static::$_textDomain),
+            'singular_name'         => _x($this->_singular, 'Post Type Singular Name', static::$_textDomain),
+            'menu_name'             => __($this->_name, static::$_textDomain),
+            'name_admin_bar'        => __($this->_pluralName, static::$_textDomain),
+            'archives'              => __($this->_pluralName . ' Archive', static::$_textDomain),
+            'parent_item_colon'     => __('Parent Item:', static::$_textDomain),
+            'all_items'             => __('All Items', static::$_textDomain),
+            'add_new_item'          => __('Add New Item', static::$_textDomain),
+            'add_new'               => __('Add New', static::$_textDomain),
+            'new_item'              => __('New Item', static::$_textDomain),
+            'edit_item'             => __('Edit Item', static::$_textDomain),
+            'update_item'           => __('Update Item', static::$_textDomain),
+            'view_item'             => __('View Item', static::$_textDomain),
+            'search_items'          => __('Search Item', static::$_textDomain),
+            'not_found'             => __('Not found', static::$_textDomain),
+            'not_found_in_trash'    => __('Not found in Trash', static::$_textDomain),
+            'featured_image'        => __('Featured Image', static::$_textDomain),
+            'set_featured_image'    => __('Set featured image', static::$_textDomain),
+            'remove_featured_image' => __('Remove featured image', static::$_textDomain),
+            'use_featured_image'    => __('Use as featured image', static::$_textDomain),
+            'insert_into_item'      => __('Insert into item', static::$_textDomain),
+            'uploaded_to_this_item' => __('Uploaded to this item', static::$_textDomain),
+            'items_list'            => __('Items list', static::$_textDomain),
+            'items_list_navigation' => __('Items list navigation', static::$_textDomain),
+            'filter_items_list'     => __('Filter items list', static::$_textDomain)
         ], $labels);
 
         return $this;
@@ -190,8 +190,8 @@ class PostType {
 
         // Overwrite defaults, if arguments are given
         $this->_arguments = array_replace_recursive([
-            'label'               => __($this->_name, $this->_textDomain),
-            'description'         => __($this->_description, $this->_textDomain),
+            'label'               => __($this->_name, static::$_textDomain),
+            'description'         => __($this->_description, static::$_textDomain),
             'labels'              => $this->_labels,
             'supports'            => ['title', 'editor', 'thumbnail', 'page-attributes'],
             'taxonomies'          => $this->_taxonomies,

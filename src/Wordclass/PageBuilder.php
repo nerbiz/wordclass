@@ -61,7 +61,7 @@ class PageBuilder {
 
         // Prevent translating 'null', if no description is given
         if(isset($args['description']))
-            $args['description'] = __($args['description'], static::$_textDomainStatic);
+            $args['description'] = __($args['description'], static::$_textDomain);
         else
             $args['description'] = null;
 
@@ -70,7 +70,7 @@ class PageBuilder {
             $fieldName = static::$_fieldPrefix . '-' . $args['slug'];
 
             $fields[$fieldName] = [
-                'name'        => __($args['label'], static::$_textDomainStatic),
+                'name'        => __($args['label'], static::$_textDomain),
                 'type'        => $args['type'],
                 'group'       => $args['group'],
                 'description' => $args['description'],
@@ -175,7 +175,7 @@ class PageBuilder {
     public static function addWidgetsTab($label) {
         add_filter('siteorigin_panels_widget_dialog_tabs', function($tabs) use ($label) {
             $tabs[] = [
-                'title'  => __($label, static::$_textDomainStatic),
+                'title'  => __($label, static::$_textDomain),
                 'filter' => [
                     'groups' => [static::$_widgetGroup]
                 ]

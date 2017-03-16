@@ -24,9 +24,9 @@ class SettingsPage {
     public function __construct($title, $slug) {
         // In order to make the title translatable, the text domain must first be set statically
         // After that, it can be set in the instance
-        $this->textDomain(static::$_textDomainStatic);
+        $this->textDomain(static::$_textDomain);
 
-        $this->_pageTitle = __($title, $this->_textDomain);
+        $this->_pageTitle = __($title, static::$_textDomain);
         $this->_pageSlug = $slug;
     }
 
@@ -80,9 +80,9 @@ class SettingsPage {
             if(current_user_can('manage_options')) {
                 add_options_page(
                     // Page title
-                    __($this->_pageTitle, $this->_textDomain),
+                    __($this->_pageTitle, static::$_textDomain),
                     // Menu title
-                    __($this->_pageTitle, $this->_textDomain),
+                    __($this->_pageTitle, static::$_textDomain),
                     // Capability
                     'manage_options',
                     // Menu slug
@@ -91,7 +91,7 @@ class SettingsPage {
                     function() {
                         echo '
                             <div class="wrap">
-                                <h1>' . __($this->_pageTitle, $this->_textDomain) . '</h1>
+                                <h1>' . __($this->_pageTitle, static::$_textDomain) . '</h1>
 
                                 <form action="options.php" method="POST">';
                                     // Output nonce, action, and option_page fields for a settings page
@@ -148,14 +148,14 @@ class SettingsPage {
      */
     public function addSection($id, $title, $subtitle=null, $fields=[]) {
         add_action('admin_init', function() use($id, $title, $subtitle, $fields) {
-            add_settings_section($id, __($title, $this->_textDomain), $subtitle, $this->_pageSlug);
+            add_settings_section($id, __($title, static::$_textDomain), $subtitle, $this->_pageSlug);
 
             foreach($fields as $name => $options) {
                 register_setting($this->_optionGroup, $this->_inputPrefix.$name);
                 add_settings_field(
                     // ID to identify the field
                     $this->_inputIdPrefix.$name,
-                    __($options['title'], $this->_textDomain),
+                    __($options['title'], static::$_textDomain),
                     // Function that echoes the input field
                     [$this, 'decideInput'],
                     $this->_pageSlug,
