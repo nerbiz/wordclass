@@ -228,21 +228,4 @@ class Taxonomy {
     public static function create($id) {
         return new static($id);
     }
-
-
-
-    /**
-     * Get the slug of a taxonomy
-     * @param  String|null  $name  null gets this slug, string: gets slug of given taxonomy
-     * @return String
-     */
-    public function getSlug($name=null) {
-        if($name == null)
-            return $this->_slug;
-
-        else {
-            $taxonomy = get_taxonomies(['name' => $name], 'objects');
-            return $taxonomy[$name]->rewrite['slug'];
-        }
-    }
 }
