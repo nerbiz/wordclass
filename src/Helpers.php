@@ -53,4 +53,42 @@ class Helpers {
         $imageId = get_post_meta($postid, $metaname, true);
         return static::getImage($imageId, $type, $size);
     }
+
+
+
+    /**
+     * Get the slug of a taxonomy
+     * @param  String|null  $name  null gets this slug, string: gets slug of given taxonomy
+     * @return String
+     */
+    public function getTaxonomySlug($name) {
+        $taxonomy = get_taxonomies(['name' => $name], 'objects');
+        return $taxonomy[$name]->rewrite['slug'];
+    }
+
+
+
+    /**
+     * Get a list of items, of a given taxonomy
+     * @param  String  $taxonomy
+     * @return Array
+     */
+    public static function getTaxonomyItems($taxonomy) {
+        return get_terms([
+            'taxonomy'   => $taxonomy,
+            'hide_empty' => false
+        ]);
+    }
+
+
+
+    /**
+     * Get the taxonomies a post has
+     * @param  Integer  $postid
+     * @param  String   $taxonomy
+     * @return Array
+     */
+    public static function getPostTaxonomies($postid, $taxonomy) {
+        return wp_get_object_terms($postid, $taxonomy);
+    }
 }
