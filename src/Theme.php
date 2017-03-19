@@ -70,4 +70,16 @@ class Theme {
                 register_nav_menu($location, __($description, static::$_textDomain));
         });
     }
+
+
+
+    /**
+     * Let Wordpress set the window title
+     * When using this, remove the <title> tag from <head>
+     */
+    public static function autoWindowTitle() {
+        add_action('after_setup_theme', function() {
+            add_theme_support('title-tag');
+        });
+    }
 }
