@@ -1,5 +1,12 @@
 # Release notes
 
+## 0.2.1
+
+* Added the Autoloader again, for when not using Composer.
+* Added Admin::roleRedirect(), to specify a custom URL to redirect to after login, based on user role.
+
+---
+
 ## 0.2.0
 
 * Taxonomy::getSlug() is now Helpers::getTaxonomySlug().
