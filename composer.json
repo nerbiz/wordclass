@@ -14,7 +14,9 @@
         }
     },
     "require": {
-        "php": ">=5.4"
+        "php": ">=5.4",
+        "webdevstudios/cmb2": "^2.2",
+        "tgmpa/tgm-plugin-activation": "^2.6"
     },
     "support" : {
         "docs": "https://github.com/nerbiz/wordclass"
