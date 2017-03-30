@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.3.1
+
+* Fixed: Helpers image wrapper methods still used the old args order.
+
 ## 0.3
 
 * Admin::roleRedirect() now also accepts 2 string arguments instead of 1 array, when only setting 1 redirect (see docs).
