@@ -5,9 +5,13 @@ namespace Wordclass;
 class Admin {
     /**
      * Hide the admin bar, when viewing the website
+     * @param Boolean  $show
      */
-    public static function hideBar() {
-        show_admin_bar(false);
+    public static function showBar($show) {
+        if( ! is_bool($show))
+            $show = true;
+
+        show_admin_bar($show);
     }
 
 
