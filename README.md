@@ -54,7 +54,7 @@ $taxonomyGenres = Wordclass\Taxonomy::create('tax_genres')
 
 ## Installation
 Apart from downloading or cloning this repo, you can include this project with [Composer](https://getcomposer.org/):
-```php
+```
 composer require nerbiz/wordclass
 ```
 
