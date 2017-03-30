@@ -29,12 +29,16 @@ Wordclass\Admin::roleRedirect('administrator', 'some/custom/url');
 ---
 
 ## Wordclass\Assets
+Uses the `CanPreventAssetsCaching` trait.
 
-### ::add, ::addAdmin, ::addLogin
+### ::add(), ::addAdmin(), ::addLogin()
 Add CSS and/or JavaScript assets to a page. Assets can be added to the theme ('add'), to the Wordpress backend ('addAdmin') and the Wordpress login page ('addLogin'). Theme asset URLs are relative to the (child-)theme directory, actual URLs are kept as-is.
 
 #### Example
 ```php
+// Enable cache busting
+Wordclass\Assets::preventCache(true);
+
 // Add 1 CSS asset at a time
 Wordclass\Assets::add('css', 'theme', 'assets/css/theme.css');
 Wordclass\Assets::add('css', 'theme', '//fonts.googleapis.com/css?family=Open+Sans');
@@ -75,7 +79,7 @@ Wordclass\Assets::add('js', [
 
 ## Wordclass\Helpers
 
-### ::getImage, ::getFeaturedImage, ::getMetaImage
+### ::getImage(), ::getFeaturedImage(), ::getMetaImage()
 Get information about an image resource, either general, featured or a custom field. The first argument is the ID of the image. The second 'size' argument accepts any registered image size, like 'thumbnail', 'medium', 'large', 'full' or a custom added size (default 'full'). The third argument specifies the type of info that will be returned (default 'url').
 
 #### Example
@@ -96,7 +100,7 @@ $featuredImage = Wordclass\Helpers::getFeaturedImage(21, 'full', 'url');
 $metaImage = Wordclass\Helpers::getMetaImage(21, 'poster', 'full', 'url');
 ```
 
-### ::getTaxonomySlug
+### ::getTaxonomySlug()
 Get the slug of a taxonomy.
 
 #### Example
@@ -105,7 +109,7 @@ Get the slug of a taxonomy.
 $slug = Wordclass\Helpers::getTaxonomySlug('movie_genres');
 ```
 
-### ::getTaxonomyItems
+### ::getTaxonomyItems()
 Get all the items of a given taxonomy.
 
 #### Example
@@ -114,11 +118,56 @@ Get all the items of a given taxonomy.
 $genres = Wordclass\Helpers::getTaxonomyItems('movie_genres');
 ```
 
-### ::getPostTaxonomies
+### ::getPostTaxonomies()
 Get the taxonomies that a post has.
 
 #### Example
 ```php
 // Get all the movie genres of post ID 21, which would be a movie post type
 $movieGenres = Wordclass\Helpers::getPostTaxonomies(21, 'movie_genres');
+```
+
+---
+
+## Wordclass\Metabox
+Depends on [webdevstudios/cmb2](https://github.com/WebDevStudios/CMB2).
+Uses the `CanSetTextDomain` trait.
+
+### ::create()
+This starts a metabox creation chain. The chain is: `create()->addField()->add()`, where `addField()` can be chained multiple times.
+
+#### Example
+```php
+// Set the text domain for all following metaboxes
+Wordclass\Metabox::setTextDomain(TEXT_DOMAIN);
+
+// create() sets the ID and title of the metabox, as well as the post types to apply this metabox to.
+// The third (post types) argument can be a string (1 post type) or an array (multiple post types). Wordclass\PostType instances are also accepted.
+// The fourth argument is optional and specifies metabox options (see https://cmb2.io/api/source-class-CMB2.html#47-71). The 'id', 'title' and 'object_types' options are set with the first 3 arguments, this array sets any other option(s).
+Wordclass\Metabox::create('metabox-1', 'Movie properties', 'movie', [])
+    // Please refer to https://cmb2.io/docs/field-types for all the available options per field type.
+    // I'll try my best to make everything translatable, I just don't know of all the option names yet.
+    ->addField([
+        'id'      => 'poster',
+        'type'    => 'file',
+        // Translated with text domain
+        'name'    => 'Movie poster',
+        // The options below are different per field type
+        'options' => [
+            'url' => false
+        ],
+        'text'    => [
+            // Translated with text domain
+            'add_upload_file_text' => 'Select image'
+        ]
+    ])
+    // Another field can be added with chaining
+    ->addField([
+        'id'   => 'plot',
+        'type' => 'wysiwyg',
+        // Translated with text domain
+        'name' => 'Movie plot'
+    ])
+    // This adds the metabox
+    ->add();
 ```
