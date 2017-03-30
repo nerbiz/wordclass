@@ -58,7 +58,7 @@ class Helpers {
 
     /**
      * Get the slug of a taxonomy
-     * @param  String|null  $name  null gets this slug, string: gets slug of given taxonomy
+     * @param  String  $name  string: gets slug of given taxonomy
      * @return String
      */
     public function getTaxonomySlug($name) {
