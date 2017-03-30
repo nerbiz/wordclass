@@ -41,7 +41,7 @@ class Helpers {
      */
     public static function getFeaturedImage($postid, $size='full', $type='url') {
         $imageId = get_post_thumbnail_id($postid);
-        return static::getImage($imageId, $type, $size);
+        return static::getImage($imageId, $size, $type);
     }
 
 
@@ -51,7 +51,7 @@ class Helpers {
      */
     public static function getMetaImage($postid, $metaname, $size='full', $type='url') {
         $imageId = get_post_meta($postid, $metaname, true);
-        return static::getImage($imageId, $type, $size);
+        return static::getImage($imageId, $size, $type);
     }
 
 
