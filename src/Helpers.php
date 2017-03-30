@@ -6,15 +6,15 @@ class Helpers {
     /**
      * Get the URL of a featured image
      * @param  Integer  $imageid  The ID of the image
+     * @param  String   $size     The size of the image
+     *                              thumbnail | medium | large | full | <custom>
      * @param  String   $type     The type of data to return
      *                              url: the image URL
      *                              array: [url, width, height, is_intermediate]
      *                              html: an <img> element
-     * @param  String   $size     The size of the image
-     *                              thumbnail | medium | large | full | <custom>
      * @return String|Array
      */
-    public static function getImage($imageid, $type='url', $size='full') {
+    public static function getImage($imageid, $size='full', $type='url') {
         switch($type) {
             case 'url':
                 return wp_get_attachment_image_url($imageid, $size);
@@ -39,7 +39,7 @@ class Helpers {
     /**
      * Wrapper for getImage, using post featured image
      */
-    public static function getFeaturedImage($postid, $type='url', $size='full') {
+    public static function getFeaturedImage($postid, $size='full', $type='url') {
         $imageId = get_post_thumbnail_id($postid);
         return static::getImage($imageId, $type, $size);
     }
@@ -49,7 +49,7 @@ class Helpers {
     /**
      * Wrapper for getImage, using post meta
      */
-    public static function getMetaImage($postid, $metaname, $type='url', $size='full') {
+    public static function getMetaImage($postid, $metaname, $size='full', $type='url') {
         $imageId = get_post_meta($postid, $metaname, true);
         return static::getImage($imageId, $type, $size);
     }
@@ -58,7 +58,7 @@ class Helpers {
 
     /**
      * Get the slug of a taxonomy
-     * @param  String|null  $name  null gets this slug, string: gets slug of given taxonomy
+     * @param  String  $name  string: gets slug of given taxonomy
      * @return String
      */
     public function getTaxonomySlug($name) {

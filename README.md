@@ -53,20 +53,17 @@ $taxonomyGenres = Wordclass\Taxonomy::create('tax_genres')
 ```
 
 ## Installation
-Apart from downloading or cloning, which I don't need to explain, this project will be added to [Composer](https://getcomposer.org/), not sure when. The command will probably be:
-```php
-// In case you're skipping through this readme and didn't read the above line, this command won't work now
+Apart from downloading or cloning this repo, you can include this project with [Composer](https://getcomposer.org/):
+```
 composer require nerbiz/wordclass
 ```
-I've never added anything to Composer, so I'll have to figure that out first, and the Autoloader class included in this project might then be superfluous.
 
 ## Usage
 The class files are well documented, but basically this is it:
 ```php
 Wordclass\Class::method('u', 'wot', 'm8');
 ```
-
-This 'usage' section will be updated with more detailed instructions (per class) later.
+You can find more detailed documentation in the 'docs' directory.
 
 ## Contributing
 I'm sure you'll have great ideas about expanding this project, though I'm not sure how pull requests work (yet). Anyway, I'm open for suggestions and pull requests.
