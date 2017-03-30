@@ -1,5 +1,14 @@
 # Release notes
 
+## 0.3
+
+* Admin::roleRedirect() now also accepts 2 string arguments instead of 1 array, when only setting 1 redirect (see docs).
+* Added a TODO file.
+* Admin::hideBar is now called Admin::showBar(), with a boolean parameter.
+* Fixed: arrays weren't handled properly by Assets::addAsset().
+* Swapped the type/size parameters of Helpers image methods, because size is changed more often than type I think.
+* Added documentation.
+
 ## 0.2.1
 
 * Added the Autoloader again, for when not using Composer.
