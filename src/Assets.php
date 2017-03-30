@@ -19,7 +19,7 @@ class Assets {
      *                                  For js
      *                                    footer: add this script to the header (false) or the footer (true) (default: true)
      *                                  Instead of an options array, options can be a path string, using default options
-     * @param  String        $path   (Only used when $assets is a string) shorthand for registering 1 style, with default options
+     * @param  String        $path    (Only used when $assets is a string) shorthand for registering 1 style, with default options
      */
     private static function addAsset($for, $type, $assets, $path) {
         // Decide which action hook to use, based on where the asset needs to go
@@ -52,9 +52,14 @@ class Assets {
                                     ? $path
                                     : STYLESHEET_URI . $path . static::$_assetAppend
                     ]);
+
+                    if($type == 'css')
+                        wp_enqueue_style($handle, $options['path'], $options['after'], null, $options['media']);
+                    else if($type == 'js')
+                        wp_enqueue_script($handle, $options['path'], $options['after'], null, $options['footer']);
                 }
 
-                else {
+                else if(is_array($assets)) {
                     foreach($assets as $handle => $options) {
                         // Shorthand, when only a path is given
                         if(is_string($options))
@@ -67,14 +72,13 @@ class Assets {
 
                         // Merge options with the defaults
                         $options = array_replace($defaultOptions, $options);
+
+                        if($type == 'css')
+                            wp_enqueue_style($handle, $options['path'], $options['after'], null, $options['media']);
+                        else if($type == 'js')
+                            wp_enqueue_script($handle, $options['path'], $options['after'], null, $options['footer']);
                     }
                 }
-
-                if($type == 'css')
-                    wp_enqueue_style($handle, $options['path'], $options['after'], null, $options['media']);
-
-                else if($type == 'js')
-                    wp_enqueue_script($handle, $options['path'], $options['after'], null, $options['footer']);
             });
         }
     }
