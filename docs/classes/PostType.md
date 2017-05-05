@@ -48,6 +48,7 @@ $cptMovies = Wordclass\PostType::create('cpt_movies')
 // A full example
 $cptNews = Wordclass\PostType::create('cpt_news')
     ->name('News')
+    ->slug('news-items')
     ->singular('News Item')
     ->plural('News Items')
     ->description('A collection of all news items')
