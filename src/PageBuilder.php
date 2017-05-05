@@ -124,7 +124,7 @@ class PageBuilder {
      *                                  array: property:value pairs
      * @param  String|null   $value     In case $property is a string, this is the value for it
      */
-    public static function addRowStyle($property, $value=null) {
+    public static function addRowStyles($property, $value=null) {
         if(is_string($property))
             $style = $property . ': ' . $value . ';';
 
