@@ -9,7 +9,7 @@ Start the method chain, setting the ID of the CPT as its only argument.
 
 ### ::name()
 Set the name (and menu name) of the CPT.  
-This also sets the plural name, description (both same as name) and slug (converted from name). However, these values can be set individually with the methods below.
+This also sets the plural name (same as name), description (name prepended with 'Custom Post Type: ') and slug (converted from name). However, these values can be set individually with the methods below.
 
 ### ::slug()
 Set how the CPT should show in the URL.  
