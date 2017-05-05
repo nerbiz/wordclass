@@ -1,8 +1,31 @@
 # Release notes
 
+## 0.4.0
+
+Pretty big release this time.
+
+* Finished documenting the whole package.
+* The 'desc' field of a metabox item can now be translated.
+* Renamed PageBuilder::addPanelRowStyle to addRowStyles().
+* Replaced addPanelGridClasses() and addPanelRowClass() with addRowClasses().
+* Removed pointless get() methods from PostType and Taxonomy.
+* Removed the unused PostType::hasArchive().
+* $subtitle parameter in SettingsPage::addSection() is now a string.
+* Fixed: Assets was using a constant that wasn't in the package.
+* Theme::addMenus() now supports adding a single menu.
+* Renamed Admin::roleRedirect to roleRedirects().
+* Added Taxonomy::description().
+* Removed some Utilities methods().
+* Renamed 'encrypted' occurences to 'obscured', in Utilities.
+* Utilities::stringToBinary() now returns a string without spaces.
+
+---
+
 ## 0.3.1
 
 * Fixed: Helpers image wrapper methods still used the old args order.
+
+---
 
 ## 0.3
 
@@ -12,6 +35,8 @@
 * Fixed: arrays weren't handled properly by Assets::addAsset().
 * Swapped the type/size parameters of Helpers image methods, because size is changed more often than type I think.
 * Added documentation.
+
+---
 
 ## 0.2.1
 
