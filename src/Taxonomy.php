@@ -201,16 +201,6 @@ class Taxonomy {
 
 
     /**
-     * Return this instance
-     * @return $this
-     */
-    public function get() {
-        return $this;
-    }
-
-
-
-    /**
      * When echo'd, return the ID
      * @return String
      */
