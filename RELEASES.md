@@ -1,5 +1,11 @@
 # Release notes
 
+## 0.4.2
+
+* Feature branch of the last release was not merged, should be good now.
+
+---
+
 ## 0.4.1
 
 * Added Composer dependencies.
