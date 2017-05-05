@@ -18,6 +18,7 @@ class PostType {
     private $_slug;
     private $_singularName;
     private $_pluralName;
+    private $_description;
     private $_taxonomies = [];
 
     /**
