@@ -1,5 +1,12 @@
 # Release notes
 
+## 0.4.1
+
+* Added Composer dependencies.
+* Enabled phone link (when on mobile) in Utilities::obscurePhoneLink().
+
+---
+
 ## 0.4.0
 
 Pretty big release this time.
