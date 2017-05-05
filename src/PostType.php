@@ -18,7 +18,7 @@ class PostType {
     private $_slug;
     private $_singularName;
     private $_pluralName;
-    private $_hasArchive = true;
+    private $_description;
     private $_taxonomies = [];
 
     /**
@@ -46,7 +46,7 @@ class PostType {
      * The plural name is implicitly the same
      * The slug is derived from this name
      * The description is set using this value
-     * Those can be changed set with other methods
+     * Those can be changed with other methods
      * @param  String  $name
      * @return $this
      */
@@ -114,25 +114,12 @@ class PostType {
 
 
     /**
-     * Wether or not the CPT has an archive
-     * @param  Boolean  $hasit
-     * @return $this
-     */
-    public function hasArchive($hasit) {
-        $this->_hasArchive = $hasit;
-
-        return $this;
-    }
-
-
-
-    /**
      * Set the taxonomies that the CPT has
      * @param  Array  $taxonomies
      * @return $this
      */
     public function taxonomies($taxonomies) {
-        $this->_taxonomies = $taxonomies;
+        $this->_taxonomies = (array) $taxonomies;
 
         return $this;
     }
@@ -208,8 +195,10 @@ class PostType {
             'publicly_queryable'  => true,
             'capability_type'     => 'page',
             'rewrite'             => [
-                'slug' => $this->_slug,
-                'with_front' => false
+                'slug'       => $this->_slug,
+                'with_front' => false,
+                'feeds'      => true,
+                'pages'      => true
             ]
         ], $arguments);
 
@@ -231,16 +220,6 @@ class PostType {
             register_post_type($this->_id, $this->_arguments);
         }, 0);
 
-        return $this;
-    }
-
-
-
-    /**
-     * Return this instance
-     * @return $this
-     */
-    public function get() {
         return $this;
     }
 

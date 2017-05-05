@@ -138,17 +138,19 @@ class SettingsPage {
 
     /**
      * Add a settings section to the settings page
-     * @param String    $id        Section ID
-     * @param String    $title     Section title
-     * @param Callable  $subtitle  Function that echoes content between title and fields
-     * @param Array     $fields    Input fields for the settings, as name:options pairs:
-     *                               title: the title of the input field
-     *                               type: the type of the input field
+     * @param String  $id        Section ID
+     * @param String  $title     Section title
+     * @param String  $subtitle  Function that echoes content between title and fields
+     * @param Array   $fields    Input fields for the settings, as name:options pairs:
+     *                             title: the title of the input field
+     *                             type: the type of the input field
      * @return $this
      */
-    public function addSection($id, $title, $subtitle=null, $fields=[]) {
+    public function addSection($id, $title, $subtitle='', $fields=[]) {
         add_action('admin_init', function() use($id, $title, $subtitle, $fields) {
-            add_settings_section($id, __($title, static::$_textDomain), $subtitle, $this->_pageSlug);
+            add_settings_section($id, __($title, static::$_textDomain), function() use($subtitle) {
+                echo __($subtitle, static::$_textDomain);
+            }, $this->_pageSlug);
 
             foreach($fields as $name => $options) {
                 register_setting($this->_optionGroup, $this->_inputPrefix.$name);

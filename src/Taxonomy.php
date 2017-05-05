@@ -18,6 +18,7 @@ class Taxonomy {
     private $_slug;
     private $_singularName;
     private $_pluralName;
+    private $_description;
 
     /**
      * The labels for the taxonomy
@@ -52,7 +53,7 @@ class Taxonomy {
         $this->_name = $name;
         $this->_slug = Utilities::createSlug($name);
         $this->_pluralName = $name;
-        $this->_description = 'Custom Post Type: ' . $name;
+        $this->_description = 'Custom Taxonomy: ' . $name;
 
         return $this;
     }
@@ -99,7 +100,20 @@ class Taxonomy {
 
 
     /**
-     * Set the post types that this is a taxonomy of
+     * Set the description of the CPT
+     * @param  String  $description
+     * @return $this
+     */
+    public function description($description) {
+        $this->_description = $description;
+
+        return $this;
+    }
+
+
+
+    /**
+     * Set the post type(s) that this is a taxonomy of
      * @param  String|Array $posttypes
      * @return $this
      */
@@ -164,16 +178,22 @@ class Taxonomy {
 
         // Overwrite defaults, if arguments are given
         $this->_arguments = array_replace_recursive([
-            'labels'            => $this->_labels,
-            'hierarchical'      => true,
-            'public'            => true,
-            'show_ui'           => true,
-            'show_admin_column' => true,
-            'show_in_nav_menus' => true,
-            'show_tagcloud'     => true,
-            'rewrite'           => [
-                'slug' => $this->_slug,
-                'with_front' => false,
+            'labels'             => $this->_labels,
+            'description'         => __($this->_description, static::$_textDomain),
+            'hierarchical'       => true,
+            'public'             => true,
+            'publicly_queryable' => true,
+            'show_ui'            => true,
+            'show_in_menu'       => true,
+            'show_in_nav_menus'  => true,
+            'show_in_rest'       => false,
+            'show_admin_column'  => true,
+            'show_tagcloud'      => true,
+            'capabilities'       => [],
+            'rewrite'            => [
+                'slug'         => $this->_slug,
+                'with_front'   => false,
+                'hierarchical' => false
             ]
         ], $arguments);
 
@@ -195,16 +215,6 @@ class Taxonomy {
             register_taxonomy($this->_id, $this->_postTypes, $this->_arguments);
         }, 0);
 
-        return $this;
-    }
-
-
-
-    /**
-     * Return this instance
-     * @return $this
-     */
-    public function get() {
         return $this;
     }
 

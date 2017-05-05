@@ -80,8 +80,20 @@ class Metabox {
         // Translate before adding
         $options['name'] = __($options['name'], static::$_textDomain);
         // @todo: This should be appended, when encountering new field options
-        if(isset($options['text']['add_upload_file_text']))
-            $options['text']['add_upload_file_text'] = __($options['text']['add_upload_file_text'], static::$_textDomain);
+        foreach([
+            'desc',
+            'text|add_upload_file_text'
+        ] as $translatable) {
+            $keys = explode('|', $translatable);
+            $levels = count($keys);
+
+            if($levels == 1)
+                $options[$keys[0]] = __($options[$keys[0]], static::$_textDomain);
+            else if($levels == 2)
+                $options[$keys[0]][$keys[1]] = __($options[$keys[0]][$keys[1]], static::$_textDomain);
+            else if($levels == 3)
+                $options[$keys[0]][$keys[1]][$keys[2]] = __($options[$keys[0]][$keys[1]][$keys[2]], static::$_textDomain);
+        }
 
         $this->_fields[] = $options;
 
