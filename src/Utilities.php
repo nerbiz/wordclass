@@ -9,16 +9,16 @@ class Utilities {
      * @param  String|null  $name     (Optional) Include the recipient name in the email link
      * @return String
      */
-    public static function encryptEmailLink($address, $name=null) {
-        $encryptedMailTo = static::utf8ToHtmlEntities('mailto:');
-        $encryptedAddress = static::utf8ToHtmlEntities($address);
+    public static function obscureEmailLink($address, $name=null) {
+        $obscuredMailTo = static::utf8ToHtmlEntities('mailto:');
+        $obscuredAddress = static::utf8ToHtmlEntities($address);
         if($name)
-            $encryptedName = static::utf8ToHtmlEntities($name);
+            $obscuredName = static::utf8ToHtmlEntities($name);
 
         if($name)
-            return '<a href="'.$encryptedMailTo.$encryptedName.' <'.$encryptedAddress.'>">'.$encryptedAddress.'</a>';
+            return '<a href="'.$obscuredMailTo.$obscuredName.' <'.$obscuredAddress.'>">'.$obscuredAddress.'</a>';
         else
-            return '<a href="'.$encryptedMailTo.$encryptedAddress.'">'.$encryptedAddress.'</a>';
+            return '<a href="'.$obscuredMailTo.$obscuredAddress.'">'.$obscuredAddress.'</a>';
     }
 
 
@@ -28,14 +28,14 @@ class Utilities {
      * @param  String  $number
      * @return String
      */
-    public static function encryptPhoneLink($number) {
-        $encryptedTel = static::utf8ToHtmlEntities('tel:');
-        $encryptedNumber = static::utf8ToHtmlEntities($number);
+    public static function obscurePhoneLink($number) {
+        $obscuredTel = static::utf8ToHtmlEntities('tel:');
+        $obscuredNumber = static::utf8ToHtmlEntities($number);
 
         // if(Device::isMobile())
-        //     return '<a href="'.$encryptedTel.$encryptedNumber.'">'.$encryptedNumber.'</a>';
+        //     return '<a href="'.$obscuredTel.$obscuredNumber.'">'.$obscuredNumber.'</a>';
         // else
-            return $encryptedNumber;
+            return $obscuredNumber;
     }
 
 
