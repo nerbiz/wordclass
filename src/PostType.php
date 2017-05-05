@@ -118,7 +118,7 @@ class PostType {
      * @return $this
      */
     public function taxonomies($taxonomies) {
-        $this->_taxonomies = $taxonomies;
+        $this->_taxonomies = (array) $taxonomies;
 
         return $this;
     }
