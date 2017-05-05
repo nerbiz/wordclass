@@ -2,7 +2,22 @@
 
 namespace Wordclass;
 
+use Detection\MobileDetect;
+
 class Utilities {
+    static $_MobileDetect = null;
+
+
+
+    private static function mobileDetect() {
+        if(static::$_MobileDetect == null)
+            static::$_MobileDetect = new MobileDetect();
+
+        return static::$_MobileDetect;
+    }
+
+
+
     /**
      * Convert an email address to HTML character codes
      * @param  String       $address
@@ -32,9 +47,9 @@ class Utilities {
         $obscuredTel = static::utf8ToHtmlEntities('tel:');
         $obscuredNumber = static::utf8ToHtmlEntities($number);
 
-        // if(Device::isMobile())
-        //     return '<a href="'.$obscuredTel.$obscuredNumber.'">'.$obscuredNumber.'</a>';
-        // else
+        if(static::mobileDetect()->isMobile())
+            return '<a href="'.$obscuredTel.$obscuredNumber.'">'.$obscuredNumber.'</a>';
+        else
             return $obscuredNumber;
     }
 

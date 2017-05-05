@@ -16,7 +16,7 @@ Wordclass\Utilities::encryptEmailLink('info@example.com', 'Example Name');
 
 ### ::obscurePhoneLink()
 Obscures a given phone number.  
-TODO: this returns a link, when on phone/tablet.
+This returns a 'tel:' link, when on a phone/tablet.
 
 #### Example
 ```php
