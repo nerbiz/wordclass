@@ -21,7 +21,7 @@ class Admin {
      * @param  Array|String  $roleUrls  role:url pairs (or a string, the role name)
      * @param  String        $url       In case $roleUrls is a string (role), this parameter needs to be given
      */
-    public static function roleRedirect($roleUrls, $url=null) {
+    public static function roleRedirects($roleUrls, $url=null) {
         add_filter('login_redirect', function($redirecturl, $request, $user) use($roleUrls, $url) {
             // If role(s) are set, see if it matches the given role(s), then redirect to the corresponding URL
             if(isset($user->roles)  &&  is_array($user->roles)) {
