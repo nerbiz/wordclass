@@ -48,15 +48,15 @@ Wordclass\PageBuilder::addRowClasses('grid', ['class-1', 'class-2']);
 Wordclass\PageBuilder::addRowClasses('row', 'your-class');
 ```
 
-### ::addRowStyle()
+### ::addRowStyles()
 Add inline CSS styles to all rows.
 
 #### Example
 ```php
 // 1 property:value pair can be set as 2 strings
-Wordclass\PageBuilder::addRowStyle('background-color', '#0CF');
+Wordclass\PageBuilder::addRowStyles('background-color', '#0CF');
 // Multiple pairs can be set with an array
-Wordclass\PageBuilder::addRowStyle([
+Wordclass\PageBuilder::addRowStyles([
     'font-size' => '200%',
     'text-align' => 'right'
 ]);

@@ -9,18 +9,18 @@ Wordclass\Admin::showBar(true);
 Wordclass\Admin::showBar(false);
 ```
 
-### ::roleRedirect()
+### ::roleRedirects()
 Redirect to a custom URL after login, specified per role. Each URL is filtered with esc_url().  
 Unspecified roles will just redirect to the default Wordpress backend.
 
 #### Example
 ```php
 // As an array
-Wordclass\Admin::roleRedirect([
+Wordclass\Admin::roleRedirects([
     'administrator' => 'some/custom/url',
     'editor'        => 'another/url'
 ]);
 
 // As strings, in case of 1 role/URL
-Wordclass\Admin::roleRedirect('administrator', 'some/custom/url');
+Wordclass\Admin::roleRedirects('administrator', 'some/custom/url');
 ```
