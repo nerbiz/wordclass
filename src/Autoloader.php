@@ -18,11 +18,15 @@ class Autoloader {
      * @param  String  $class
      */
     public static function find($class) {
-        $slash = DIRECTORY_SEPARATOR;
+        $sep = DIRECTORY_SEPARATOR;
+        // Remove leading and trailing backslashes
         $classPath = ltrim($class, '\\');
-        $classPath = str_replace('\\', $slash, $classPath);
-        $classPath = __DIR__ . $slash . $classPath . '.php';
-        $classPath = str_replace($slash.'Wordclass'.$slash, $slash, $classPath);
+        // Replace backslashes with directory separators
+        $classPath = str_replace('\\', $sep, $classPath);
+        // Construct the classpath, relative to this file
+        $classPath = __DIR__ . $sep . $classPath . '.php';
+        // Remove the 'Wordclass' namespace from the path
+        $classPath = str_replace($sep.'Wordclass'.$sep, $sep, $classPath);
 
         if(is_readable($classPath))
             require_once $classPath;
