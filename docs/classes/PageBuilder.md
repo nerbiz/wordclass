@@ -23,8 +23,8 @@ Wordclass\PageBuilder::addRowStyleOption([
     'type' => 'checkbox',
     // The section to place the option under, possible values: attributes / layout / design
     'group' => 'attributes',
-    // Translated with text domain (optional)
-    'description' => 'Wot m8',
+    // Shows right below the option (optional)
+    'description' => 'Description of the option',
     // The placement of the option, with reference to others (optional)
     'priority' => 12
 ]);
@@ -81,7 +81,6 @@ Wordclass\PageBuilder::setTextDomain('your-text-domain');
 
 Wordclass\PageBuilder::setWidgetsGroup('name-of-group');
 Wordclass\PageBuilder::addWidgetsDirectory(get_template_directory() . '/widgets');
-// Translated with text domain
 Wordclass\PageBuilder::addWidgetsTab('Your Custom Widgets');
 // Add other widgets to your group
 Wordclass\PageBuilder::addWidgetsToGroup(['RevSliderWidget', 'bcn_widget']);

@@ -24,14 +24,12 @@ Wordclass\Metabox::create('metabox-1', 'Movie properties', 'movie', [])
     ->addField([
         'id'      => 'poster',
         'type'    => 'file',
-        // Translated with text domain
         'name'    => 'Movie poster',
         // The options below are different per field type
         'options' => [
             'url' => false
         ],
         'text'    => [
-            // Translated with text domain
             'add_upload_file_text' => 'Select image'
         ]
     ])
@@ -39,7 +37,6 @@ Wordclass\Metabox::create('metabox-1', 'Movie properties', 'movie', [])
     ->addField([
         'id'   => 'plot',
         'type' => 'wysiwyg',
-        // Translated with text domain
         'name' => 'Movie plot'
     ])
     ->add();
