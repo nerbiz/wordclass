@@ -81,7 +81,7 @@ class Utilities {
         if($array)
             return $result;
         else
-            return implode(' ', $result);
+            return implode('', $result);
     }
 
 
