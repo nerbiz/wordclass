@@ -18,7 +18,6 @@ class PostType {
     private $_slug;
     private $_singularName;
     private $_pluralName;
-    private $_hasArchive = true;
     private $_taxonomies = [];
 
     /**
@@ -46,7 +45,7 @@ class PostType {
      * The plural name is implicitly the same
      * The slug is derived from this name
      * The description is set using this value
-     * Those can be changed set with other methods
+     * Those can be changed with other methods
      * @param  String  $name
      * @return $this
      */
@@ -107,19 +106,6 @@ class PostType {
      */
     public function description($description) {
         $this->_description = $description;
-
-        return $this;
-    }
-
-
-
-    /**
-     * Wether or not the CPT has an archive
-     * @param  Boolean  $hasit
-     * @return $this
-     */
-    public function hasArchive($hasit) {
-        $this->_hasArchive = $hasit;
 
         return $this;
     }
