@@ -50,7 +50,7 @@ class Assets {
                     $options = array_replace($defaultOptions, [
                         'path' => preg_match($urlRegEx, $path)
                                     ? $path
-                                    : STYLESHEET_URI . $path . static::$_assetAppend
+                                    : get_stylesheet_directory_uri() . '/' . $path . static::$_assetAppend
                     ]);
 
                     if($type == 'css')
@@ -68,7 +68,7 @@ class Assets {
                         // Create the full path
                         $options['path'] = preg_match($urlRegEx, $path) ?
                                             $path
-                                            : STYLESHEET_URI . $path . static::$_assetAppend;
+                                            : get_stylesheet_directory_uri() . '/' . $path . static::$_assetAppend;
 
                         // Merge options with the defaults
                         $options = array_replace($defaultOptions, $options);
