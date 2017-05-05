@@ -132,21 +132,27 @@ $movieGenres = Wordclass\Helpers::getPostTaxonomies(21, 'movie_genres');
 ## Wordclass\Metabox
 Depends on [webdevstudios/cmb2](https://github.com/WebDevStudios/CMB2).
 Uses the `CanSetTextDomain` trait.
+Add a metabox to one or more post types, using a method chain: `create()->addField()->add()`, where `addField()` can be chained multiple times.
 
 ### ::create()
-This starts a metabox creation chain. The chain is: `create()->addField()->add()`, where `addField()` can be chained multiple times.
+This starts the method chain.
+It sets the ID and title of the metabox, as well as the post types to apply this metabox to.
+The third (post types) argument can be a string (1 post type) or an array (multiple post types). Wordclass\PostType instances are also accepted.
+The fourth argument is optional and specifies metabox options ([see here](https://cmb2.io/api/source-class-CMB2.html#47-71)). The 'id', 'title' and 'object_types' options are set with the first 3 arguments, this array sets any other option(s).
+
+### ::addField()
+Please refer to [the documentation](https://cmb2.io/docs/field-types) for all the available options per field type.
+I'll try my best to make everything translatable, I just don't know of all the option names yet.
+
+### ::add()
+This adds the metabox.
 
 #### Example
 ```php
 // Set the text domain for all following metaboxes
 Wordclass\Metabox::setTextDomain(TEXT_DOMAIN);
 
-// create() sets the ID and title of the metabox, as well as the post types to apply this metabox to.
-// The third (post types) argument can be a string (1 post type) or an array (multiple post types). Wordclass\PostType instances are also accepted.
-// The fourth argument is optional and specifies metabox options (see https://cmb2.io/api/source-class-CMB2.html#47-71). The 'id', 'title' and 'object_types' options are set with the first 3 arguments, this array sets any other option(s).
 Wordclass\Metabox::create('metabox-1', 'Movie properties', 'movie', [])
-    // Please refer to https://cmb2.io/docs/field-types for all the available options per field type.
-    // I'll try my best to make everything translatable, I just don't know of all the option names yet.
     ->addField([
         'id'      => 'poster',
         'type'    => 'file',
@@ -168,6 +174,5 @@ Wordclass\Metabox::create('metabox-1', 'Movie properties', 'movie', [])
         // Translated with text domain
         'name' => 'Movie plot'
     ])
-    // This adds the metabox
     ->add();
 ```
