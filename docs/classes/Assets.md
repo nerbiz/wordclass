@@ -2,7 +2,9 @@
 Uses the `CanPreventAssetsCaching` trait.
 
 ### ::add(), ::addAdmin(), ::addLogin()
-Add CSS and/or JavaScript assets to a page. Assets can be added to the theme ('add'), to the Wordpress backend ('addAdmin') and the Wordpress login page ('addLogin'). Theme asset URLs are relative to the (child-)theme directory, actual URLs are kept as-is.
+Add CSS and/or JavaScript assets to a page.  
+Assets can be added to the theme ('add'), to the Wordpress backend ('addAdmin') and the Wordpress login page ('addLogin').  
+Theme asset URLs are relative to the (child-)theme directory, actual URLs are kept as-is.
 
 #### Example
 ```php

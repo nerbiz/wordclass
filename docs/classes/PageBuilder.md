@@ -1,14 +1,15 @@
 # Wordclass\PageBuilder
-For use with the plugin [Page Builder by SiteOrigin](https://wordpress.org/plugins/siteorigin-panels/).
+For use with the plugin [Page Builder by SiteOrigin](https://wordpress.org/plugins/siteorigin-panels/).  
 Uses the `CanSetTextDomain` trait.
 
 ### ::setFieldPrefix()
-Set a prefix for custom row style options. If this method is not called, this will be 'custom'. A trailing hyphen is automatically put between the prefix and option slug, so the example below will become ```your-prefix-your-slug```.
+Set a prefix for custom row style options. If this method is not called, this will be 'custom'.  
+A trailing hyphen is automatically put between the prefix and option slug, so the example below will become ```your-prefix-your-slug```.
 
 ### ::addRowStyleOption()
-Add an option to the 'Edit Row' popup, on the right side under 'Row Styles'.
-This will be accessible in the `siteorigin_panels_row_style_attributes` filter, the 2nd argument, which is an array.
-It acts on the `div.panel-row-style` element of a row, which is added by Page Builder.
+Add an option to the 'Edit Row' popup, on the right side under 'Row Styles'.  
+This will be accessible in the `siteorigin_panels_row_style_attributes` filter, the 2nd argument, which is an array.  
+It acts on the `div.panel-row-style` element of a row, which is added by Page Builder.  
 Usually, `div.panel-grid-cell` is the direct child of `div.panel-grid`, but now `div.panel-row-style` comes in between.
 
 #### Example
@@ -31,7 +32,7 @@ Wordclass\PageBuilder::addRowStyleOption([
 ```
 
 ### ::addRowClasses()
-Adds 1 or more CSS classes to all rows.
+Adds 1 or more CSS classes to all rows.  
 The first argument decides to add the CSS classes to `div.panel-grid` ('grid') or `div.panel-row-style` ('row') elements.
 
 #### Example
@@ -62,18 +63,23 @@ Wordclass\PageBuilder::addRowStyle([
 ```
 
 ### ::setWidgetsGroup()
-Sets the name of a widget group, set this before calling `addWidgetsTab()` or `addWidgetsToGroup()`. If this method is not called, this will be 'custom-widgets'.
+Sets the name of a widget group, set this before calling `addWidgetsTab()` or `addWidgetsToGroup()`.  
+If this method is not called, this will be 'custom-widgets'.
 
 ### ::addWidgetsTab()
 Adds a tab on the left side in the 'add widget' popup, in which widgets appear, that are in the given group name.
 
 ### ::addWidgetsDirectory()
-The directory in which Page Builder will search for widgets. See [the documentation](https://siteorigin.com/docs/widgets-bundle/getting-started/creating-a-widget/) on how to setup the directory structure. Basically: create a subdirectory per widget in the specified directory, then use the below structure, which is assumed by Page Builder by default.
-`widget-name/widget-name.php`: the widget class file
-`widget-name/tpl/default.php`: the widget template
+The directory in which Page Builder will search for widgets.  
+See [the documentation](https://siteorigin.com/docs/widgets-bundle/getting-started/creating-a-widget/) on how to setup the directory structure.  
+Basically: create a subdirectory per widget in the specified directory, then use the below structure, which is assumed by Page Builder by default.  
+`widget-name/widget-name.php` the widget class file  
+`widget-name/tpl/default.php` the widget template
 
 ### ::addWidgetsToGroup()
-Manually add widgets to the given group name. This can be useful to put 3rd party widgets in your custom tab. Can be 1 widget name (string) or multiple (array of strings).
+Manually add widgets to the given group name.  
+This can be useful to put 3rd party widgets in your custom tab.  
+Can be 1 widget name (string) or multiple (array of strings).
 
 #### Example
 ```php

@@ -10,7 +10,7 @@ Wordclass\Widgets::enableShortcodes();
 ```
 
 ### ::addSidebar()
-Add a sidebar.
+Add a sidebar.  
 See the [register_sidebar() documentation](https://codex.wordpress.org/Function_Reference/register_sidebar) for more info and default values.
 
 #### Example
@@ -42,8 +42,8 @@ Wordclass\Widgets::addSidebar(
 ```
 
 ### ::addSidebars()
-Add multiple sidebars.
-Call this method with an array of ID:option pairs. Options can be a string, then it will use default options.
+Add multiple sidebars.  
+Call this method with an array of ID:option pairs. Options can be a string, then it will use default options.  
 For all possible options, see `addSidebar()`. Only the ID should not be in the options array.
 
 #### Example

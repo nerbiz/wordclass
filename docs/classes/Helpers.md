@@ -1,7 +1,10 @@
 # Wordclass\Helpers
 
 ### ::getImage(), ::getFeaturedImage(), ::getMetaImage()
-Get information about an image resource, either general, featured or a custom field. The first argument is the ID of the image. The second 'size' argument accepts any registered image size, like 'thumbnail', 'medium', 'large', 'full' or a custom added size (default 'full'). The third argument specifies the type of info that will be returned (default 'url').
+Get information about an image resource, either general, featured or a custom field.  
+The first argument is the ID of the image.  
+The second 'size' argument accepts any registered image size, like 'thumbnail', 'medium', 'large', 'full' or a custom added size (default 'full').  
+The third argument specifies the type of info that will be returned (default 'url').
 
 #### Example
 ```php
