@@ -64,7 +64,7 @@ class Utilities {
     /**
      * Convert a string to binary
      * @param  String   $string
-     * @param  Boolean  $array   Whether to return an array or string
+     * @param  Boolean  $array   Whether to return an array (true) or string (false)
      * @return Array|String
      */
     public static function stringToBinary($string, $array=false) {

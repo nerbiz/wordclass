@@ -39,6 +39,9 @@ This is used by `::utf8ToHtmlEntities()`, which is used by the `obscure...()` me
 
 #### Example
 ```php
+// Returns '01010100011001010111001101110100'
+Wordclass\Utilities::stringToBinary('Test');
+
 /*
 Returns [
     01010100,
@@ -48,9 +51,6 @@ Returns [
 ]
 */
 Wordclass\Utilities::stringToBinary('Test', true);
-
-// Returns '01010100011001010111001101110100'
-Wordclass\Utilities::stringToBinary('Test', false);
 ```
 
 ### ::utf8ToHtmlEntities()
