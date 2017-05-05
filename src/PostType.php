@@ -194,8 +194,10 @@ class PostType {
             'publicly_queryable'  => true,
             'capability_type'     => 'page',
             'rewrite'             => [
-                'slug' => $this->_slug,
-                'with_front' => false
+                'slug'       => $this->_slug,
+                'with_front' => false,
+                'feeds'      => true,
+                'pages'      => true
             ]
         ], $arguments);
 
