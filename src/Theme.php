@@ -12,8 +12,8 @@ class Theme {
      * @param Null|String|Array  $posttypes  (Optional) Enable for specific post types only
      */
     public static function enableFeaturedImages($posttypes=null) {
-        if($posttypes != null  &&  ! is_array($posttypes))
-            $posttypes = [$posttypes];
+        if($posttypes != null)
+            $posttypes = (array) $posttypes;
 
         add_action('after_setup_theme', function() use($posttypes) {
             if($posttypes == null)
@@ -62,9 +62,14 @@ class Theme {
 
     /**
      * Register custom menu positions
-     * @param  Array  $menus  Menus in location:description pairs
+     * @param  String|Array  $menus        Menus in location:description pairs
+     *                                       Can be a string, then it is the name of the location
+     * @param  Array|null    $description  In case $menus is a string (location), this is the description for it
      */
-    public static function addMenus($menus) {
+    public static function addMenus($menus, $description=null) {
+        if(is_string($menus))
+            $menus = [$menus => $description];
+
         add_action('after_setup_theme', function() use($menus) {
             foreach($menus as $location => $description)
                 register_nav_menu($location, __($description, static::$_textDomain));
@@ -74,7 +79,7 @@ class Theme {
 
 
     /**
-     * Let Wordpress set the window title
+     * Let Wordpress handle the window title
      * When using this, remove the <title> tag from <head>
      */
     public static function autoWindowTitle() {
