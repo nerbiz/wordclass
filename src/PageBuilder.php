@@ -84,10 +84,12 @@ class PageBuilder {
 
 
     /**
-     * Add CSS class(es) to all div.panel-grid elements
-     * @param  Array  $customclasses
+     * Add CSS classes to either div.panel-grid, or div.panel-row-style elements
+     * @param  String        $element  grid / row
+     * @param  String|Array  $classes  1 class: provide a string
+     *                                 multiple: provide a space-separated string, or an array of strings
      */
-    public static function addPanelGridClasses($classes) {
+    public static function addRowClasses($element, $classes) {
         $classes = (array) $classes;
 
         // Create an array of classes to add
@@ -96,9 +98,22 @@ class PageBuilder {
         foreach($classes as $class)
             $addClasses = array_merge($addClasses, explode(' ', $class));
 
-        add_filter('siteorigin_panels_row_classes', function($current) use($addClasses) {
-            return array_merge($current, $addClasses);
-        });
+        // Add to all div.panel-grid elements
+        if($element == 'grid') {
+            add_filter('siteorigin_panels_row_classes', function($current) use($addClasses) {
+                return array_merge($current, $addClasses);
+            });
+        }
+
+        // Add to all div.panel-row-style elements
+        else if($element == 'row') {
+            add_filter('siteorigin_panels_row_style_attributes', function($attributes, $args=null) use ($addClasses) {
+                // Append the classes to possibly existing classes
+                $attributes['class'] = array_merge($attributes['class'], $addClasses);
+
+                return $attributes;
+            });
+        }
     }
 
 
@@ -122,29 +137,6 @@ class PageBuilder {
         add_filter('siteorigin_panels_row_style_attributes', function($attributes, $args=null) use ($style) {
             // Append the style to a possibly existing style
             $attributes['style'] = trim($attributes['style'] . ' ' . $style);
-
-            return $attributes;
-        });
-    }
-
-
-
-    /**
-     * Set custom row class(es) on all div.panel-row-style elements
-     * @param  String|Array  $classes
-     */
-    public static function addPanelRowClass($classes) {
-        $classes = (array) $classes;
-
-        // Create an array of classes to add
-        // When a class has a space, transform it into an array
-        $addClasses = [];
-        foreach($classes as $class)
-            $addClasses = array_merge($addClasses, explode(' ', $class));
-
-        add_filter('siteorigin_panels_row_style_attributes', function($attributes, $args=null) use ($addClasses) {
-            // Append the classes to possibily existing classes
-            $attributes['class'] = array_merge($attributes['class'], $addClasses);
 
             return $attributes;
         });
