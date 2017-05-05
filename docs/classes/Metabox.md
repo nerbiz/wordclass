@@ -18,7 +18,6 @@ This adds the metabox.
 
 #### Example
 ```php
-// Set the text domain for all following metaboxes
 Wordclass\Metabox::setTextDomain('your-text-domain');
 
 Wordclass\Metabox::create('metabox-1', 'Movie properties', 'movie', [])

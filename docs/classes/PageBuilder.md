@@ -77,7 +77,6 @@ Manually add widgets to the given group name. This can be useful to put 3rd part
 
 #### Example
 ```php
-// Set the text domain for all following metaboxes
 Wordclass\PageBuilder::setTextDomain('your-text-domain');
 
 Wordclass\PageBuilder::setWidgetsGroup('name-of-group');
