@@ -172,8 +172,9 @@ class Taxonomy {
             'show_in_nav_menus' => true,
             'show_tagcloud'     => true,
             'rewrite'           => [
-                'slug' => $this->_slug,
-                'with_front' => false,
+                'slug'         => $this->_slug,
+                'with_front'   => false,
+                'hierarchical' => false
             ]
         ], $arguments);
 
