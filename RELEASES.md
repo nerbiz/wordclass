@@ -1,5 +1,11 @@
 # Release notes
 
+## 0.5.1
+
+* Fixed: Fixed: wrong method in Utilities documentation.
+
+---
+
 ## 0.5.0
 
 * Added the Plugins class, with documentation.
