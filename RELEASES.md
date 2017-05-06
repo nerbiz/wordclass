@@ -1,5 +1,11 @@
 # Release notes
 
+## 0.5.0
+
+* Added the Plugins class, with documentation.
+
+---
+
 ## 0.4.2
 
 * Feature branch of the last release was not merged, should be good now.

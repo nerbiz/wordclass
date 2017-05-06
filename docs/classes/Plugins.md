@@ -1,6 +1,6 @@
 # Wordclass\Plugins
 Depends on [tgmpa/tgm-plugin-activation](https://github.com/TGMPA/TGM-Plugin-Activation).  
-See [see documentation](http://tgmpluginactivation.com/configuration/) for more information.
+See [see documentation](http://tgmpluginactivation.com/configuration/) for more information.  
 Set required/recommended plugins, using a method chain.  
 
 ### ::init()
