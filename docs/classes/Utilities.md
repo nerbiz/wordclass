@@ -7,11 +7,11 @@ Obscures a given email address, optionally with a name.
 ```php
 // Only an email address, obscures this format:
 // <a href="mailto:info@example.com">info@example.com</a>
-Wordclass\Utilities::encryptEmailLink('info@example.com');
+Wordclass\Utilities::obscureEmailLink('info@example.com');
 
 // Including a name, obscures this format:
 // <a href="mailto:Example Name <info@example.com>">info@example.com</a>
-Wordclass\Utilities::encryptEmailLink('info@example.com', 'Example Name');
+Wordclass\Utilities::obscureEmailLink('info@example.com', 'Example Name');
 ```
 
 ### ::obscurePhoneLink()
