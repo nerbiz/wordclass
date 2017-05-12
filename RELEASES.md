@@ -1,5 +1,14 @@
 # Release notes
 
+## 0.6.0
+
+* !! Removed Autoloader.
+* Added Init, which now holds the autoloader (Init::autoloader()).
+* Init also has constants(), for convenience.
+* Added documentation for Init.
+
+---
+
 ## 0.5.1
 
 * Fixed: Fixed: wrong method in Utilities documentation.
