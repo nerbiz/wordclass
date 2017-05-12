@@ -68,6 +68,8 @@ class Plugins {
             $options['slug'] = $slug;
             $this->_includePlugins[] = $options;
         }
+
+        return $this;
     }
 
 
