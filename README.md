@@ -20,4 +20,4 @@ You can find more detailed documentation in the 'docs' directory.
 I'm sure you'll have great ideas about expanding this project, though I'm not sure how pull requests work (yet). Anyway, I'm open for suggestions and pull requests.
 
 ## License
-This project uses the [Unlicence](http://unlicense.org/).
+This project uses the [Unlicense](http://unlicense.org/).
