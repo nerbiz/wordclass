@@ -1,7 +1,7 @@
 {
     "name": "nerbiz/wordclass",
     "description": "Class-based functions.php, utilities and helpers for Wordpress",
-    "license": "Unlicence",
+    "license": "Unlicense",
     "authors": [
         {
             "name": "Sybren Dijkstra",
