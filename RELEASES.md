@@ -1,5 +1,18 @@
 # Release notes
 
+## 0.6.2
+
+* Simplified Plugins, and using static methods now.
+* Updated the Plugins documentation.
+
+---
+
+## 0.6.1
+
+* Fixed: Plugins::include() wasn't chainable.
+
+---
+
 ## 0.6.0
 
 * !! Removed Autoloader.
