@@ -1,10 +1,15 @@
 # Release notes
 
+## 0.6.6
+
+* Removed CanSetTextDomain::setTextDomain(), replaced by ::textDomain().
+* CanSetTextDomain::textDomain() can now get and set the text domain.
+* Added Init::defaultTextDomain(), which can set and get the default text domain.
+* Text domain should now be called with static::textDomain(), instead of static::$_textDomain.
+
 ## 0.6.5
 
 * Fixed: regex had no ending delimiter.
-
----
 
 ## 0.6.4
 
@@ -12,27 +17,19 @@
 * Admin::roleRedirects() now implicitly makes relative URLs when a given URL doesn't start with 'http(s)://'.
 * Improved the URL regex in Assets.
 
----
-
 ## 0.6.3
 
 * Plugins::include() now supports shorter syntax, see the docs for more info.
 * Updated the Plugins documentations.
-
----
 
 ## 0.6.2
 
 * Simplified Plugins, and using static methods now.
 * Updated the Plugins documentation.
 
----
-
 ## 0.6.1
 
 * Fixed: Plugins::include() wasn't chainable.
-
----
 
 ## 0.6.0
 
@@ -41,32 +38,22 @@
 * Init also has constants(), for convenience.
 * Added documentation for Init.
 
----
-
 ## 0.5.1
 
 * Fixed: Fixed: wrong method in Utilities documentation.
-
----
 
 ## 0.5.0
 
 * Added the Plugins class, with documentation.
 
----
-
 ## 0.4.2
 
 * Feature branch of the last release was not merged, should be good now.
-
----
 
 ## 0.4.1
 
 * Added Composer dependencies.
 * Enabled phone link (when on mobile) in Utilities::obscurePhoneLink().
-
----
 
 ## 0.4.0
 
@@ -87,13 +74,9 @@ Pretty big release this time.
 * Renamed 'encrypted' occurences to 'obscured', in Utilities.
 * Utilities::stringToBinary() now returns a string without spaces.
 
----
-
 ## 0.3.1
 
 * Fixed: Helpers image wrapper methods still used the old args order.
-
----
 
 ## 0.3
 
@@ -104,14 +87,10 @@ Pretty big release this time.
 * Swapped the type/size parameters of Helpers image methods, because size is changed more often than type I think.
 * Added documentation.
 
----
-
 ## 0.2.1
 
 * Added the Autoloader again, for when not using Composer.
 * Added Admin::roleRedirect(), to specify a custom URL to redirect to after login, based on user role.
-
----
 
 ## 0.2.0
 
@@ -120,25 +99,17 @@ Pretty big release this time.
 * Added Helpers::getPostTaxonomies().
 * Added these release notes.
 
----
-
 ## 0.1.3
 
 * Added Theme::autoWindowTitle(), which lets Wordpress define the &lt;title&gt; tag.
-
----
 
 ## 0.1.2
 
 * Removed Autoloader class, because Composer now handles that.
 
----
-
 ## 0.1.1
 
 * Fixed: composer.json format error.
-
----
 
 ## 0.1.0
 
