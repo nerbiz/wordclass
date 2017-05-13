@@ -1,5 +1,13 @@
 # Release notes
 
+## 0.6.4
+
+* Admin::showBar() now supports 'auto' setting (when no argument is given, same result as not calling this method).
+* Admin::roleRedirects() now implicitly makes relative URLs when a given URL doesn't start with 'http(s)://'.
+* Improved the URL regex in Assets.
+
+---
+
 ## 0.6.3
 
 * Plugins::include() now supports shorter syntax, see the docs for more info.
