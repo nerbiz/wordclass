@@ -1,5 +1,11 @@
 # Release notes
 
+## 0.6.5
+
+* Fixed: regex had no ending delimiter.
+
+---
+
 ## 0.6.4
 
 * Admin::showBar() now supports 'auto' setting (when no argument is given, same result as not calling this method).
