@@ -52,7 +52,7 @@ class Theme {
             add_image_size($name, $width, $height, $crop);
 
             add_filter('image_size_names_choose', function($sizes) use($name, $optionName) {
-                $sizes[$name] = __($optionName, static::$_textDomain);
+                $sizes[$name] = __($optionName, static::textDomain());
                 return $sizes;
             });
         });
@@ -72,7 +72,7 @@ class Theme {
 
         add_action('after_setup_theme', function() use($menus) {
             foreach($menus as $location => $description)
-                register_nav_menu($location, __($description, static::$_textDomain));
+                register_nav_menu($location, __($description, static::textDomain()));
         });
     }
 

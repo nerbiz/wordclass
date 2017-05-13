@@ -3,6 +3,10 @@
 namespace Wordclass;
 
 class Init {
+    private static $_defaultTextDomain = null;
+
+
+
     /**
      * Initialize the autoloader
      * Only needed when not using the Composer autoloader
@@ -37,5 +41,19 @@ class Init {
         // The URI paths to the template/stylesheet directory
         define('TEMPLATE_URI', get_template_directory_uri() . '/');
         define('STYLESHEET_URI', get_stylesheet_directory_uri() . '/');
+    }
+
+
+
+    /**
+     * Set or get the default text domain
+     * @param  String  $domain
+     * @return String
+     */
+    public function defaultTextDomain($domain=null) {
+        if($domain)
+            static::$_defaultTextDomain = $domain;
+        else
+            return static::$_defaultTextDomain;
     }
 }

@@ -2,32 +2,40 @@
 
 namespace Wordclass\Traits;
 
+use Wordclass\Init;
+
 trait CanSetTextDomain {
     /**
-     * The text domain for translating the theme (static and on instance)
+     * The text domain for translations
      * @var String
      */
-    private static $_textDomain = 'text_domain';
+    private static $_textDomain = null;
 
 
 
     /**
-     * Set the text domain for translating (statically)
+     * Set or get the text domain for translating
      * @param  String  $domain
+     * @return String
      */
-    public static function setTextDomain($domain) {
-        static::$_textDomain = $domain;
-    }
+    public static function textDomain($domain=null) {
+        if($domain)
+            static::$_textDomain = $domain;
 
+        else {
+            // A class-specific value takes precedence
+            if(static::$_textDomain !== null)
+                return static::$_textDomain;
 
-    /**
-     * Set the text domain for translating (on instance)
-     * @param  String  $domain
-     * @return $this
-     */
-    public function textDomain($domain) {
-        static::$_textDomain = $domain;
-
-        return $this;
+            else {
+                $default = Init::defaultTextDomain();
+                // Use the default value in Init if it is set
+                if($default !== null)
+                    return $default;
+                // Fallback value
+                else
+                    return 'text-domain';
+            }
+        }
     }
 }
