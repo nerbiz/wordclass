@@ -5,13 +5,11 @@ namespace Wordclass;
 class Admin {
     /**
      * Hide the admin bar, when viewing the website
-     * @param Boolean  $show
+     * @param Mixed  $show  Always (true), never (false), or only when logged in (anything else)
      */
-    public static function showBar($show) {
-        if( ! is_bool($show))
-            $show = true;
-
-        show_admin_bar($show);
+    public static function showBar($show=null) {
+        if(is_bool($show))
+            show_admin_bar($show);
     }
 
 
@@ -26,13 +24,17 @@ class Admin {
             // If role(s) are set, see if it matches the given role(s), then redirect to the corresponding URL
             if(isset($user->roles)  &&  is_array($user->roles)) {
                 foreach($user->roles as $role) {
-                    if(is_string($roleUrls)  &&  $role == $roleUrls)
-                        return esc_url($url);
+                    // Get the URL from the given role:url array
+                    // When both arguments are a string, the second one is the $url variable already
+                    if(is_array($roleUrls)  &&  array_key_exists($role, $roleUrls))
+                        $url = $roleUrls[$role];
 
-                    else if(is_array($roleUrls)) {
-                        if(array_key_exists($role, $roleUrls))
-                            return esc_url($roleUrls[$role]);
-                    }
+                    // Literal URLs
+                    if(preg_match('~^https?://~', $url))
+                        return esc_url($url);
+                    // Other paths are relative to the home URL
+                    else
+                        return esc_url(home_url() . '/' . $url);
                 }
             }
 
