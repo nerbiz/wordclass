@@ -1,5 +1,12 @@
 # Release notes
 
+## 0.6.3
+
+* Plugins::include() now supports shorter syntax, see the docs for more info.
+* Updated the Plugins documentations.
+
+---
+
 ## 0.6.2
 
 * Simplified Plugins, and using static methods now.
