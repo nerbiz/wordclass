@@ -27,7 +27,7 @@ echo STYLESHEET_URI;
 ```
 
 ### ::defaultTextDomain()
-Set or get the default text domain.
+Set or get the default text domain, this is null by default.
 
 #### Example
 ```php
