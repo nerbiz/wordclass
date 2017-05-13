@@ -41,12 +41,20 @@ class Plugins {
 
 
     /**
-     * Set the required/recommended plugins for the theme, in slug:options pairs
-     * @param   Array       $plugins  An array of slug:options pairs
-     *                                  Can be a string (slug), but then the 2nd parameter is required
-     * @param   Array|null  $options  If $plugins is a string (slug), these are the options for it
+     * Set the required/recommended plugins for the theme, in name:options pairs
+     * @param   Array       $plugins  An array of name:options pairs
+     *                                  Can be a string (name), but then the 2nd parameter is required
+     * @param   Array|null  $options  If $plugins is a string, these are the options for it
+     * Valid calls:
+     *   include('Plugin One')
+     *   include(['Plugin One', 'Plugin Two'])
+     *   include('Plugin One' => []), with an array of options, which can be empty
+     *   include([
+     *       'Plugin One' => [],
+     *       'Plugin Two' => []
+     *   )
      */
-    public static function include($plugins, $options=null) {
+    public static function include($plugins, $options=[]) {
         if(is_string($plugins))
             $plugins = [$plugins => $options];
 
@@ -57,8 +65,19 @@ class Plugins {
         add_action('tgmpa_register', function() use($plugins) {
             $includePlugins = [];
 
-            foreach($plugins as $slug => $options) {
-                $options['slug'] = $slug;
+            foreach($plugins as $name => $options) {
+                // In case the 'options' are a string (not an options array)
+                // An array of names has been given, without options
+                if(is_string($options)) {
+                    $name = $options;
+                    $options = [];
+                }
+
+                $options['name'] = $name;
+                // Derive the slug from the name, if not given
+                if( ! isset($options['slug']))
+                    $options['slug'] = Utilities::createSlug($name);
+
                 $includePlugins[] = $options;
             }
 
