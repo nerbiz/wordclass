@@ -42,7 +42,7 @@ class Assets {
             $defaultOptions = ${'default' . ucfirst($type) . 'Options'};
 
             add_action($actionHook, function() use($type, $assets, $path, $defaultOptions) {
-                $urlRegEx = '~^(https?:)?//';
+                $urlRegEx = '~^(https?:)?//~';
 
                 // Shorthand, when 1 asset is given ($assets and $path are strings)
                 if(is_string($assets)  &&  is_string($path)) {
