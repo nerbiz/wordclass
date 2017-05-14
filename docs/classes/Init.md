@@ -25,3 +25,15 @@ echo STYLESHEET_PATH;
 echo TEMPLATE_URI;
 echo STYLESHEET_URI;
 ```
+
+### ::defaultTextDomain()
+Set or get the default text domain, this is null by default.
+
+#### Example
+```php
+// Setting
+Wordclass\Init::defaultTextDomain('your-text-domain');
+
+// Getting
+Wordclass\Init::defaultTextDomain();
+```

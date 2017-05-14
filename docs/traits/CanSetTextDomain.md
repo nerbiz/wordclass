@@ -1,13 +1,15 @@
 # Wordclass\Traits\CanSetTextDomain
-Enables a class to set a text domain for translation in Wordpress.
+Set or get the text domain in a class, for translation in Wordpress.  
+The order of precedence is:  
+1. Value set with ClassUsingTrait::textDomain()
+2. Value set with Init::defaultTextDomain()
+3. Default value ('text-domain')
 
 #### Example
 ```php
-// Static
-ClassUsingTrait::setTextDomain('domain');
-// On instance
-ObjectUsingTrait->textDomain('domain');
+// Setting
+ClassUsingTrait::textDomain('your-text-domain');
 
-// Inside class
-$description = __('Original untranslated string', static::$_textDomain);
+// Getting
+$description = __('Original untranslated string', static::textDomain());
 ```

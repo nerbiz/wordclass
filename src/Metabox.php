@@ -31,7 +31,7 @@ class Metabox {
             // ID of the metabox
             'id'               => $id,
             // Title of the metabox
-            'title'            => __($title, static::$_textDomain),
+            'title'            => __($title, static::textDomain()),
             // Post type(s)
             'object_types'     => $posttypes,
 
@@ -78,7 +78,7 @@ class Metabox {
      */
     public function addField($options) {
         // Translate before adding
-        $options['name'] = __($options['name'], static::$_textDomain);
+        $options['name'] = __($options['name'], static::textDomain());
         // @todo: This should be appended, when encountering new field options
         foreach([
             'desc',
@@ -88,11 +88,11 @@ class Metabox {
             $levels = count($keys);
 
             if($levels == 1)
-                $options[$keys[0]] = __($options[$keys[0]], static::$_textDomain);
+                $options[$keys[0]] = __($options[$keys[0]], static::textDomain());
             else if($levels == 2)
-                $options[$keys[0]][$keys[1]] = __($options[$keys[0]][$keys[1]], static::$_textDomain);
+                $options[$keys[0]][$keys[1]] = __($options[$keys[0]][$keys[1]], static::textDomain());
             else if($levels == 3)
-                $options[$keys[0]][$keys[1]][$keys[2]] = __($options[$keys[0]][$keys[1]][$keys[2]], static::$_textDomain);
+                $options[$keys[0]][$keys[1]][$keys[2]] = __($options[$keys[0]][$keys[1]][$keys[2]], static::textDomain());
         }
 
         $this->_fields[] = $options;
