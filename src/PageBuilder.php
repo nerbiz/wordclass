@@ -56,7 +56,7 @@ class PageBuilder {
      */
     public static function addRowStyleOption($args) {
         // Default values
-        $args['slug'] = @$args['slug']  ?: Utilities::createSlug($args['label']);
+        $args['slug'] = @$args['slug']  ?:  Utilities::createSlug($args['label']);
         $args['priority'] = @$args['priority']  ?:  11;
 
         // Prevent translating 'null', if no description is given
