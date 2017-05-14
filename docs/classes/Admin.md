@@ -15,6 +15,7 @@ Wordclass\Admin::showBar();
 
 ### ::roleRedirects()
 Redirect to a custom URL after login, specified per role.  
+It is possible to use a wildcard character ('*'), to redirect all roles, though explicitly named roles take precedence.  
 Unspecified roles will just redirect to the default Wordpress admin.
 
 #### Example
@@ -22,9 +23,12 @@ Unspecified roles will just redirect to the default Wordpress admin.
 // As an array
 Wordclass\Admin::roleRedirects([
     'administrator' => 'some/custom/url',
-    'editor'        => 'another/url'
+    'editor'        => 'another/url',
+    // Wildcard also acts as a fallback, when the above roles don't match
+    '*'             => 'url/for/all/roles'
 ]);
 
 // As strings, in case of 1 role/URL
 Wordclass\Admin::roleRedirects('administrator', 'some/custom/url');
+Wordclass\Admin::roleRedirects('*', 'url/for/all/roles');
 ```

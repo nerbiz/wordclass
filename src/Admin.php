@@ -4,7 +4,7 @@ namespace Wordclass;
 
 class Admin {
     /**
-     * Hide the admin bar, when viewing the website
+     * Show the admin bar, when viewing the website
      * @param Mixed  $show  Always (true), never (false), or only when logged in (anything else)
      */
     public static function showBar($show=null) {
@@ -21,14 +21,35 @@ class Admin {
      */
     public static function roleRedirects($roleUrls, $url=null) {
         add_filter('login_redirect', function($redirecturl, $request, $user) use($roleUrls, $url) {
-            // If role(s) are set, see if it matches the given role(s), then redirect to the corresponding URL
-            if(isset($user->roles)  &&  is_array($user->roles)) {
-                foreach($user->roles as $role) {
-                    // Get the URL from the given role:url array
-                    // When both arguments are a string, the second one is the $url variable already
-                    if(is_array($roleUrls)  &&  array_key_exists($role, $roleUrls))
-                        $url = $roleUrls[$role];
+            $newUrl = null;
 
+            // Only check if the user has roles
+            if(isset($user->roles)  &&  is_array($user->roles)) {
+                // Loop over all the given role:url pairs, and use only the first occurrence
+                // Because a user can have multiple (matching) roles
+                if(is_array($roleUrls)) {
+                    foreach($roleUrls as $role => $url) {
+                        if(in_array($role, $user->roles)) {
+                            $newUrl = $url;
+                            break;
+                        }
+                    }
+                }
+
+                // If 1 role:url pair is given, see if it matches
+                else if(is_string($roleUrls)  &&  in_array($roleUrls, $user->roles))
+                    $newUrl = $url;
+
+                // If the above didn't have any matches, look for a wildcard
+                if($newUrl == null) {
+                    if(is_array($roleUrls)  &&  array_key_exists('*', $roleUrls))
+                        $newUrl = $roleUrls['*'];
+                    else if(is_string($roleUrls)  &&  $roleUrls == '*')
+                        $newUrl = $url;
+                }
+
+                // Return a new URL, if it's set
+                if($newUrl != null) {
                     // Literal URLs
                     if(preg_match('~^https?://~', $url))
                         return esc_url($url);
