@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.6.8
+
+* Default widgets sidebar description is now empty, and only translatable if given (in Widgets::addSidebar()).
+
 ## 0.6.7
 
 * Admin::roleRedirects() now accepts a wildcard character ('*').
