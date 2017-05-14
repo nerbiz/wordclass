@@ -1,5 +1,10 @@
 # Release notes
 
+## 0.6.9
+
+* Added a missing 'static' keyword to some methods.
+* Fixed: the 'include' method name caused an 'unexpected include' error.
+
 ## 0.6.8
 
 * Default widgets sidebar description is now empty, and only translatable if given (in Widgets::addSidebar()).
