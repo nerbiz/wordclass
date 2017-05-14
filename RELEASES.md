@@ -1,5 +1,10 @@
 # Release notes
 
+## 0.6.7
+
+* Admin::roleRedirects() now accepts a wildcard character ('*').
+* Fixed: Admin::roleRedirects() didn't properly check the role, when role/url strings were given (not an array).
+
 ## 0.6.6
 
 * Removed CanSetTextDomain::setTextDomain(), replaced by ::textDomain().
