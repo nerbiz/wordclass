@@ -50,7 +50,7 @@ class Init {
      * @param  String  $domain
      * @return String
      */
-    public function defaultTextDomain($domain=null) {
+    public static function defaultTextDomain($domain=null) {
         if($domain)
             static::$_defaultTextDomain = $domain;
         else

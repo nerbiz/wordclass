@@ -54,7 +54,7 @@ class Plugins {
      *       'Plugin Two' => []
      *   )
      */
-    public static function include($plugins, $options=[]) {
+    public static function attach($plugins, $options=[]) {
         if(is_string($plugins))
             $plugins = [$plugins => $options];
 
