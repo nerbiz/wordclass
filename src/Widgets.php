@@ -24,7 +24,7 @@ class Widgets {
      * @param Array   $widget      'before' and 'after' setting
      * @param Array   $title       'before' and 'after' setting
      */
-    public function addSidebar($id, $name, $description='', $widget=[], $title=[]) {
+    public static function addSidebar($id, $name, $description='', $widget=[], $title=[]) {
         add_action('widgets_init', function() use($id, $name, $description, $widget, $title) {
             // Only translate the description, if it's given
             if($description != '')
@@ -51,7 +51,7 @@ class Widgets {
      *                            name, description, widget (array), title (array)
      *                            Instead of setting options, a name (string) can be given, using default options
      */
-    public function addSidebars($sidebars) {
+    public static function addSidebars($sidebars) {
         foreach($sidebars as $id => $options) {
             if(is_string($options))
                 $options = ['name' => $options];

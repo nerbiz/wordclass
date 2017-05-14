@@ -41,7 +41,7 @@ class Shortcodes {
      * @param String    $name      Shortcode tag name
      * @param Callable  $callback  Rendering function
      */
-    public function add($name, $callback) {
+    public static function add($name, $callback) {
         add_shortcode($name, $callback);
     }
 }
