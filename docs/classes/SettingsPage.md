@@ -15,11 +15,10 @@ If you'd like to keep the default icon, but specify a custom menu order, then se
 ### ::pageSlug()
 This is optional, because by default the page slug is the page title converted to a slug. Use this method to overwrite this default value.
 
-### ::inputNamePrefix()
-Set the prefix for all input fields ('name' attribute) on the settings page.
-
-### ::inputIdPrefix()
-Set the prefix for all input field IDs on the settings page. This is also the prefix for the section IDs.
+### ::prefix()
+Set the prefix for all input fields (name and ID), the settings group name and section IDs.  
+Names will be appended with an underscore, and IDs with a hyphen.  
+This is optional, the default value is 'xx'.
 
 ### ::addSection()
 Add a section to the settings page, with fields in it.  
@@ -33,19 +32,16 @@ The fourth argument contains an array with fields definitions, in name:options p
 Wordclass\SettingsPage::setTextDomain('your-text-domain');
 
 // A minimal example
-Wordclass\SettingsPage::create('Custom settings', 'xx-settings')
-    ->inputPrefix('xx_')
-    ->inputIdPrefix('xx-')
+Wordclass\SettingsPage::create('Custom settings', 'your-settings-group')
     ->addSection('contact', 'Contact Info', '', [
         'name'         => ['type' => 'text', 'title' => 'Name'],
         'phone_number' => ['type' => 'text', 'title' => 'Phone number']
     ]);
 
 // An elaborate example
-Wordclass\SettingsPage::create('Custom settings', 'xx-settings', 'dashicons-admin-tools', 2)
+Wordclass\SettingsPage::create('Custom settings', 'your-settings-group', 'dashicons-admin-tools', 2)
     ->pageSlug('your-page-slug')
-    ->inputPrefix('xx_')
-    ->inputIdPrefix('xx-')
+    ->prefix('abc')
     ->addSection('contact', 'Contact Info', '', [
         'name'         => ['type' => 'text', 'title' => 'Name'],
         'phone_number' => ['type' => 'text', 'title' => 'Phone number']

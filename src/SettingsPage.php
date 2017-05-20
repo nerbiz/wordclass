@@ -16,8 +16,8 @@ class SettingsPage {
     private $_pageTitle;
     private $_pageSlug;
     private $_settingsGroup;
-    private $_inputNamePrefix;
-    private $_inputIdPrefix;
+    private $_namePrefix = 'xx_';
+    private $_idPrefix = 'xx-';
 
 
 
@@ -50,7 +50,7 @@ class SettingsPage {
 
                                 <form action="options.php" method="POST">';
                                     // Output nonce, action, and option_page fields for a settings page
-                                    settings_fields($this->_settingsGroup);
+                                    settings_fields($this->_idPrefix . $this->_settingsGroup);
                                     // Print out all settings sections added to the settings page
                                     do_settings_sections($this->_pageSlug);
                                     submit_button('Opslaan');
@@ -83,26 +83,13 @@ class SettingsPage {
 
 
     /**
-     * Set the prefix of all the input fields on the settings page
+     * Set the prefix for all the input fields (name and ID) and the section IDs
      * @param String  $prefix
      * @return $this
      */
-    public function inputNamePrefix($prefix) {
-        $this->_inputNamePrefix = $prefix;
-
-        return $this;
-    }
-
-
-
-    /**
-     * Set the prefix of all the input field IDs on the settings page
-     * Also the prefix for the section IDs
-     * @param String  $prefix
-     * @return $this
-     */
-    public function inputIdPrefix($prefix) {
-        $this->_inputIdPrefix = $prefix;
+    public function prefix($prefix) {
+        $this->_namePrefix = $prefix . '_';
+        $this->_idPrefix = $prefix . '-';
 
         return $this;
     }
@@ -145,16 +132,16 @@ class SettingsPage {
      */
     public function addSection($id, $title, $subtitle='', $fields=[]) {
         add_action('admin_init', function() use($id, $title, $subtitle, $fields) {
-            add_settings_section($this->_inputIdPrefix.$id, __($title, static::textDomain()), function() use($subtitle) {
+            add_settings_section($this->_idPrefix.$id, __($title, static::textDomain()), function() use($subtitle) {
                 echo __($subtitle, static::textDomain());
             }, $this->_pageSlug);
 
             foreach($fields as $name => $options) {
-                register_setting($this->_settingsGroup, $this->_inputNamePrefix.$name);
+                register_setting($this->_idPrefix.$this->_settingsGroup, $this->_namePrefix.$name);
 
                 add_settings_field(
                     // ID to identify the field
-                    $this->_inputIdPrefix.$name,
+                    $this->_idPrefix.$name,
                     // Title of the setting
                     __($options['title'], static::textDomain()),
                     // Function that echoes the input field
@@ -162,11 +149,11 @@ class SettingsPage {
                     // Slug of the page to show this setting on
                     $this->_pageSlug,
                     // Slug of the section
-                    $this->_inputIdPrefix.$id,
+                    $this->_idPrefix . $id,
                     // Arguments for the above function
                     [
                         'type' => $options['type'],
-                        'name' => $this->_inputNamePrefix.$name
+                        'name' => $this->_namePrefix.$name
                     ]
                 );
             }
