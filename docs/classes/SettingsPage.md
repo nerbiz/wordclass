@@ -10,6 +10,8 @@ The third argument is the menu item icon (optional, default 'dashicons-admin-set
 All icons can be found on the [Wordpress dashicons page](https://developer.wordpress.org/resource/dashicons/). Alternatively, this supports an image URL, or SVG as base64 (a string starting with 'data:image/svg+xml;base64,'). If this is set to 'none', there will be no icon, but it's settable with CSS.  
 The fourth argument is the menu position (optional, default null).
 
+If you'd like to keep the default icon, but specify a custom menu order, then set null as the icon argument.
+
 ### ::pageSlug()
 This is optional, because by default the page slug is the page title converted to a slug. Use this method to overwrite this default value.
 
