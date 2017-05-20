@@ -188,7 +188,10 @@ class SettingsPage {
      * @param  Integer  $menuposition   Where the item appears in the menu
      * @return Object  An instance of this class
      */
-    public static function create($title, $settingsgroup='settings', $icon=null, $menuposition=null) {
+    public static function create($title, $settingsgroup=null, $icon=null, $menuposition=null) {
+        if($settingsgroup == null)
+            $settingsgroup = 'settings';
+
         if($icon == null)
             $icon = 'dashicons-admin-settings';
 
