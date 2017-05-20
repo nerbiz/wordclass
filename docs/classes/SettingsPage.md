@@ -51,4 +51,9 @@ Wordclass\SettingsPage::create('Custom settings', 'your-settings-group', 'dashic
         'facebook' => ['type' => 'text', 'title' => 'Facebook'],
         'linkedin' => ['type' => 'text', 'title' => 'LinkedIn']
     ]);
+
+// Get the value of an option
+echo get_option('xx_phone_number');
+echo get_option('abc_phone_number');
+echo get_option('abc_twitter');
 ```
