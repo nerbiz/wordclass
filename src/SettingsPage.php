@@ -21,7 +21,10 @@ class SettingsPage {
 
 
 
-    public function __construct($title, $optiongroup, $icon, $menuposition) {
+    /**
+     * @see create()
+     */
+    public function __construct($title, $settingsgroup, $icon, $menuposition) {
         // Translate the title
         $this->_pageTitle = __($title, static::textDomain());
 
@@ -29,7 +32,7 @@ class SettingsPage {
         $this->_pageSlug = Utilities::createSlug($title);
 
         // The group in which all settings go
-        $this->_settingsGroup = $optiongroup;
+        $this->_settingsGroup = $settingsgroup;
 
         add_action('admin_menu', function() use($icon, $menuposition) {
             if(current_user_can('manage_options')) {
@@ -179,14 +182,16 @@ class SettingsPage {
 
     /**
      * Initialize the creation chain
-     * @param  String $title  Title of the settings page
-     * @param  String $slug   (Optional) explicit page slug, will otherwise be derived from title
+     * @param  String   $title          Title of the settings page
+     * @param  String   $settingsgroup  The name of the group in which all settings go
+     * @param  String   $icon           The name/URL/base64 of the icon
+     * @param  Integer  $menuposition   Where the item appears in the menu
      * @return Object  An instance of this class
      */
-    public static function create($title, $optiongroup, $icon=null, $menuposition=null) {
+    public static function create($title, $settingsgroup='settings', $icon=null, $menuposition=null) {
         if($icon == null)
             $icon = 'dashicons-admin-settings';
 
-        return new static($title, $optiongroup, $icon, $menuposition);
+        return new static($title, $settingsgroup, $icon, $menuposition);
     }
 }    
