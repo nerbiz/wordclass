@@ -6,17 +6,18 @@ Create a custom settings page as a submenu under Admin > Settings, using a metho
 Start the method chain, providing the title of the page as the first argument, which will be the browser window title, the menu title, and the title at the top of the settings page.  
 The second argument is the settings page slug, which will be converted from the title, if it's not provided.
 
-### ::groupName()
-Set the group name for the settings.
-
 ### ::add()
-This adds the settings page, which contains nothing yet at this point.
+This adds the settings page, which contains nothing yet at this point.  
+The first argument is the name of the settings group, in which the settings will go.  
+The second argument is the menu item icon (optional, default 'dashicons-admin-settings').  
+All icons can be found on the [Wordpress dashicons page](https://developer.wordpress.org/resource/dashicons/). Alternatively, this supports an image URL, or SVG as base64 (a string starting with 'data:image/svg+xml;base64,'). If this is set to 'none', there will be no icon, but it's settable with CSS.
+The third argument is the menu position (optional, default null).
 
-### ::inputPrefix()
+### ::inputNamePrefix()
 Set the prefix for all input fields ('name' attribute) on the settings page.
 
 ### ::inputIdPrefix()
-Set the prefix for all input fields (identifiers) on the settings page.
+Set the prefix for all input field IDs on the settings page. This is also the prefix for the section IDs.
 
 ### ::addSection()
 Add a section to the settings page, with fields in it.  
@@ -30,8 +31,7 @@ The fourth argument contains an array with fields definitions, in name:options p
 Wordclass\SettingsPage::setTextDomain('your-text-domain');
 
 Wordclass\SettingsPage::create('Custom settings')
-    ->optionGroup('xx-settings')
-    ->add()
+    ->add('xx-settings', 'dashicons-admin-tools', 2)
     ->inputPrefix('xx_')
     ->inputIdPrefix('xx-')
     ->addSection('xx-contact', 'Contact Info', '', [

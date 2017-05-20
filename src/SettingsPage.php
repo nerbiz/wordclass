@@ -15,8 +15,8 @@ class SettingsPage {
      */
     private $_pageTitle;
     private $_pageSlug;
-    private $_optionGroup;
-    private $_inputPrefix;
+    private $_settingsGroup;
+    private $_inputNamePrefix;
     private $_inputIdPrefix;
 
 
@@ -29,25 +29,12 @@ class SettingsPage {
 
 
     /**
-     * Set the option group of the settings page
-     * @param String  $name
-     * @return $this
-     */
-    public function optionGroup($name) {
-        $this->_optionGroup = $name;
-
-        return $this;
-    }
-
-
-
-    /**
      * Set the prefix of all the input fields on the settings page
      * @param String  $prefix
      * @return $this
      */
-    public function inputPrefix($prefix) {
-        $this->_inputPrefix = $prefix;
+    public function inputNamePrefix($prefix) {
+        $this->_inputNamePrefix = $prefix;
 
         return $this;
     }
@@ -56,6 +43,7 @@ class SettingsPage {
 
     /**
      * Set the prefix of all the input field IDs on the settings page
+     * Also the prefix for the section IDs
      * @param String  $prefix
      * @return $this
      */
@@ -71,10 +59,15 @@ class SettingsPage {
      * Add a settings page
      * @return $this
      */
-    public function add() {
-        add_action('admin_menu', function() {
+    public function add($optiongroup, $icon=null, $menuposition=null) {
+        $this->_settingsGroup = $optiongroup;
+
+        if($icon == null)
+            $icon = 'dashicons-admin-settings';
+
+        add_action('admin_menu', function() use($icon, $menuposition) {
             if(current_user_can('manage_options')) {
-                add_options_page(
+                add_menu_page(
                     // Page title
                     __($this->_pageTitle, static::textDomain()),
                     // Menu title
@@ -91,14 +84,16 @@ class SettingsPage {
 
                                 <form action="options.php" method="POST">';
                                     // Output nonce, action, and option_page fields for a settings page
-                                    settings_fields($this->_optionGroup);
+                                    settings_fields($this->_settingsGroup);
                                     // Print out all settings sections added to the settings page
                                     do_settings_sections($this->_pageSlug);
                                     submit_button('Opslaan');
                         echo '
                                 </form>
                             </div>';
-                    }
+                    },
+                    $icon,
+                    $menuposition
                 );
             }
         }, 100);
@@ -144,24 +139,28 @@ class SettingsPage {
      */
     public function addSection($id, $title, $subtitle='', $fields=[]) {
         add_action('admin_init', function() use($id, $title, $subtitle, $fields) {
-            add_settings_section($id, __($title, static::textDomain()), function() use($subtitle) {
+            add_settings_section($this->_inputIdPrefix.$id, __($title, static::textDomain()), function() use($subtitle) {
                 echo __($subtitle, static::textDomain());
             }, $this->_pageSlug);
 
             foreach($fields as $name => $options) {
-                register_setting($this->_optionGroup, $this->_inputPrefix.$name);
+                register_setting($this->_settingsGroup, $this->_inputNamePrefix.$name);
+
                 add_settings_field(
                     // ID to identify the field
                     $this->_inputIdPrefix.$name,
+                    // Title of the setting
                     __($options['title'], static::textDomain()),
                     // Function that echoes the input field
                     [$this, 'decideInput'],
+                    // Slug of the page to show this setting on
                     $this->_pageSlug,
-                    $id,
+                    // Slug of the section
+                    $this->_inputIdPrefix.$id,
                     // Arguments for the above function
                     [
                         'type' => $options['type'],
-                        'name' => $this->_inputPrefix.$name
+                        'name' => $this->_inputNamePrefix.$name
                     ]
                 );
             }
