@@ -97,11 +97,27 @@ class SettingsPage {
 
 
     /**
-     * Create an input[text] element, with current (escaped) value filled in
-     * @param  Array  $arguments  Options for the element: name
+     * Create input elements of various types, with current (escaped) value filled in
+     * @param  Array  $arguments  Options for the element
      */
     private function inputText($arguments) {
-        echo '<input type="text" class="regular-text" name="' . $arguments['name'] . '" value="' . esc_attr(get_option($arguments['name'])) . '">';
+        return '<input type="text" class="regular-text" name="' . $arguments['name'] . '" value="' . esc_attr(get_option($arguments['name'])) . '">';
+    }
+
+    private function inputCheckbox($arguments) {
+        return '<input type="checkbox" name="' . $arguments['name'] . '" value="1" ' . checked(1, get_option($arguments['name']), false) .'>';
+    }
+
+    private function inputWysiwyg($arguments) {
+        // Buffer the output, because wp_editor() echoes
+        ob_start();
+        wp_editor(wp_kses_post(get_option($arguments['name'])), $arguments['name'], [
+            'wpautop'       => true,
+            'media_buttons' => true,
+            'textarea_name' => $arguments['name'],
+            'editor_height' => 200
+        ]);
+        return ob_get_clean();
     }
 
 
@@ -111,11 +127,8 @@ class SettingsPage {
      * @param  Array  $arguments  'type' must be given in this array
      */
     public function decideInput($arguments) {
-        $type = $arguments['type'];
-        unset($arguments['type']);
-
-        if($type == 'text')
-            $this->inputText($arguments);
+        $type = ucfirst($arguments['type']);
+        echo $this->{'input' . $type}($arguments);
     }
 
 

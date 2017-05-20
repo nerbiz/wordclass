@@ -25,7 +25,7 @@ Add a section to the settings page, with fields in it.
 The first argument is the identifier of the section.  
 The second argument is the title of the section.  
 The third argument is the subtitle of the section.  
-The fourth argument contains an array with fields definitions, in name:options pairs (where name is the 'name' attribute). Currently, only input[text] elements are supported, and the options are 'type' ('text' only for now) and 'title' (the label of the input element).
+The fourth argument contains an array with fields definitions, in name:options pairs (where name is the 'name' attribute). The options are 'type' and 'title' (the label of the input element). The supported types are: 'text', 'checkbox' and 'wysiwyg' (more types will be added).
 
 #### Example
 ```php
@@ -50,6 +50,11 @@ Wordclass\SettingsPage::create('Custom settings', 'your-settings-group', 'dashic
         'twitter'  => ['type' => 'text', 'title' => 'Twitter'],
         'facebook' => ['type' => 'text', 'title' => 'Facebook'],
         'linkedin' => ['type' => 'text', 'title' => 'LinkedIn']
+    ])
+    ->addSection('various', 'Various input types', '', [
+        'subtitle' => ['type' => 'text', 'title' => 'Page subtitle'],
+        'captcha'  => ['type' => 'checkbox', 'title' => 'Use captcha?'],
+        'footer'   => ['type' => 'wysiwyg', 'title' => 'Footer content']
     ]);
 
 // Get the value of an option
