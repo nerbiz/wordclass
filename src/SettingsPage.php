@@ -21,49 +21,15 @@ class SettingsPage {
 
 
 
-    public function __construct($title, $slug) {
+    public function __construct($title, $optiongroup, $icon, $menuposition) {
+        // Translate the title
         $this->_pageTitle = __($title, static::textDomain());
-        $this->_pageSlug = $slug;
-    }
 
+        // The page slug is the title converted to slug, by default
+        $this->_pageSlug = Utilities::createSlug($title);
 
-
-    /**
-     * Set the prefix of all the input fields on the settings page
-     * @param String  $prefix
-     * @return $this
-     */
-    public function inputNamePrefix($prefix) {
-        $this->_inputNamePrefix = $prefix;
-
-        return $this;
-    }
-
-
-
-    /**
-     * Set the prefix of all the input field IDs on the settings page
-     * Also the prefix for the section IDs
-     * @param String  $prefix
-     * @return $this
-     */
-    public function inputIdPrefix($prefix) {
-        $this->_inputIdPrefix = $prefix;
-
-        return $this;
-    }
-
-
-
-    /**
-     * Add a settings page
-     * @return $this
-     */
-    public function add($optiongroup, $icon=null, $menuposition=null) {
+        // The group in which all settings go
         $this->_settingsGroup = $optiongroup;
-
-        if($icon == null)
-            $icon = 'dashicons-admin-settings';
 
         add_action('admin_menu', function() use($icon, $menuposition) {
             if(current_user_can('manage_options')) {
@@ -97,6 +63,46 @@ class SettingsPage {
                 );
             }
         }, 100);
+
+        return $this;
+    }
+
+
+
+    /**
+     * Overwrite the page slug with a custom one
+     * @param  String  $slug
+     * @return $this
+     */
+    public function pageSlug($slug) {
+        $this->_pageSlug = $slug;
+
+        return $this;
+    }
+
+
+
+    /**
+     * Set the prefix of all the input fields on the settings page
+     * @param String  $prefix
+     * @return $this
+     */
+    public function inputNamePrefix($prefix) {
+        $this->_inputNamePrefix = $prefix;
+
+        return $this;
+    }
+
+
+
+    /**
+     * Set the prefix of all the input field IDs on the settings page
+     * Also the prefix for the section IDs
+     * @param String  $prefix
+     * @return $this
+     */
+    public function inputIdPrefix($prefix) {
+        $this->_inputIdPrefix = $prefix;
 
         return $this;
     }
@@ -177,10 +183,10 @@ class SettingsPage {
      * @param  String $slug   (Optional) explicit page slug, will otherwise be derived from title
      * @return Object  An instance of this class
      */
-    public static function create($title, $slug=null) {
-        if($slug == null)
-            $slug = Utilities::createSlug($title);
+    public static function create($title, $optiongroup, $icon=null, $menuposition=null) {
+        if($icon == null)
+            $icon = 'dashicons-admin-settings';
 
-        return new static($title, $slug);
+        return new static($title, $optiongroup, $icon, $menuposition);
     }
 }    
