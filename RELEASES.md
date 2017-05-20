@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.6.10.1
+
+* The settings group name is now optional in SettingsPage.
+
 ## 0.6.10
 
 * Many improvements to SettingsPage
