@@ -1,5 +1,15 @@
 # Release notes
 
+## 0.6.10
+
+* Many improvements to SettingsPage
+  * A separate page and menu item are now created, instead of a submenu of Settings.
+  * ::add() has now been merged with the constructor.
+  * Page slug is now always implicit (title converted to slug), but can be overwritten with ::pageSlug().
+  * ::inputPrefix() and ::inputIdPrefix() are now combined as ::prefix(), which is now optional.
+  * ::addSection() now also supports 'checkbox' and 'wysiwyg' input types.
+  * See the updated docs for more information on the above.
+
 ## 0.6.9
 
 * Added a missing 'static' keyword to some methods.
