@@ -31,6 +31,11 @@ The only reason this wrapper exists, is to make the code consistent.
 #### Example
 ```php
 Wordclass\Shortcodes::add('new_shortcode', function($params, $content=null) {
+    $params = shortcode_atts([
+        'param1' => 'default-value-1',
+        'param2' => 'default-value-2'
+    ], $params);
+
     // ...
 });
 
