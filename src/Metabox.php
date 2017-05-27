@@ -78,7 +78,8 @@ class Metabox {
      */
     public function addField($options) {
         // Translate before adding
-        $options['name'] = __($options['name'], static::textDomain());
+        if(isset($options['name']))
+            $options['name'] = __($options['name'], static::textDomain());
         // @todo: This should be appended, when encountering new field options
         foreach([
             'desc',
@@ -87,11 +88,11 @@ class Metabox {
             $keys = explode('|', $translatable);
             $levels = count($keys);
 
-            if($levels == 1)
+            if($levels == 1  &&  isset($options[$keys[0]]))
                 $options[$keys[0]] = __($options[$keys[0]], static::textDomain());
-            else if($levels == 2)
+            else if($levels == 2  &&  isset($options[$keys[0]][$keys[1]]))
                 $options[$keys[0]][$keys[1]] = __($options[$keys[0]][$keys[1]], static::textDomain());
-            else if($levels == 3)
+            else if($levels == 3  &&  isset($options[$keys[0]][$keys[1]][$keys[2]]))
                 $options[$keys[0]][$keys[1]][$keys[2]] = __($options[$keys[0]][$keys[1]][$keys[2]], static::textDomain());
         }
 
