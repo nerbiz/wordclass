@@ -1,5 +1,11 @@
 # Release notes
 
+## 0.6.11
+
+* Added credits to the readme.
+* Expanded the Shortcodes example.
+* Fixed: non-existing array indexes error in Metabox.
+
 ## 0.6.10.1
 
 * The settings group name is now optional in SettingsPage.
