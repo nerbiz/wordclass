@@ -17,7 +17,14 @@ Wordclass\Class::method('u', 'wot', 'm8');
 You can find more detailed documentation in the 'docs' directory.
 
 ## Contributing
-I'm sure you'll have great ideas about expanding this project, though I'm not sure how pull requests work (yet). Anyway, I'm open for suggestions and pull requests.
+I'm sure you'll have great ideas about expanding this project, and I'm open for suggestions and pull requests.
+
+## Credits
+These are the packages/plugins this project uses:
+* [CMB2](https://github.com/cmb2/cmb2)
+* [Mobile_Detect](https://github.com/serbanghita/Mobile-Detect)
+* [TGM Plugin Activation](https://github.com/tgmpa/tgm-plugin-activation)
+* [SiteOrigin Page Builder](https://wordpress.org/plugins/siteorigin-panels/)
 
 ## License
 This project uses the [Unlicense](http://unlicense.org/).
