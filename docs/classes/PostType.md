@@ -9,7 +9,7 @@ Start the method chain, setting the ID of the CPT as its only argument.
 
 ### ::name()
 Set the name (and menu name) of the CPT.  
-This also sets the plural name (same as name), description (name prepended with 'Custom Post Type: ') and slug (converted from name). However, these values can be set individually with the methods below.
+This also sets the description (name prepended with 'Custom Post Type: ') and slug (converted from name). However, these values can be set individually with the methods below.
 
 ### ::slug()
 Set how the CPT should show in the URL.  
@@ -17,9 +17,6 @@ In the case of 'movies', it would be `example.com/movies/your-movie`.
 
 ### ::singular()
 Set the singular name of the CPT.
-
-### ::plural()
-Set the plural name of the CPT.
 
 ### ::description()
 Set the CPT description.
@@ -47,10 +44,9 @@ $cptMovies = Wordclass\PostType::create('cpt_movies')
 
 // A full example
 $cptNews = Wordclass\PostType::create('cpt_news')
-    ->name('News')
-    ->slug('news-items')
+    ->name('News Items')
+    ->slug('your-slug')
     ->singular('News Item')
-    ->plural('News Items')
     ->description('A collection of all news items')
     ->taxonomies('news_categories')
     ->labels(['add_new_item' => 'Add New News Item'])

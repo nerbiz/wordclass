@@ -8,7 +8,7 @@ Start the method chain, setting the ID of the taxonomy as its only argument.
 
 ### ::name()
 Set the name (and menu name) of the taxonomy.  
-This also sets the plural name (same as name), description (name prepended with 'Custom Taxonomy: ') and slug (converted from name). However, these values can be set individually with the methods below.
+This also sets the description (name prepended with 'Custom Taxonomy: ') and slug (converted from name). However, these values can be set individually with the methods below.
 
 ### ::slug()
 Set how the taxonomy should show in the URL.  
@@ -16,9 +16,6 @@ In the case of 'movies', it would be `example.com/movies/your-movie`.
 
 ### ::singular()
 Set the singular name of the taxonomy.
-
-### ::plural()
-Set the plural name of the taxonomy.
 
 ### ::description()
 Set the taxonomy description.
@@ -47,9 +44,8 @@ $taxGenres = Wordclass\Taxonomy::create('tax_genres')
 // A full example
 $taxNewsCategories = Wordclass\PostType::create('tax_news_categories')
     ->name('News Categories')
-    ->slug('news-categories')
+    ->slug('your-slug')
     ->singular('News Category')
-    ->plural('News Categories')
     ->description('A collection of all news categories')
     ->forPostTypes($cptNews)
     ->labels(['add_new_item' => 'Add New Category Item'])

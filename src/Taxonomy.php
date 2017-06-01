@@ -17,7 +17,6 @@ class Taxonomy {
     private $_name;
     private $_slug;
     private $_singularName;
-    private $_pluralName;
     private $_description;
 
     /**
@@ -42,7 +41,6 @@ class Taxonomy {
 
     /**
      * Set the name of the taxonomy
-     * The plural name is implicitly the same
      * The slug is derived from this name
      * The description is set using this value
      * Those can be changed set with other methods
@@ -52,7 +50,6 @@ class Taxonomy {
     public function name($name) {
         $this->_name = $name;
         $this->_slug = Utilities::createSlug($name);
-        $this->_pluralName = $name;
         $this->_description = 'Custom Taxonomy: ' . $name;
 
         return $this;
@@ -80,19 +77,6 @@ class Taxonomy {
      */
     public function singular($singular) {
         $this->_singularName = $singular;
-
-        return $this;
-    }
-
-
-
-    /**
-     * Set the plural name of the taxonomy
-     * @param  String  $plural
-     * @return $this
-     */
-    public function plural($plural) {
-        $this->_pluralName = $plural;
 
         return $this;
     }
