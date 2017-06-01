@@ -17,7 +17,6 @@ class PostType {
     private $_name;
     private $_slug;
     private $_singularName;
-    private $_pluralName;
     private $_description;
     private $_taxonomies = [];
 
@@ -43,7 +42,6 @@ class PostType {
 
     /**
      * Set the name of the CPT
-     * The plural name is implicitly the same
      * The slug is derived from this name
      * The description is set using this value
      * Those can be changed with other methods
@@ -53,7 +51,6 @@ class PostType {
     public function name($name) {
         $this->_name = $name;
         $this->_slug = Utilities::createSlug($name);
-        $this->_pluralName = $name;
         $this->_description = 'Custom Post Type: ' . $name;
 
         return $this;
@@ -81,19 +78,6 @@ class PostType {
      */
     public function singular($singular) {
         $this->_singularName = $singular;
-
-        return $this;
-    }
-
-
-
-    /**
-     * Set the plural name of the CPT
-     * @param  String  $plural
-     * @return $this
-     */
-    public function plural($plural) {
-        $this->_pluralName = $plural;
 
         return $this;
     }
@@ -134,10 +118,10 @@ class PostType {
     public function labels($labels=[]) {
         $this->_labels = array_replace_recursive([
             'name'                  => _x($this->_name, 'Post Type General Name', static::textDomain()),
-            'singular_name'         => _x($this->_singular, 'Post Type Singular Name', static::textDomain()),
+            'singular_name'         => _x($this->_singularName, 'Post Type Singular Name', static::textDomain()),
             'menu_name'             => __($this->_name, static::textDomain()),
-            'name_admin_bar'        => __($this->_pluralName, static::textDomain()),
-            'archives'              => __($this->_pluralName . ' Archive', static::textDomain()),
+            'name_admin_bar'        => __($this->_singularName, static::textDomain()),
+            'archives'              => __($this->_name . ' Archive', static::textDomain()),
             'parent_item_colon'     => __('Parent Item:', static::textDomain()),
             'all_items'             => __('All Items', static::textDomain()),
             'add_new_item'          => __('Add New Item', static::textDomain()),
