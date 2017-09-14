@@ -10,7 +10,7 @@ The third (post types) argument can be a string (1 post type) or an array (multi
 The fourth argument is optional and specifies metabox options ([see here](https://cmb2.io/api/source-class-CMB2.html#47-71)). The 'id', 'title' and 'object_types' options are set with the first 3 arguments, this array sets any other option(s).
 
 ### ::addField()
-Please refer to [the documentation](https://cmb2.io/docs/field-types) for all the available options per field type.  
+See the [documentation](https://cmb2.io/docs/field-types) for all the available options per field type.  
 I'll try my best to make everything translatable, I just don't know of all the option names yet.
 
 ### ::add()

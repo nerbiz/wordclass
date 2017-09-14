@@ -71,7 +71,7 @@ Adds a tab on the left side in the 'add widget' popup, in which widgets appear, 
 
 ### ::addWidgetsDirectory()
 The directory in which Page Builder will search for widgets.  
-See [the documentation](https://siteorigin.com/docs/widgets-bundle/getting-started/creating-a-widget/) on how to setup the directory structure.  
+See the [documentation](https://siteorigin.com/docs/widgets-bundle/getting-started/creating-a-widget/) on how to setup the directory structure.  
 Basically: create a subdirectory per widget in the specified directory, then use the below structure, which is assumed by Page Builder by default.  
 `widget-name/widget-name.php` the widget class file  
 `widget-name/tpl/default.php` the widget template
