@@ -34,3 +34,17 @@ Wordclass\Editor::removeButton('blockquote');
 Wordclass\Editor::removeButton('blockquote', 'strikethrough');
 Wordclass\Editor::replaceButton('blockquote', 'strikethrough');
 ```
+
+### ::forceAdvanced()
+Force the 2nd row of buttons to show, this is otherwise shown with the 'Toolbar Toggle' button.  
+This method takes 1 optional argument, whether to keep the 'Toolbar Toggle' button (true) or remove it (false, this is default).
+
+#### Example
+```php
+// Force the 2nd (advanced) buttons row, removing the toggle button
+Wordclass\Editor::forceAdvanced();
+Wordclass\Editor::forceAdvanced(false);
+
+// Force the 2nd (advanced) buttons row, but keeping the toggle button
+Wordclass\Editor::forceAdvanced(true);
+```

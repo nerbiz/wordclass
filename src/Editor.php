@@ -63,4 +63,22 @@ class Editor {
     public static function replaceButton($name, $with) {
         static::removeButton($name, $with);
     }
+
+
+
+    /**
+     * Force the advanced toolbar (2nd row of buttons) of the TinyMCE editor
+     * @param  Boolean  $keepButton  (Optional) keep the toggle button
+     */
+    public static function forceAdvanced($keepButton=false) {
+        // Remove the toggle button
+        if(is_bool($keepButton)  &&  ! $keepButton)
+            static::removeButton('wp_adv');
+
+        // Force the 2nd buttons row
+        add_filter('tiny_mce_before_init', function($args) {
+            $args['wordpress_adv_hidden'] = false;
+            return $args;
+        });
+    }
 }
