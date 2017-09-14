@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.7
+
+* Added the Editor class, for modifying the TinyMCE editor.
+
 ## 0.6.12
 
 * Removed the usage of 'plural' from PostType and Taxonomy, it just uses 'name' now.
