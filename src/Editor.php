@@ -88,6 +88,27 @@ class Editor {
 
 
     /**
+     * Move a button, optionally from one toolbar to another
+     * @param  Integer  $toolbar    The toolbar number, 1 = default, 2 = advanced
+     * @param  String   $name       The name of the button
+     * @param  String   $after      (Optional) the name of the button to place the new button after
+     *                              'first' places the button as the first one
+     *                              null places the button at the end
+     * @param  Integer  $toToolbar  (Optional) the toolbar to move the button to
+     *                              Uses the same toolbar, if this is null
+     */
+    public static function moveButton($toolbar, $name, $after=null, $toToolbar=null) {
+        // The same toolbar is used by default
+        if($toToolbar == null)
+            $toToolbar = $toolbar;
+
+        static::removeButton($toolbar, $name);
+        static::addButton($toToolbar, $name, $after);
+    }
+
+
+
+    /**
      * Force the advanced toolbar (2nd row of buttons) of the TinyMCE editor
      * @param  Boolean  $keepButton  (Optional) keep the toggle button
      */
