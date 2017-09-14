@@ -1,6 +1,10 @@
 # Release notes
 
-## 0.7
+## 0.7.1
+
+* Added Editor::addPlugin() to easily add a plugin to the TinyMCE editor.
+
+## 0.7.0
 
 * Added the Editor class, for modifying the TinyMCE editor.
 
