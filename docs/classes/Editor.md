@@ -80,3 +80,28 @@ Wordclass\Editor::moveButton(2, 'strikethrough', null, 1);
 // Move the 'strikethrough' button of the advanced toolbar to after the 'italic' button of the default toolbar
 Wordclass\Editor::moveButton(2, 'strikethrough', 'italic', 1);
 ```
+
+### ::addPlugin()
+Add a plugin to the TinyMCE editor.  
+The first argument is the name of the plugin. By default, a corresponding button is added to the end of the default toolbar.  
+The second argument is optional and specifies the toolbar to add the button to, 1 is the default toolbar, 2 is the advanced toolbar. Set this to false to not add a button.  
+The third argument is optional and specifies after which existing button it needs to be placed, or type 'first' to make the button the first one. If an 'after' button is specified, but doesn't exist, the button will be added to the end. The same happens when this argument is null (or not given). If the third argument is false, this fourth argument has no effect.
+
+#### Example
+```php
+// Add the 'table' plugin, without adding a button to the toolbar
+// (You could use addButton() after this)
+Wordclass\Editor::addPlugin('table', false);
+
+// Add the 'table' plugin and add it to the end of the default toolbar
+// These calls do the same thing
+Wordclass\Editor::addPlugin('table');
+Wordclass\Editor::addPlugin('table', 1);
+Wordclass\Editor::addPlugin('table', 1, null);
+
+// Add the 'table' plugin and add it as the first button of the advanced toolbar
+Wordclass\Editor::addPlugin('table', 2, 'first');
+
+// Add the 'table' plugin and add it after the 'indent' button of the advanced toolbar
+Wordclass\Editor::addPlugin('table', 2, 'indent');
+```
