@@ -4,13 +4,34 @@ namespace Wordclass;
 
 class Editor {
     /**
+     * The toolbar to do operations on
+     * @var Integer
+     */
+    private static $_forToolbar = 1;
+
+
+
+    /**
+     * Set the toolbar to work with
+     * @param  Integer  $number  The toolbar number, 1 = normal, 2 = advanced
+     */
+    public static function forToolbar($number) {
+        if($number == 1  ||  $number == 2)
+            static::$_forToolbar = $number;
+    }
+
+
+
+    /**
      * Add a button to the TinyMCE editor
      * @param String  $name  The name of the button
      * @param String  $after (Optional) the name of the button to place the new button after
      *                       'first' places the button as the first one
      */
     public static function addButton($name, $after=null) {
-        add_filter('mce_buttons', function($buttons) use ($name, $after) {
+        $filter = 'mce_buttons' . ((static::$_forToolbar == 2) ? '_2' : '');
+
+        add_filter($filter, function($buttons) use ($name, $after) {
             // Append the button at the end, if 'after' is not specified
             if($after == null)
                 $buttons[] = $name;
@@ -42,7 +63,9 @@ class Editor {
      * @param  String  $replacement  (Optional) the name of the button to replace the removed one with
      */
     public static function removeButton($name, $replacement=null) {
-        add_filter('mce_buttons', function($buttons) use ($name, $replacement) {
+        $filter = 'mce_buttons' . ((static::$_forToolbar == 2) ? '_2' : '');
+
+        add_filter($filter, function($buttons) use ($name, $replacement) {
             $removeButtonKey = array_search($name, $buttons);
 
             // Only remove/replace the button if it exists

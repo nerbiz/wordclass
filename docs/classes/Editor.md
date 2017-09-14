@@ -48,3 +48,22 @@ Wordclass\Editor::forceAdvanced(false);
 // Force the 2nd (advanced) buttons row, but keeping the toggle button
 Wordclass\Editor::forceAdvanced(true);
 ```
+
+### ::forToolbar()
+Set which toolbar to make modifications to.  
+The only argument this method takes is the toolbar number, either 1 (the top, default toolbar) or 2 (the 2nd, advanced toolbar).  
+By default, the default toolbar is used, and this method only makes sense if the advanced toolbar is used.  
+
+#### Example
+```php
+// Add an 'underline' button to the default toolbar
+Wordclass\Editor::addButton('underline');
+
+// Then remove the 'strikethrough' button from the advanced toolbar
+Wordclass\Editor::forToolbar(2);
+Wordclass\Editor::removeButton('strikethrough');
+
+// Switch back to the default toolbar
+Wordclass\Editor::forToolbar(1);
+// ...do things with the default toolbar
+```
