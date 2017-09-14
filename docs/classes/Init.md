@@ -17,11 +17,11 @@ Define some useful constants, that make things shorter and/or less ambiguous.
 ```php
 Wordclass\Init::constants();
 
-// Absolute paths to the template/stylesheet directory
+// Absolute paths to the template/stylesheet directory (a slash is appended)
 echo TEMPLATE_PATH;
 echo STYLESHEET_PATH;
 
-// URI paths to the template/stylesheet directory
+// URI paths to the template/stylesheet directory (a slash is appended)
 echo TEMPLATE_URI;
 echo STYLESHEET_URI;
 ```
