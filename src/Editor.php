@@ -4,32 +4,31 @@ namespace Wordclass;
 
 class Editor {
     /**
-     * The toolbar to do operations on
-     * @var Integer
+     * Get the buttons filter to use, based on the toolbar
+     * @param  Integer  $toolbar  The toolbar number, 1 = default, 2 = advanced
+     * @return String
      */
-    private static $_forToolbar = 1;
+    private static function getButtonsFilter($toolbar) {
+        // Only 1 or 2 are valid values
+        $toolbar = (in_array($toolbar, [1, 2])) ? $toolbar : 1;
 
+        // Define the filter
+        $filter = 'mce_buttons' . (($toolbar == 2) ? '_2' : '');
 
-
-    /**
-     * Set the toolbar to work with
-     * @param  Integer  $number  The toolbar number, 1 = normal, 2 = advanced
-     */
-    public static function forToolbar($number) {
-        if($number == 1  ||  $number == 2)
-            static::$_forToolbar = $number;
+        return $filter;
     }
 
 
 
     /**
      * Add a button to the TinyMCE editor
-     * @param String  $name  The name of the button
-     * @param String  $after (Optional) the name of the button to place the new button after
-     *                       'first' places the button as the first one
+     * @param  Integer  $toolbar  The toolbar number, 1 = default, 2 = advanced
+     * @param  String   $name     The name of the button
+     * @param  String   $after    (Optional) the name of the button to place the new button after
+     *                            'first' places the button as the first one
      */
-    public static function addButton($name, $after=null) {
-        $filter = 'mce_buttons' . ((static::$_forToolbar == 2) ? '_2' : '');
+    public static function addButton($toolbar, $name, $after=null) {
+        $filter = static::getButtonsFilter($toolbar);
 
         add_filter($filter, function($buttons) use ($name, $after) {
             // Append the button at the end, if 'after' is not specified
@@ -59,11 +58,12 @@ class Editor {
 
     /**
      * Remove or replace a button from the TinyMCE editor
-     * @param  String  $name         The name of the button to remove
-     * @param  String  $replacement  (Optional) the name of the button to replace the removed one with
+     * @param  Integer  $toolbar      The toolbar number, 1 = default, 2 = advanced
+     * @param  String   $name         The name of the button to remove
+     * @param  String   $replacement  (Optional) the name of the button to replace the removed one with
      */
-    public static function removeButton($name, $replacement=null) {
-        $filter = 'mce_buttons' . ((static::$_forToolbar == 2) ? '_2' : '');
+    public static function removeButton($toolbar, $name, $replacement=null) {
+        $filter = static::getButtonsFilter($toolbar);
 
         add_filter($filter, function($buttons) use ($name, $replacement) {
             $removeButtonKey = array_search($name, $buttons);
@@ -77,14 +77,12 @@ class Editor {
         });
     }
 
-
-
     /**
-     * Same as removeButton() with a second argument
+     * Same as removeButton() with a third argument
      * This is just for semantics
      */
-    public static function replaceButton($name, $with) {
-        static::removeButton($name, $with);
+    public static function replaceButton($toolbar, $name, $with) {
+        static::removeButton($toolbar, $name, $with);
     }
 
 
@@ -96,7 +94,7 @@ class Editor {
     public static function forceAdvanced($keepButton=false) {
         // Remove the toggle button
         if(is_bool($keepButton)  &&  ! $keepButton)
-            static::removeButton('wp_adv');
+            static::removeButton(1, 'wp_adv');
 
         // Force the 2nd buttons row
         add_filter('tiny_mce_before_init', function($args) {
