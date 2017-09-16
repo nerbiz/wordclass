@@ -8,7 +8,7 @@ The order of precedence is:
 #### Example
 ```php
 // Setting
-ClassUsingTrait::textDomain('your-text-domain');
+Wordclass\ClassUsingTrait::textDomain('your-text-domain');
 
 // Getting
 $description = __('Original untranslated string', static::textDomain());
