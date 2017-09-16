@@ -101,7 +101,7 @@ class Taxonomy {
      * @param  String|Array $posttypes
      * @return $this
      */
-    public function forPostTypes($posttypes) {
+    public function forPostType($posttypes) {
         $posttypes = (array) $posttypes;
 
         // Make sure the types are strings

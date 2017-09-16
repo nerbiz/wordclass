@@ -20,7 +20,7 @@ Set the singular name of the taxonomy.
 ### ::description()
 Set the taxonomy description.
 
-### ::forPostTypes()
+### ::forPostType()
 Set the post type(s) that this is a taxonomy of.  
 This accepts a string for 1 post type, or an array of string for multiple.  
 A PostType instance, or an array of them, or a mix of string and PostType instances, are also accepted.
@@ -38,7 +38,7 @@ Wordclass\Taxonomy::setTextDomain('your-text-domain');
 $taxGenres = Wordclass\Taxonomy::create('tax_genres')
     ->name('Genres')
     ->singular('Genre')
-    ->forPostTypes($cptMovies)
+    ->forPostType($cptMovies)
     ->add();
 
 // A full example
@@ -47,7 +47,7 @@ $taxNewsCategories = Wordclass\PostType::create('tax_news_categories')
     ->slug('your-slug')
     ->singular('News Category')
     ->description('A collection of all news categories')
-    ->forPostTypes($cptNews)
+    ->forPostType($cptNews)
     ->labels(['add_new_item' => 'Add New Category Item'])
     ->arguments([
         'hierarchical' => false,
