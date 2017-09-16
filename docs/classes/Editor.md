@@ -85,7 +85,7 @@ Wordclass\Editor::moveButton(2, 'strikethrough', 'italic', 1);
 Add a plugin to the TinyMCE editor.  
 The first argument is the name of the plugin. By default, a corresponding button is added to the end of the default toolbar.  
 The second argument is optional and specifies the toolbar to add the button to, 1 is the default toolbar, 2 is the advanced toolbar. Set this to false to not add a button.  
-The third argument is optional and specifies after which existing button it needs to be placed, or type 'first' to make the button the first one. If an 'after' button is specified, but doesn't exist, the button will be added to the end. The same happens when this argument is null (or not given). If the third argument is false, this fourth argument has no effect.
+The third argument is optional and specifies after which existing button it needs to be placed, or type 'first' to make the button the first one. If an 'after' button is specified, but doesn't exist, the button will be added to the end. The same happens when this argument is null (or not given). If the second argument is false, this third argument has no effect.
 
 #### Example
 ```php
