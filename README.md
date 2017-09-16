@@ -25,6 +25,7 @@ These are the packages/plugins this project uses:
 * [Mobile_Detect](https://github.com/serbanghita/Mobile-Detect)
 * [TGM Plugin Activation](https://github.com/tgmpa/tgm-plugin-activation)
 * [SiteOrigin Page Builder](https://wordpress.org/plugins/siteorigin-panels/)
+* [TinyMCE](https://github.com/tinymce/tinymce)
 
 ## License
 This project uses the [Unlicense](http://unlicense.org/).
