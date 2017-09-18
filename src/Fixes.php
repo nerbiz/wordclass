@@ -4,8 +4,8 @@ namespace Wordclass;
 
 class Fixes {
     /**
-     * Set the filesystem method to 'direct'
      * Should fix: 'Unable to locate WordPress plugin directory.'
+     * Set the filesystem method to 'direct'
      * define('FS_METHOD', 'direct') didn't work to solve this
      */
     public static function cantLocatePluginDirectory() {
@@ -14,5 +14,22 @@ class Fixes {
                 return 'direct';
             });
         }
+    }
+
+
+
+    /**
+     * Should fix: TinyMCE dropdowns (like format-select) not showing
+     * When TinyMCE is loaded in a modal dialog, the dropdowns are behind the modal dialog, so the z-index fixes that
+     */
+    public static function hiddenEditorDropdowns() {
+        add_action('admin_enqueue_scripts', function() {
+            echo '
+                <style>
+                    div.mce-floatpanel {
+                        z-index: 99999 !important;
+                    }
+                </style>';
+        });
     }
 }
