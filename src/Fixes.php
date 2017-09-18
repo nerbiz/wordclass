@@ -24,12 +24,8 @@ class Fixes {
      */
     public static function hiddenEditorDropdowns() {
         add_action('admin_enqueue_scripts', function() {
-            echo '
-                <style>
-                    div.mce-floatpanel {
-                        z-index: 99999 !important;
-                    }
-                </style>';
+            $css = file_get_contents(__DIR__ . '/../includes/css/hidden-editor-dropdowns.css');
+            echo '<style>' . $css . '</style>';
         });
     }
 }
