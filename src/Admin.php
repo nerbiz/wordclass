@@ -65,4 +65,25 @@ class Admin {
         // Make sure that 3 arguments are passed
         10, 3);
     }
+
+
+
+    /**
+     * Set a custom footer text in admin
+     * @param  String  $text   The text to display
+     * @param  String  $place  Where to place the text
+     *                         'before' = before the current text
+     *                         'after' = after the current text
+     *                         null (or anything else) = overwrite
+     */
+    public static function footerText($text, $place=null) {
+        add_filter('admin_footer_text', function($current) use($text, $place) {
+            if($place == 'before')
+                return $text . $current;
+            else if($place == 'after')
+                return $current . $text;
+            else
+                return $text;
+        });
+    }
 }

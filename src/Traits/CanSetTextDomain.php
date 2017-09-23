@@ -28,10 +28,11 @@ trait CanSetTextDomain {
                 return static::$_textDomain;
 
             else {
-                $default = Init::defaultTextDomain();
                 // Use the default value in Init if it is set
+                $default = Init::defaultTextDomain();
                 if($default !== null)
                     return $default;
+
                 // Fallback value
                 else
                     return 'text-domain';

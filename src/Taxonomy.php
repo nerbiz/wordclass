@@ -101,7 +101,7 @@ class Taxonomy {
      * @param  String|Array $posttypes
      * @return $this
      */
-    public function forPostTypes($posttypes) {
+    public function forPostType($posttypes) {
         $posttypes = (array) $posttypes;
 
         // Make sure the types are strings
@@ -123,26 +123,26 @@ class Taxonomy {
      */
     public function labels($labels=[]) {
         $this->_labels = array_replace_recursive([
-            'name'                       => _x($this->_name, 'Taxonomy General Name', static::textDomain()),
-            'singular_name'              => _x($this->_singularName, 'Taxonomy Singular Name', static::textDomain()),
+            'name'                       => _x($this->_name, 'Taxonomy general name', static::textDomain()),
+            'singular_name'              => _x($this->_singularName, 'Taxonomy singular name', static::textDomain()),
             'menu_name'                  => __($this->_name, static::textDomain()),
-            'all_items'                  => __('All Items', static::textDomain()),
-            'parent_item'                => __('Parent Item', static::textDomain()),
-            'parent_item_colon'          => __('Parent Item:', static::textDomain()),
-            'new_item_name'              => __('New Item Name', static::textDomain()),
-            'add_new_item'               => __('Add New Item', static::textDomain()),
-            'edit_item'                  => __('Edit Item', static::textDomain()),
-            'update_item'                => __('Update Item', static::textDomain()),
-            'view_item'                  => __('View Item', static::textDomain()),
-            'separate_items_with_commas' => __('Separate items with commas', static::textDomain()),
-            'add_or_remove_items'        => __('Add or remove items', static::textDomain()),
+            'all_items'                  => __('All ' . $this->_name, static::textDomain()),
+            'parent_item'                => __('Parent ' . $this->_singularName, static::textDomain()),
+            'parent_item_colon'          => __('Parent ' . $this->_singularName . ':', static::textDomain()),
+            'new_item_name'              => __('New ' . $this->_singularName . ' name', static::textDomain()),
+            'add_new_item'               => __('Add new ' . $this->_singularName, static::textDomain()),
+            'edit_item'                  => __('Edit ' . $this->_singularName, static::textDomain()),
+            'update_item'                => __('Update ' . $this->_singularName, static::textDomain()),
+            'view_item'                  => __('View ' . $this->_singularName, static::textDomain()),
+            'separate_items_with_commas' => __('Separate ' . $this->_name . ' with commas', static::textDomain()),
+            'add_or_remove_items'        => __('Add or remove ' . $this->_name, static::textDomain()),
             'choose_from_most_used'      => __('Choose from the most used', static::textDomain()),
-            'popular_items'              => __('Popular Items', static::textDomain()),
-            'search_items'               => __('Search Items', static::textDomain()),
-            'not_found'                  => __('Not Found', static::textDomain()),
-            'no_terms'                   => __('No items', static::textDomain()),
-            'items_list'                 => __('Items list', static::textDomain()),
-            'items_list_navigation'      => __('Items list navigation', static::textDomain()),
+            'popular_items'              => __('Popular ' . $this->_name, static::textDomain()),
+            'search_items'               => __('Search ' . $this->_name, static::textDomain()),
+            'not_found'                  => __('Not found', static::textDomain()),
+            'no_terms'                   => __('No ' . $this->_name, static::textDomain()),
+            'items_list'                 => __($this->_name . ' list', static::textDomain()),
+            'items_list_navigation'      => __($this->_name . ' list navigation', static::textDomain())
         ], $labels);
 
         return $this;

@@ -32,3 +32,20 @@ Wordclass\Admin::roleRedirects([
 Wordclass\Admin::roleRedirects('administrator', 'some/custom/url');
 Wordclass\Admin::roleRedirects('*', 'url/for/all/roles');
 ```
+
+### ::footerText()
+Edit the admin footer text (HTML is supported).  
+The first argument is the text to show, the second argument specifies the location (see the example).  
+This method can be repeated, so it is possible to first prepend/replace some text, and then append some more text, for instance.
+
+#### Example
+```php
+// Insert text before the current text
+Wordclass\Admin::footerText('<em>Before current.</em> ', 'before');
+
+// Insert text after the current text
+Wordclass\Admin::footerText(' <em>After current.</em>', 'after');
+
+// Replace the current text
+Wordclass\Admin::footerText('<em>Replacing current.</em>');
+```
