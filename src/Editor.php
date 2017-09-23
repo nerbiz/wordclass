@@ -143,7 +143,7 @@ class Editor {
         if(is_readable(__DIR__ . '/../../../' . $pluginPath)) {
             // Add the plugin
             add_filter('mce_external_plugins', function($plugins) use($name, $toolbar, $after, $pluginPath) {
-                $plugins[$name] = get_stylesheet_directory_uri() . '/vendor/' . $pluginPath;
+                $plugins[$name] = Init::vendorUri() . $pluginPath;
                 return $plugins;
             });
 

@@ -5,6 +5,8 @@ namespace Wordclass;
 class Init {
     private static $_defaultTextDomain = null;
 
+    private static $_vendorUri = null;
+
 
 
     /**
@@ -55,5 +57,25 @@ class Init {
             static::$_defaultTextDomain = $domain;
         else
             return static::$_defaultTextDomain;
+    }
+
+
+
+    /**
+     * Set or get the vendor directory URI
+     * @param  String  $uri
+     * @return String
+     */
+    public static function vendorUri($uri=null) {
+        if($uri)
+            static::$_vendorUri = rtrim($uri, '/') . '/';
+
+        else {
+            // The default value is the 'vendor' directory in a (child-)theme directory
+            if(static::$_vendorUri == null)
+                static::$_vendorUri = get_stylesheet_directory_uri() . '/vendor/';
+
+            return static::$_vendorUri;
+        }
     }
 }

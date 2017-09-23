@@ -2,7 +2,7 @@
 
 ### ::autoloader()
 Initialize the Wordclass autoloader.  
-**Please note:** this autoloader is only needed when not using Composer, or in other cases when you need to manually activate autoloading.
+**Please note:** this autoloader is only needed when for some reason you need to manually activate autoloading.
 
 #### Example
 ```php
@@ -17,11 +17,11 @@ Define some useful constants, that make things shorter and/or less ambiguous.
 ```php
 Wordclass\Init::constants();
 
-// Absolute paths to the template/stylesheet directory (a slash is appended)
+// Absolute paths to the template/stylesheet directory (1 trailing slash is ensured)
 echo TEMPLATE_PATH;
 echo STYLESHEET_PATH;
 
-// URI paths to the template/stylesheet directory (a slash is appended)
+// URI paths to the template/stylesheet directory (1 trailing slash is ensured)
 echo TEMPLATE_URI;
 echo STYLESHEET_URI;
 ```
@@ -36,4 +36,18 @@ Wordclass\Init::defaultTextDomain('your-text-domain');
 
 // Getting
 Wordclass\Init::defaultTextDomain();
+```
+
+### ::vendorUri()
+Set or get the vendor directory URI (where the Composer packages are).  
+The default is a directory named 'vendor' in the current (child-)theme directory.  
+This is needed for some Wordclass features to work.
+
+#### Example
+```php
+// Setting (1 trailing slash is ensured)
+Wordclass\Init::vendorUri(site_url('/wp-content/vendor'));
+
+// Getting
+Wordclass\Init::vendorUri();
 ```
