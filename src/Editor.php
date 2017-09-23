@@ -5,15 +5,16 @@ namespace Wordclass;
 class Editor {
     /**
      * Get the buttons filter to use, based on the toolbar
-     * @param  Integer  $toolbar  The toolbar number, 1 = default, 2 = advanced
+     * @param  Integer  $number  The toolbar number, 1 = default, 2/3/4 = advanced
      * @return String
      */
-    private static function getButtonsFilter($toolbar) {
-        // Only 1 or 2 are valid values
-        $toolbar = (in_array($toolbar, [1, 2])) ? $toolbar : 1;
+    private static function getButtonsFilter($number) {
+        // Fallback, and the filter name for toolbar 1
+        $filter = 'mce_buttons';
 
-        // Define the filter
-        $filter = 'mce_buttons' . (($toolbar == 2) ? '_2' : '');
+        // The advanced toolbars have their own filter names
+        if(in_array($number, [2, 3, 4]))
+            $filter .= '_' . $number;
 
         return $filter;
     }
@@ -21,7 +22,7 @@ class Editor {
 
 
     /**
-     * Force the advanced toolbar (2nd row of buttons) of the TinyMCE editor
+     * Force the extra button rows of the TinyMCE editor to show
      * @param  Boolean  $keepButton  (Optional) keep the toggle button
      */
     public static function forceAdvanced($keepButton=false) {
@@ -40,7 +41,7 @@ class Editor {
 
     /**
      * Add a button to the TinyMCE editor
-     * @param  Integer  $toolbar  The toolbar number, 1 = default, 2 = advanced
+     * @param  Integer  $toolbar  The toolbar number, 1 = default, 2/3/4 = advanced
      * @param  String   $name     The name of the button
      * @param  String   $after    (Optional) the name of the button to place the new button after
      *                            'first' places the button as the first one
@@ -77,7 +78,7 @@ class Editor {
 
     /**
      * Remove or replace a button from the TinyMCE editor
-     * @param  Integer  $toolbar      The toolbar number, 1 = default, 2 = advanced
+     * @param  Integer  $toolbar      The toolbar number, 1 = default, 2/3/4 = advanced
      * @param  String   $name         The name of the button to remove
      * @param  String   $replacement  (Optional) the name of the button to replace the removed one with
      */
@@ -108,7 +109,7 @@ class Editor {
 
     /**
      * Move a button, optionally from one toolbar to another
-     * @param  Integer  $toolbar    The toolbar number, 1 = default, 2 = advanced
+     * @param  Integer  $toolbar    The toolbar number, 1 = default, 2/3/4 = advanced
      * @param  String   $name       The name of the button
      * @param  String   $after      (Optional) the name of the button to place the new button after
      *                              'first' places the button as the first one
@@ -130,7 +131,7 @@ class Editor {
     /**
      * Add a TinyMCE plugin to the editor
      * @param  String   $name     The name of the plugin
-     * @param  Integer  $toolbar  (Optional) the toolbar number, 1 = default, 2 = advanced, or false to not add
+     * @param  Integer  $toolbar  (Optional) the toolbar number, 1 = default, 2/3/4 = advanced, or false to not add
      * @param  String   $after    (Optional) the name of the button to place the new button after
      *                            'first' places the button as the first one
      *                            null places the button at the end
