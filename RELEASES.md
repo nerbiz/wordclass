@@ -1,5 +1,15 @@
 # Release notes
 
+## 0.8.3
+
+* Major overhaul of Shortcodes: shortcodes now also add a button to the TinyMCE editor.
+* Added the CanSetPrefix trait.
+* Added Editor::addShortcodeButton(), which is usable, but supposed to only be used by Shortcodes.
+* Updated documentation for Editor and Shortcodes.
+* SettingsPage and PageBuilder now use the new CanSetPrefix trait.
+* A default prefix can now be set with Init::defaultPrefix().
+* The order of parameters of Editor methods is now more natural.
+
 ## 0.8.0
 
 * Added the new Fixes class (+ docs), which contains fixes for general Wordpress errors, will add more in the future.
