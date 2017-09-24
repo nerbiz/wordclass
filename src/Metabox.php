@@ -23,7 +23,10 @@ class Metabox {
 
 
 
-    public function __construct($id, $title, $posttypes, $options=[]) {
+    /**
+     * @see create()
+     */
+    private function __construct($id, $title, $posttypes, $options=[]) {
         $this->_options = array_replace_recursive([
             /**
              * Required

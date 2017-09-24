@@ -34,7 +34,10 @@ class PostType {
 
 
 
-    public function __construct($id) {
+    /**
+     * @see create()
+     */
+    private function __construct($id) {
         $this->_id = $id;
     }
 

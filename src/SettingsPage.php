@@ -24,7 +24,7 @@ class SettingsPage {
     /**
      * @see create()
      */
-    public function __construct($title, $settingsgroup, $icon, $menuposition) {
+    private function __construct($title, $settingsgroup, $icon, $menuposition) {
         // Translate the title
         $this->_pageTitle = __($title, static::textDomain());
 
