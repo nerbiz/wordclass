@@ -244,9 +244,9 @@ class Shortcodes {
         $defaults = $this->_defaults;
         $hook = $this->_hook;
 
-        add_shortcode($tag, function($attributes, $content=null) use($tag, $defaults, $hook) {
-            $attributes = shortcode_atts($defaults, $attributes, $tag);
-            $hook($attributes, $content);
+        add_shortcode($tag, function($parameters, $content=null) use($tag, $defaults, $hook) {
+            $parameters = shortcode_atts($defaults, $parameters, $tag);
+            $hook($parameters, $content);
         });
 
         // Add the corresponding button to TinyMCE if needed

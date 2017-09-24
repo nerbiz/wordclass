@@ -131,8 +131,8 @@ The third argument is also optional and specifies after which button to add this
 // Add a shortcode button to the third toolbar, which adds a theme-styled button
 Wordclass\Editor::addShortcodeButton(
     [
-        'id'         => Init::defaultPrefix() . '_button_1',
-        'tag'        => 'button_1',
+        'id'         => Init::defaultPrefix() . '_pretty_button',
+        'tag'        => 'pretty_button',
         'enclosing'  => false,
         'buttontext' => 'Button 1',
         'inputs'     => [

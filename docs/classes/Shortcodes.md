@@ -1,4 +1,5 @@
 # Wordclass\Shortcodes
+Uses the `CanSetTextDomain` trait.
 
 ### ::baseUrl()
 Add the `[base_url]` shortcode, which returns the base URL of the website, with trailing slash.
@@ -23,22 +24,88 @@ Wordclass\Shortcodes::copyright();
 [copyright year='2017']
 ```
 
+### ::create()
+Start the shortcode creation method chain, and optionally add a corresponding button to the TinyMCE editor.  
+The first argument is the tag of the shortcode.  
+The second argument decides if the shortcode is enclosing (true) or self-closing (false, this is default).  
+The third argument decides to add a button to the TinyMCE editor (default is true).  
+
+### ::toolbar()
+This method is optional, and specifies the toolbar to place the button on, and after which button it needs to be inserted. Default is on toolbar 1, at the end of it.
+
+### ::buttonText()
+This method is optional, and sets the name of the button in the toolbar, the default is the shortcode tag.
+
+### ::addLabel()
+This doesn't have anything to do with the shortcode itself, but does show up in the modal dialog that inserts it. It adds a line of text, useful for introducing or explaining some parameter.
+
+### ::addParameter()
+Add a parameter to the shortcode, and make it show up in the modal dialog that inserts it. See the code example below for the various options.  
+The currently supported input types are 'text', 'dropdown' and 'checkbox'.
+
+### ::hook()
+The callback function that handles the shortcode. 2 arguments are passed to this function: $parameters and $content, where $content is optional, only used when the shortcode is enclosing.  
+Before passing these values, the parameters are run through ```shortcode_atts()```, using the defaults specified with ```::addParameter()```. It also adds a filter named 'shortcode_atts_{$tag}', to filter the attributes with, if needed.
+
 ### ::add()
-Add a new shortcode.  
-This is a wrapper for `add_shortcode()` and doesn't do anything extra.  
-The only reason this wrapper exists, is to make the code consistent.
+Don't forget to put this method at the end of the chain, because this actually adds everything, the preceding functions are only for setting and preparing.
 
 #### Example
 ```php
-Wordclass\Shortcodes::add('new_shortcode', function($params, $content=null) {
-    $params = shortcode_atts([
-        'param1' => 'default-value-1',
-        'param2' => 'default-value-2'
-    ], $params);
+Wordclass\Shortcodes::prefix('abc');
 
-    // ...
-});
+// Minimal example
+// Adds the self-closing [pretty_button] shortcode with 2 text parameters,
+// And a button in the default TinyMCE toolbar with 'pretty_button' text on it
+Wordclass\Shortcodes::create('pretty_button')
+    // Add 2 parameters, having input type 'text'
+    ->addParameter('param1')
+    ->addParameter('param2')
+    ->hook(function($attributes) {
+        // ...do something with attributes, render HTML...
+    })
+    ->add();
 
-// Apply
-[new_shortcode]
+// Elaborate example
+// This shortcode encloses content, and is also added to the editor toolbar
+Wordclass\Shortcodes::create('pretty_button', true, true)
+    // Put the button after the 'undo' button of the 2nd toolbar
+    ->toolbar(2, 'redo')
+    // Set a custom text on the button in the toolbar
+    ->buttonText('Theme Button')
+    // A line of text that explains the purpose (in the modal dialog)
+    ->addLabel('Create a theme-styled button')
+    ->addParameter([
+        'type' => 'text',
+        // This is the parameter as it is shown in the shortcode
+        'name' => 'class',
+        // The input field label
+        'label' => 'Button class',
+        // An optional tooltip
+        'tooltip' => '(Optional) set a CSS class on the button'
+    ])
+    ->addParameter([
+        'type' => 'dropdown',
+        'name' => 'corner_style',
+        'label' => 'Corner style',
+        // The dropdown options (required for this input type)
+        'values' => ['square', 'rounded'],
+        // (Optional) set the default selected option
+        'default' => 'rounded',
+        // (Optional) prepend an empty option as the first one
+        'placeholder' => '- Choose border style -'
+    ])
+    ->addParameter([
+        'type' => 'checkbox',
+        'name' => 'capitalize',
+        'label' => 'Capitalize button text?',
+        // (Optional) text next to the checkbox, not needed in this case
+        // 'text' => 'Checkbox text',
+        // (Optional) whether or not the checkbox is checked by default
+        'checked' => true
+    ])
+    ->hook(function($attributes, $content) {
+        // ...do something with attributes and enclosed content, render HTML...
+    })
+    ->add();
 ```
