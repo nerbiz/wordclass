@@ -152,4 +152,27 @@ class Editor {
                 static::addButton($toolbar, $name, $after);
         }
     }
+
+
+
+    public static function addShortcodeButtons($shortcodes) {
+        // If 1 definition is given, put it in a surrounding array
+        if(array_key_exists('text', $shortcodes))
+            $shortcodes = [$shortcodes];
+
+        // Add the definitions as a JS object, so that the plugin can use it
+        add_action('admin_enqueue_scripts', function() use($shortcodes) {
+            echo '<script>window.wordclassShortcodeButtons = ' . json_encode($shortcodes) . ';</script>';
+        });
+
+        // Add the shortcode buttons plugin
+        add_filter('mce_external_plugins', function($plugins) {
+            $plugins['wcshortcodebuttons'] = 'http://lolcathost/wordclass/includes/js/tinymce/plugins/wcshortcodebuttons/plugin.js';
+            return $plugins;
+        });
+
+        // Add the buttons to the editor
+        foreach($shortcodes as $shortcode)
+            static::addButton(1, $shortcode['name']);
+    }
 }
