@@ -31,7 +31,7 @@ class SettingsPage {
         $this->_pageSlug = Utilities::createSlug($title);
 
         // The group in which all settings go
-        $this->_settingsGroup = $settingsgroup;
+        $this->_settingsGroup = static::prefix() . '-' . $settingsgroup;
 
         add_action('admin_menu', function() use($icon, $menuposition) {
             if(current_user_can('manage_options')) {
@@ -52,7 +52,7 @@ class SettingsPage {
 
                                 <form action="options.php" method="POST">';
                                     // Output nonce, action, and option_page fields for a settings page
-                                    settings_fields(static::prefix() . '-' . $this->_settingsGroup);
+                                    settings_fields($this->_settingsGroup);
                                     // Print out all settings sections added to the settings page
                                     do_settings_sections($this->_pageSlug);
                                     submit_button('Opslaan');
@@ -133,8 +133,13 @@ class SettingsPage {
      */
     public function addSection($id, $title, $subtitle='', $fields=[]) {
         add_action('admin_init', function() use($id, $title, $subtitle, $fields) {
+            $prefix = static::prefix();
+            $idHyphen = $prefix . '-' . $id;
+            $nameHyphen = $prefix . '-' . $id;
+            $nameUnderscore = $prefix . '_' . $id;
+
             add_settings_section(
-                static::prefix() . '-' . $id,
+                $idHyphen,
                 __($title, static::textDomain()),
                 function() use($subtitle) {
                     echo __($subtitle, static::textDomain());
@@ -144,13 +149,13 @@ class SettingsPage {
 
             foreach($fields as $name => $options) {
                 register_setting(
-                    static::prefix() . '-' . $this->_settingsGroup,
-                    static::prefix() . '_' . $name
+                    $this->_settingsGroup,
+                    $nameUnderscore
                 );
 
                 add_settings_field(
                     // ID to identify the field
-                    static::prefix() . '-' . $name,
+                    $nameHyphen,
                     // Title of the setting
                     __($options['title'], static::textDomain()),
                     // Function that echoes the input field
@@ -158,11 +163,11 @@ class SettingsPage {
                     // Slug of the page to show this setting on
                     $this->_pageSlug,
                     // Slug of the section
-                    static::prefix() . '-' . $id,
+                    $idHyphen,
                     // Arguments for the above function
                     [
                         'type' => $options['type'],
-                        'name' => static::prefix() . '_' . $name
+                        'name' => $nameUnderscore
                     ]
                 );
             }
