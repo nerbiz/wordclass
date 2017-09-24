@@ -1,5 +1,17 @@
 # Release notes
 
+## 0.8.0
+
+* Added the new Fixes class (+ docs), which contains fixes for general Wordpress errors, will add more in the future.
+* Added Admin::footerText(), for changing the footer text on wp-admin.
+* Added Init::vendorUri(), to specify a custom URI of the vendor (Composer) directory with, if needed.
+* Added TinyMCE to the credits in the readme file.
+* Renamed Taxonomy::forPostTypes() to Taxonomy::forPostType(), because it's usually 1 post type.
+* Fixed a small documentation error for Editor.
+* PostType and Taxonomy now use the names instead of 'New Item', ('New Movie' or 'New Genre' for instance).
+* Editor now supports 3 extra button rows (4 in total).
+* Simplified the Editor docs.
+
 ## 0.7.1
 
 * Added Editor::addPlugin() to easily add a plugin to the TinyMCE editor.

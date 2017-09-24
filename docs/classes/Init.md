@@ -40,7 +40,7 @@ Wordclass\Init::defaultTextDomain();
 
 ### ::vendorUri()
 Set or get the vendor directory URI (where the Composer packages are).  
-The default is a directory named 'vendor' in the current (child-)theme directory.  
+By default, Wordclass will look in a directory named 'vendor' in the current (child-)theme directory.  
 This is needed for some Wordclass features to work.
 
 #### Example
