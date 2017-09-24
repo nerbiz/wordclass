@@ -36,8 +36,12 @@ if(window.wordclassShortcodeButtons) {
 
                             // Construct and insert the shortcode
                             var tag = '[' + shortcode.tag + ' ' + params.join(' ') + ']';
+                            // Enclose the selected text in the shortcode
                             if(shortcode.enclosing)
                                 tag += selectedText + '[/' + shortcode.tag + '] ';
+                            // Otherwise put the shortcode before the selected text, to not lose text
+                            else
+                                tag += ' ' + selectedText;
 
                             editor.insertContent(tag);
                         }
