@@ -10,33 +10,36 @@ if(window.wordclassShortcodeButtons) {
                 shortcode = window.wordclassShortcodeButtons[i];
 
                 // Create and register the button
-                editor.addButton(shortcode.name, {
-                    text: shortcode.text,
-                    cmd: shortcode.name
+                editor.addButton(shortcode.id, {
+                    text: shortcode.buttontext,
+                    icon: 'code',
+                    cmd: shortcode.id
                 });
 
                 // Define the action for the button
-                editor.addCommand(shortcode.name, function() {
+                editor.addCommand(shortcode.id, function() {
+                    // If text is selected in the editor, store it for if the tag is enclosing
+                    var selectedText = tinyMCE.activeEditor.selection.getContent();
+
                     editor.windowManager.open({
-                        title: shortcode.text,
+                        title: shortcode.buttontext,
                         body: shortcode.inputs,
                         // Insert the shortcode when the window form is submitted
                         onsubmit: function(event) {
                             // Put the shortcode parameters in an array ('name="value"' strings)
                             // When the value is not empty
                             var params = [];
-                            var name = null;
-                            var value = null;
-                            for(var j=-1;  ++j<shortcode.inputs.length;) {
-                                name = shortcode.inputs[j].name;
-                                value = event.data[name];
-
-                                if(value != '')
-                                    params.push(name + '="' + value + '"');
+                            for(var name in event.data) {
+                                if(event.data[name] != '')
+                                    params.push(name + '="' + event.data[name] + '"');
                             }
 
-                            // Construct the shortcode
-                            editor.insertContent('[' + shortcode.code + ' ' + params.join(' ') + ']');
+                            // Construct and insert the shortcode
+                            var tag = '[' + shortcode.tag + ' ' + params.join(' ') + ']';
+                            if(shortcode.enclosing)
+                                tag += selectedText + '[/' + shortcode.tag + '] ';
+
+                            editor.insertContent(tag);
                         }
                     });
                 });
