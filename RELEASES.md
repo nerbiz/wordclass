@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.8.3.1
+
+* The Shortcodes dropdown values now use value:label pairs.
+
 ## 0.8.3
 
 * Major overhaul of Shortcodes: shortcodes now also add a button to the TinyMCE editor.
