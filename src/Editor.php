@@ -49,13 +49,13 @@ class Editor {
 
     /**
      * Add a button to the TinyMCE editor
-     * @param  Integer  $toolbar  The toolbar number, 1 = default, 2/3/4 = advanced
      * @param  String   $name     The name of the button
      * @param  String   $after    (Optional) the name of the button to place the new button after
      *                            'first' places the button as the first one
      *                            null places the button at the end
+     * @param  Integer  $toolbar  (Optional) the toolbar number, 1 = default, 2/3/4 = advanced
      */
-    public static function addButton($toolbar, $name, $after=null) {
+    public static function addButton($name, $after=null, $toolbar=1) {
         $filter = static::getButtonsFilter($toolbar);
 
         add_filter($filter, function($buttons) use($name, $after) {
@@ -86,11 +86,11 @@ class Editor {
 
     /**
      * Remove or replace a button from the TinyMCE editor
-     * @param  Integer  $toolbar      The toolbar number, 1 = default, 2/3/4 = advanced
      * @param  String   $name         The name of the button to remove
+     * @param  Integer  $toolbar      (Optional) the toolbar number, 1 = default, 2/3/4 = advanced
      * @param  String   $replacement  (Optional) the name of the button to replace the removed one with
      */
-    public static function removeButton($toolbar, $name, $replacement=null) {
+    public static function removeButton($name, $toolbar=1, $replacement=null) {
         $filter = static::getButtonsFilter($toolbar);
 
         add_filter($filter, function($buttons) use($name, $replacement) {
@@ -106,26 +106,26 @@ class Editor {
     }
 
     /**
-     * Same as removeButton() with a third argument
-     * This is just for semantics
+     * Same as removeButton(), this is just for semantics
+     * The parameter order is slightly different because of the semantics
      */
-    public static function replaceButton($toolbar, $name, $with) {
-        static::removeButton($toolbar, $name, $with);
+    public static function replaceButton($name, $with, $toolbar=1) {
+        static::removeButton($name, $toolbar, $with);
     }
 
 
 
     /**
      * Move a button, optionally from one toolbar to another
-     * @param  Integer  $toolbar    The toolbar number, 1 = default, 2/3/4 = advanced
      * @param  String   $name       The name of the button
      * @param  String   $after      (Optional) the name of the button to place the new button after
      *                              'first' places the button as the first one
      *                              null places the button at the end
+     * @param  Integer  $toolbar    (Optional) the toolbar number, 1 = default, 2/3/4 = advanced
      * @param  Integer  $toToolbar  (Optional) the toolbar to move the button to
      *                              Uses the same toolbar, if this is null
      */
-    public static function moveButton($toolbar, $name, $after=null, $toToolbar=null) {
+    public static function moveButton($name, $after=null, $toolbar=1, $toToolbar=null) {
         // The same toolbar is used by default
         if($toToolbar == null)
             $toToolbar = $toolbar;
@@ -139,12 +139,12 @@ class Editor {
     /**
      * Add a TinyMCE plugin to the editor
      * @param  String   $name     The name of the plugin
-     * @param  Integer  $toolbar  (Optional) the toolbar number, 1 = default, 2/3/4 = advanced, or false to not add
      * @param  String   $after    (Optional) the name of the button to place the new button after
      *                            'first' places the button as the first one
      *                            null places the button at the end
+     * @param  Integer  $toolbar  (Optional) the toolbar number, 1 = default, 2/3/4 = advanced, or false to not add
      */
-    public static function addPlugin($name, $toolbar=1, $after=null) {
+    public static function addPlugin($name, $after=null, $toolbar=1) {
         $pluginPath = 'tinymce/tinymce/plugins/' . $name . '/plugin.min.js';
 
         // The plugin needs to exist

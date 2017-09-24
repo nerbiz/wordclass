@@ -4,7 +4,7 @@ if(window.wordclassShortcodeButtons) {
         init: function(editor, url) {
             var shortcode = null;
 
-            // Loop over the shortcode dialog definitions
+            // Create all the shortcode buttons
             for(var i=-1;  ++i<window.wordclassShortcodeButtons.length;) {
                 // For convenience
                 shortcode = window.wordclassShortcodeButtons[i];
@@ -27,7 +27,7 @@ if(window.wordclassShortcodeButtons) {
                         // Insert the shortcode when the window form is submitted
                         onsubmit: function(event) {
                             // Put the shortcode parameters in an array ('name="value"' strings)
-                            // When the value is not empty
+                            // Exclude empty values
                             var params = [];
                             for(var name in event.data) {
                                 if(event.data[name] != '')
