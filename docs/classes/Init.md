@@ -38,6 +38,18 @@ Wordclass\Init::defaultTextDomain('your-text-domain');
 Wordclass\Init::defaultTextDomain();
 ```
 
+### ::defaultPrefix()
+Set or get the default prefix, this is null by default.
+
+#### Example
+```php
+// Setting
+Wordclass\Init::defaultPrefix('abc');
+
+// Getting
+Wordclass\Init::defaultPrefix();
+```
+
 ### ::vendorUri()
 Set or get the vendor directory URI (where the Composer packages are).  
 The default is a directory named 'vendor' in the current (child-)theme directory.  

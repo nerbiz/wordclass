@@ -5,6 +5,8 @@ namespace Wordclass;
 class Init {
     private static $_defaultTextDomain = null;
 
+    private static $_prefix = null;
+
     private static $_vendorUri = null;
 
 
@@ -53,10 +55,24 @@ class Init {
      * @return String
      */
     public static function defaultTextDomain($domain=null) {
-        if($domain)
+        if($domain !== null)
             static::$_defaultTextDomain = $domain;
         else
             return static::$_defaultTextDomain;
+    }
+
+
+
+    /**
+     * Set or get the default prefix
+     * @param  String  $prefix
+     * @return String
+     */
+    public static function defaultPrefix($prefix=null) {
+        if($prefix !== null)
+            static::$_prefix = $prefix;
+        else
+            return static::$_prefix;
     }
 
 
