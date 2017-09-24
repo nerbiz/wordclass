@@ -114,3 +114,32 @@ Wordclass\Editor::addPlugin('table', 'first', 3);
 // Add the 'table' plugin and add it after the 'indent' button of the 2nd toolbar
 Wordclass\Editor::addPlugin('table', 'indent', 2);
 ```
+
+### ::addShortcodeButton()
+(The Shortcodes class uses this method, and that is a better way to do it, but here is the documentation for completeness).  
+The first argument is an array of shortcode properties:  
+* id: the identifier in the TinyMCE buttons array
+* tag: the tag of the shortcode
+* enclosing: whether this shortcode is enclosing (true) or self-closing (false)
+* buttontext: the text on the button in the toolbar
+* inputs: array of parameters, see Shortcodes::addParameter() and Shortcodes::addLabel()
+The second argument is optional and specifies the toolbar to add the button to (default is 1).  
+The third argument is also optional and specifies after which button to add this button (default is null).
+
+#### Example
+```php
+// Add a shortcode button to the third toolbar, which adds a theme-styled button
+Wordclass\Editor::addShortcodeButton(
+    [
+        'id'         => Init::defaultPrefix() . '_button_1',
+        'tag'        => 'button_1',
+        'enclosing'  => false,
+        'buttontext' => 'Button 1',
+        'inputs'     => [
+            ['type' => 'label', 'text' => 'Create a theme-styled button'],
+            ['name' => 'color', type' => 'text', 'label' => 'The button color']
+        ]
+    ],
+    3
+);
+```

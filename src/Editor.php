@@ -187,7 +187,7 @@ class Editor {
      *                                tag: the tag of the shortcode
      *                                enclosing: whether this shortcode is enclosing (true) or self-closing (false)
      *                                buttontext: the text for the button to add
-     *                                inputs: array of parameters, @see Shortcodes::addParameter()
+     *                                inputs: array of parameters, @see Shortcodes::addParameter() and Shortcodes::addLabel()
      * @param  Integer  $toolbar    (Optional) the toolbar number, 1 = default, 2/3/4 = advanced
      * @param  String   $after      (Optional) the name of the button to place the new button after
      *                                'first' places the button as the first one
