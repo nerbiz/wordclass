@@ -10,6 +10,6 @@ The order of precedence is:
 // Setting
 Wordclass\ClassUsingTrait::textDomain('your-text-domain');
 
-// Getting
+// Getting (inside class)
 $description = __('Original untranslated string', static::textDomain());
 ```
