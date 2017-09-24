@@ -25,7 +25,7 @@ class Fixes {
     public static function hiddenEditorDropdowns() {
         add_action('admin_enqueue_scripts', function() {
             $css = file_get_contents(__DIR__ . '/../includes/css/hidden-editor-dropdowns.css');
-            echo '<style>' . $css . '</style>';
+            echo '<style>' . $css . '</style>' . PHP_EOL;
         });
     }
 }

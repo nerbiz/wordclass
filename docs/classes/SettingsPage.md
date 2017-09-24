@@ -15,11 +15,6 @@ If you'd like to keep the default icon, but specify a custom menu order, then se
 ### ::pageSlug()
 This is optional, because by default the page slug is the page title converted to a slug. Use this method to overwrite this default value.
 
-### ::prefix()
-Set the prefix for all input fields (name and ID), the settings group name and section IDs.  
-Names will be appended with an underscore, and IDs with a hyphen.  
-This is optional, the default value is 'xx'.
-
 ### ::addSection()
 Add a section to the settings page, with fields in it.  
 The first argument is the identifier of the section.  
@@ -39,9 +34,9 @@ Wordclass\SettingsPage::create('Custom settings', 'your-settings-group')
     ]);
 
 // An elaborate example
+Wordclass\SettingsPage::prefix('abc');
 Wordclass\SettingsPage::create('Custom settings', 'your-settings-group', 'dashicons-admin-tools', 2)
     ->pageSlug('your-page-slug')
-    ->prefix('abc')
     ->addSection('contact', 'Contact Info', '', [
         'name'         => ['type' => 'text', 'title' => 'Name'],
         'phone_number' => ['type' => 'text', 'title' => 'Phone number']

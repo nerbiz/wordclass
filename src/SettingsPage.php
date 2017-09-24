@@ -6,6 +6,7 @@ use Wordclass\Utilities;
 
 class SettingsPage {
     use Traits\CanSetTextDomain;
+    use Traits\CanSetPrefix;
 
 
 
@@ -16,15 +17,13 @@ class SettingsPage {
     private $_pageTitle;
     private $_pageSlug;
     private $_settingsGroup;
-    private $_namePrefix = 'xx_';
-    private $_idPrefix = 'xx-';
 
 
 
     /**
      * @see create()
      */
-    public function __construct($title, $settingsgroup, $icon, $menuposition) {
+    private function __construct($title, $settingsgroup, $icon, $menuposition) {
         // Translate the title
         $this->_pageTitle = __($title, static::textDomain());
 
@@ -32,7 +31,7 @@ class SettingsPage {
         $this->_pageSlug = Utilities::createSlug($title);
 
         // The group in which all settings go
-        $this->_settingsGroup = $settingsgroup;
+        $this->_settingsGroup = static::prefix() . '-' . $settingsgroup;
 
         add_action('admin_menu', function() use($icon, $menuposition) {
             if(current_user_can('manage_options')) {
@@ -53,7 +52,7 @@ class SettingsPage {
 
                                 <form action="options.php" method="POST">';
                                     // Output nonce, action, and option_page fields for a settings page
-                                    settings_fields($this->_idPrefix . $this->_settingsGroup);
+                                    settings_fields($this->_settingsGroup);
                                     // Print out all settings sections added to the settings page
                                     do_settings_sections($this->_pageSlug);
                                     submit_button('Opslaan');
@@ -79,20 +78,6 @@ class SettingsPage {
      */
     public function pageSlug($slug) {
         $this->_pageSlug = $slug;
-
-        return $this;
-    }
-
-
-
-    /**
-     * Set the prefix for all the input fields (name and ID) and the section IDs
-     * @param String  $prefix
-     * @return $this
-     */
-    public function prefix($prefix) {
-        $this->_namePrefix = $prefix . '_';
-        $this->_idPrefix = $prefix . '-';
 
         return $this;
     }
@@ -148,16 +133,29 @@ class SettingsPage {
      */
     public function addSection($id, $title, $subtitle='', $fields=[]) {
         add_action('admin_init', function() use($id, $title, $subtitle, $fields) {
-            add_settings_section($this->_idPrefix.$id, __($title, static::textDomain()), function() use($subtitle) {
-                echo __($subtitle, static::textDomain());
-            }, $this->_pageSlug);
+            $prefix = static::prefix();
+            $idHyphen = $prefix . '-' . $id;
+            $nameHyphen = $prefix . '-' . $id;
+            $nameUnderscore = $prefix . '_' . $id;
+
+            add_settings_section(
+                $idHyphen,
+                __($title, static::textDomain()),
+                function() use($subtitle) {
+                    echo __($subtitle, static::textDomain());
+                },
+                $this->_pageSlug
+            );
 
             foreach($fields as $name => $options) {
-                register_setting($this->_idPrefix.$this->_settingsGroup, $this->_namePrefix.$name);
+                register_setting(
+                    $this->_settingsGroup,
+                    $nameUnderscore
+                );
 
                 add_settings_field(
                     // ID to identify the field
-                    $this->_idPrefix.$name,
+                    $nameHyphen,
                     // Title of the setting
                     __($options['title'], static::textDomain()),
                     // Function that echoes the input field
@@ -165,11 +163,11 @@ class SettingsPage {
                     // Slug of the page to show this setting on
                     $this->_pageSlug,
                     // Slug of the section
-                    $this->_idPrefix . $id,
+                    $idHyphen,
                     // Arguments for the above function
                     [
                         'type' => $options['type'],
-                        'name' => $this->_namePrefix.$name
+                        'name' => $nameUnderscore
                     ]
                 );
             }

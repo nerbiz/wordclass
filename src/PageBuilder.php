@@ -6,31 +6,15 @@ use Wordclass\Utilities;
 
 class PageBuilder {
     use Traits\CanSetTextDomain;
+    use Traits\CanSetPrefix;
 
 
-
-    /**
-     * The prefix to use for the names of added row style options
-     * Format is prefix-name (hyphen is automatically added)
-     * @var String
-     */
-    private static $_fieldPrefix = 'custom';
 
     /**
      * The name of the group to which the custom widgets will be added
      * @var String
      */
     private static $_widgetGroup = 'custom-widgets';
-
-
-
-    /**
-     * Set the prefix to use for names of added row style options
-     * @param String  $prefix
-     */
-    public static function setFieldPrefix($prefix) {
-        static::$_fieldPrefix = $prefix;
-    }
 
 
 
@@ -67,7 +51,7 @@ class PageBuilder {
 
         add_filter('siteorigin_panels_row_style_fields', function($fields) use ($args) {
             // Create the field name, using the prefix
-            $fieldName = static::$_fieldPrefix . '-' . $args['slug'];
+            $fieldName = static::prefix() . '-' . $args['slug'];
 
             $fields[$fieldName] = [
                 'name'        => __($args['label'], static::textDomain()),
