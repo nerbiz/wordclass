@@ -4,6 +4,14 @@ namespace Wordclass;
 
 class Editor {
     /**
+     * Inidicates if the shortcode array and plugin have been created
+     * @var Boolean
+     */
+    private static $_shortcodeButtonsPrepared = false;
+
+
+
+    /**
      * Get the buttons filter to use, based on the toolbar
      * @param  Integer  $number  The toolbar number, 1 = default, 2/3/4 = advanced
      * @return String
@@ -155,24 +163,50 @@ class Editor {
 
 
 
-    public static function addShortcodeButtons($shortcodes) {
-        // If 1 definition is given, put it in a surrounding array
-        if(array_key_exists('text', $shortcodes))
-            $shortcodes = [$shortcodes];
+    /**
+     * Convert an input type to TinyMCE type name
+     * @param  String  $type
+     * @return String
+     */
+    private static function useTinyMceType($type) {
+        if($type == 'text')
+            return 'textbox';
+
+        else if($type == 'dropdown')
+            return 'listbox';
+
+        return $type;
+    }
+
+
+
+    public static function addShortcodeButton($shortcode) {
+        // Use the TinyMCE type names
+        foreach($shortcode['inputs'] as $key => $input)
+            $shortcode['inputs'][$key]['type'] = static::useTinyMceType($input['type']);
+
+        // Initialize the shortcode buttons array, if not done yet
+        if( ! static::$_shortcodeButtonsPrepared) {
+            // Create a new JavaScript array
+            add_action('admin_enqueue_scripts', function() {
+                echo '<script>window.wordclassShortcodeButtons = [];</script>' . PHP_EOL;
+            });
+
+            // Add the shortcode buttons plugin
+            add_filter('mce_external_plugins', function($plugins) {
+                $plugins['wcshortcodebuttons'] = 'http://lolcathost/wordclass/includes/js/tinymce/plugins/wcshortcodebuttons/plugin.js';
+                return $plugins;
+            });
+
+            static::$_shortcodeButtonsPrepared = true;
+        }
 
         // Add the definitions as a JS object, so that the plugin can use it
-        add_action('admin_enqueue_scripts', function() use($shortcodes) {
-            echo '<script>window.wordclassShortcodeButtons = ' . json_encode($shortcodes) . ';</script>';
-        });
-
-        // Add the shortcode buttons plugin
-        add_filter('mce_external_plugins', function($plugins) {
-            $plugins['wcshortcodebuttons'] = 'http://lolcathost/wordclass/includes/js/tinymce/plugins/wcshortcodebuttons/plugin.js';
-            return $plugins;
+        add_action('admin_enqueue_scripts', function() use($shortcode) {
+            echo '<script>window.wordclassShortcodeButtons.push(' . json_encode($shortcode) . ');</script>' . PHP_EOL;
         });
 
         // Add the buttons to the editor
-        foreach($shortcodes as $shortcode)
-            static::addButton(1, $shortcode['name']);
+        static::addButton(1, $shortcode['id']);
     }
 }
