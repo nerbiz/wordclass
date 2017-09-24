@@ -88,8 +88,11 @@ Wordclass\Shortcodes::create('pretty_button', true, true)
         'type' => 'dropdown',
         'name' => 'corner_style',
         'label' => 'Corner style',
-        // The dropdown options (required for this input type)
-        'values' => ['square', 'rounded'],
+        // The dropdown options (in value:label pairs, required for this input type)
+        'values' => [
+            'square' => 'Square corners',
+            'rounded' => 'Rounded corners'
+        ],
         // (Optional) set the default selected option
         'default' => 'rounded',
         // (Optional) prepend an empty option as the first one

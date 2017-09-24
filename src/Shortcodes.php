@@ -165,8 +165,8 @@ class Shortcodes {
             }
 
             // Then add all the values, label and value are the same
-            foreach($parameter['values'] as $value)
-                $values[] = ['text' => $value, 'value' => $value];
+            foreach($parameter['values'] as $value => $text)
+                $values[] = ['text' => $text, 'value' => $value];
 
             // Overwrite the values array
             $parameter['values'] = $values;
