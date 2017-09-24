@@ -1,10 +1,7 @@
 # Wordclass\PageBuilder
 For use with the plugin [Page Builder by SiteOrigin](https://wordpress.org/plugins/siteorigin-panels/).  
 Uses the `CanSetTextDomain` trait.
-
-### ::setFieldPrefix()
-Set a prefix for custom row style options. If this method is not called, this will be 'custom'.  
-A trailing hyphen is automatically put between the prefix and option slug, so the example below will become ```your-prefix-your-slug```.
+Uses the `CanSetPrefix` trait.
 
 ### ::addRowStyleOption()
 Add an option to the 'Edit Row' popup, on the right side under 'Row Styles'.  
@@ -14,7 +11,7 @@ Usually, `div.panel-grid-cell` is the direct child of `div.panel-grid`, but now 
 
 #### Example
 ```php
-Wordclass\PageBuilder::setFieldPrefix('your-prefix');
+Wordclass\PageBuilder::prefix('abc');
 Wordclass\PageBuilder::addRowStyleOption([
     // The title of the option
     'label' => 'Test option',
