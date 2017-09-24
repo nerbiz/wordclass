@@ -14,6 +14,13 @@ class Shortcodes {
     private $_tag;
 
     /**
+     * Used for placing the new button in the editor
+     * @var Integer|String|null
+     */
+    private $_toolbarNumber = 1;
+    private $_toolbarAfter = null;
+
+    /**
      * The text on the shortcode button in TinyMCE
      * @var String
      */
@@ -69,6 +76,23 @@ class Shortcodes {
 
         if(is_bool($addtoeditor))
             $this->_addToEditor = $addtoeditor;
+    }
+
+
+
+    /**
+     * Set where the button needs to be added to the TinyMCE editor
+     * @param  Integer  $toolbar    The toolbar number, 1 = default, 2/3/4 = advanced
+     * @param  String   $after      (Optional) the name of the button to place the new button after
+     *                                'first' places the button as the first one
+     *                                null places the button at the end
+     * @return $this
+     */
+    public function toolbar($toolbar, $after=null) {
+        $this->_toolbarNumber = $toolbar;
+        $this->_toolbarAfter = $after;
+
+        return $this;
     }
 
 
@@ -230,13 +254,17 @@ class Shortcodes {
             if($this->_buttonText == null)
                 $this->_buttonText = $this->_tag;
 
-            Editor::addShortcodeButton([
-                'id'         => static::prefix() . '_' . $this->_tag,
-                'tag'        => $this->_tag,
-                'enclosing'  => $this->_enclosing,
-                'buttontext' => $this->_buttonText,
-                'inputs'     => $this->_parameters
-            ]);
+            Editor::addShortcodeButton(
+                [
+                    'id'         => static::prefix() . '_' . $this->_tag,
+                    'tag'        => $this->_tag,
+                    'enclosing'  => $this->_enclosing,
+                    'buttontext' => $this->_buttonText,
+                    'inputs'     => $this->_parameters
+                ],
+                $this->_toolbarNumber,
+                $this->_toolbarAfter
+            );
         }
     }
 

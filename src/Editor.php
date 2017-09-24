@@ -180,7 +180,20 @@ class Editor {
 
 
 
-    public static function addShortcodeButton($shortcode) {
+    /**
+     * Add a shortcode button to the editor
+     * @param  Array    $shortcode  The shortcode definition
+     *                                id: the identifier in the TinyMCE buttons array
+     *                                tag: the tag of the shortcode
+     *                                enclosing: whether this shortcode is enclosing (true) or self-closing (false)
+     *                                buttontext: the text for the button to add
+     *                                inputs: array of parameters, @see Shortcodes::addParameter()
+     * @param  Integer  $toolbar    (Optional) the toolbar number, 1 = default, 2/3/4 = advanced
+     * @param  String   $after      (Optional) the name of the button to place the new button after
+     *                                'first' places the button as the first one
+     *                                null places the button at the end
+     */
+    public static function addShortcodeButton($shortcode, $toolbar=1, $after=null) {
         // Use the TinyMCE type names
         foreach($shortcode['inputs'] as $key => $input)
             $shortcode['inputs'][$key]['type'] = static::useTinyMceType($input['type']);
@@ -207,6 +220,6 @@ class Editor {
         });
 
         // Add the buttons to the editor
-        static::addButton(1, $shortcode['id']);
+        static::addButton($toolbar, $shortcode['id'], $after);
     }
 }
