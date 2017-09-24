@@ -36,7 +36,7 @@ class Editor {
     public static function forceAdvanced($keepButton=false) {
         // Remove the toggle button
         if(is_bool($keepButton)  &&  ! $keepButton)
-            static::removeButton(1, 'wp_adv');
+            static::removeButton('wp_adv', 1);
 
         // Force the 2nd buttons row
         add_filter('tiny_mce_before_init', function($args) {
@@ -130,8 +130,8 @@ class Editor {
         if($toToolbar == null)
             $toToolbar = $toolbar;
 
-        static::removeButton($toolbar, $name);
-        static::addButton($toToolbar, $name, $after);
+        static::removeButton($name, $toolbar);
+        static::addButton($name, $after, $toToolbar);
     }
 
 
@@ -157,7 +157,7 @@ class Editor {
 
             // Add a button if needed
             if($toolbar != false)
-                static::addButton($toolbar, $name, $after);
+                static::addButton($name, $after, $toolbar);
         }
     }
 
@@ -220,6 +220,6 @@ class Editor {
         });
 
         // Add the buttons to the editor
-        static::addButton($toolbar, $shortcode['id'], $after);
+        static::addButton($shortcode['id'], $after, $toolbar);
     }
 }
