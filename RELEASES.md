@@ -1,5 +1,12 @@
 # Release notes
 
+## 0.8.4
+
+* Added Shortcodes::pageLink(), which creates the [page_link] shortcode (+ documentation).
+* Shortcodes without parameters now insert into the editor without using a modal dialog.
+* Shortcodes added with the Shortcodes class now actually output something -_-.
+* Swapped $toolbar and $after parameters of Editor::addShortcodeButton().
+
 ## 0.8.3.3
 
 * Fixed: all shortcode buttons used the options dialog of the last one. You can now add multiple shortcode buttons normally.
