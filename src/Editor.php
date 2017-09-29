@@ -207,7 +207,7 @@ class Editor {
 
             // Add the shortcode buttons plugin
             add_filter('mce_external_plugins', function($plugins) {
-                $plugins['wcshortcodebuttons'] = 'http://lolcathost/wordclass/includes/js/tinymce/plugins/wcshortcodebuttons/plugin.js';
+                $plugins['wcshortcodebuttons'] = Init::vendorUri() . 'nerbiz/wordclass/includes/js/tinymce/plugins/wcshortcodebuttons/plugin.js';
                 return $plugins;
             });
 
