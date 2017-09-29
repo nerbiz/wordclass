@@ -123,12 +123,12 @@ The first argument is an array of shortcode properties:
 * enclosing: whether this shortcode is enclosing (true) or self-closing (false)
 * buttontext: the text on the button in the toolbar
 * inputs: array of parameters, see Shortcodes::addParameter() and Shortcodes::addLabel()
-The second argument is optional and specifies the toolbar to add the button to (default is 1).  
-The third argument is also optional and specifies after which button to add this button (default is null).
+The second argument is optional and specifies after which button to add this button (default is null).
+The third argument is also optional and specifies the toolbar to add the button to (default is 1).  
 
 #### Example
 ```php
-// Add a shortcode button to the third toolbar, which adds a theme-styled button
+// Add a shortcode button to the third toolbar, which adds a theme-styled button for example
 Wordclass\Editor::addShortcodeButton(
     [
         'id'         => Init::defaultPrefix() . '_pretty_button',
@@ -140,6 +140,7 @@ Wordclass\Editor::addShortcodeButton(
             ['name' => 'color', type' => 'text', 'label' => 'The button color']
         ]
     ],
+    null,
     3
 );
 ```

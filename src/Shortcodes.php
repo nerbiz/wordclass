@@ -4,6 +4,7 @@ namespace Wordclass;
 
 class Shortcodes {
     use Traits\CanSetPrefix;
+    use Traits\CanSetTextDomain;
 
 
 
@@ -246,7 +247,7 @@ class Shortcodes {
 
         add_shortcode($tag, function($parameters, $content=null) use($tag, $defaults, $hook) {
             $parameters = shortcode_atts($defaults, $parameters, $tag);
-            $hook($parameters, $content);
+            return $hook($parameters, $content);
         });
 
         // Add the corresponding button to TinyMCE if needed
@@ -262,8 +263,8 @@ class Shortcodes {
                     'buttontext' => $this->_buttonText,
                     'inputs'     => $this->_parameters
                 ],
-                $this->_toolbarNumber,
-                $this->_toolbarAfter
+                $this->_toolbarAfter,
+                $this->_toolbarNumber
             );
         }
     }
@@ -271,14 +272,22 @@ class Shortcodes {
 
 
     /**
-     * Predefined shortcode: [base_url]
-     * Get the base URL of the website, with trailing slash
-     * @return String
+     * Predefined shortcode: [home_url]
+     * Get the home URL of the website, with trailing slash
+     * @param  Boolean  $add      (Optional) Whether to add a shortcode button to the editor or not
+     * @param  String   $after    (Optional) the name of the button to place the new button after
+     *                              'first' places the button as the first one
+     *                              null places the button at the end
+     * @param  Integer  $toolbar  (Optional) the toolbar number, 1 = default, 2/3/4 = advanced
      */
-    public static function baseUrl() {
-        static::add('base_url', function() {
-            return rtrim(esc_url(home_url()), '/') . '/';
-        });
+    public static function homeUrl($add=false, $after=null, $toolbar=1) {
+        static::create('home_url', false, $add)
+            ->buttonText(__('Home URL', static::textDomain()))
+            ->toolbar($toolbar, $after)
+            ->hook(function() {
+                return rtrim(esc_url(home_url()), '/') . '/';
+            })
+            ->add();
     }
 
 
@@ -287,18 +296,115 @@ class Shortcodes {
      * Predefined shortcode: [copyright year='2017']
      * 'year' is optional, defaults to current
      * Creates a '© 2013 - 2017 Site name' line
-     * @return String
+     * @param  Boolean  $add      (Optional) Whether to add a shortcode button to the editor or not
+     * @param  String   $after    (Optional) the name of the button to place the new button after
+     *                              'first' places the button as the first one
+     *                              null places the button at the end
+     * @param  Integer  $toolbar  (Optional) the toolbar number, 1 = default, 2/3/4 = advanced
      */
-    public static function copyright() {
-        static::add('copyright', function($params) {
-            $currentYear = date('Y');
-            $params = shortcode_atts(['year' => $currentYear], $params);
+    public static function copyright($add=false, $after=null, $toolbar=1) {
+        static::create('copyright', false, $add)
+            ->buttonText(__('Copyright', static::textDomain()))
+            ->toolbar($toolbar, $after)
+            ->addParameter([
+                'name'    => 'year',
+                'label'   => __('Year', static::textDomain()),
+                'type'    => 'text',
+                'default' => date('Y'),
+                'tooltip' => __('Default value is the current year', static::textDomain())
+            ])
+            ->hook(function($parameters) {
+                $currentYear = date('Y');
+                $years = $parameters['year'];
+                ((int) $parameters['year'] < $currentYear)  &&  $years .= ' - '.$currentYear;
 
-            $years = $params['year'];
-            ((int) $params['year'] < $currentYear)  &&  $years .= ' - '.$currentYear;
+                return '&copy; ' . $years . ' ' . get_bloginfo('name');
+            })
+            ->add();
+    }
 
-            return '&copy; ' . $years . ' ' . get_bloginfo('name');
-        });
+
+
+    /**
+     * Predefined shortcode: [page_link id='1' class='css-class' target='_blank']linktext[/page_link]
+     * 'class' is optional, and adds a CSS class to the element
+     * 'target' is optional, and adds a 'target' attribute to the element
+     * Creates an <a> element that links to a page of the site
+     * @param  Boolean  $add      (Optional) Whether to add a shortcode button to the editor or not
+     * @param  String   $after    (Optional) the name of the button to place the new button after
+     *                              'first' places the button as the first one
+     *                              null places the button at the end
+     * @param  Integer  $toolbar  (Optional) the toolbar number, 1 = default, 2/3/4 = advanced
+     */
+    public static function pageLink($add=true, $after=null, $toolbar=1) {
+        // Construct the page options for the dropdown
+        $pageOptions = [];
+        $previousParent = 0;
+        // Keeps track of the indentations per parent
+        $indents = [0 => ''];
+        foreach(get_pages([
+            'post_type' => 'page',
+            'sort_order' => 'asc',
+            'sort_column' => 'ID',
+            'hierarchical' => true
+        ]) as $page) {
+            $prefix = '';
+            if($page->post_parent > 0) {
+                // Add a new indentation if it doesn't exist yet
+                if( ! array_key_exists($page->post_parent, $indents)) {
+                    // But only increase the indent, if the current parent is different from the previous
+                    // Which means that this is a subpage of a subpage
+                    if($page->post_parent != $previousParent) {
+                        $indents[$page->post_parent] .= $indents[$previousParent] . str_repeat(html_entity_decode('&nbsp;').' ', 2);
+                        $previousParent = $page->post_parent;
+                    }
+                }
+
+                // Add the ⤷ character to the prefix
+                $prefix .= $indents[$page->post_parent] . '⤷ ';
+            }
+            // Indent resets at top-level pages
+            else
+                $previousParent = 0;
+
+            // Add the post status to the prefix, if it's not published
+            if($page->post_status != 'publish')
+                $prefix .= '(' . $page->post_status . ') ';
+
+            // Add the option
+            $pageOptions[$page->ID] = $prefix . $page->post_title;
+        };
+
+        static::create('page_link', true, $add)
+            ->buttonText(__('Page link', static::textDomain()))
+            ->toolbar($toolbar, $after)
+            ->addParameter([
+                'name'   => 'id',
+                'label'  => __('Page', static::textDomain()),
+                'type'   => 'dropdown',
+                'values' => $pageOptions,
+                'placeholder' => __('- Please choose -', static::textDomain())
+            ])
+            ->addParameter([
+                'name'  => 'class',
+                'label' => __('CSS class', static::textDomain()),
+                'type'  => 'text'
+            ])
+            ->addParameter([
+                'name'  => 'target',
+                'label' => __("'target' attribute", static::textDomain()),
+                'type'  => 'text'
+            ])
+            ->hook(function($parameters, $content) {
+                if(is_numeric($parameters['id'])) {
+                    $link = get_permalink($parameters['id']);
+                    $target = ($parameters['target'] != '') ? ' target="'.$parameters['target'].'"' : '';
+                    $class = ($parameters['class'] != '') ? ' class="'.$parameters['class'].'"' : '';
+
+                    return '<a href="' . $link . '"' . $class . $target . '>' . $content . '</a>';
+                }
+            })
+            ->add();
     }
 
 
