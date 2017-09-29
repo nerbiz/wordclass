@@ -1,15 +1,15 @@
 # Wordclass\Shortcodes
 Uses the `CanSetTextDomain` trait.
 
-### ::baseUrl()
-Add the `[base_url]` shortcode, which returns the base URL of the website, with trailing slash.
+### ::homeUrl()
+Add the `[home_url]` shortcode, which returns the home URL of the website, with trailing slash.
 
 #### Example
 ```php
-Wordclass\Shortcodes::baseUrl();
+Wordclass\Shortcodes::homeUrl();
 
 // Apply
-[baseUrl]
+[home_url]
 ```
 
 ### ::copyright()
@@ -22,6 +22,18 @@ Wordclass\Shortcodes::copyright();
 
 // Apply
 [copyright year='2017']
+```
+
+### ::pageLink()
+Add the `[page_link]` shortcode, which creates a link to page of the website.  
+The 'class' and 'target' attributes are optional.
+
+#### Example
+```php
+Wordclass\Shortcodes::pageLink();
+
+// Apply
+[page_link id="1" class="css-class" target="_blank"]Link text[/page_link]
 ```
 
 ### ::create()
