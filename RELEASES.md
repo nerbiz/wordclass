@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.8.3.2
+
+* Fixed: there was a hardcoded path in Editor, it's flexible now.
+
 ## 0.8.3.1
 
 * The Shortcodes dropdown values now use value:label pairs.
