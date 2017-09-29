@@ -282,7 +282,7 @@ class Shortcodes {
      */
     public static function homeUrl($add=false, $after=null, $toolbar=1) {
         static::create('home_url', false, $add)
-            ->buttonText('Home URL')
+            ->buttonText(__('Home URL', static::textDomain()))
             ->toolbar($toolbar, $after)
             ->hook(function() {
                 return rtrim(esc_url(home_url()), '/') . '/';
@@ -304,7 +304,7 @@ class Shortcodes {
      */
     public static function copyright($add=false, $after=null, $toolbar=1) {
         static::create('copyright', false, $add)
-            ->buttonText('Copyright')
+            ->buttonText(__('Copyright', static::textDomain()))
             ->toolbar($toolbar, $after)
             ->addParameter([
                 'name'    => 'year',
@@ -319,6 +319,90 @@ class Shortcodes {
                 ((int) $parameters['year'] < $currentYear)  &&  $years .= ' - '.$currentYear;
 
                 return '&copy; ' . $years . ' ' . get_bloginfo('name');
+            })
+            ->add();
+    }
+
+
+
+    /**
+     * Predefined shortcode: [page_link id='1' class='css-class' target='_blank']linktext[/page_link]
+     * 'class' is optional, and adds a CSS class to the element
+     * 'target' is optional, and adds a 'target' attribute to the element
+     * Creates an <a> element that links to a page of the site
+     * @param  Boolean  $add      (Optional) Whether to add a shortcode button to the editor or not
+     * @param  String   $after    (Optional) the name of the button to place the new button after
+     *                              'first' places the button as the first one
+     *                              null places the button at the end
+     * @param  Integer  $toolbar  (Optional) the toolbar number, 1 = default, 2/3/4 = advanced
+     */
+    public static function pageLink($add=true, $after=null, $toolbar=1) {
+        // Construct the page options for the dropdown
+        $pageOptions = [];
+        $previousParent = 0;
+        // Keeps track of the indentations per parent
+        $indents = [0 => ''];
+        foreach(get_pages([
+            'post_type' => 'page',
+            'sort_order' => 'asc',
+            'sort_column' => 'ID',
+            'hierarchical' => true
+        ]) as $page) {
+            $prefix = '';
+            if($page->post_parent > 0) {
+                // Add a new indentation if it doesn't exist yet
+                if( ! array_key_exists($page->post_parent, $indents)) {
+                    // But only increase the indent, if the current parent is different from the previous
+                    // Which means that this is a subpage of a subpage
+                    if($page->post_parent != $previousParent) {
+                        $indents[$page->post_parent] .= $indents[$previousParent] . '&nbsp; ';
+                        $previousParent = $page->post_parent;
+                    }
+                }
+
+                // Add the ⤷ character to the prefix
+                $prefix .= $indents[$page->post_parent] . '⤷ ';
+            }
+            // Indent resets at top-level pages
+            else
+                $previousParent = 0;
+
+            // Add the post status to the prefix, if it's not published
+            if($page->post_status != 'publish')
+                $prefix .= '(' . $page->post_status . ') ';
+
+            // Add the option
+            $pageOptions[$page->ID] = $prefix . $page->post_title;
+        };
+
+        static::create('page_link', true, $add)
+            ->buttonText(__('Page link', static::textDomain()))
+            ->toolbar($toolbar, $after)
+            ->addParameter([
+                'name'   => 'id',
+                'label'  => __('Page', static::textDomain()),
+                'type'   => 'dropdown',
+                'values' => $pageOptions,
+                'placeholder' => __('- Please choose -', static::textDomain())
+            ])
+            ->addParameter([
+                'name'  => 'class',
+                'label' => __('CSS class', static::textDomain()),
+                'type'  => 'text'
+            ])
+            ->addParameter([
+                'name'  => 'target',
+                'label' => __("'target' attribute", static::textDomain()),
+                'type'  => 'text'
+            ])
+            ->hook(function($parameters, $content) {
+                if(is_numeric($parameters['id'])) {
+                    $link = get_permalink($parameters['id']);
+                    $target = ($parameters['target'] != '') ? ' target="'.$parameters['target'].'"' : '';
+                    $class = ($parameters['class'] != '') ? ' class="'.$parameters['class'].'"' : '';
+
+                    return '<a href="' . $link . '"' . $class . $target . '>' . $content . '</a>';
+                }
             })
             ->add();
     }
