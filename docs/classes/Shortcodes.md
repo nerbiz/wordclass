@@ -1,4 +1,5 @@
 # Wordclass\Shortcodes
+Uses the `CanSetPrefix` trait.
 Uses the `CanSetTextDomain` trait.
 
 ### ::homeUrl()
