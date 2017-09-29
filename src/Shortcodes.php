@@ -355,7 +355,7 @@ class Shortcodes {
                     // But only increase the indent, if the current parent is different from the previous
                     // Which means that this is a subpage of a subpage
                     if($page->post_parent != $previousParent) {
-                        $indents[$page->post_parent] .= $indents[$previousParent] . '&nbsp; ';
+                        $indents[$page->post_parent] .= $indents[$previousParent] . str_repeat(html_entity_decode('&nbsp;').' ', 2);
                         $previousParent = $page->post_parent;
                     }
                 }
