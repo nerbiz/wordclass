@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.8.3.3
+
+* Fixed: all shortcode buttons used the options dialog of the last one. You can now add multiple shortcode buttons normally.
+
 ## 0.8.3.2
 
 * Fixed: there was a hardcoded path in Editor, it's flexible now.
