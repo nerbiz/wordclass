@@ -4,6 +4,7 @@ namespace Wordclass;
 
 class Shortcodes {
     use Traits\CanSetPrefix;
+    use Traits\CanSetTextDomain;
 
 
 
@@ -262,8 +263,8 @@ class Shortcodes {
                     'buttontext' => $this->_buttonText,
                     'inputs'     => $this->_parameters
                 ],
-                $this->_toolbarNumber,
-                $this->_toolbarAfter
+                $this->_toolbarAfter,
+                $this->_toolbarNumber
             );
         }
     }
@@ -271,14 +272,22 @@ class Shortcodes {
 
 
     /**
-     * Predefined shortcode: [base_url]
-     * Get the base URL of the website, with trailing slash
-     * @return String
+     * Predefined shortcode: [home_url]
+     * Get the home URL of the website, with trailing slash
+     * @param  Boolean  $add      (Optional) Whether to add a shortcode button to the editor or not
+     * @param  String   $after    (Optional) the name of the button to place the new button after
+     *                              'first' places the button as the first one
+     *                              null places the button at the end
+     * @param  Integer  $toolbar  (Optional) the toolbar number, 1 = default, 2/3/4 = advanced
      */
-    public static function baseUrl() {
-        static::add('base_url', function() {
-            return rtrim(esc_url(home_url()), '/') . '/';
-        });
+    public static function homeUrl($add=false, $after=null, $toolbar=1) {
+        static::create('home_url', false, $add)
+            ->buttonText('Home URL')
+            ->toolbar($toolbar, $after)
+            ->hook(function() {
+                return rtrim(esc_url(home_url()), '/') . '/';
+            })
+            ->add();
     }
 
 
@@ -287,18 +296,31 @@ class Shortcodes {
      * Predefined shortcode: [copyright year='2017']
      * 'year' is optional, defaults to current
      * Creates a '© 2013 - 2017 Site name' line
-     * @return String
+     * @param  Boolean  $add      (Optional) Whether to add a shortcode button to the editor or not
+     * @param  String   $after    (Optional) the name of the button to place the new button after
+     *                              'first' places the button as the first one
+     *                              null places the button at the end
+     * @param  Integer  $toolbar  (Optional) the toolbar number, 1 = default, 2/3/4 = advanced
      */
-    public static function copyright() {
-        static::add('copyright', function($params) {
-            $currentYear = date('Y');
-            $params = shortcode_atts(['year' => $currentYear], $params);
+    public static function copyright($add=false, $after=null, $toolbar=1) {
+        static::create('copyright', false, $add)
+            ->buttonText('Copyright')
+            ->toolbar($toolbar, $after)
+            ->addParameter([
+                'name'    => 'year',
+                'label'   => __('Year', static::textDomain()),
+                'type'    => 'text',
+                'default' => date('Y'),
+                'tooltip' => __('Default value is the current year', static::textDomain())
+            ])
+            ->hook(function($parameters) {
+                $currentYear = date('Y');
+                $years = $parameters['year'];
+                ((int) $parameters['year'] < $currentYear)  &&  $years .= ' - '.$currentYear;
 
-            $years = $params['year'];
-            ((int) $params['year'] < $currentYear)  &&  $years .= ' - '.$currentYear;
-
-            return '&copy; ' . $years . ' ' . get_bloginfo('name');
-        });
+                return '&copy; ' . $years . ' ' . get_bloginfo('name');
+            })
+            ->add();
     }
 
 
