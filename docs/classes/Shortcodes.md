@@ -45,7 +45,7 @@ The currently supported input types are 'text', 'dropdown' and 'checkbox'.
 
 ### ::hook()
 The callback function that handles the shortcode. 2 arguments are passed to this function: $parameters and $content, where $content is optional, only used when the shortcode is enclosing.  
-Before passing these values, the parameters are run through ```shortcode_atts()```, using the defaults specified with ```::addParameter()```. It also adds a filter named 'shortcode_atts_{$tag}', to filter the attributes with, if needed.
+Before passing these values, the parameters are run through ```shortcode_atts()```, using the defaults specified with ```::addParameter()```. It also adds a filter named 'shortcode_atts_{$tag}', to filter the parameters with, if needed.
 
 ### ::add()
 Don't forget to put this method at the end of the chain, because this actually adds everything, the preceding functions are only for setting and preparing.
@@ -61,8 +61,8 @@ Wordclass\Shortcodes::create('pretty_button')
     // Add 2 parameters, having input type 'text'
     ->addParameter('param1')
     ->addParameter('param2')
-    ->hook(function($attributes) {
-        // ...do something with attributes, render HTML...
+    ->hook(function($parameters) {
+        // ...do something with parameters, render HTML...
     })
     ->add();
 
@@ -107,8 +107,8 @@ Wordclass\Shortcodes::create('pretty_button', true, true)
         // (Optional) whether or not the checkbox is checked by default
         'checked' => true
     ])
-    ->hook(function($attributes, $content) {
-        // ...do something with attributes and enclosed content, render HTML...
+    ->hook(function($parameters, $content) {
+        // ...do something with parameters and enclosed content, render HTML...
     })
     ->add();
 ```
