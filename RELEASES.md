@@ -1,5 +1,13 @@
 # Release notes
 
+## 0.8.5
+
+* Added Helpers::option(), for getting and setting options in the Wordpress options database table. Option prefix is automatically added.
+* Added Helpers::deleteOption(), for removing an option from Wordpress options database table. Option prefix is automatically added.
+* Added Init::autoload(), to make autoloading your own classes easy.
+* Removed Init::autoloader(), because Wordclass should just be included with Composer.
+* Fixed: SettingsPage wasn't working after the last update, section and field IDs were mixed up.
+
 ## 0.8.4
 
 * Added Shortcodes::pageLink(), which creates the [page_link] shortcode (+ documentation).
