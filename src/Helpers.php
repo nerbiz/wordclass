@@ -3,6 +3,10 @@
 namespace Wordclass;
 
 class Helpers {
+    use Traits\CanSetPrefix;
+
+
+
     /**
      * Get the URL of a featured image
      * @param  Integer  $imageid  The ID of the image
@@ -90,5 +94,50 @@ class Helpers {
      */
     public static function getPostTaxonomies($postid, $taxonomy) {
         return wp_get_object_terms($postid, $taxonomy);
+    }
+
+
+
+    /**
+     * Get or set an option from/in the Wordpress options table
+     * @param   String  $name          The name of the option (without prefix)
+     * @param   Mixed   $value         If null, this returns the value of the option
+     *                                   returns false if the option doesn't exist, or is empty
+     *                                 If not null, this will add or update the option
+     * @param   String  $prefixAppend  The character(s) between prefix and name
+     * @return  Mixed  (Boolean when a value is given, true on success, false on failure, or unchanged)
+     */
+    public static function option($name, $value=null, $prefixAppend='_') {
+        if( ! is_string($name))
+            return false;
+
+        if(trim($name) == '')
+            return false;
+
+        // Get the option
+        if($value == null)
+            return get_option(static::prefix() . $prefixAppend . $name);
+
+        // Add or update the option
+        else
+            return update_option(static::prefix() . $prefixAppend . $name, $value);
+    }
+
+
+
+    /**
+     * Delete an option from the Wordpress options table
+     * @param  String   $name          The name of the option (without prefix)
+     * @param  String   $prefixAppend  The character(s) between prefix and name
+     * @return Boolean  true on success, false on failure
+     */
+    public function deleteOption($name, $prefixAppend='_') {
+        if( ! is_string($name))
+            return false;
+
+        if(trim($name) == '')
+            return false;
+
+        return delete_option(static::prefix() . $prefixAppend . $name);
     }
 }

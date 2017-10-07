@@ -134,20 +134,25 @@ class SettingsPage {
     public function addSection($id, $title, $subtitle='', $fields=[]) {
         add_action('admin_init', function() use($id, $title, $subtitle, $fields) {
             $prefix = static::prefix();
-            $idHyphen = $prefix . '-' . $id;
-            $nameHyphen = $prefix . '-' . $id;
-            $nameUnderscore = $prefix . '_' . $id;
+            $sectionId = $prefix . '-' . $id;
 
             add_settings_section(
-                $idHyphen,
+                // ID to identify the section
+                $sectionId,
+                // Section title
                 __($title, static::textDomain()),
+                // Section subtitle
                 function() use($subtitle) {
                     echo __($subtitle, static::textDomain());
                 },
+                // Slug of the settings page
                 $this->_pageSlug
             );
 
             foreach($fields as $name => $options) {
+                $nameHyphen = $prefix . '-' . $name;
+                $nameUnderscore = $prefix . '_' . $name;
+
                 register_setting(
                     $this->_settingsGroup,
                     $nameUnderscore
@@ -162,8 +167,8 @@ class SettingsPage {
                     [$this, 'decideInput'],
                     // Slug of the page to show this setting on
                     $this->_pageSlug,
-                    // Slug of the section
-                    $idHyphen,
+                    // Slug (ID) of the section
+                    $sectionId,
                     // Arguments for the above function
                     [
                         'type' => $options['type'],
