@@ -3,29 +3,61 @@
 namespace Wordclass;
 
 class Init {
+    /**
+     * The default text domain to use
+     * @var String
+     */
     private static $_defaultTextDomain = null;
 
+    /**
+     * The default prefix to use
+     * @var String
+     */
     private static $_prefix = null;
 
+    /**
+     * A custom URI to the vendor directory
+     * The default is a 'vendor' directory in the theme directory
+     * @var String
+     */
     private static $_vendorUri = null;
 
 
 
     /**
-     * Initialize the autoloader
-     * Only needed when not using the Composer autoloader
+     * An autoloader for custom namespaces
+     * @param String  $namespace  The name of the namespace
+     * @param String  $path       The full path to the classes of the namespace
+     * @param Boolean $remove     Remove the namespace from the path
+     *                              For instance: a Custom\General class is located at classes/General.php
+     *                              Then the autoloader shouldn't look for classes/Custom/General.php
      */
-    public static function autoloader() {
-        spl_autoload_register(function($class) {
-            $sep = DIRECTORY_SEPARATOR;
-            // Remove leading and trailing backslashes
+    public static function autoload($namespace, $path, $remove=false) {
+        spl_autoload_register(function($class) use($namespace, $path, $remove) {
+            // Ensure 1 trailing slash
+            $path = rtrim($path, '/') . '/';
+
+            // Remove leading backslashes
             $classPath = ltrim($class, '\\');
+
             // Replace backslashes with directory separators
-            $classPath = str_replace('\\', $sep, $classPath);
-            // Construct the classpath, relative to this file
-            $classPath = __DIR__ . $sep . $classPath . '.php';
-            // Remove the 'Wordclass' namespace from the path
-            $classPath = str_replace($sep.'Wordclass'.$sep, $sep, $classPath);
+            $classPath = str_replace('\\', DIRECTORY_SEPARATOR, $classPath);
+
+            // Construct the classpath
+            $classPath = $path . $classPath . '.php';
+
+            // Remove the namespace from the path, if needed
+            // Only the last occurence, because another directory might have the same name
+            if($remove) {
+                // Get the position of the namespace in the path, and the length to remove
+                $position = strrpos($classPath, $namespace);
+                $replaceLength = strlen($namespace . DIRECTORY_SEPARATOR);
+
+                // Construct the new path, without the namespace in it
+                $start = substr($classPath, 0, $position);
+                $end = substr($classPath, ($position + $replaceLength));
+                $classPath = $start . $end;
+            }
 
             if(is_readable($classPath))
                 require_once $classPath;
