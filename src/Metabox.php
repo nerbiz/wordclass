@@ -2,6 +2,8 @@
 
 namespace Wordclass;
 
+require_once __DIR__ . '/../../../webdevstudios/cmb2/init.php';
+
 use CMB2;
 
 class Metabox {
