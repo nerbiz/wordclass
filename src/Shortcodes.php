@@ -329,6 +329,37 @@ class Shortcodes {
 
 
     /**
+     * Predefined shortcode: [google_analytics code='UA-...']
+     * 'code' is the tracking code (no output if no code is given)
+     * Creates a Google Analytics include script
+     * @param  Boolean  $add      (Optional) Whether to add a shortcode button to the editor or not
+     * @param  String   $after    (Optional) the name of the button to place the new button after
+     *                              'first' places the button as the first one
+     *                              null places the button at the end
+     * @param  Integer  $toolbar  (Optional) the toolbar number, 1 = default, 2/3/4 = advanced
+     */
+    public static function googleAnalytics($add=false, $after=null, $toolbar=1) {
+        static::create('google_analytics', false, $add)
+            ->buttonText(__('Google Analytics', static::textDomain()))
+            ->toolbar($toolbar, $after)
+            ->addParameter([
+                'name'    => 'code',
+                'label'   => __('Tracking code', static::textDomain()),
+                'type'    => 'text'
+            ])
+            ->hook(function($parameters) {
+                // Tracking code is required
+                if($parameters['code'] != null) {
+                    $trackingCode = $parameters['code'];
+                    require __DIR__ . '/../includes/js/google-analytics.php';
+                }
+            })
+            ->add();
+    }
+
+
+
+    /**
      * Predefined shortcode: [page_link id='1' class='css-class' target='_blank']linktext[/page_link]
      * 'class' is optional, and adds a CSS class to the element
      * 'target' is optional, and adds a 'target' attribute to the element
