@@ -7,15 +7,26 @@ use Wordclass\Utilities;
 class SettingsPage {
     use Traits\CanSetTextDomain;
     use Traits\CanSetPrefix;
+    use Traits\CanTranslate;
 
 
 
     /**
-     * Various settings page values
-     * @var Mixed
+     * The title of the settings page
+     * @var String
      */
     private $_pageTitle;
+
+    /**
+     * The settings page slug, will be prepended with prefix
+     * @var String
+     */
     private $_pageSlug;
+
+    /**
+     * The group name of the settings, will be prepended with prefix
+     * @var String
+     */
     private $_settingsGroup;
 
 
@@ -25,10 +36,10 @@ class SettingsPage {
      */
     private function __construct($title, $settingsgroup, $icon, $menuposition) {
         // Translate the title
-        $this->_pageTitle = __($title, static::textDomain());
+        $this->_pageTitle = static::__($title, static::textDomain());
 
         // The page slug is the title converted to slug, by default
-        $this->_pageSlug = Utilities::createSlug($title);
+        $this->_pageSlug = static::prefix() . '-' . Utilities::createSlug($title);
 
         // The group in which all settings go
         $this->_settingsGroup = static::prefix() . '-' . $settingsgroup;
@@ -37,9 +48,9 @@ class SettingsPage {
             if(current_user_can('manage_options')) {
                 add_menu_page(
                     // Page title
-                    __($this->_pageTitle, static::textDomain()),
+                    static::__($this->_pageTitle, static::textDomain()),
                     // Menu title
-                    __($this->_pageTitle, static::textDomain()),
+                    static::__($this->_pageTitle, static::textDomain()),
                     // Capability
                     'manage_options',
                     // Menu slug
@@ -48,7 +59,7 @@ class SettingsPage {
                     function() {
                         echo '
                             <div class="wrap">
-                                <h1>' . __($this->_pageTitle, static::textDomain()) . '</h1>
+                                <h1>' . static::__($this->_pageTitle, static::textDomain()) . '</h1>
 
                                 <form action="options.php" method="POST">';
                                     // Output nonce, action, and option_page fields for a settings page
@@ -73,11 +84,12 @@ class SettingsPage {
 
     /**
      * Overwrite the page slug with a custom one
+     * Prefix will be prepended
      * @param  String  $slug
      * @return $this
      */
     public function pageSlug($slug) {
-        $this->_pageSlug = $slug;
+        $this->_pageSlug = static::prefix() . '-' . $slug;
 
         return $this;
     }
@@ -140,10 +152,10 @@ class SettingsPage {
                 // ID to identify the section
                 $sectionId,
                 // Section title
-                __($title, static::textDomain()),
+                static::__($title, static::textDomain()),
                 // Section subtitle
                 function() use($subtitle) {
-                    echo __($subtitle, static::textDomain());
+                    echo static::__($subtitle, static::textDomain());
                 },
                 // Slug of the settings page
                 $this->_pageSlug
@@ -162,7 +174,7 @@ class SettingsPage {
                     // ID to identify the field
                     $nameHyphen,
                     // Title of the setting
-                    __($options['title'], static::textDomain()),
+                    static::__($options['title'], static::textDomain()),
                     // Function that echoes the input field
                     [$this, 'decideInput'],
                     // Slug of the page to show this setting on

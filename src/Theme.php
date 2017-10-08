@@ -4,6 +4,7 @@ namespace Wordclass;
 
 class Theme {
     use Traits\CanSetTextDomain;
+    use Traits\CanTranslate;
 
 
 
@@ -52,7 +53,7 @@ class Theme {
             add_image_size($name, $width, $height, $crop);
 
             add_filter('image_size_names_choose', function($sizes) use($name, $optionName) {
-                $sizes[$name] = __($optionName, static::textDomain());
+                $sizes[$name] = static::__($optionName, static::textDomain());
                 return $sizes;
             });
         });
@@ -72,7 +73,7 @@ class Theme {
 
         add_action('after_setup_theme', function() use($menus) {
             foreach($menus as $location => $description)
-                register_nav_menu($location, __($description, static::textDomain()));
+                register_nav_menu($location, static::__($description, static::textDomain()));
         });
     }
 

@@ -25,6 +25,16 @@ class Init {
 
 
     /**
+     * Do some initializing stuff
+     */
+    public static function init() {
+        // Include the translation helper functions
+        require __DIR__ . '/../includes/php/translate.php';
+    }
+
+
+
+    /**
      * An autoloader for custom namespaces
      * @param String  $namespace  The name of the namespace
      * @param String  $path       The full path to the classes of the namespace

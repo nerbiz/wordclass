@@ -7,6 +7,7 @@ use Wordclass\Utilities;
 class PageBuilder {
     use Traits\CanSetTextDomain;
     use Traits\CanSetPrefix;
+    use Traits\CanTranslate;
 
 
 
@@ -45,7 +46,7 @@ class PageBuilder {
 
         // Prevent translating 'null', if no description is given
         if(isset($args['description']))
-            $args['description'] = __($args['description'], static::textDomain());
+            $args['description'] = static::__($args['description'], static::textDomain());
         else
             $args['description'] = null;
 
@@ -54,7 +55,7 @@ class PageBuilder {
             $fieldName = static::prefix() . '-' . $args['slug'];
 
             $fields[$fieldName] = [
-                'name'        => __($args['label'], static::textDomain()),
+                'name'        => static::__($args['label'], static::textDomain()),
                 'type'        => $args['type'],
                 'group'       => $args['group'],
                 'description' => $args['description'],
@@ -151,7 +152,7 @@ class PageBuilder {
     public static function addWidgetsTab($label) {
         add_filter('siteorigin_panels_widget_dialog_tabs', function($tabs) use ($label) {
             $tabs[] = [
-                'title'  => __($label, static::textDomain()),
+                'title'  => static::__($label, static::textDomain()),
                 'filter' => [
                     'groups' => [static::$_widgetGroup]
                 ]
