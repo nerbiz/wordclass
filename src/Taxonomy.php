@@ -126,27 +126,29 @@ class Taxonomy {
      * @return $this;
      */
     public function labels($labels=[]) {
+        $textDomain = static::textDomain();
+
         $this->_labels = array_replace_recursive([
-            'name'                       => static::__($this->_name, static::textDomain()),
-            'singular_name'              => static::__($this->_singularName, static::textDomain()),
-            'menu_name'                  => static::__($this->_name, static::textDomain()),
-            'all_items'                  => static::__('All ' . $this->_name, static::textDomain()),
-            'parent_item'                => static::__('Parent ' . $this->_singularName, static::textDomain()),
-            'parent_item_colon'          => static::__('Parent ' . $this->_singularName . ':', static::textDomain()),
-            'new_item_name'              => static::__('New ' . $this->_singularName . ' name', static::textDomain()),
-            'add_new_item'               => static::__('Add new ' . $this->_singularName, static::textDomain()),
-            'edit_item'                  => static::__('Edit ' . $this->_singularName, static::textDomain()),
-            'update_item'                => static::__('Update ' . $this->_singularName, static::textDomain()),
-            'view_item'                  => static::__('View ' . $this->_singularName, static::textDomain()),
-            'separate_items_with_commas' => static::__('Separate ' . $this->_name . ' with commas', static::textDomain()),
-            'add_or_remove_items'        => static::__('Add or remove ' . $this->_name, static::textDomain()),
-            'choose_from_most_used'      => static::__('Choose from the most used', static::textDomain()),
-            'popular_items'              => static::__('Popular ' . $this->_name, static::textDomain()),
-            'search_items'               => static::__('Search ' . $this->_name, static::textDomain()),
-            'not_found'                  => static::__('Not found', static::textDomain()),
-            'no_terms'                   => static::__('No ' . $this->_name, static::textDomain()),
-            'items_list'                 => static::__($this->_name . ' list', static::textDomain()),
-            'items_list_navigation'      => static::__($this->_name . ' list navigation', static::textDomain())
+            'name'                       => static::__($this->_name, $textDomain),
+            'singular_name'              => static::__($this->_singularName, $textDomain),
+            'menu_name'                  => static::__($this->_name, $textDomain),
+            'all_items'                  => sprintf(static::__('All %s', $textDomain), $this->_name),
+            'parent_item'                => sprintf(static::__('Parent %s', $textDomain), $this->_singularName),
+            'parent_item_colon'          => sprintf(static::__('Parent %s:', $textDomain), $this->_singularName),
+            'new_item_name'              => sprintf(static::__('New %s name', $textDomain), $this->_singularName),
+            'add_new_item'               => sprintf(static::__('Add new %s', $textDomain), $this->_singularName),
+            'edit_item'                  => sprintf(static::__('Edit %s', $textDomain), $this->_singularName),
+            'update_item'                => sprintf(static::__('Update %s', $textDomain), $this->_singularName),
+            'view_item'                  => sprintf(static::__('View %s', $textDomain), $this->_singularName),
+            'separate_items_with_commas' => sprintf(static::__('Separate %s with commas', $textDomain), $this->_name),
+            'add_or_remove_items'        => sprintf(static::__('Add or remove %s', $textDomain), $this->_name),
+            'choose_from_most_used'      => static::__('Choose from the most used', $textDomain),
+            'popular_items'              => sprintf(static::__('Popular %s', $textDomain), $this->_name),
+            'search_items'               => sprintf(static::__('Search %s', $textDomain), $this->_name),
+            'not_found'                  => static::__('Not found', $textDomain),
+            'no_terms'                   => sprintf(static::__('No %s', $textDomain), $this->_name),
+            'items_list'                 => sprintf(static::__('%s list', $textDomain), $this->_name),
+            'items_list_navigation'      => sprintf(static::__('%s list navigation', $textDomain), $this->_name)
         ], $labels);
 
         return $this;
