@@ -5,6 +5,7 @@ namespace Wordclass;
 class Shortcodes {
     use Traits\CanSetPrefix;
     use Traits\CanSetTextDomain;
+    use Traits\CanTranslate;
 
 
 
@@ -285,7 +286,7 @@ class Shortcodes {
      */
     public static function homeUrl($add=false, $after=null, $toolbar=1) {
         static::create('home_url', false, $add)
-            ->buttonText(__('Home URL', static::textDomain()))
+            ->buttonText(static::__('Home URL', static::textDomain()))
             ->toolbar($toolbar, $after)
             ->hook(function() {
                 return rtrim(esc_url(home_url()), '/') . '/';
@@ -307,14 +308,14 @@ class Shortcodes {
      */
     public static function copyright($add=false, $after=null, $toolbar=1) {
         static::create('copyright', false, $add)
-            ->buttonText(__('Copyright', static::textDomain()))
+            ->buttonText(static::__('Copyright', static::textDomain()))
             ->toolbar($toolbar, $after)
             ->addParameter([
                 'name'    => 'year',
-                'label'   => __('Year', static::textDomain()),
+                'label'   => static::__('Year', static::textDomain()),
                 'type'    => 'text',
                 'default' => date('Y'),
-                'tooltip' => __('Default value is the current year', static::textDomain())
+                'tooltip' => static::__('Default value is the current year', static::textDomain())
             ])
             ->hook(function($parameters) {
                 $currentYear = date('Y');
@@ -340,11 +341,11 @@ class Shortcodes {
      */
     public static function googleAnalytics($add=false, $after=null, $toolbar=1) {
         static::create('google_analytics', false, $add)
-            ->buttonText(__('Google Analytics', static::textDomain()))
+            ->buttonText(static::__('Google Analytics', static::textDomain()))
             ->toolbar($toolbar, $after)
             ->addParameter([
                 'name'    => 'code',
-                'label'   => __('Tracking code', static::textDomain()),
+                'label'   => static::__('Tracking code', static::textDomain()),
                 'type'    => 'text'
             ])
             ->hook(function($parameters) {
@@ -410,23 +411,23 @@ class Shortcodes {
         };
 
         static::create('page_link', true, $add)
-            ->buttonText(__('Page link', static::textDomain()))
+            ->buttonText(static::__('Page link', static::textDomain()))
             ->toolbar($toolbar, $after)
             ->addParameter([
                 'name'   => 'id',
-                'label'  => __('Page', static::textDomain()),
+                'label'  => static::__('Page', static::textDomain()),
                 'type'   => 'dropdown',
                 'values' => $pageOptions,
-                'placeholder' => __('- Please choose -', static::textDomain())
+                'placeholder' => static::__('- Please choose -', static::textDomain())
             ])
             ->addParameter([
                 'name'  => 'class',
-                'label' => __('CSS class', static::textDomain()),
+                'label' => static::__('CSS class', static::textDomain()),
                 'type'  => 'text'
             ])
             ->addParameter([
                 'name'  => 'target',
-                'label' => __("'target' attribute", static::textDomain()),
+                'label' => static::__("'target' attribute", static::textDomain()),
                 'type'  => 'text'
             ])
             ->hook(function($parameters, $content) {

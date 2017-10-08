@@ -6,6 +6,7 @@ use Wordclass\Utilities;
 
 class Taxonomy {
     use Traits\CanSetTextDomain;
+    use Traits\CanTranslate;
 
 
 
@@ -126,26 +127,26 @@ class Taxonomy {
      */
     public function labels($labels=[]) {
         $this->_labels = array_replace_recursive([
-            'name'                       => _x($this->_name, 'Taxonomy general name', static::textDomain()),
-            'singular_name'              => _x($this->_singularName, 'Taxonomy singular name', static::textDomain()),
-            'menu_name'                  => __($this->_name, static::textDomain()),
-            'all_items'                  => __('All ' . $this->_name, static::textDomain()),
-            'parent_item'                => __('Parent ' . $this->_singularName, static::textDomain()),
-            'parent_item_colon'          => __('Parent ' . $this->_singularName . ':', static::textDomain()),
-            'new_item_name'              => __('New ' . $this->_singularName . ' name', static::textDomain()),
-            'add_new_item'               => __('Add new ' . $this->_singularName, static::textDomain()),
-            'edit_item'                  => __('Edit ' . $this->_singularName, static::textDomain()),
-            'update_item'                => __('Update ' . $this->_singularName, static::textDomain()),
-            'view_item'                  => __('View ' . $this->_singularName, static::textDomain()),
-            'separate_items_with_commas' => __('Separate ' . $this->_name . ' with commas', static::textDomain()),
-            'add_or_remove_items'        => __('Add or remove ' . $this->_name, static::textDomain()),
-            'choose_from_most_used'      => __('Choose from the most used', static::textDomain()),
-            'popular_items'              => __('Popular ' . $this->_name, static::textDomain()),
-            'search_items'               => __('Search ' . $this->_name, static::textDomain()),
-            'not_found'                  => __('Not found', static::textDomain()),
-            'no_terms'                   => __('No ' . $this->_name, static::textDomain()),
-            'items_list'                 => __($this->_name . ' list', static::textDomain()),
-            'items_list_navigation'      => __($this->_name . ' list navigation', static::textDomain())
+            'name'                       => static::__($this->_name, static::textDomain()),
+            'singular_name'              => static::__($this->_singularName, static::textDomain()),
+            'menu_name'                  => static::__($this->_name, static::textDomain()),
+            'all_items'                  => static::__('All ' . $this->_name, static::textDomain()),
+            'parent_item'                => static::__('Parent ' . $this->_singularName, static::textDomain()),
+            'parent_item_colon'          => static::__('Parent ' . $this->_singularName . ':', static::textDomain()),
+            'new_item_name'              => static::__('New ' . $this->_singularName . ' name', static::textDomain()),
+            'add_new_item'               => static::__('Add new ' . $this->_singularName, static::textDomain()),
+            'edit_item'                  => static::__('Edit ' . $this->_singularName, static::textDomain()),
+            'update_item'                => static::__('Update ' . $this->_singularName, static::textDomain()),
+            'view_item'                  => static::__('View ' . $this->_singularName, static::textDomain()),
+            'separate_items_with_commas' => static::__('Separate ' . $this->_name . ' with commas', static::textDomain()),
+            'add_or_remove_items'        => static::__('Add or remove ' . $this->_name, static::textDomain()),
+            'choose_from_most_used'      => static::__('Choose from the most used', static::textDomain()),
+            'popular_items'              => static::__('Popular ' . $this->_name, static::textDomain()),
+            'search_items'               => static::__('Search ' . $this->_name, static::textDomain()),
+            'not_found'                  => static::__('Not found', static::textDomain()),
+            'no_terms'                   => static::__('No ' . $this->_name, static::textDomain()),
+            'items_list'                 => static::__($this->_name . ' list', static::textDomain()),
+            'items_list_navigation'      => static::__($this->_name . ' list navigation', static::textDomain())
         ], $labels);
 
         return $this;
@@ -166,7 +167,7 @@ class Taxonomy {
         // Overwrite defaults, if arguments are given
         $this->_arguments = array_replace_recursive([
             'labels'             => $this->_labels,
-            'description'         => __($this->_description, static::textDomain()),
+            'description'         => static::__($this->_description, static::textDomain()),
             'hierarchical'       => true,
             'public'             => true,
             'publicly_queryable' => true,

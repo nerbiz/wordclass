@@ -4,6 +4,7 @@ namespace Wordclass;
 
 class Widgets {
     use Traits\CanSetTextDomain;
+    use Traits\CanTranslate;
 
 
 
@@ -28,11 +29,11 @@ class Widgets {
         add_action('widgets_init', function() use($id, $name, $description, $widget, $title) {
             // Only translate the description, if it's given
             if($description != '')
-                $description = __($description, static::textDomain());
+                $description = static::__($description, static::textDomain());
 
             register_sidebar([
                 'id'            => $id,
-                'name'          => __($name, static::textDomain()),
+                'name'          => static::__($name, static::textDomain()),
                 'description'   => $description,
                 'class'         => '',
                 'before_widget' => @$widget['before']  ?:  '<aside id="%1$s" class="widget %2$s">',

@@ -6,6 +6,7 @@ use Wordclass\Utilities;
 
 class PostType {
     use Traits\CanSetTextDomain;
+    use Traits\CanTranslate;
 
 
 
@@ -120,31 +121,31 @@ class PostType {
      */
     public function labels($labels=[]) {
         $this->_labels = array_replace_recursive([
-            'name'                  => _x($this->_name, 'Post Type general name', static::textDomain()),
-            'singular_name'         => _x($this->_singularName, 'Post Type singular name', static::textDomain()),
-            'menu_name'             => __($this->_name, static::textDomain()),
-            'name_admin_bar'        => __($this->_singularName, static::textDomain()),
-            'archives'              => __($this->_name . ' Archive', static::textDomain()),
-            'parent_item_colon'     => __('Parent ' . $this->_singularName . ':', static::textDomain()),
-            'all_items'             => __('All ' . $this->_name, static::textDomain()),
-            'add_new_item'          => __('Add new ' . $this->_singularName, static::textDomain()),
-            'add_new'               => __('Add new ' . $this->_singularName, static::textDomain()),
-            'new_item'              => __('New ' . $this->_singularName, static::textDomain()),
-            'edit_item'             => __('Edit ' . $this->_singularName, static::textDomain()),
-            'update_item'           => __('Update ' . $this->_singularName, static::textDomain()),
-            'view_item'             => __('View ' . $this->_singularName, static::textDomain()),
-            'search_items'          => __('Search ' . $this->_singularName, static::textDomain()),
-            'not_found'             => __('Not found', static::textDomain()),
-            'not_found_in_trash'    => __('Not found in trash', static::textDomain()),
-            'featured_image'        => __('Featured image', static::textDomain()),
-            'set_featured_image'    => __('Set featured image', static::textDomain()),
-            'remove_featured_image' => __('Remove featured image', static::textDomain()),
-            'use_featured_image'    => __('Use as featured image', static::textDomain()),
-            'insert_into_item'      => __('Insert into ' . $this->_singularName, static::textDomain()),
-            'uploaded_to_this_item' => __('Uploaded to this ' . $this->_singularName, static::textDomain()),
-            'items_list'            => __($this->_name . ' list', static::textDomain()),
-            'items_list_navigation' => __($this->_name . ' list navigation', static::textDomain()),
-            'filter_items_list'     => __('Filter ' . $this->_name . ' list', static::textDomain())
+            'name'                  => static::__($this->_name, static::textDomain()),
+            'singular_name'         => static::__($this->_singularName, static::textDomain()),
+            'menu_name'             => static::__($this->_name, static::textDomain()),
+            'name_admin_bar'        => static::__($this->_singularName, static::textDomain()),
+            'archives'              => static::__($this->_name . ' Archive', static::textDomain()),
+            'parent_item_colon'     => static::__('Parent ' . $this->_singularName . ':', static::textDomain()),
+            'all_items'             => static::__('All ' . $this->_name, static::textDomain()),
+            'add_new_item'          => static::__('Add new ' . $this->_singularName, static::textDomain()),
+            'add_new'               => static::__('Add new ' . $this->_singularName, static::textDomain()),
+            'new_item'              => static::__('New ' . $this->_singularName, static::textDomain()),
+            'edit_item'             => static::__('Edit ' . $this->_singularName, static::textDomain()),
+            'update_item'           => static::__('Update ' . $this->_singularName, static::textDomain()),
+            'view_item'             => static::__('View ' . $this->_singularName, static::textDomain()),
+            'search_items'          => static::__('Search ' . $this->_singularName, static::textDomain()),
+            'not_found'             => static::__('Not found', static::textDomain()),
+            'not_found_in_trash'    => static::__('Not found in trash', static::textDomain()),
+            'featured_image'        => static::__('Featured image', static::textDomain()),
+            'set_featured_image'    => static::__('Set featured image', static::textDomain()),
+            'remove_featured_image' => static::__('Remove featured image', static::textDomain()),
+            'use_featured_image'    => static::__('Use as featured image', static::textDomain()),
+            'insert_into_item'      => static::__('Insert into ' . $this->_singularName, static::textDomain()),
+            'uploaded_to_this_item' => static::__('Uploaded to this ' . $this->_singularName, static::textDomain()),
+            'items_list'            => static::__($this->_name . ' list', static::textDomain()),
+            'items_list_navigation' => static::__($this->_name . ' list navigation', static::textDomain()),
+            'filter_items_list'     => static::__('Filter ' . $this->_name . ' list', static::textDomain())
         ], $labels);
 
         return $this;
@@ -164,8 +165,8 @@ class PostType {
 
         // Overwrite defaults, if arguments are given
         $this->_arguments = array_replace_recursive([
-            'label'               => __($this->_name, static::textDomain()),
-            'description'         => __($this->_description, static::textDomain()),
+            'label'               => static::__($this->_name, static::textDomain()),
+            'description'         => static::__($this->_description, static::textDomain()),
             'labels'              => $this->_labels,
             'supports'            => ['title', 'editor', 'thumbnail', 'page-attributes'],
             'taxonomies'          => $this->_taxonomies,
