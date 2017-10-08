@@ -1,5 +1,15 @@
 # Release notes
 
+## 0.8.6
+
+* Added Shortcodes::googleAnalytics().
+* Added the CanTranslate trait, which is now used by all classes that translate (this enables passing a text domain as a variable, which is usually not possible).
+* Added helper functions for translating, using CanTranslate.
+* Translation strings for post types and taxonomies are now proper, with placeholders.
+* SettingsPage now prefixes the settings URL.
+* Shortcodes::addLabel() now supports empty lines (when no argument is passed to it).
+* CMB2 is now included by Metabox, so no manual including anymore.
+
 ## 0.8.5
 
 * Added Helpers::option(), for getting and setting options in the Wordpress options database table. Option prefix is automatically added.
