@@ -114,10 +114,13 @@ class Shortcodes {
     /**
      * Add a label for the TinyMCE editor
      * This doesn't add anything to the shortcode
-     * @param String  $text
+     * @param String  $text  If empty, this will insert an empty line
      * @return $this
      */
-    public function addLabel($text) {
+    public function addLabel($text='') {
+        if(trim($text) == '')
+            $text = html_entity_decode('&nbsp;');
+
         $this->_parameters[] = [
             'type' => 'label',
             'text' => $text
