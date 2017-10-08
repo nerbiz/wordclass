@@ -11,11 +11,21 @@ class SettingsPage {
 
 
     /**
-     * Various settings page values
-     * @var Mixed
+     * The title of the settings page
+     * @var String
      */
     private $_pageTitle;
+
+    /**
+     * The settings page slug, will be prepended with prefix
+     * @var String
+     */
     private $_pageSlug;
+
+    /**
+     * The group name of the settings, will be prepended with prefix
+     * @var String
+     */
     private $_settingsGroup;
 
 
@@ -28,7 +38,7 @@ class SettingsPage {
         $this->_pageTitle = __($title, static::textDomain());
 
         // The page slug is the title converted to slug, by default
-        $this->_pageSlug = Utilities::createSlug($title);
+        $this->_pageSlug = static::prefix() . '-' . Utilities::createSlug($title);
 
         // The group in which all settings go
         $this->_settingsGroup = static::prefix() . '-' . $settingsgroup;
@@ -73,11 +83,12 @@ class SettingsPage {
 
     /**
      * Overwrite the page slug with a custom one
+     * Prefix will be prepended
      * @param  String  $slug
      * @return $this
      */
     public function pageSlug($slug) {
-        $this->_pageSlug = $slug;
+        $this->_pageSlug = static::prefix() . '-' . $slug;
 
         return $this;
     }
