@@ -1,5 +1,19 @@
 # Release notes
 
+## 0.8.7.1
+
+* Added release notes for v0.8.7
+
+## 0.8.7
+
+* Translating should now work properly.
+  * Variables are not supported, so only the static strings are now translatable.
+  * Added a .pot file to includes/languages, with Dutch translation (.mo and .po file).
+  * Removed the CanSetTextDomain trait.
+  * Removed the CanTranslate trait.
+  * Removed the translation helper functions.
+  * The text domain for Wordclass is set to 'wordclass'.
+
 ## 0.8.6
 
 * Added Shortcodes::googleAnalytics().
