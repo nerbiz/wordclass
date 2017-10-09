@@ -7,11 +7,6 @@ require_once __DIR__ . '/../../../webdevstudios/cmb2/init.php';
 use CMB2;
 
 class Metabox {
-    use Traits\CanSetTextDomain;
-    use Traits\CanTranslate;
-
-
-
     /**
      * The options for the metabox
      * @var Array
@@ -37,7 +32,7 @@ class Metabox {
             // ID of the metabox
             'id'               => $id,
             // Title of the metabox
-            'title'            => static::__($title, static::textDomain()),
+            'title'            => $title,
             // Post type(s)
             'object_types'     => $posttypes,
 
@@ -83,25 +78,6 @@ class Metabox {
      * @return $this
      */
     public function addField($options) {
-        // Translate before adding
-        if(isset($options['name']))
-            $options['name'] = static::__($options['name'], static::textDomain());
-        // @todo: This should be appended, when encountering new field options
-        foreach([
-            'desc',
-            'text|add_upload_file_text'
-        ] as $translatable) {
-            $keys = explode('|', $translatable);
-            $levels = count($keys);
-
-            if($levels == 1  &&  isset($options[$keys[0]]))
-                $options[$keys[0]] = static::__($options[$keys[0]], static::textDomain());
-            else if($levels == 2  &&  isset($options[$keys[0]][$keys[1]]))
-                $options[$keys[0]][$keys[1]] = static::__($options[$keys[0]][$keys[1]], static::textDomain());
-            else if($levels == 3  &&  isset($options[$keys[0]][$keys[1]][$keys[2]]))
-                $options[$keys[0]][$keys[1]][$keys[2]] = static::__($options[$keys[0]][$keys[1]][$keys[2]], static::textDomain());
-        }
-
         $this->_fields[] = $options;
 
         return $this;

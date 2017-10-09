@@ -1,0 +1,196 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.0\n"
+"POT-Creation-Date: 2017-10-09 10:52+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: English\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/"
+
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:128
+#: vendor/nerbiz/wordclass/src/PostType.php:125
+#, php-format
+msgid "All %s"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:129
+#, php-format
+msgid "Parent %s"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:130
+#: vendor/nerbiz/wordclass/src/PostType.php:124
+#, php-format
+msgid "Parent %s:"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:131
+#, php-format
+msgid "New %s name"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:132
+#: vendor/nerbiz/wordclass/src/PostType.php:126
+#: vendor/nerbiz/wordclass/src/PostType.php:127
+#, php-format
+msgid "Add new %s"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:133
+#: vendor/nerbiz/wordclass/src/PostType.php:129
+#, php-format
+msgid "Edit %s"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:134
+#: vendor/nerbiz/wordclass/src/PostType.php:130
+#, php-format
+msgid "Update %s"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:135
+#: vendor/nerbiz/wordclass/src/PostType.php:131
+#, php-format
+msgid "View %s"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:136
+#, php-format
+msgid "Separate %s with commas"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:137
+#, php-format
+msgid "Add or remove %s"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:138
+msgid "Choose from the most used"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:139
+#, php-format
+msgid "Popular %s"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:140
+#: vendor/nerbiz/wordclass/src/PostType.php:132
+#, php-format
+msgid "Search %s"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:141
+#: vendor/nerbiz/wordclass/src/PostType.php:133
+msgid "Not found"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:142
+#, php-format
+msgid "No %s"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:143
+#: vendor/nerbiz/wordclass/src/PostType.php:141
+#, php-format
+msgid "%s list"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:144
+#: vendor/nerbiz/wordclass/src/PostType.php:142
+#, php-format
+msgid "%s list navigation"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Shortcodes.php:287
+msgid "Home URL"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Shortcodes.php:309
+msgid "Copyright"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Shortcodes.php:313
+msgid "Year"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Shortcodes.php:316
+msgid "Default value is the current year"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Shortcodes.php:342
+msgid "Google Analytics"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Shortcodes.php:346
+msgid "Tracking code"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Shortcodes.php:412
+msgid "Page link"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Shortcodes.php:416
+msgid "Page"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Shortcodes.php:419
+msgid "- Please choose -"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Shortcodes.php:423
+msgid "CSS class"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Shortcodes.php:428
+msgid "'target' attribute"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/PostType.php:123
+#, php-format
+msgid "%s archive"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/PostType.php:128
+#, php-format
+msgid "New %s"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/PostType.php:134
+msgid "Not found in trash"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/PostType.php:135
+msgid "Featured image"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/PostType.php:136
+msgid "Set featured image"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/PostType.php:137
+msgid "Remove featured image"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/PostType.php:138
+msgid "Use as featured image"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/PostType.php:139
+#, php-format
+msgid "Insert into %s"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/PostType.php:140
+#, php-format
+msgid "Uploaded to this %s"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/PostType.php:143
+#, php-format
+msgid "Filter %s list"
+msgstr ""

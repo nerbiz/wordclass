@@ -4,12 +4,6 @@ namespace Wordclass;
 
 class Init {
     /**
-     * The default text domain to use
-     * @var String
-     */
-    private static $_defaultTextDomain = null;
-
-    /**
      * The default prefix to use
      * @var String
      */
@@ -21,16 +15,6 @@ class Init {
      * @var String
      */
     private static $_vendorUri = null;
-
-
-
-    /**
-     * Do some initializing stuff
-     */
-    public static function init() {
-        // Include the translation helper functions
-        require __DIR__ . '/../includes/php/translate.php';
-    }
 
 
 
@@ -87,20 +71,6 @@ class Init {
         // The URI paths to the template/stylesheet directory
         define('TEMPLATE_URI', get_template_directory_uri() . '/');
         define('STYLESHEET_URI', get_stylesheet_directory_uri() . '/');
-    }
-
-
-
-    /**
-     * Set or get the default text domain
-     * @param  String  $domain
-     * @return String
-     */
-    public static function defaultTextDomain($domain=null) {
-        if($domain !== null)
-            static::$_defaultTextDomain = $domain;
-        else
-            return static::$_defaultTextDomain;
     }
 
 
