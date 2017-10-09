@@ -3,11 +3,6 @@
 namespace Wordclass;
 
 class Widgets {
-    use Traits\CanSetTextDomain;
-    use Traits\CanTranslate;
-
-
-
     /**
      * Enable shortcodes in widgets
      */
@@ -27,13 +22,9 @@ class Widgets {
      */
     public static function addSidebar($id, $name, $description='', $widget=[], $title=[]) {
         add_action('widgets_init', function() use($id, $name, $description, $widget, $title) {
-            // Only translate the description, if it's given
-            if($description != '')
-                $description = static::__($description, static::textDomain());
-
             register_sidebar([
                 'id'            => $id,
-                'name'          => static::__($name, static::textDomain()),
+                'name'          => $name,
                 'description'   => $description,
                 'class'         => '',
                 'before_widget' => @$widget['before']  ?:  '<aside id="%1$s" class="widget %2$s">',

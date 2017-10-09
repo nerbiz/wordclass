@@ -5,11 +5,6 @@ namespace Wordclass;
 use Wordclass\Utilities;
 
 class PostType {
-    use Traits\CanSetTextDomain;
-    use Traits\CanTranslate;
-
-
-
     /**
      * Various CPT properties
      * @var Mixed
@@ -120,34 +115,32 @@ class PostType {
      * @return $this;
      */
     public function labels($labels=[]) {
-        $textDomain = static::textDomain();
-
         $this->_labels = array_replace_recursive([
-            'name'                  => static::__($this->_name, $textDomain),
-            'singular_name'         => static::__($this->_singularName, $textDomain),
-            'menu_name'             => static::__($this->_name, $textDomain),
-            'name_admin_bar'        => static::__($this->_singularName, $textDomain),
-            'archives'              => sprintf(static::__('%s archive', $textDomain), $this->_name),
-            'parent_item_colon'     => sprintf(static::__('Parent %s:', $textDomain), $this->_singularName),
-            'all_items'             => sprintf(static::__('All %s', $textDomain), $this->_name),
-            'add_new_item'          => sprintf(static::__('Add new %s', $textDomain), $this->_singularName),
-            'add_new'               => sprintf(static::__('Add new %s', $textDomain), $this->_singularName),
-            'new_item'              => sprintf(static::__('New %s', $textDomain), $this->_singularName),
-            'edit_item'             => sprintf(static::__('Edit %s', $textDomain), $this->_singularName),
-            'update_item'           => sprintf(static::__('Update %s', $textDomain), $this->_singularName),
-            'view_item'             => sprintf(static::__('View %s', $textDomain), $this->_singularName),
-            'search_items'          => sprintf(static::__('Search %s', $textDomain), $this->_singularName),
-            'not_found'             => static::__('Not found', $textDomain),
-            'not_found_in_trash'    => static::__('Not found in trash', $textDomain),
-            'featured_image'        => static::__('Featured image', $textDomain),
-            'set_featured_image'    => static::__('Set featured image', $textDomain),
-            'remove_featured_image' => static::__('Remove featured image', $textDomain),
-            'use_featured_image'    => static::__('Use as featured image', $textDomain),
-            'insert_into_item'      => sprintf(static::__('Insert into %s', $textDomain), $this->_singularName),
-            'uploaded_to_this_item' => sprintf(static::__('Uploaded to this %s', $textDomain), $this->_singularName),
-            'items_list'            => sprintf(static::__('%s list', $textDomain), $this->_name),
-            'items_list_navigation' => sprintf(static::__('%s list navigation', $textDomain), $this->_name),
-            'filter_items_list'     => sprintf(static::__('Filter %s list', $textDomain), $this->_name)
+            'name'                  => $this->_name,
+            'singular_name'         => $this->_singularName,
+            'menu_name'             => $this->_name,
+            'name_admin_bar'        => $this->_singularName,
+            'archives'              => sprintf(__('%s archive', 'wordclass'), $this->_name),
+            'parent_item_colon'     => sprintf(__('Parent %s:', 'wordclass'), $this->_singularName),
+            'all_items'             => sprintf(__('All %s', 'wordclass'), $this->_name),
+            'add_new_item'          => sprintf(__('Add new %s', 'wordclass'), $this->_singularName),
+            'add_new'               => sprintf(__('Add new %s', 'wordclass'), $this->_singularName),
+            'new_item'              => sprintf(__('New %s', 'wordclass'), $this->_singularName),
+            'edit_item'             => sprintf(__('Edit %s', 'wordclass'), $this->_singularName),
+            'update_item'           => sprintf(__('Update %s', 'wordclass'), $this->_singularName),
+            'view_item'             => sprintf(__('View %s', 'wordclass'), $this->_singularName),
+            'search_items'          => sprintf(__('Search %s', 'wordclass'), $this->_singularName),
+            'not_found'             => __('Not found', 'wordclass'),
+            'not_found_in_trash'    => __('Not found in trash', 'wordclass'),
+            'featured_image'        => __('Featured image', 'wordclass'),
+            'set_featured_image'    => __('Set featured image', 'wordclass'),
+            'remove_featured_image' => __('Remove featured image', 'wordclass'),
+            'use_featured_image'    => __('Use as featured image', 'wordclass'),
+            'insert_into_item'      => sprintf(__('Insert into %s', 'wordclass'), $this->_singularName),
+            'uploaded_to_this_item' => sprintf(__('Uploaded to this %s', 'wordclass'), $this->_singularName),
+            'items_list'            => sprintf(__('%s list', 'wordclass'), $this->_name),
+            'items_list_navigation' => sprintf(__('%s list navigation', 'wordclass'), $this->_name),
+            'filter_items_list'     => sprintf(__('Filter %s list', 'wordclass'), $this->_name)
         ], $labels);
 
         return $this;
@@ -167,8 +160,8 @@ class PostType {
 
         // Overwrite defaults, if arguments are given
         $this->_arguments = array_replace_recursive([
-            'label'               => static::__($this->_name, static::textDomain()),
-            'description'         => static::__($this->_description, static::textDomain()),
+            'label'               => $this->_name,
+            'description'         => $this->_description,
             'labels'              => $this->_labels,
             'supports'            => ['title', 'editor', 'thumbnail', 'page-attributes'],
             'taxonomies'          => $this->_taxonomies,

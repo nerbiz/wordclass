@@ -3,11 +3,6 @@
 namespace Wordclass;
 
 class Theme {
-    use Traits\CanSetTextDomain;
-    use Traits\CanTranslate;
-
-
-
     /**
      * Enable the 'featured image' metabox on page/post edit screens
      * @param Null|String|Array  $posttypes  (Optional) Enable for specific post types only
@@ -53,7 +48,7 @@ class Theme {
             add_image_size($name, $width, $height, $crop);
 
             add_filter('image_size_names_choose', function($sizes) use($name, $optionName) {
-                $sizes[$name] = static::__($optionName, static::textDomain());
+                $sizes[$name] = $optionName;
                 return $sizes;
             });
         });
@@ -73,7 +68,7 @@ class Theme {
 
         add_action('after_setup_theme', function() use($menus) {
             foreach($menus as $location => $description)
-                register_nav_menu($location, static::__($description, static::textDomain()));
+                register_nav_menu($location, $description);
         });
     }
 
