@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "POT-Creation-Date: 2017-10-09 10:52+0000\n"
-"PO-Revision-Date: 2017-10-09 11:14+0000\n"
+"PO-Revision-Date: 2017-10-09 16:49+0000\n"
 "Last-Translator: admin <nerbiz@gmail.com>\n"
 "Language-Team: Dutch\n"
 "Language: nl-NL\n"
@@ -17,7 +17,7 @@ msgstr ""
 #: vendor/nerbiz/wordclass/src/PostType.php:125
 #, php-format
 msgid "All %s"
-msgstr "Alle %"
+msgstr "Alle %s"
 
 #: vendor/nerbiz/wordclass/src/Taxonomy.php:129
 #, php-format
