@@ -82,6 +82,9 @@ class Metabox {
      * @return $this
      */
     public function addField($options) {
+        // Prefix the field ID
+        $options['id'] = static::prefix() . '-' . $options['id'];
+
         $this->_fields[] = $options;
 
         return $this;
