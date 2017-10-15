@@ -8,11 +8,11 @@ class Theme {
      * @param Null|String|Array  $posttypes  (Optional) Enable for specific post types only
      */
     public static function enableFeaturedImages($posttypes=null) {
-        if($posttypes != null)
+        if($posttypes !== null)
             $posttypes = (array) $posttypes;
 
         add_action('after_setup_theme', function() use($posttypes) {
-            if($posttypes == null)
+            if($posttypes === null)
                 add_theme_support('post-thumbnails');
             else
                 add_theme_support('post-thumbnails', $posttypes);

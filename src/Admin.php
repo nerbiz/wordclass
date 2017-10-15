@@ -41,15 +41,15 @@ class Admin {
                     $newUrl = $url;
 
                 // If the above didn't have any matches, look for a wildcard
-                if($newUrl == null) {
+                if($newUrl === null) {
                     if(is_array($roleUrls)  &&  array_key_exists('*', $roleUrls))
                         $newUrl = $roleUrls['*'];
                     else if(is_string($roleUrls)  &&  $roleUrls == '*')
                         $newUrl = $url;
                 }
 
-                // Return a new URL, if it's set
-                if($newUrl != null) {
+                // Return a new URL, if it's set after the wildcard check
+                if($newUrl !== null) {
                     // Literal URLs
                     if(preg_match('~^https?://~', $url))
                         return esc_url($url);

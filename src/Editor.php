@@ -60,7 +60,7 @@ class Editor {
 
         add_filter($filter, function($buttons) use($name, $after) {
             // Append the button at the end, if 'after' is not specified
-            if($after == null)
+            if($after === null)
                 $buttons[] = $name;
 
             // Make the button the first one
@@ -127,7 +127,7 @@ class Editor {
      */
     public static function moveButton($name, $after=null, $toolbar=1, $toToolbar=null) {
         // The same toolbar is used by default
-        if($toToolbar == null)
+        if($toToolbar === null)
             $toToolbar = $toolbar;
 
         static::removeButton($name, $toolbar);

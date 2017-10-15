@@ -201,10 +201,10 @@ class SettingsPage {
      * @return Object  An instance of this class
      */
     public static function create($title, $settingsgroup=null, $icon=null, $menuposition=null) {
-        if($settingsgroup == null)
+        if($settingsgroup === null)
             $settingsgroup = 'settings';
 
-        if($icon == null)
+        if($icon === null)
             $icon = 'dashicons-admin-settings';
 
         return new static($title, $settingsgroup, $icon, $menuposition);

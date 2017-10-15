@@ -10,7 +10,7 @@ class Utilities {
 
 
     private static function mobileDetect() {
-        if(static::$_MobileDetect == null)
+        if(static::$_MobileDetect === null)
             static::$_MobileDetect = new MobileDetect();
 
         return static::$_MobileDetect;
