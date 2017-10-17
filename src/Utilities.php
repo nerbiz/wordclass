@@ -27,13 +27,13 @@ class Utilities {
     public static function obscureEmailLink($address, $name=null) {
         $obscuredMailTo = static::utf8ToHtmlEntities('mailto:');
         $obscuredAddress = static::utf8ToHtmlEntities($address);
-        if($name)
-            $obscuredName = static::utf8ToHtmlEntities($name);
 
-        if($name)
-            return '<a href="'.$obscuredMailTo.$obscuredName.' <'.$obscuredAddress.'>">'.$obscuredAddress.'</a>';
+        if($name) {
+            $obscuredName = static::utf8ToHtmlEntities($name);
+            return '<a href="' . $obscuredMailTo . $obscuredName . ' <' . $obscuredAddress . '>">' . $obscuredAddress . '</a>';
+        }
         else
-            return '<a href="'.$obscuredMailTo.$obscuredAddress.'">'.$obscuredAddress.'</a>';
+            return '<a href="' . $obscuredMailTo . $obscuredAddress . '">' . $obscuredAddress . '</a>';
     }
 
 
@@ -48,7 +48,7 @@ class Utilities {
         $obscuredNumber = static::utf8ToHtmlEntities($number);
 
         if(static::mobileDetect()->isMobile())
-            return '<a href="'.$obscuredTel.$obscuredNumber.'">'.$obscuredNumber.'</a>';
+            return '<a href="' . $obscuredTel . $obscuredNumber . '">' . $obscuredNumber . '</a>';
         else
             return $obscuredNumber;
     }
@@ -118,7 +118,7 @@ class Utilities {
 
             // Normal 7 bit character
             if($byte[0] === '0') {
-                $htmlEntities[] = '&#'.base_convert($byte, 2, 10).';';
+                $htmlEntities[] = '&#' . base_convert($byte, 2, 10) . ';';
                 array_shift($bytes);
             }
 
@@ -137,7 +137,7 @@ class Utilities {
                 for($i=0;  $i<($count-1);  $i++)
                     $binary .= substr(array_shift($bytes), 2);
 
-                $htmlEntities[] = '&#'.base_convert($binary, 2, 10).';';
+                $htmlEntities[] = '&#' . base_convert($binary, 2, 10) . ';';
             }
         }
 
