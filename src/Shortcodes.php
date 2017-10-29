@@ -254,7 +254,7 @@ class Shortcodes {
 
         // Add the corresponding button to TinyMCE if needed
         if($this->_addToEditor) {
-            if($this->_buttonText == null)
+            if($this->_buttonText === null)
                 $this->_buttonText = $this->_tag;
 
             Editor::addShortcodeButton(
@@ -348,7 +348,7 @@ class Shortcodes {
             ])
             ->hook(function($parameters) {
                 // Tracking code is required
-                if($parameters['code'] != null) {
+                if(is_string($parameters['code'])  &&  strlen($parameters['code']) > 0) {
                     $trackingCode = $parameters['code'];
                     require __DIR__ . '/../includes/js/google-analytics.php';
                 }
@@ -451,7 +451,7 @@ class Shortcodes {
      */
     public static function create($tag, $enclosing=false, $addtoeditor=true) {
         // Set the allowed input types, if not set yet
-        if(static::$_allowedInputTypes == null)
+        if(static::$_allowedInputTypes === null)
             static::$_allowedInputTypes = ['text', 'dropdown', 'checkbox'];
 
         return new static($tag, $enclosing, $addtoeditor);

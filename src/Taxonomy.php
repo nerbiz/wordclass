@@ -156,13 +156,13 @@ class Taxonomy {
      */
     public function arguments($arguments=[]) {
         // Set the labels, if not set yet
-        if($this->_labels == null)
+        if($this->_labels === null)
             $this->labels();
 
         // Overwrite defaults, if arguments are given
         $this->_arguments = array_replace_recursive([
             'labels'             => $this->_labels,
-            'description'         => $this->_description,
+            'description'        => $this->_description,
             'hierarchical'       => true,
             'public'             => true,
             'publicly_queryable' => true,

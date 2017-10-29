@@ -115,7 +115,7 @@ class Helpers {
             return false;
 
         // Get the option
-        if($value == null)
+        if($value === null)
             return get_option(static::prefix() . $prefixAppend . $name);
 
         // Add or update the option

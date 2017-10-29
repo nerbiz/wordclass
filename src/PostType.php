@@ -155,7 +155,7 @@ class PostType {
      */
     public function arguments($arguments=[]) {
         // Set the labels, if not set yet
-        if($this->_labels == null)
+        if($this->_labels === null)
             $this->labels();
 
         // Overwrite defaults, if arguments are given

@@ -100,7 +100,7 @@ class Init {
 
         else {
             // The default value is the 'vendor' directory in a (child-)theme directory
-            if(static::$_vendorUri == null)
+            if(static::$_vendorUri === null)
                 static::$_vendorUri = get_stylesheet_directory_uri() . '/vendor/';
 
             return static::$_vendorUri;

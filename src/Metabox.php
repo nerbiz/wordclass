@@ -7,6 +7,10 @@ require_once __DIR__ . '/../../../webdevstudios/cmb2/init.php';
 use CMB2;
 
 class Metabox {
+    use Traits\CanSetPrefix;
+
+
+
     /**
      * The options for the metabox
      * @var Array
@@ -30,7 +34,7 @@ class Metabox {
              * Required
              */
             // ID of the metabox
-            'id'               => $id,
+            'id'               => static::prefix() . '-' . $id,
             // Title of the metabox
             'title'            => $title,
             // Post type(s)
@@ -78,6 +82,9 @@ class Metabox {
      * @return $this
      */
     public function addField($options) {
+        // Prefix the field ID
+        $options['id'] = static::prefix() . '-' . $options['id'];
+
         $this->_fields[] = $options;
 
         return $this;
