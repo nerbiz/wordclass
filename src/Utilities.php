@@ -40,14 +40,20 @@ class Utilities {
 
     /**
      * Convert a phone number to HTML character codes
-     * @param  String  $number
+     * @param  String          $number
+     * @param  Boolean|String  $link    Whether to make a 'tel:' link or not (true / false)
+     *                                    'mobile' means mobile only
      * @return String
      */
-    public static function obscurePhoneLink($number) {
+    public static function obscurePhoneNumber($number, $link='mobile') {
         $obscuredTel = static::utf8ToHtmlEntities('tel:');
         $obscuredNumber = static::utf8ToHtmlEntities($number);
 
-        if(static::mobileDetect()->isMobile())
+        // When linking on mobile only, and the device is mobile, make a link
+        if($link == 'mobile'  &&  static::mobileDetect()->isMobile())
+            $link = true;
+
+        if($link === true)
             return '<a href="' . $obscuredTel . $obscuredNumber . '">' . $obscuredNumber . '</a>';
         else
             return $obscuredNumber;
