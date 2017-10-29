@@ -1,5 +1,13 @@
 # Release notes
 
+## 0.9.0
+
+* Added: Metabox now sets a prefix to a metabox ID, and its field IDs.
+* Added Theme::enableHtml5Support().
+* Renamed Utilities::obscurePhoneLink() to obscurePhoneNumber() and added a parameter to force a link.
+* Fixed: there was a small translation typo for 'add new #'.
+* Using normal semver versioning from now on.
+
 ## 0.8.7.1
 
 * Added release notes for v0.8.7
