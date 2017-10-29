@@ -22,6 +22,26 @@ class Theme {
 
 
     /**
+     * Allow the use of HTML5 in core Wordpress features
+     * @param  Array  $features  The list of features to enable HTML5 for
+     */
+    public static function enableHtml5Support($features=null) {
+        // By default, all features are HTML5-enabled
+        if($features === null)
+            $features = ['caption', 'comment-form', 'comment-list', 'gallery', 'search-form'];
+
+        // Make sure the features are an array
+        if( ! is_array($features))
+            $features = (array) $features;
+
+        add_action('after_setup_theme', function() use($features) {
+            add_theme_support('html5', $features);
+        });
+    }
+
+
+
+    /**
      * Set the size of the featured images
      * @param  Integer  $width
      * @param  Integer  $height
