@@ -1,5 +1,10 @@
 # Release notes
 
+## 0.9.1
+
+* Added Helpers::getPostMeta(), which is get_post_meta() with an implicit prefix, for convenience.
+* Helpers::getMetaImage() now uses a prefix implicitly.
+
 ## 0.9.0
 
 * Added: Metabox now sets a prefix to a metabox ID, and its field IDs.
