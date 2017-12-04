@@ -53,8 +53,10 @@ class Helpers {
     /**
      * Wrapper for getImage, using post meta
      */
-    public static function getMetaImage($postid, $metaname, $size='full', $type='url') {
-        $imageId = get_post_meta($postid, $metaname, true);
+    public static function getMetaImage($postid, $key, $size='full', $type='url', $delimiter='-') {
+        $prefixedKey = static::prefix() . $delimiter . $key;
+
+        $imageId = get_post_meta($postid, $prefixedKey, true);
         return static::getImage($imageId, $size, $type);
     }
 
