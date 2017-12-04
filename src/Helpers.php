@@ -53,8 +53,10 @@ class Helpers {
     /**
      * Wrapper for getImage, using post meta
      */
-    public static function getMetaImage($postid, $metaname, $size='full', $type='url') {
-        $imageId = get_post_meta($postid, $metaname, true);
+    public static function getMetaImage($postid, $key, $size='full', $type='url', $delimiter='-') {
+        $prefixedKey = static::prefix() . $delimiter . $key;
+
+        $imageId = get_post_meta($postid, $prefixedKey, true);
         return static::getImage($imageId, $size, $type);
     }
 
@@ -65,7 +67,7 @@ class Helpers {
      * @param  String  $name  string: gets slug of given taxonomy
      * @return String
      */
-    public function getTaxonomySlug($name) {
+    public static function getTaxonomySlug($name) {
         $taxonomy = get_taxonomies(['name' => $name], 'objects');
         return $taxonomy[$name]->rewrite['slug'];
     }
@@ -131,7 +133,7 @@ class Helpers {
      * @param  String   $prefixAppend  The character(s) between prefix and name
      * @return Boolean  true on success, false on failure
      */
-    public function deleteOption($name, $prefixAppend='_') {
+    public static function deleteOption($name, $prefixAppend='_') {
         if( ! is_string($name))
             return false;
 
@@ -139,5 +141,21 @@ class Helpers {
             return false;
 
         return delete_option(static::prefix() . $prefixAppend . $name);
+    }
+
+
+
+    /**
+     * Wrapper for get_post_meta(), implicitly uses a prefix
+     * @param  Integer  $postid
+     * @param  String   $key
+     * @param  Boolean  $single
+     * @param  String   $delimiter  The character between prefix and key
+     * @return Mixed
+     */
+    public static function getPostMeta($postid, $key, $single=false, $delimiter='-') {
+        $prefixedKey = static::prefix() . $delimiter . $key;
+
+        return get_post_meta($postid, $prefixedKey, $single);
     }
 }
