@@ -99,4 +99,23 @@ class Assets {
     public static function addLogin($type, $assets, $path='') {
         static::addAsset('login', $type, $assets, $path);
     }
+
+
+
+    /**
+     * Replace the jQuery version with another one, using Google CDN
+     * @param  String   $version   jQuery version to use
+     */
+    public static function jqueryVersion($version) {
+        add_action('init', function() use ($version) {
+            // Don't replace on admin
+            if( ! is_admin()) {
+                // Remove the normal jQuery include
+                wp_deregister_script('jquery');
+
+                // Then set the custom one
+                wp_enqueue_script('jquery', '//ajax.googleapis.com/ajax/libs/jquery/'.$version.'/jquery.min.js', [], $version);
+            }
+        });
+    }
 }
