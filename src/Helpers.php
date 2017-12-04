@@ -142,4 +142,20 @@ class Helpers {
 
         return delete_option(static::prefix() . $prefixAppend . $name);
     }
+
+
+
+    /**
+     * Wrapper for get_post_meta(), implicitly uses a prefix
+     * @param  Integer  $postid
+     * @param  String   $key
+     * @param  Boolean  $single
+     * @param  String   $delimiter  The character between prefix and key
+     * @return Mixed
+     */
+    public static function getPostMeta($postid, $key, $single=false, $delimiter='-') {
+        $prefixedKey = static::prefix() . $delimiter . $key;
+
+        return get_post_meta($postid, $prefixedKey, $single);
+    }
 }
