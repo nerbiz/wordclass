@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.9.2
+
+* Added Assets::jqueryVersion(), to replace the jQuery that Wordpress sets with a different version.
+
 ## 0.9.1
 
 * Added Helpers::getPostMeta(), which is get_post_meta() with an implicit prefix, for convenience.
