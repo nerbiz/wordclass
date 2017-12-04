@@ -65,7 +65,7 @@ class Helpers {
      * @param  String  $name  string: gets slug of given taxonomy
      * @return String
      */
-    public function getTaxonomySlug($name) {
+    public static function getTaxonomySlug($name) {
         $taxonomy = get_taxonomies(['name' => $name], 'objects');
         return $taxonomy[$name]->rewrite['slug'];
     }
@@ -131,7 +131,7 @@ class Helpers {
      * @param  String   $prefixAppend  The character(s) between prefix and name
      * @return Boolean  true on success, false on failure
      */
-    public function deleteOption($name, $prefixAppend='_') {
+    public static function deleteOption($name, $prefixAppend='_') {
         if( ! is_string($name))
             return false;
 
