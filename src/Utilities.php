@@ -1,72 +1,88 @@
 <?php
 
-namespace Wordclass;
+namespace Nerbiz\Wordclass;
 
 use Detection\MobileDetect;
 
-class Utilities {
-    static $_MobileDetect = null;
+class Utilities
+{
+    public static $mobileDetect = null;
 
+    protected static function mobileDetect()
+    {
+        if (static::$mobileDetect === null) {
+            static::$mobileDetect = new MobileDetect();
+        }
 
-
-    private static function mobileDetect() {
-        if(static::$_MobileDetect === null)
-            static::$_MobileDetect = new MobileDetect();
-
-        return static::$_MobileDetect;
+        return static::$mobileDetect;
     }
-
-
 
     /**
      * Convert an email address to HTML character codes
-     * @param  String       $address
-     * @param  String|null  $name     (Optional) Include the recipient name in the email link
-     * @return String
+     * @param  string       $address
+     * @param  string|null  $name     (Optional) Include the recipient name in the email link
+     * @return string
      */
-    public static function obscureEmailLink($address, $name=null) {
+    public static function obscureEmailLink($address, $name = null)
+    {
         $obscuredMailTo = static::utf8ToHtmlEntities('mailto:');
         $obscuredAddress = static::utf8ToHtmlEntities($address);
 
-        if($name) {
+        if ($name) {
             $obscuredName = static::utf8ToHtmlEntities($name);
-            return '<a href="' . $obscuredMailTo . $obscuredName . ' <' . $obscuredAddress . '>">' . $obscuredAddress . '</a>';
+            return sprintf(
+                '<a href="%s%s <%s>">%s</a>',
+                $obscuredMailTo,
+                $obscuredName,
+                $obscuredAddress,
+                $obscuredAddress
+            );
+        } else {
+            return sprintf(
+                '<a href="%s%s">%s</a>',
+                $obscuredMailTo,
+                $obscuredAddress,
+                $obscuredAddress
+            );
         }
-        else
-            return '<a href="' . $obscuredMailTo . $obscuredAddress . '">' . $obscuredAddress . '</a>';
     }
-
-
 
     /**
      * Convert a phone number to HTML character codes
-     * @param  String          $number
-     * @param  Boolean|String  $link    Whether to make a 'tel:' link or not (true / false)
+     * @param  string          $number
+     * @param  bool|string  $link    Whether to make a 'tel:' link or not (true / false)
      *                                    'mobile' means mobile only
-     * @return String
+     * @return string
      */
-    public static function obscurePhoneNumber($number, $link='mobile') {
+    public static function obscurePhoneNumber($number, $link = 'mobile')
+    {
         $obscuredTel = static::utf8ToHtmlEntities('tel:');
         $obscuredNumber = static::utf8ToHtmlEntities($number);
 
         // When linking on mobile only, and the device is mobile, make a link
-        if($link == 'mobile'  &&  static::mobileDetect()->isMobile())
+        if ($link == 'mobile' && static::mobileDetect()->isMobile()) {
             $link = true;
+        }
 
-        if($link === true)
-            return '<a href="' . $obscuredTel . $obscuredNumber . '">' . $obscuredNumber . '</a>';
-        else
+        if ($link === true) {
+            return sprintf(
+                '<a href="%s%s">%s</a>',
+                $obscuredTel,
+                $obscuredNumber,
+                $obscuredNumber
+            );
+        } else {
             return $obscuredNumber;
+        }
     }
-
-
 
     /**
      * Convert a string to lowercase slug format
-     * @param  String  $string
-     * @return String
+     * @param  string  $string
+     * @return string
      */
-    public static function createSlug($string) {
+    public static function createSlug($string)
+    {
         $slug = html_entity_decode($string);
         $slug = remove_accents($slug);
         $slug = strtolower($slug);
@@ -80,50 +96,49 @@ class Utilities {
         return $slug;
     }
 
-
-
     /**
      * Convert a string to binary
-     * @param  String   $string
-     * @param  Boolean  $array   Whether to return an array (true) or string (false)
-     * @return Array|String
+     * @param  string   $string
+     * @param  bool  $array   Whether to return an array (true) or string (false)
+     * @return array|string
      */
-    public static function stringToBinary($string, $array=false) {
+    public static function stringToBinary($string, $array = false)
+    {
         $string = (string) $string;
         $length = strlen($string);
         $result = array();
 
-        for($i=0;  $i<$length;  $i++) {
+        for ($i=0;  $i<$length;  $i++) {
             $decimal = ord($string[$i]);
             $binary = sprintf('%08d', base_convert($decimal, 10, 2));
             $result[] = $binary;
         }
 
-        if($array)
+        if ($array) {
             return $result;
-        else
+        } else {
             return implode('', $result);
+        }
     }
-
-
 
     /**
      * Convert utf8 characters into #&000; format
-     * @param  String   $string
-     * @param  Boolean  $literal  Whether to return the HTML codes (true) or not (false)
-     * @return String
+     * @param  string   $string
+     * @param  bool  $literal  Whether to return the HTML codes (true) or not (false)
+     * @return string
      */
-    public static function utf8ToHtmlEntities($string, $literal=false) {
+    public static function utf8ToHtmlEntities($string, $literal = false)
+    {
         $string = (string) $string;
         $htmlEntities = array();
 
         $bytes = static::stringToBinary($string, true);
 
-        while( ! empty($bytes)) {
+        while (! empty($bytes)) {
             $byte = (string) $bytes[0];
 
             // Normal 7 bit character
-            if($byte[0] === '0') {
+            if ($byte[0] === '0') {
                 $htmlEntities[] = '&#' . base_convert($byte, 2, 10) . ';';
                 array_shift($bytes);
             }
@@ -132,16 +147,18 @@ class Utilities {
             else {
                 // Count the bytes for this character
                 $count = 0;
-                while($byte[$count] !== '0')
+                while ($byte[$count] !== '0') {
                     $count++;
+                }
 
                 // First byte
                 $binary = substr($byte, $count);
                 array_shift($bytes);
 
                 // Followup bytes
-                for($i=0;  $i<($count-1);  $i++)
+                for ($i=0;  $i<($count-1);  $i++) {
                     $binary .= substr(array_shift($bytes), 2);
+                }
 
                 $htmlEntities[] = '&#' . base_convert($binary, 2, 10) . ';';
             }
@@ -149,9 +166,10 @@ class Utilities {
 
         $htmlEntities = implode('', $htmlEntities);
 
-        if($literal)
+        if ($literal) {
             return str_replace('&', '&amp;', $htmlEntities);
-        else
+        } else {
             return $htmlEntities;
+        }
     }
 }

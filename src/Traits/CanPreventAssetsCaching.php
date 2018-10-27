@@ -1,21 +1,23 @@
 <?php
 
-namespace Wordclass\Traits;
+namespace Nerbiz\Wordclass\Traits;
 
-trait CanPreventAssetsCaching {
+trait CanPreventAssetsCaching
+{
     /**
      * This string is appended to all asset URLs
      * @var String
      */
-    private static $_assetAppend = '';
-
-
+    protected static $assetAppend = '';
 
     /**
      * Whether or not to prevent assets browser caching
-     * @param  Boolean  $prevent
+     * @param  bool  $prevent
      */
-    public static function preventCache($prevent) {
-        static::$_assetAppend = ($prevent)  ?  '?v='.time()  :  '';
+    public static function preventCache($prevent)
+    {
+        static::$assetAppend = ($prevent)
+            ? '?v=' . time()
+            : '';
     }
 }

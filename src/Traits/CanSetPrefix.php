@@ -1,41 +1,41 @@
 <?php
 
-namespace Wordclass\Traits;
+namespace Nerbiz\Wordclass\Traits;
 
-use Wordclass\Init;
+use Nerbiz\Wordclass\Init;
 
-trait CanSetPrefix {
+trait CanSetPrefix
+{
     /**
      * The prefix
      * @var String
      */
-    private static $_prefix = null;
-
-
+    protected static $prefix = null;
 
     /**
      * Set or get the prefix
-     * @param  String  $prefix
-     * @return String
+     * @param  string  $prefix
+     * @return string
      */
-    public static function prefix($prefix=null) {
-        if($prefix)
-            static::$_prefix = $prefix;
-
-        else {
+    public static function prefix($prefix = null)
+    {
+        if ($prefix) {
+            static::$prefix = $prefix;
+        } else {
             // A class-specific value takes precedence
-            if(static::$_prefix !== null)
-                return static::$_prefix;
-
-            else {
+            if (static::$prefix !== null) {
+                return static::$prefix;
+            } else {
                 // Use the default value in Init if it is set
                 $default = Init::defaultPrefix();
-                if($default !== null)
+                if ($default !== null) {
                     return $default;
+                }
 
                 // Fallback value
-                else
+                else {
                     return 'wc';
+                }
             }
         }
     }

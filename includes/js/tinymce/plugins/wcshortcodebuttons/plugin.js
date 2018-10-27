@@ -1,25 +1,24 @@
-window.wordclassShortcodeButtonsPlugin = new function() {
+window.wordclassShortcodeButtonsPlugin = new function()
+{
     var self = this;
-
-
 
     /**
      * Concatenate the parameters, but exclude empty values
      * @param  Object  params  Parameters as name:value pairs
      * @return String
      */
-    self.concatenateParameters = function(params) {
+    self.concatenateParameters = function(params)
+    {
         var string = '';
 
         for(var name in params) {
-            if(params[name] != '')
+            if(params[name] != '') {
                 string += ' ' + name + '="' + params[name] + '"';
+            }
         }
 
         return string;
     };
-
-
 
     /**
      * Inserts the shortcode in the editor
@@ -30,7 +29,8 @@ window.wordclassShortcodeButtonsPlugin = new function() {
      * @param  String  params        The concatenated parameters string
      * @param  String  selectedText  The text that was selected in the editor, before a modal was opened
      */
-    self.insertIntoEditor = function(editor, shortcode, params, selectedText) {
+    self.insertIntoEditor = function(editor, shortcode, params, selectedText)
+    {
         // Construct and insert the shortcode
         var tag = '[' + shortcode.tag + params + ']';
         // Enclose the selected text in the shortcode
@@ -43,14 +43,13 @@ window.wordclassShortcodeButtonsPlugin = new function() {
         editor.insertContent(tag);
     };
 
-
-
     /**
      * Initialize the plugin
      * @param  Object  editor  TinyMCE editor instance
      * @param  String  url     The plugin file URL
      */
-    self.initPlugin = function(editor, url) {
+    self.initPlugin = function(editor, url)
+    {
         // Create all the shortcode buttons
         for(var i=-1;  ++i<window.wordclassShortcodeButtons.length;) {
             // Use an IIFE, so that values are scoped
@@ -64,8 +63,9 @@ window.wordclassShortcodeButtonsPlugin = new function() {
                         var selectedText = tinyMCE.activeEditor.selection.getContent();
 
                         // Don't open a modal dialog if there are no parameters
-                        if(shortcode.inputs.length < 1)
+                        if(shortcode.inputs.length < 1) {
                             self.insertIntoEditor(editor, shortcode, '', selectedText);
+                        }
 
                         else {
                             editor.windowManager.open({
@@ -84,12 +84,11 @@ window.wordclassShortcodeButtonsPlugin = new function() {
         }
     };
 
-
-
     /**
      * Start adding the plugin
      */
-    (self.addToTinyMce = function() {
+    (self.addToTinyMce = function()
+    {
         // Only if definitions have been given
         if(window.wordclassShortcodeButtons) {
             tinymce.create('tinymce.plugins.WordclassShortcodeButtons', {

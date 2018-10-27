@@ -1,35 +1,34 @@
 <?php
 
-namespace Wordclass;
+namespace Nerbiz\Wordclass;
 
 require_once __DIR__ . '/../../../webdevstudios/cmb2/init.php';
 
+use Traits\CanSetPrefix;
 use CMB2;
 
-class Metabox {
-    use Traits\CanSetPrefix;
-
-
+class Metabox
+{
+    use CanSetPrefix;
 
     /**
      * The options for the metabox
      * @var Array
      */
-    private $_options;
+    protected $options;
 
     /**
      * The fields for the metabox
      * @var Array
      */
-    private $_fields = [];
-
-
+    protected $fields = [];
 
     /**
      * @see create()
      */
-    private function __construct($id, $title, $posttypes, $options=[]) {
-        $this->_options = array_replace_recursive([
+    protected function __construct($id, $title, $posttypes, $options = [])
+    {
+        $this->options = array_replace_recursive([
             /**
              * Required
              */
@@ -73,55 +72,54 @@ class Metabox {
         ], $options);
     }
 
-
-
     /**
      * Add a field, that will be added to the metabox
      * This is simply a wrapper, which allows chaining
-     * @param Array  $options  Options for the field
-     * @return $this
+     * @param  array  $options  Options for the field
+     * @return self
      */
-    public function addField($options) {
+    public function addField($options)
+    {
         // Prefix the field ID
         $options['id'] = static::prefix() . '-' . $options['id'];
 
-        $this->_fields[] = $options;
+        $this->fields[] = $options;
 
         return $this;
     }
 
-
-
     /**
      * Create the metabox and set its fields
      */
-    public function add() {
-        add_action('cmb2_admin_init', function() {
+    public function add()
+    {
+        add_action('cmb2_admin_init', function () {
             // Create the metabox
-            $cmb = new CMB2($this->_options);
+            $cmb = new CMB2($this->options);
 
             // Add the fields to it
-            foreach($this->_fields as $options)
+            foreach ($this->fields as $options) {
                 $cmb->add_field($options);
+            }
         });
     }
 
-
-
     /**
      * Create a new CMB2 instance
-     * @param  String        $id         Metabox ID
-     * @param  String        $title      Metabox title
-     * @param  Array|String  $posttypes  1 or more posttypes to register the metabox to
-     * @param  Array         $options    Options for the object (merged with defaults)
-     * @return Object  An instance of this class
+     * @param  string        $id         Metabox ID
+     * @param  string        $title      Metabox title
+     * @param  array|string  $posttypes  1 or more posttypes to register the metabox to
+     * @param  array         $options    Options for the object (merged with defaults)
+     * @return Metabox  An instance of this class
      */
-    public static function create($id, $title, $posttypes, $options=[]) {
+    public static function create($id, $title, $posttypes, $options = [])
+    {
         $posttypes = (array) $posttypes;
 
         // Make sure the post types are a string (could use __toString() of an object)
-        foreach($posttypes as $key => $type)
+        foreach ($posttypes as $key => $type) {
             $posttypes[$key] = (string) $type;
+        }
 
         return new static($id, $title, $posttypes, $options);
     }

@@ -1,35 +1,31 @@
 <?php
 
-namespace Wordclass;
+namespace Nerbiz\Wordclass;
 
-use Wordclass\Utilities;
+use Traits\CanSetPrefix;
 
-class PageBuilder {
-    use Traits\CanSetPrefix;
-
-
+class PageBuilder
+{
+    use CanSetPrefix;
 
     /**
      * The name of the group to which the custom widgets will be added
      * @var String
      */
-    private static $_widgetGroup = 'custom-widgets';
-
-
+    protected static $widgetGroup = 'custom-widgets';
 
     /**
      * Set the name of the group the custom widgets will be added to
-     * @param String  $name
+     * @param  string  $name
      */
-    public static function setWidgetsGroup($name) {
-        static::$_widgetGroup = $name;
+    public static function setWidgetsGroup($name)
+    {
+        static::$widgetGroup = $name;
     }
-
-
 
     /**
      * Add an option to the row styles
-     * @param Array  $args  The arguments for the new option
+     * @param array  $args  The arguments for the new option
      *                        label: The label of the field
      *                        slug: (Optional) the field input name (default: label transformed into slug)
      *                        type: The type of input: checkbox | text | code | measurement | color | image | select
@@ -37,12 +33,13 @@ class PageBuilder {
      *                        description: (Optional) the description under the field (default: null)
      *                        priority: (Optional) Where to show the option (default: 11)
      */
-    public static function addRowStyleOption($args) {
+    public static function addRowStyleOption($args)
+    {
         // Default values
-        $args['slug'] = @$args['slug']  ?:  Utilities::createSlug($args['label']);
-        $args['priority'] = @$args['priority']  ?:  11;
+        $args['slug'] = @$args['slug'] ?: Utilities::createSlug($args['label']);
+        $args['priority'] = @$args['priority'] ?: 11;
 
-        add_filter('siteorigin_panels_row_style_fields', function($fields) use ($args) {
+        add_filter('siteorigin_panels_row_style_fields', function ($fields) use ($args) {
             // Create the field name, using the prefix
             $fieldName = static::prefix() . '-' . $args['slug'];
 
@@ -58,33 +55,33 @@ class PageBuilder {
         });
     }
 
-
-
     /**
      * Add CSS classes to either div.panel-grid, or div.panel-row-style elements
-     * @param  String        $element  grid / row
-     * @param  String|Array  $classes  1 class: provide a string
+     * @param  string        $element  grid / row
+     * @param  string|array  $classes  1 class: provide a string
      *                                 multiple: provide a space-separated string, or an array of strings
      */
-    public static function addRowClasses($element, $classes) {
+    public static function addRowClasses($element, $classes)
+    {
         $classes = (array) $classes;
 
         // Create an array of classes to add
         // When a class has a space, transform it into an array
         $addClasses = [];
-        foreach($classes as $class)
+        foreach ($classes as $class) {
             $addClasses = array_merge($addClasses, explode(' ', $class));
+        }
 
         // Add to all div.panel-grid elements
-        if($element == 'grid') {
-            add_filter('siteorigin_panels_row_classes', function($current) use($addClasses) {
+        if ($element == 'grid') {
+            add_filter('siteorigin_panels_row_classes', function ($current) use ($addClasses) {
                 return array_merge($current, $addClasses);
             });
         }
 
         // Add to all div.panel-row-style elements
-        else if($element == 'row') {
-            add_filter('siteorigin_panels_row_style_attributes', function($attributes, $args=null) use ($addClasses) {
+        elseif ($element == 'row') {
+            add_filter('siteorigin_panels_row_style_attributes', function ($attributes, $args = null) use ($addClasses) {
                 // Append the classes to possibly existing classes
                 $attributes['class'] = array_merge($attributes['class'], $addClasses);
 
@@ -93,25 +90,24 @@ class PageBuilder {
         }
     }
 
-
-
     /**
      * Set a custom style attribute on all div.panel-row-style elements
-     * @param  String|Array  $property  string: The CSS property
+     * @param  string|array  $property  string: The CSS property
      *                                  array: property:value pairs
-     * @param  String|null   $value     In case $property is a string, this is the value for it
+     * @param  string|null   $value     In case $property is a string, this is the value for it
      */
-    public static function addRowStyles($property, $value=null) {
-        if(is_string($property))
+    public static function addRowStyles($property, $value = null)
+    {
+        if (is_string($property)) {
             $style = $property . ': ' . $value . ';';
-
-        else if(is_array($property)) {
+        } elseif (is_array($property)) {
             $style = '';
-            foreach($property as $key => $value)
+            foreach ($property as $key => $value) {
                 $style .= $key . ': ' . $value . '; ';
+            }
         };
 
-        add_filter('siteorigin_panels_row_style_attributes', function($attributes, $args=null) use ($style) {
+        add_filter('siteorigin_panels_row_style_attributes', function ($attributes, $args = null) use ($style) {
             // Append the style to a possibly existing style
             $attributes['style'] = trim($attributes['style'] . ' ' . $style);
 
@@ -119,34 +115,32 @@ class PageBuilder {
         });
     }
 
-
-
     /**
      * Add a theme widgets directory
-     * @param  String  $directory
+     * @param  string  $directory
      */
-    public static function addWidgetsDirectory($directory) {
+    public static function addWidgetsDirectory($directory)
+    {
         // Make sure there is 1 trailing slash
         $directory = rtrim($directory, '/') . '/';
 
-        add_filter('siteorigin_widgets_widget_folders', function($directories) use ($directory) {
+        add_filter('siteorigin_widgets_widget_folders', function ($directories) use ($directory) {
             $directories[] = $directory;
             return $directories;
         });
     }
 
-
-
     /**
      * Add a custom widgets tab
-     * @param  String  $label  The label of the tab
+     * @param  string  $label  The label of the tab
      */
-    public static function addWidgetsTab($label) {
-        add_filter('siteorigin_panels_widget_dialog_tabs', function($tabs) use ($label) {
+    public static function addWidgetsTab($label)
+    {
+        add_filter('siteorigin_panels_widget_dialog_tabs', function ($tabs) use ($label) {
             $tabs[] = [
                 'title'  => $label,
                 'filter' => [
-                    'groups' => [static::$_widgetGroup]
+                    'groups' => [static::$widgetGroup]
                 ]
             ];
 
@@ -154,19 +148,18 @@ class PageBuilder {
         });
     }
 
-
-
     /**
      * Add non-custom widgets to the custom group / tab
-     * @param Array|String  $classes
+     * @param  array|string  $classes
      */
-    public static function addWidgetsToGroup($classes) {
+    public static function addWidgetsToGroup($classes)
+    {
         $classes = (array) $classes;
 
-        add_filter('siteorigin_panels_widgets', function($widgets) use ($classes) {
-            foreach($classes as $class) {
-                if(class_exists($class)  &&  isset($widgets[$class])) {
-                    $widgets[$class]['groups'] = [static::$_widgetGroup];
+        add_filter('siteorigin_panels_widgets', function ($widgets) use ($classes) {
+            foreach ($classes as $class) {
+                if (class_exists($class) && isset($widgets[$class])) {
+                    $widgets[$class]['groups'] = [static::$widgetGroup];
                     $widgets[$class]['icon'] = 'dashicons dashicons-tagcloud';
                 }
             }

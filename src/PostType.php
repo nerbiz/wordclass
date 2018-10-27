@@ -1,170 +1,162 @@
 <?php
 
-namespace Wordclass;
+namespace Nerbiz\Wordclass;
 
-use Wordclass\Utilities;
-
-class PostType {
+class PostType
+{
     /**
      * Various CPT properties
      * @var Mixed
      */
-    private $_id;
-    private $_name;
-    private $_slug;
-    private $_singularName;
-    private $_description;
-    private $_taxonomies = [];
+    protected $id;
+    protected $name;
+    protected $slug;
+    protected $singularName;
+    protected $description;
+    protected $taxonomies = [];
 
     /**
      * The labels for the CPT
      * @var Array
      */
-    private $_labels = null;
+    protected $labels = null;
 
     /**
      * The arguments for the CPT
      * @var Array
      */
-    private $_arguments = null;
-
-
+    protected $arguments = null;
 
     /**
      * @see create()
      */
-    private function __construct($id) {
-        $this->_id = $id;
+    protected function __construct($id)
+    {
+        $this->id = $id;
     }
-
-
 
     /**
      * Set the name of the CPT
      * The slug is derived from this name
      * The description is set using this value
      * Those can be changed with other methods
-     * @param  String  $name
-     * @return $this
+     * @param  string  $name
+     * @return self
      */
-    public function name($name) {
-        $this->_name = $name;
-        $this->_slug = Utilities::createSlug($name);
-        $this->_description = 'Custom Post Type: ' . $name;
+    public function name($name)
+    {
+        $this->name = $name;
+        $this->slug = Utilities::createSlug($name);
+        $this->description = 'Custom Post Type: ' . $name;
 
         return $this;
     }
-
-
 
     /**
      * Set the slug of the CPT
-     * @param  String  $slug
-     * @return $this
+     * @param  string  $slug
+     * @return self
      */
-    public function slug($slug) {
-        $this->_slug = $slug;
+    public function slug($slug)
+    {
+        $this->slug = $slug;
 
         return $this;
     }
-
-
 
     /**
      * Set the singular name of the CPT
-     * @param  String  $singular
-     * @return $this
+     * @param  string  $singular
+     * @return self
      */
-    public function singular($singular) {
-        $this->_singularName = $singular;
+    public function singular($singular)
+    {
+        $this->singularName = $singular;
 
         return $this;
     }
-
-
 
     /**
      * Set the description of the CPT
-     * @param  String  $description
-     * @return $this
+     * @param  string  $description
+     * @return self
      */
-    public function description($description) {
-        $this->_description = $description;
+    public function description($description)
+    {
+        $this->description = $description;
 
         return $this;
     }
-
-
 
     /**
      * Set the taxonomies that the CPT has
-     * @param  Array  $taxonomies
-     * @return $this
+     * @param  array  $taxonomies
+     * @return self
      */
-    public function taxonomies($taxonomies) {
-        $this->_taxonomies = (array) $taxonomies;
+    public function taxonomies($taxonomies)
+    {
+        $this->taxonomies = (array) $taxonomies;
 
         return $this;
     }
 
-
-
     /**
      * Set labels for the CPT
-     * @param  Array  $labels  (Optional) overwrite the default values (merged)
-     * @return $this;
+     * @param  array  $labels  (Optional) overwrite the default values (merged)
+     * @return self;
      */
-    public function labels($labels=[]) {
-        $this->_labels = array_replace_recursive([
-            'name'                  => $this->_name,
-            'singular_name'         => $this->_singularName,
-            'menu_name'             => $this->_name,
-            'name_admin_bar'        => $this->_singularName,
-            'archives'              => sprintf(__('%s archive', 'wordclass'), $this->_name),
-            'parent_item_colon'     => sprintf(__('Parent %s:', 'wordclass'), $this->_singularName),
-            'all_items'             => sprintf(__('All %s', 'wordclass'), $this->_name),
-            'add_new_item'          => sprintf(__('Add new %s', 'wordclass'), $this->_singularName),
-            'add_new'               => sprintf(__('Add new %s', 'wordclass'), $this->_singularName),
-            'new_item'              => sprintf(__('New %s', 'wordclass'), $this->_singularName),
-            'edit_item'             => sprintf(__('Edit %s', 'wordclass'), $this->_singularName),
-            'update_item'           => sprintf(__('Update %s', 'wordclass'), $this->_singularName),
-            'view_item'             => sprintf(__('View %s', 'wordclass'), $this->_singularName),
-            'search_items'          => sprintf(__('Search %s', 'wordclass'), $this->_singularName),
+    public function labels($labels = [])
+    {
+        $this->labels = array_replace_recursive([
+            'name'                  => $this->name,
+            'singular_name'         => $this->singularName,
+            'menu_name'             => $this->name,
+            'name_admin_bar'        => $this->singularName,
+            'archives'              => sprintf(__('%s archive', 'wordclass'), $this->name),
+            'parent_item_colon'     => sprintf(__('Parent %s:', 'wordclass'), $this->singularName),
+            'all_items'             => sprintf(__('All %s', 'wordclass'), $this->name),
+            'add_new_item'          => sprintf(__('Add new %s', 'wordclass'), $this->singularName),
+            'add_new'               => sprintf(__('Add new %s', 'wordclass'), $this->singularName),
+            'new_item'              => sprintf(__('New %s', 'wordclass'), $this->singularName),
+            'edit_item'             => sprintf(__('Edit %s', 'wordclass'), $this->singularName),
+            'update_item'           => sprintf(__('Update %s', 'wordclass'), $this->singularName),
+            'view_item'             => sprintf(__('View %s', 'wordclass'), $this->singularName),
+            'search_items'          => sprintf(__('Search %s', 'wordclass'), $this->singularName),
             'not_found'             => __('Not found', 'wordclass'),
             'not_found_in_trash'    => __('Not found in trash', 'wordclass'),
             'featured_image'        => __('Featured image', 'wordclass'),
             'set_featured_image'    => __('Set featured image', 'wordclass'),
             'remove_featured_image' => __('Remove featured image', 'wordclass'),
             'use_featured_image'    => __('Use as featured image', 'wordclass'),
-            'insert_into_item'      => sprintf(__('Insert into %s', 'wordclass'), $this->_singularName),
-            'uploaded_to_this_item' => sprintf(__('Uploaded to this %s', 'wordclass'), $this->_singularName),
-            'items_list'            => sprintf(__('%s list', 'wordclass'), $this->_name),
-            'items_list_navigation' => sprintf(__('%s list navigation', 'wordclass'), $this->_name),
-            'filter_items_list'     => sprintf(__('Filter %s list', 'wordclass'), $this->_name)
+            'insert_into_item'      => sprintf(__('Insert into %s', 'wordclass'), $this->singularName),
+            'uploaded_to_this_item' => sprintf(__('Uploaded to this %s', 'wordclass'), $this->singularName),
+            'items_list'            => sprintf(__('%s list', 'wordclass'), $this->name),
+            'items_list_navigation' => sprintf(__('%s list navigation', 'wordclass'), $this->name),
+            'filter_items_list'     => sprintf(__('Filter %s list', 'wordclass'), $this->name),
         ], $labels);
 
         return $this;
     }
 
-
-
     /**
      * Set arguments for the CPT
-     * @param  Array  $arguments  (Optional) overwrite the default values (merged)
-     * @return $this
+     * @param  array  $arguments  (Optional) overwrite the default values (merged)
+     * @return self
      */
-    public function arguments($arguments=[]) {
+    public function arguments($arguments = [])
+    {
         // Set the labels, if not set yet
-        if($this->_labels === null)
+        if ($this->labels === null) {
             $this->labels();
+        }
 
         // Overwrite defaults, if arguments are given
-        $this->_arguments = array_replace_recursive([
-            'label'               => $this->_name,
-            'description'         => $this->_description,
-            'labels'              => $this->_labels,
+        $this->arguments = array_replace_recursive([
+            'label'               => $this->name,
+            'description'         => $this->description,
+            'labels'              => $this->labels,
             'supports'            => ['title', 'editor', 'thumbnail', 'page-attributes'],
-            'taxonomies'          => $this->_taxonomies,
+            'taxonomies'          => $this->taxonomies,
             'hierarchical'        => true,
             'public'              => true,
             'show_ui'             => true,
@@ -178,52 +170,50 @@ class PostType {
             'publicly_queryable'  => true,
             'capability_type'     => 'page',
             'rewrite'             => [
-                'slug'       => $this->_slug,
+                'slug'       => $this->slug,
                 'with_front' => false,
                 'feeds'      => true,
                 'pages'      => true
-            ]
+            ],
         ], $arguments);
 
         return $this;
     }
 
-
-
     /**
      * Add the CPT
-     * @return $this
+     * @return self
      */
-    public function add() {
+    public function add()
+    {
         // Set the arguments, if not set yet
-        if( ! $this->_arguments)
+        if (! $this->arguments) {
             $this->arguments();
+        }
 
-        add_action('init', function() {
-            register_post_type($this->_id, $this->_arguments);
+        add_action('init', function () {
+            register_post_type($this->id, $this->arguments);
         }, 0);
 
         return $this;
     }
 
-
-
     /**
      * When echo'd, return the ID
-     * @return String
+     * @return string
      */
-    public function __toString() {
-        return $this->_id;
+    public function __toString()
+    {
+        return $this->id;
     }
-
-
 
     /**
      * Initialize the creation chain
-     * @param  String  $id  ID of the CPT
-     * @return Object  An instance of this class
+     * @param  string  $id  ID of the CPT
+     * @return PostType  An instance of this class
      */
-    public static function create($id) {
+    public static function create($id)
+    {
         return new static($id);
     }
 }
