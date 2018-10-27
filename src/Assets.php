@@ -2,7 +2,7 @@
 
 namespace Nerbiz\Wordclass;
 
-use Traits\CanPreventAssetsCaching;
+use Nerbiz\Wordclass\Traits\CanPreventAssetsCaching;
 
 class Assets
 {

@@ -4,7 +4,7 @@ namespace Nerbiz\Wordclass;
 
 require_once __DIR__ . '/../../../webdevstudios/cmb2/init.php';
 
-use Traits\CanSetPrefix;
+use Nerbiz\Wordclass\Traits\CanSetPrefix;
 use CMB2;
 
 class Metabox

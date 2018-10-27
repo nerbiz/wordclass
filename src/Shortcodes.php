@@ -2,7 +2,7 @@
 
 namespace Nerbiz\Wordclass;
 
-use Traits\CanSetPrefix;
+use Nerbiz\Wordclass\Traits\CanSetPrefix;
 
 class Shortcodes
 {
