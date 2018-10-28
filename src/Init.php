@@ -62,15 +62,17 @@ class Init
     /**
      * Define some useful constants
      */
-    public static function constants()
+    public static function defineConstants()
     {
         // The absolute paths to the template/stylesheet directory
-        define('TEMPLATE_PATH', get_template_directory() . '/');
-        define('STYLESHEET_PATH', get_stylesheet_directory() . '/');
+        define('WC_THEME_PATH', get_template_directory() . '/');
+        define('WC_TEMPLATE_PATH', WC_THEME_PATH);
+        define('WC_STYLESHEET_PATH', get_stylesheet_directory() . '/');
 
         // The URI paths to the template/stylesheet directory
-        define('TEMPLATE_URI', get_template_directory_uri() . '/');
-        define('STYLESHEET_URI', get_stylesheet_directory_uri() . '/');
+        define('WC_THEME_URI', get_template_directory_uri() . '/');
+        define('WC_TEMPLATE_URI', WC_THEME_URI);
+        define('WC_STYLESHEET_URI', get_stylesheet_directory_uri() . '/');
     }
 
     /**
