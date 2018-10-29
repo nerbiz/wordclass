@@ -5,29 +5,39 @@ namespace Nerbiz\Wordclass;
 class Theme
 {
     /**
-     * Enable the 'featured image' metabox on page/post edit screens
-     * @param  null|string|array  $posttypes  (Optional) Enable for specific post types only
+     * Enable the 'featured image' metabox on post edit screens
+     * @param  null|string|array $postTypes (Optional) Enable for specific post types only
+     * @return self
      */
-    public static function enableFeaturedImages($posttypes = null)
+    public function enableFeaturedImages($postTypes = null)
     {
-        if ($posttypes !== null) {
-            $posttypes = (array) $posttypes;
+        if ($postTypes !== null) {
+            $postTypes = (array) $postTypes;
         }
 
-        add_action('after_setup_theme', function () use ($posttypes) {
-            if ($posttypes === null) {
+        add_action('after_setup_theme', function () use ($postTypes) {
+            // Enable for all post types
+            if ($postTypes === null) {
                 add_theme_support('post-thumbnails');
-            } else {
-                add_theme_support('post-thumbnails', $posttypes);
+            }
+
+            // Enable only for the give post types
+            else {
+                foreach ($postTypes as $postType) {
+                    add_post_type_support($postType, 'post-thumbnails');
+                }
             }
         });
+
+        return $this;
     }
 
     /**
      * Allow the use of HTML5 in core Wordpress features
      * @param  array  $features  The list of features to enable HTML5 for
+     * @return self
      */
-    public static function enableHtml5Support($features = null)
+    public function enableHtml5Support($features = null)
     {
         // By default, all features are HTML5-enabled
         if ($features === null) {
@@ -42,68 +52,75 @@ class Theme
         add_action('after_setup_theme', function () use ($features) {
             add_theme_support('html5', $features);
         });
+
+        return $this;
     }
 
     /**
-     * Set the size of the featured images
+     * Set the size of featured images
      * @param  int  $width
      * @param  int  $height
-     * @param  bool  $crop        Whether to resize (false) or crop (true) images
+     * @param  bool $crop   Whether to resize (false) or crop (true) images
+     * @return self
      */
-    public static function featuredImageSize($width, $height, $crop = false)
+    public function setFeaturedImageSize($width, $height, $crop = false)
     {
         add_action('after_setup_theme', function () use ($width, $height, $crop) {
             set_post_thumbnail_size($width, $height, $crop);
         });
+
+        return $this;
     }
 
     /**
      * Add a new image size, and add it to the size chooser
-     * @param  string   $name        Key name for the $sizes array
-     * @param  string   $optionName  Name in the size chooser
-     * @param  int      $width
-     * @param  int      $height
-     * @param  bool     $crop        Whether to resize (false) or crop (true) images
+     * @param  string $name          Key name for the $sizes array
+     * @param  string $nameInChooser Name in the size chooser
+     * @param  int    $width
+     * @param  int    $height
+     * @param  bool   $crop          Whether to resize (false) or crop (true) images
+     * @return self
      */
-    public function addImageSize($name, $optionName, $width, $height, $crop = false)
+    public function addImageSize($name, $nameInChooser, $width, $height, $crop = false)
     {
-        add_action('after_setup_theme', function () use ($name, $optionName, $width, $height, $crop) {
+        add_action('after_setup_theme', function () use ($name, $nameInChooser, $width, $height, $crop) {
             add_image_size($name, $width, $height, $crop);
 
-            add_filter('image_size_names_choose', function ($sizes) use ($name, $optionName) {
-                $sizes[$name] = $optionName;
+            // Set the image size name for the chooser
+            add_filter('image_size_names_choose', function ($sizes) use ($name, $nameInChooser) {
+                $sizes[$name] = $nameInChooser;
                 return $sizes;
             });
         });
+
+        return $this;
     }
 
     /**
-     * Register custom menu positions
-     * @param  string|array  $menus        Menus in location:description pairs
-     *                                       Can be a string, then it is the name of the location
-     * @param  array|null    $description  In case $menus is a string (location), this is the description for it
+     * Register menu positions
+     * @param  array $menus Menus in location:description pairs
+     * @return self
      */
-    public static function addMenus($menus, $description = null)
+    public function addMenus(array $menus)
     {
-        if (is_string($menus)) {
-            $menus = [$menus => $description];
-        }
-
         add_action('after_setup_theme', function () use ($menus) {
-            foreach ($menus as $location => $description) {
-                register_nav_menu($location, $description);
-            }
+            register_nav_menus($menus);
         });
+
+        return $this;
     }
 
     /**
      * Let Wordpress handle the window title
      * When using this, remove the <title> tag from <head>
+     * @return self
      */
-    public static function autoWindowTitle()
+    public function automaticWindowTitle()
     {
         add_action('after_setup_theme', function () {
             add_theme_support('title-tag');
         });
+
+        return $this;
     }
 }
