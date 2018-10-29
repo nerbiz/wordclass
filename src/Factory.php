@@ -29,7 +29,7 @@ class Factory
         }
 
         throw new Exception(sprintf(
-            "%s(): the class '%s' doesn't exist",
+            "%s(): the class '%s' is not found",
             __METHOD__,
             $fullyQualifiedClassname
         ));

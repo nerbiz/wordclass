@@ -2,113 +2,172 @@
 
 namespace Nerbiz\Wordclass;
 
-use Nerbiz\Wordclass\Traits\CanPreventAssetsCaching;
-
 class Assets
 {
-    use CanPreventAssetsCaching;
+    /**
+     * This string is appended to all asset URLs, if cache busting is enabled
+     * @var string
+     */
+    protected $assetAppend = '';
+
+    /**
+     * Enable cache busting by appending asset URIs
+     * @return self
+     */
+    public function enableCacheBusting()
+    {
+        $this->assetAppend = '?v=' . time();
+
+        return $this;
+    }
+
+    /**
+     * Disable cache busting
+     * @return self
+     */
+    public function disableCacheBusting()
+    {
+        $this->assetAppend = '';
+
+        return $this;
+    }
+
+    /**
+     * Add CSS asset(s) to the theme
+     * @param array $assets handle:options pairs
+     * @return self
+     */
+    public function addThemeCss(array $assets)
+    {
+        return $this->addAssets('css', 'wp_enqueue_scripts', $assets);
+    }
+
+    /**
+     * Add JavaScript asset(s) to the theme
+     * @param array $assets handle:options pairs
+     * @return self
+     */
+    public function addThemeJs(array $assets)
+    {
+        return $this->addAssets('js', 'wp_enqueue_scripts', $assets);
+    }
+
+    /**
+     * Add CSS asset(s) to admin
+     * @param array $assets handle:options pairs
+     * @return self
+     */
+    public function addAdminCss(array $assets)
+    {
+        return $this->addAssets('css', 'admin_enqueue_scripts', $assets);
+    }
+
+    /**
+     * Add JavaScript asset(s) to admin
+     * @param array $assets handle:options pairs
+     * @return self
+     */
+    public function addAdminJs(array $assets)
+    {
+        return $this->addAssets('js', 'admin_enqueue_scripts', $assets);
+    }
+
+    /**
+     * Add CSS asset(s) to the login screen
+     * @param array $assets handle:options pairs
+     * @return self
+     */
+    public function addLoginCss(array $assets)
+    {
+        return $this->addAssets('css', 'login_enqueue_scripts', $assets);
+    }
+
+    /**
+     * Add JavaScript asset(s) to the login screen
+     * @param array $assets handle:options pairs
+     * @return self
+     */
+    public function addLoginJs(array $assets)
+    {
+        return $this->addAssets('js', 'login_enqueue_scripts', $assets);
+    }
 
     /**
      * Add assets
-     * @param  string        $for     'theme' / 'admin' / 'login'
-     * @param  string        $type    'css' or 'js'
-     * @param  array|string  $assets  The assets as handle:options pairs
-     *                                  path: relative path to the file
-     *                                  after: the assets that have to load before this one (default: none)
-     *                                  For css
-     *                                    media: the 'media' attribute of the style tag (default: 'all')
-     *                                  For js
-     *                                    footer: add this script to the header (false) or the footer (true) (default: true)
-     *                                  Instead of an options array, options can be a path string, using default options
-     * @param  string        $path    (Only used when $assets is a string) shorthand for registering 1 style, with default options
+     * @param string $assetType The type of asset, 'css' or 'js'
+     * @param string $hook      The hook to register the assets in
+     * @param array $assets     handle:option pairs
+     * @return self
+     * @see parseAssetOptions()
      */
-    protected static function addAsset($for, $type, $assets, $path)
+    protected function addAssets($assetType, $hook, array $assets)
     {
-        // Decide which action hook to use, based on where the asset needs to go
-        ($for == 'theme') && $for = 'wp';
-        $actionHook = $for . '_enqueue_scripts';
+        add_action($hook, function () use ($assetType, $assets) {
+            foreach ($assets as $handle => $options) {
+                $options = $this->parseAssetOptions($assetType, $options);
 
-        // Only CSS and JS are supported
-        if (in_array($type, ['css', 'js'])) {
-            $defaultCssOptions = [
+                // Register the asset
+                if ($assetType == 'css') {
+                    wp_enqueue_style($handle, $options['uri'], $options['after'], null, $options['media']);
+                } elseif ($assetType == 'js') {
+                    wp_enqueue_script($handle, $options['uri'], $options['after'], null, $options['footer']);
+                }
+            }
+        });
+
+        return $this;
+    }
+
+    /**
+     * Parse asset options for registering
+     * @param string       $assetType The type of asset, 'css' or 'js'
+     * @param array|string $options   Either an options array, or only a URI (string)
+     * Options:
+     * uri: URI to the file
+     * after: the assets that have to load before this one (default: none)
+     * For css
+     *   media: the 'media' attribute of the style tag (default: 'all')
+     * For js
+     *   footer: add this script to the header (false) or the footer (true) (default: true)
+     * @return array
+     */
+    protected function parseAssetOptions($assetType, $options)
+    {
+        // Convert the shorthand URI to an options array
+        if (is_string($options)) {
+            $options = ['uri' => $options];
+        }
+
+        // Prepend the URI with the (child)theme URI if it's relative
+        if (! preg_match('~^(https?:)?//~', $options['uri'])) {
+            $options['uri'] = sprintf(
+                '%s/%s%s',
+                get_stylesheet_directory_uri(),
+                $options['uri'],
+                $this->assetAppend
+            );
+        }
+
+        // Merge the options with default ones
+        if ($assetType == 'css') {
+            return array_merge([
                 'after' => [],
                 'media' => 'all'
-            ];
-
-            $defaultJsOptions = [
+            ], $options);
+        } elseif ($assetType == 'js') {
+            return array_merge([
                 'after'  => [],
                 'footer' => true
-            ];
-
-            // Decide which default options to use
-            $defaultOptions = ${'default' . ucfirst($type) . 'Options'};
-
-            add_action($actionHook, function () use ($type, $assets, $path, $defaultOptions) {
-                $urlRegEx = '~^(https?:)?//~';
-
-                // Shorthand, when 1 asset is given ($assets and $path are strings)
-                if (is_string($assets) && is_string($path)) {
-                    $handle = $assets;
-                    $options = array_replace($defaultOptions, [
-                        'path' => preg_match($urlRegEx, $path)
-                            ? $path
-                            : get_stylesheet_directory_uri() . '/' . $path . static::$assetAppend
-                    ]);
-
-                    if ($type == 'css') {
-                        wp_enqueue_style($handle, $options['path'], $options['after'], null, $options['media']);
-                    } elseif ($type == 'js') {
-                        wp_enqueue_script($handle, $options['path'], $options['after'], null, $options['footer']);
-                    }
-                } elseif (is_array($assets)) {
-                    foreach ($assets as $handle => $options) {
-                        // Shorthand, when only a path is given
-                        if (is_string($options)) {
-                            $options = ['path' => $options];
-                        }
-
-                        // Create the full path
-                        $options['path'] = preg_match($urlRegEx, $path) ?
-                            $path
-                            : get_stylesheet_directory_uri() . '/' . $path . static::$assetAppend;
-
-                        // Merge options with the defaults
-                        $options = array_replace($defaultOptions, $options);
-
-                        if ($type == 'css') {
-                            wp_enqueue_style($handle, $options['path'], $options['after'], null, $options['media']);
-                        } elseif ($type == 'js') {
-                            wp_enqueue_script($handle, $options['path'], $options['after'], null, $options['footer']);
-                        }
-                    }
-                }
-            });
+            ], $options);
         }
     }
 
     /**
-     * Wrapper functions for convenience
-     */
-    public static function add($type, $assets, $path = '')
-    {
-        static::addAsset('theme', $type, $assets, $path);
-    }
-
-    public static function addAdmin($type, $assets, $path = '')
-    {
-        static::addAsset('admin', $type, $assets, $path);
-    }
-
-    public static function addLogin($type, $assets, $path = '')
-    {
-        static::addAsset('login', $type, $assets, $path);
-    }
-
-    /**
      * Replace the jQuery version with another one, using Google CDN
-     * @param  string   $version   jQuery version to use
+     * @param  string $version jQuery version to use
+     * @return self
      */
-    public static function jqueryVersion($version)
+    public function jQueryVersion($version)
     {
         add_action('init', function () use ($version) {
             // Don't replace on admin
@@ -116,14 +175,16 @@ class Assets
                 // Remove the normal jQuery include
                 wp_deregister_script('jquery');
 
-                // Then set the custom one
+                // Set the custom one
                 wp_enqueue_script(
                     'jquery',
-                    '//ajax.googleapis.com/ajax/libs/jquery/' . $version . '/jquery.min.js',
+                    sprintf('//ajax.googleapis.com/ajax/libs/jquery/%s/jquery.min.js', $version),
                     [],
                     $version
                 );
             }
         });
+
+        return $this;
     }
 }

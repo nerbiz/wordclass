@@ -6,28 +6,29 @@ class Init
 {
     /**
      * The default prefix to use
-     * @var String
+     * @var string
      */
-    protected static $prefix = null;
+    protected static $defaultPrefix = null;
 
     /**
-     * A custom URI to the vendor directory
-     * The default is a 'vendor' directory in the theme directory
-     * @var String
+     * The URI to the vendor directory
+     * @var string
      */
     protected static $vendorUri = null;
 
     /**
      * An autoloader for custom namespaces
-     * @param  string  $namespace  The name of the namespace
-     * @param  string  $path       The full path to the classes of the namespace
-     * @param  bool    $remove     Remove the namespace from the path
-     *                              For instance: a Custom\General class is located at classes/General.php
-     *                              Then the autoloader shouldn't look for classes/Custom/General.php
+     * @param  string $namespace The name of the namespace
+     * @param  string $path      The full path to the classes of the namespace
+     * @param  bool   $relative  Remove the namespace from the path
+     *                             For instance: a Custom\General class is located at classes/General.php
+     *                             Then the autoloader shouldn't look for classes/Custom/General.php
+     * @return self
+     * @throws \Exception
      */
-    public static function autoload($namespace, $path, $remove = false)
+    public function autoload($namespace, $path, $relative = false)
     {
-        spl_autoload_register(function ($class) use ($namespace, $path, $remove) {
+        spl_autoload_register(function ($class) use ($namespace, $path, $relative) {
             // Ensure 1 trailing slash
             $path = rtrim($path, '/') . '/';
 
@@ -42,7 +43,7 @@ class Init
 
             // Remove the namespace from the path, if needed
             // Only the last occurence, because another directory might have the same name
-            if ($remove) {
+            if ($relative) {
                 // Get the position of the namespace in the path, and the length to remove
                 $position = strrpos($classPath, $namespace);
                 $replaceLength = strlen($namespace . DIRECTORY_SEPARATOR);
@@ -57,12 +58,15 @@ class Init
                 require_once $classPath;
             }
         });
+
+        return $this;
     }
 
     /**
      * Define some useful constants
+     * @return self
      */
-    public static function defineConstants()
+    public function defineConstants()
     {
         // The absolute paths to the template/stylesheet directory
         define('WC_THEME_PATH', get_template_directory() . '/');
@@ -73,38 +77,51 @@ class Init
         define('WC_THEME_URI', get_template_directory_uri() . '/');
         define('WC_TEMPLATE_URI', WC_THEME_URI);
         define('WC_STYLESHEET_URI', get_stylesheet_directory_uri() . '/');
+
+        return $this;
     }
 
     /**
-     * Set or get the default prefix
+     * @param string $defaultPrefix
+     * @return self
+     */
+    public function setDefaultPrefix($defaultPrefix)
+    {
+        self::$defaultPrefix = $defaultPrefix;
+
+        return $this;
+    }
+
+    /**
      * @param  string  $prefix
      * @return string
      */
-    public static function defaultPrefix($prefix = null)
+    public static function getDefaultPrefix($prefix = null)
     {
-        if ($prefix !== null) {
-            static::$prefix = $prefix;
-        } else {
-            return static::$prefix;
-        }
+        return static::$defaultPrefix;
     }
 
     /**
-     * Set or get the vendor directory URI
-     * @param  string  $uri
+     * @param string $vendorUri
+     * @return self
+     */
+    public function setVendorUri($vendorUri)
+    {
+        static::$vendorUri = $vendorUri;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
-    public static function vendorUri($uri = null)
+    public static function getVendorUri()
     {
-        if ($uri) {
-            static::$vendorUri = rtrim($uri, '/') . '/';
-        } else {
-            // The default value is the 'vendor' directory in a (child-)theme directory
-            if (static::$vendorUri === null) {
-                static::$vendorUri = get_stylesheet_directory_uri() . '/vendor/';
-            }
-
-            return static::$vendorUri;
+        // The default value is the 'vendor' directory in a (child-)theme directory
+        if (static::$vendorUri === null) {
+            static::$vendorUri = get_stylesheet_directory_uri() . '/vendor/';
         }
+
+        return static::$vendorUri;
     }
 }

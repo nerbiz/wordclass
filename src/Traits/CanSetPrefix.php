@@ -27,7 +27,7 @@ trait CanSetPrefix
                 return static::$prefix;
             } else {
                 // Use the default value in Init if it is set
-                $default = Init::defaultPrefix();
+                $default = Init::getDefaultPrefix();
                 if ($default !== null) {
                     return $default;
                 }
