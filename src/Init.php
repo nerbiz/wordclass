@@ -8,13 +8,13 @@ class Init
      * The default prefix to use
      * @var string
      */
-    protected static $defaultPrefix = null;
+    protected static $prefix = '';
 
     /**
      * The URI to the vendor directory
      * @var string
      */
-    protected static $vendorUri = null;
+    protected static $vendorUri = '';
 
     /**
      * An autoloader for custom namespaces
@@ -82,23 +82,23 @@ class Init
     }
 
     /**
-     * @param string $defaultPrefix
+     * Set the prefix to use for various things
+     * @param string $prefix
      * @return self
      */
-    public function setDefaultPrefix($defaultPrefix)
+    public function setPrefix($prefix)
     {
-        self::$defaultPrefix = $defaultPrefix;
+        static::$prefix = $prefix;
 
         return $this;
     }
 
     /**
-     * @param  string  $prefix
      * @return string
      */
-    public static function getDefaultPrefix($prefix = null)
+    public static function getPrefix()
     {
-        return static::$defaultPrefix;
+        return static::$prefix;
     }
 
     /**

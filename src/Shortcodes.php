@@ -65,7 +65,7 @@ class Shortcodes
     protected static $allowedInputTypes = null;
 
     /**
-     * @see create()
+     * @see self::create()
      */
     protected function __construct($tag, $enclosing, $addtoeditor)
     {

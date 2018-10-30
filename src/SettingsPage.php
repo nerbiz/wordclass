@@ -27,7 +27,7 @@ class SettingsPage
     protected $settingsGroup;
 
     /**
-     * @see create()
+     * @see self::create()
      */
     protected function __construct($title, $settingsgroup, $icon, $menuposition)
     {

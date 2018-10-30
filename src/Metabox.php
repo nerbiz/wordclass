@@ -24,7 +24,7 @@ class Metabox
     protected $fields = [];
 
     /**
-     * @see create()
+     * @see self::create()
      */
     protected function __construct($id, $title, $posttypes, $options = [])
     {

@@ -27,7 +27,7 @@ class Taxonomy
     protected $arguments = null;
 
     /**
-     * @see create()
+     * @see self::create()
      */
     protected function __construct($id)
     {

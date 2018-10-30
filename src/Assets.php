@@ -98,7 +98,7 @@ class Assets
      * @param string $hook      The hook to register the assets in
      * @param array $assets     handle:option pairs
      * @return self
-     * @see parseAssetOptions()
+     * @see self::parseAssetOptions()
      */
     protected function addAssets($assetType, $hook, array $assets)
     {
