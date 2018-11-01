@@ -115,7 +115,7 @@ class Theme
      * When using this, remove the <title> tag from <head>
      * @return self
      */
-    public function automaticWindowTitle()
+    public function automaticTitle()
     {
         add_action('after_setup_theme', function () {
             add_theme_support('title-tag');
