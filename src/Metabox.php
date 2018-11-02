@@ -2,42 +2,117 @@
 
 namespace Nerbiz\Wordclass;
 
-require_once __DIR__ . '/../../../webdevstudios/cmb2/init.php';
-
-use Nerbiz\Wordclass\Traits\CanSetPrefix;
 use CMB2;
 
 class Metabox
 {
-    use CanSetPrefix;
+    /**
+     * The ID of the metabox
+     * @var string
+     */
+    protected $id;
+
+    /**
+     * The title of the metabox
+     * @var string
+     */
+    protected $title;
+
+    /**
+     * The post types this metabox applies to
+     * @var array
+     */
+    protected $postTypes = [];
 
     /**
      * The options for the metabox
-     * @var Array
+     * @var array
      */
-    protected $options;
+    protected $options = [];
 
     /**
      * The fields for the metabox
-     * @var Array
+     * @var array
      */
     protected $fields = [];
 
-    /**
-     * @see self::create()
-     */
-    protected function __construct($id, $title, $posttypes, $options = [])
+    public function __construct()
     {
-        $this->options = array_replace_recursive([
+        require_once Init::getVendorPath() . 'cmb2/cmb2/init.php';
+    }
+
+    /**
+     * @param string $id
+     * @return self
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * @param string $title
+     * @return self
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * @param string|array $postTypes
+     * @return self
+     */
+    public function setPostTypes($postTypes)
+    {
+        $postTypes = (array) $postTypes;
+
+        // Make sure the post types are a string
+        foreach ($postTypes as $key => $type) {
+            // Post type objects can be passed
+            if ($type instanceof PostType) {
+                $postTypes[$key] = $type->getId();
+            } else {
+                $postTypes[$key] = (string) $type;
+            }
+        }
+
+        $this->postTypes = $postTypes;
+
+        return $this;
+    }
+
+    /**
+     * @param array $options
+     * @return self
+     */
+    public function setOptions(array $options)
+    {
+        $this->options = $options;
+
+        return $this;
+    }
+
+    /**
+     * Get the default options, replaced with custom ones
+     * @return array
+     */
+    public function getOptions()
+    {
+        return array_replace_recursive([
             /**
              * Required
              */
             // ID of the metabox
-            'id'               => static::prefix() . '-' . $id,
+            'id'               => Init::getPrefix() . '-' . $this->id,
             // Title of the metabox
-            'title'            => $title,
+            'title'            => $this->title,
             // Post type(s)
-            'object_types'     => $posttypes,
+            'object_types'     => $this->postTypes,
 
             /**
              * Optional
@@ -69,58 +144,38 @@ class Metabox
             'classes'          => null,
             // Add classes through a callback
             'classes_cb'       => null
-        ], $options);
+        ], $this->options);
     }
 
     /**
      * Add a field, that will be added to the metabox
-     * This is simply a wrapper, which allows chaining
-     * @param  array  $options  Options for the field
+     * @param  array $fieldProperties Properties for the field
      * @return self
      */
-    public function addField($options)
+    public function addField(array $fieldProperties)
     {
         // Prefix the field ID
-        $options['id'] = static::prefix() . '-' . $options['id'];
+        $fieldProperties['id'] = Init::getPrefix() . '-' . $fieldProperties['id'];
 
-        $this->fields[] = $options;
+        $this->fields[] = $fieldProperties;
 
         return $this;
     }
 
     /**
      * Create the metabox and set its fields
+     * @return void
      */
-    public function add()
+    public function create()
     {
         add_action('cmb2_admin_init', function () {
             // Create the metabox
-            $cmb = new CMB2($this->options);
+            $cmb = new CMB2($this->getOptions());
 
             // Add the fields to it
-            foreach ($this->fields as $options) {
-                $cmb->add_field($options);
+            foreach ($this->fields as $field) {
+                $cmb->add_field($field);
             }
         });
-    }
-
-    /**
-     * Create a new CMB2 instance
-     * @param  string        $id         Metabox ID
-     * @param  string        $title      Metabox title
-     * @param  array|string  $posttypes  1 or more posttypes to register the metabox to
-     * @param  array         $options    Options for the object (merged with defaults)
-     * @return Metabox  An instance of this class
-     */
-    public static function create($id, $title, $posttypes, $options = [])
-    {
-        $posttypes = (array) $posttypes;
-
-        // Make sure the post types are a string (could use __toString() of an object)
-        foreach ($posttypes as $key => $type) {
-            $posttypes[$key] = (string) $type;
-        }
-
-        return new static($id, $title, $posttypes, $options);
     }
 }

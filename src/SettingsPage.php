@@ -218,7 +218,7 @@ class SettingsPage
 
     /**
      * Add the settings page
-     * @return self
+     * @return void
      */
     public function create()
     {
@@ -256,7 +256,5 @@ class SettingsPage
                 );
             }
         }, 100);
-
-        return $this;
     }
 }

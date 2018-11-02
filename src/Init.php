@@ -8,13 +8,19 @@ class Init
      * The default prefix to use
      * @var string
      */
-    protected static $prefix = '';
+    protected static $prefix;
+
+    /**
+     * The path to the vendor directory
+     * @var string
+     */
+    protected static $vendorPath;
 
     /**
      * The URI to the vendor directory
      * @var string
      */
-    protected static $vendorUri = '';
+    protected static $vendorUri;
 
     /**
      * An autoloader for custom namespaces
@@ -99,6 +105,30 @@ class Init
     public static function getPrefix()
     {
         return static::$prefix;
+    }
+
+    /**
+     * @param $vendorUri
+     * @return self
+     */
+    public function setVendorPath($vendorUri)
+    {
+        static::$vendorPath = $vendorUri;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getVendorPath()
+    {
+        // The default value is the 'vendor' directory in a (child-)theme directory
+        if (static::$vendorPath === null) {
+            static::$vendorPath = get_stylesheet_directory() . '/vendor/';
+        }
+
+        return static::$vendorPath;
     }
 
     /**
