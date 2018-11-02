@@ -219,7 +219,7 @@ class Taxonomy
 
     /**
      * Add the taxonomy
-     * @return void
+     * @return self
      */
     public function add()
     {
@@ -230,5 +230,7 @@ class Taxonomy
         add_action('init', function () {
             register_taxonomy($this->id, $this->postTypes, $this->getArguments());
         }, 10);
+
+        return $this;
     }
 }

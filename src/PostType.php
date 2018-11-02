@@ -231,7 +231,7 @@ class PostType
 
     /**
      * Add the post type
-     * @return void
+     * @return self
      */
     public function add()
     {
@@ -243,5 +243,7 @@ class PostType
         add_action('init', function () {
             register_post_type($this->id, $this->getArguments());
         }, 10);
+
+        return $this;
     }
 }
