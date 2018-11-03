@@ -16,7 +16,7 @@ namespace PHPSTORM_META {
             'Plugins'      => \Nerbiz\Wordclass\Plugins::class,
             'PostType'     => \Nerbiz\Wordclass\PostType::class,
             'SettingsPage' => \Nerbiz\Wordclass\SettingsPage::class,
-            'Shortcodes'   => \Nerbiz\Wordclass\Shortcodes::class,
+            'Shortcode'    => \Nerbiz\Wordclass\Shortcode::class,
             'Taxonomy'     => \Nerbiz\Wordclass\Taxonomy::class,
             'Theme'        => \Nerbiz\Wordclass\Theme::class,
             'Utilities'    => \Nerbiz\Wordclass\Utilities::class,

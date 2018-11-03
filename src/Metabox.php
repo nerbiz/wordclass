@@ -38,7 +38,7 @@ class Metabox
 
     public function __construct()
     {
-        require_once Init::getVendorPath() . 'cmb2/cmb2/init.php';
+        require_once Init::getVendorPath('cmb2/cmb2/init.php');
     }
 
     /**

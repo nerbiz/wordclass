@@ -233,7 +233,7 @@ class PostType
      * Add the post type
      * @return self
      */
-    public function add()
+    public function create()
     {
         // Derive a slug, if it's not set yet
         if ($this->slug === null) {

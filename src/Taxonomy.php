@@ -221,7 +221,7 @@ class Taxonomy
      * Add the taxonomy
      * @return self
      */
-    public function add()
+    public function create()
     {
         if ($this->slug === null) {
             $this->slug = (new Utilities())->createSlug($this->name);

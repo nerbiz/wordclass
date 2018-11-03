@@ -113,22 +113,30 @@ class Init
      */
     public function setVendorPath($vendorUri)
     {
-        static::$vendorPath = $vendorUri;
+        static::$vendorPath = rtrim($vendorUri, '/') . '/';
 
         return $this;
     }
 
     /**
+     * Get the vendor path, optionally appended with an extra path
+     * @param  string $path
      * @return string
      */
-    public static function getVendorPath()
+    public static function getVendorPath($path = null)
     {
         // The default value is the 'vendor' directory in a (child-)theme directory
         if (static::$vendorPath === null) {
             static::$vendorPath = get_stylesheet_directory() . '/vendor/';
         }
 
-        return static::$vendorPath;
+        // Append the extra path if not null
+        $vendorPath = static::$vendorPath;
+        if ($path !== null) {
+            $vendorPath .= $path;
+        }
+
+        return $vendorPath;
     }
 
     /**
@@ -137,21 +145,29 @@ class Init
      */
     public function setVendorUri($vendorUri)
     {
-        static::$vendorUri = $vendorUri;
+        static::$vendorUri = rtrim($vendorUri, '/') . '/';
 
         return $this;
     }
 
     /**
+     * Get the vendor URI, optionally appended with an extra path
+     * @param  string $path
      * @return string
      */
-    public static function getVendorUri()
+    public static function getVendorUri($path = null)
     {
         // The default value is the 'vendor' directory in a (child-)theme directory
         if (static::$vendorUri === null) {
             static::$vendorUri = get_stylesheet_directory_uri() . '/vendor/';
         }
 
-        return static::$vendorUri;
+        // Append the extra path if not null
+        $vendorUri = static::$vendorUri;
+        if ($path !== null) {
+            $vendorUri .= $path;
+        }
+
+        return $vendorUri;
     }
 }
