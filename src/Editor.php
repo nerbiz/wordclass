@@ -179,7 +179,7 @@ class Editor
      * @throws \InvalidArgumentException If the array contains at least 1 item that isn't a Shortcode object
      * @throws \Exception If there are no shortcodes to add to the toolbar
      */
-    public function addShortcodeButtons(array $shortcodes, $after = null, $toolbarNumber = 1)
+    public function addShortcodesDropdown(array $shortcodes, $after = null, $toolbarNumber = 1)
     {
         $allDialogProperties = [];
         foreach ($shortcodes as $shortcode) {

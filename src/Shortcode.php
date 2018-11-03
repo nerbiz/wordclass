@@ -20,6 +20,7 @@ class Shortcode
 
     /**
      * Default values for the shortcode attributes
+     * Also used as a list of all supported attributes
      * @var array
      */
     protected $defaultValues = [];
@@ -128,10 +129,8 @@ class Shortcode
      */
     public function addAttribute($name, $defaultValue = null, array $inputProperties = null)
     {
-        // Add the default value if set
-        if ($defaultValue !== null) {
-            $this->defaultValues[$name] = $defaultValue;
-        }
+        // Add the default value, also used for the list of supported attributes
+        $this->defaultValues[$name] = $defaultValue;
 
         // Create the TinyMCE input definition, if needed
         if ($inputProperties !== null && is_array($inputProperties) && count($inputProperties) > 0) {
