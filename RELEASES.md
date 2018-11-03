@@ -1,5 +1,29 @@
 # Release notes
 
+## 1.0.0
+
+* Changed the namespace from Wordclass to Nerbiz\Wordclass.
+* Added a Factory for creating objects.
+* Added a meta file for Factory code completion in PhpStorm.
+* Added Webpack, which parses a manifest for easy asset loading.
+* Init now also contains the path to the vendor directory (not only the URI).
+* Prefixed the default constants.
+* Shortcodes are now placed in a dropdown in the editor. There used to be a separate button for each of them.
+* Converted Shortcodes to Shortcode.
+* Added the Premade namespace, now only containing pre-made shortcodes.
+* The editor now accepts an array of Shortcode objects, to add in the TinyMCE toolbar.
+* There is now 1 prefix, set with Init. A prefix used to be settable per class.
+* PostType now accepts Taxonomy objects, apart from just strings (IDs).
+* Simplified Utilities.
+* Many code improvements, including converting to PSR-2 coding style.
+* Removed all static usage, except in places where it made sense.
+* Removed the Google Analytics code snippet (and pre-made shortcode).
+* Removed Admin::showBar().
+* Removed PageBuilder, because I don't want to work with page builders anymore, so I can't be bothered with installing it and testing this class.
+* Removed Widgets, because it didn't add anything useful, it was mostly a wrapper.
+* Removed the traits.
+* Updated the readme file.
+
 ## 0.9.2
 
 * Added Assets::jqueryVersion(), to replace the jQuery that Wordpress sets with a different version.
