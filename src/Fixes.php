@@ -1,31 +1,38 @@
 <?php
 
-namespace Wordclass;
+namespace Nerbiz\Wordclass;
 
-class Fixes {
+class Fixes
+{
     /**
      * Should fix: 'Unable to locate WordPress plugin directory.'
      * Set the filesystem method to 'direct'
      * define('FS_METHOD', 'direct') didn't work to solve this
+     * @return self
      */
-    public static function cantLocatePluginDirectory() {
-        if(is_admin()) {
-            add_filter('filesystem_method', function($method) {
+    public function cantLocatePluginDirectory()
+    {
+        if (is_admin()) {
+            add_filter('filesystem_method', function ($method) {
                 return 'direct';
             });
         }
+
+        return $this;
     }
-
-
 
     /**
      * Should fix: TinyMCE dropdowns (like format-select) not showing
-     * When TinyMCE is loaded in a modal dialog, the dropdowns are behind the modal dialog, so the z-index fixes that
+     * When TinyMCE is loaded in a modal dialog, the dropdowns are behind the modal dialog, the z-index fixes that
+     * @return self
      */
-    public static function hiddenEditorDropdowns() {
-        add_action('admin_enqueue_scripts', function() {
+    public function hiddenEditorDropdowns()
+    {
+        add_action('admin_enqueue_scripts', function () {
             $css = file_get_contents(__DIR__ . '/../includes/css/hidden-editor-dropdowns.css');
             echo '<style>' . $css . '</style>' . PHP_EOL;
         });
+
+        return $this;
     }
 }

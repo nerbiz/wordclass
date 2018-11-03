@@ -1,87 +1,106 @@
 <?php
 
-namespace Wordclass;
+namespace Nerbiz\Wordclass;
 
-class Plugins {
-    private static $_config = [];
+class Plugins
+{
+    /**
+     * @var Utilities
+     */
+    protected $utilities;
 
+    /**
+     * The TGMPA configuration options
+     * @var array
+     */
+    protected $config = [];
 
+    public function __construct()
+    {
+        $this->utilities = new Utilities();
+
+        $this->config = [
+            // Unique ID for hashing notices for multiple instances of TGMPA
+            'id'           => uniqid('', true),
+            // Default absolute path to bundled plugins
+            'default_path' => '',
+            // Menu slug
+            'menu'         => 'tgmpa-install-plugins',
+            // Parent menu slug
+            'parent_slug'  => 'themes.php',
+            // Capability needed to view plugin install page, should be a capability associated with the parent menu used
+            'capability'   => 'edit_theme_options',
+            // Show admin notices or not
+            'has_notices'  => true,
+            // If false, a user cannot dismiss the nag message
+            'dismissable'  => true,
+            // If 'dismissable' is false, this message will be output at top of nag
+            'dismiss_msg'  => '',
+            // Automatically activate plugins after installation or not
+            'is_automatic' => false,
+            // Message to output right before the plugins table
+            'message'      => ''
+        ];
+    }
 
     /**
      * Set the config for TGMPA
-     * @param   Array  $config  Values that will overwrite the defaults
+     * @param  array $config Values that will overwrite the defaults
+     * @return self
      */
-    public static function config($config=[]) {
-        $config = (array) $config;
+    public function config(array $config = [])
+    {
+        $this->config = array_replace($this->config, $config);
 
-        static::$_config = array_replace_recursive([
-            // Unique ID for hashing notices for multiple instances of TGMPA.
-            'id'           => uniqid('', true),
-            // Default absolute path to bundled plugins.
-            'default_path' => '',
-            // Menu slug.
-            'menu'         => 'tgmpa-install-plugins',
-            // Parent menu slug.
-            'parent_slug'  => 'themes.php',
-            // Capability needed to view plugin install page, should be a capability associated with the parent menu used.
-            'capability'   => 'edit_theme_options',
-            // Show admin notices or not.
-            'has_notices'  => true,
-            // If false, a user cannot dismiss the nag message.
-            'dismissable'  => true,
-            // If 'dismissable' is false, this message will be output at top of nag.
-            'dismiss_msg'  => '',
-            // Automatically activate plugins after installation or not.
-            'is_automatic' => false,
-            // Message to output right before the plugins table.
-            'message'      => ''
-        ], $config);
+        return $this;
     }
-
-
 
     /**
      * Set the required/recommended plugins for the theme, in name:options pairs
-     * @param   Array       $plugins  An array of name:options pairs
-     *                                  Can be a string (name), but then the 2nd parameter is required
-     * @param   Array|null  $options  If $plugins is a string, these are the options for it
-     * Valid calls:
-     *   include('Plugin One')
-     *   include(['Plugin One', 'Plugin Two'])
-     *   include('Plugin One' => []), with an array of options, which can be empty
-     *   include([
-     *       'Plugin One' => [],
-     *       'Plugin Two' => []
-     *   )
+     * @param  array $plugins An array of name:options pairs
+     *   If the 'slug' option is omitted, it will be derived from the name
+     * Options:
+     * name: The plugin name
+     * slug: The plugin slug (typically the folder name)
+     * source: The plugin source
+     * required: If false, the plugin is only 'recommended' instead of required
+     * version: E.g. 1.0.0. If set, the active plugin must be this version or higher.
+     *   If the plugin version is higher than the plugin version installed,
+     *   the user will be notified to update the plugin
+     * force_activation: If true, plugin is activated upon theme activation
+     *   and cannot be deactivated until theme switch
+     * force_deactivation: If true, plugin is deactivated upon theme switch,
+     *   useful for theme-specific plugins
+     * external_url: If set, overrides default API URL and points to an external URL
+     * is_callable: If set, this callable will be be checked for availability
+     *   to determine if a plugin is active
+     * @return self
      */
-    public static function attach($plugins, $options=[]) {
-        if(is_string($plugins))
-            $plugins = [$plugins => $options];
-
-        // Use the default config, if it's not set yet
-        if(empty(static::$_config))
-            static::config();
-
-        add_action('tgmpa_register', function() use($plugins) {
+    public function include(array $plugins)
+    {
+        add_action('tgmpa_register', function () use ($plugins) {
             $includePlugins = [];
 
-            foreach($plugins as $name => $options) {
-                // In case the 'options' are a string (not an options array)
-                // An array of names has been given, without options
-                if(is_string($options)) {
+            foreach ($plugins as $name => $options) {
+                // In case 'options' is a string, an array of names has been given, without options
+                if (is_string($options)) {
                     $name = $options;
                     $options = [];
                 }
 
                 $options['name'] = $name;
+
                 // Derive the slug from the name, if not given
-                if( ! isset($options['slug']))
-                    $options['slug'] = Utilities::createSlug($name);
+                if (! isset($options['slug'])) {
+                    $options['slug'] = $this->utilities->createSlug($name);
+                }
 
                 $includePlugins[] = $options;
             }
 
-            tgmpa($includePlugins, static::$_config);
+            tgmpa($includePlugins, $this->config);
         });
+
+        return $this;
     }
 }

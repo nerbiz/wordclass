@@ -1,89 +1,71 @@
 <?php
 
-namespace Wordclass;
+namespace Nerbiz\Wordclass;
 
-class Admin {
-    /**
-     * Show the admin bar, when viewing the website
-     * @param Mixed  $show  Always (true), never (false), or only when logged in (anything else)
-     */
-    public static function showBar($show=null) {
-        if(is_bool($show))
-            show_admin_bar($show);
-    }
-
-
-
+class Admin
+{
     /**
      * Redirect to a custom URL after login, based on role
-     * @param  Array|String  $roleUrls  role:url pairs (or a string, the role name)
-     * @param  String        $url       In case $roleUrls is a string (role), this parameter needs to be given
+     * @param  array  $roleUrls role:url pairs
+     * @return self
      */
-    public static function roleRedirects($roleUrls, $url=null) {
-        add_filter('login_redirect', function($redirecturl, $request, $user) use($roleUrls, $url) {
-            $newUrl = null;
-
-            // Only check if the user has roles
-            if(isset($user->roles)  &&  is_array($user->roles)) {
-                // Loop over all the given role:url pairs, and use only the first occurrence
-                // Because a user can have multiple (matching) roles
-                if(is_array($roleUrls)) {
-                    foreach($roleUrls as $role => $url) {
-                        if(in_array($role, $user->roles)) {
-                            $newUrl = $url;
-                            break;
-                        }
+    public function roleRedirects(array $roleUrls)
+    {
+        add_filter('login_redirect', function ($redirectUrl, $request, $user) use ($roleUrls) {
+            // Check if the user has roles
+            if (isset($user->roles) && is_array($user->roles)) {
+                // Loop over all the given role:url pairs, and use the first match
+                foreach ($roleUrls as $role => $url) {
+                    if (in_array($role, $user->roles)) {
+                        $newUrl = $url;
+                        break;
                     }
                 }
 
-                // If 1 role:url pair is given, see if it matches
-                else if(is_string($roleUrls)  &&  in_array($roleUrls, $user->roles))
-                    $newUrl = $url;
-
-                // If the above didn't have any matches, look for a wildcard
-                if($newUrl === null) {
-                    if(is_array($roleUrls)  &&  array_key_exists('*', $roleUrls))
-                        $newUrl = $roleUrls['*'];
-                    else if(is_string($roleUrls)  &&  $roleUrls == '*')
-                        $newUrl = $url;
+                // If there weren't any matches, look for a wildcard
+                if (! isset($newUrl) && array_key_exists('*', $roleUrls)) {
+                    $newUrl = $roleUrls['*'];
                 }
 
-                // Return a new URL, if it's set after the wildcard check
-                if($newUrl !== null) {
-                    // Literal URLs
-                    if(preg_match('~^https?://~', $url))
-                        return esc_url($url);
-                    // Other paths are relative to the home URL
-                    else
-                        return esc_url(home_url() . '/' . $url);
+                if (isset($newUrl)) {
+                    // Prepend with the home URL if the new URL is relative
+                    if (preg_match('~^https?://~', $newUrl)) {
+                        return esc_url($newUrl);
+                    } else {
+                        return esc_url(home_url('/' . ltrim($newUrl, '/')));
+                    }
                 }
             }
 
-            // In case of no match or some error, just continue as intented before this function was called
-            return $redirecturl;
-        },
-        // Make sure that 3 arguments are passed
-        10, 3);
+            // Use the default URL
+            return $redirectUrl;
+        }, 10, 3);
+
+        return $this;
     }
-
-
 
     /**
      * Set a custom footer text in admin
-     * @param  String  $text   The text to display
-     * @param  String  $place  Where to place the text
-     *                         'before' = before the current text
-     *                         'after' = after the current text
-     *                         null (or anything else) = overwrite
+     * @param string $html  The text/html to display
+     * @param string $place Where to place the text
+     * Places:
+     * 'before' = before the current text
+     * 'after' = after the current text
+     * null (or anything else) = overwrite
+     * @return self
      */
-    public static function footerText($text, $place=null) {
-        add_filter('admin_footer_text', function($current) use($text, $place) {
-            if($place == 'before')
-                return $text . $current;
-            else if($place == 'after')
-                return $current . $text;
-            else
-                return $text;
+    public function footerText($html, $place = null)
+    {
+        add_filter('admin_footer_text', function ($current) use ($html, $place) {
+            if ($place == 'before') {
+                return $html . ' ' . $current;
+            } elseif ($place == 'after') {
+                return $current . ' ' . $html;
+            } else {
+                return $html;
+            }
         });
+
+        return $this;
     }
 }

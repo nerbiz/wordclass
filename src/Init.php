@@ -1,33 +1,40 @@
 <?php
 
-namespace Wordclass;
+namespace Nerbiz\Wordclass;
 
-class Init {
+class Init
+{
     /**
      * The default prefix to use
-     * @var String
+     * @var string
      */
-    private static $_prefix = null;
+    protected static $prefix;
 
     /**
-     * A custom URI to the vendor directory
-     * The default is a 'vendor' directory in the theme directory
-     * @var String
+     * The path to the vendor directory
+     * @var string
      */
-    private static $_vendorUri = null;
+    protected static $vendorPath;
 
-
+    /**
+     * The URI to the vendor directory
+     * @var string
+     */
+    protected static $vendorUri;
 
     /**
      * An autoloader for custom namespaces
-     * @param String  $namespace  The name of the namespace
-     * @param String  $path       The full path to the classes of the namespace
-     * @param Boolean $remove     Remove the namespace from the path
-     *                              For instance: a Custom\General class is located at classes/General.php
-     *                              Then the autoloader shouldn't look for classes/Custom/General.php
+     * @param  string $namespace The name of the namespace
+     * @param  string $path      The full path to the classes of the namespace
+     * @param  bool   $relative  Remove the namespace from the path
+     *                             For instance: a Custom\General class is located at classes/General.php
+     *                             Then the autoloader shouldn't look for classes/Custom/General.php
+     * @return self
+     * @throws \Exception
      */
-    public static function autoload($namespace, $path, $remove=false) {
-        spl_autoload_register(function($class) use($namespace, $path, $remove) {
+    public function autoload($namespace, $path, $relative = false)
+    {
+        spl_autoload_register(function ($class) use ($namespace, $path, $relative) {
             // Ensure 1 trailing slash
             $path = rtrim($path, '/') . '/';
 
@@ -42,7 +49,7 @@ class Init {
 
             // Remove the namespace from the path, if needed
             // Only the last occurence, because another directory might have the same name
-            if($remove) {
+            if ($relative) {
                 // Get the position of the namespace in the path, and the length to remove
                 $position = strrpos($classPath, $namespace);
                 $replaceLength = strlen($namespace . DIRECTORY_SEPARATOR);
@@ -53,57 +60,114 @@ class Init {
                 $classPath = $start . $end;
             }
 
-            if(is_readable($classPath))
+            if (is_readable($classPath)) {
                 require_once $classPath;
+            }
         });
+
+        return $this;
     }
-
-
 
     /**
      * Define some useful constants
+     * @return self
      */
-    public static function constants() {
+    public function defineConstants()
+    {
         // The absolute paths to the template/stylesheet directory
-        define('TEMPLATE_PATH', get_template_directory() . '/');
-        define('STYLESHEET_PATH', get_stylesheet_directory() . '/');
+        define('WC_THEME_PATH', get_template_directory() . '/');
+        define('WC_TEMPLATE_PATH', WC_THEME_PATH);
+        define('WC_STYLESHEET_PATH', get_stylesheet_directory() . '/');
 
         // The URI paths to the template/stylesheet directory
-        define('TEMPLATE_URI', get_template_directory_uri() . '/');
-        define('STYLESHEET_URI', get_stylesheet_directory_uri() . '/');
+        define('WC_THEME_URI', get_template_directory_uri() . '/');
+        define('WC_TEMPLATE_URI', WC_THEME_URI);
+        define('WC_STYLESHEET_URI', get_stylesheet_directory_uri() . '/');
+
+        return $this;
     }
 
-
-
     /**
-     * Set or get the default prefix
-     * @param  String  $prefix
-     * @return String
+     * Set the prefix to use for various things
+     * @param string $prefix
+     * @return self
      */
-    public static function defaultPrefix($prefix=null) {
-        if($prefix !== null)
-            static::$_prefix = $prefix;
-        else
-            return static::$_prefix;
+    public function setPrefix($prefix)
+    {
+        static::$prefix = $prefix;
+
+        return $this;
     }
 
-
+    /**
+     * @return string
+     */
+    public static function getPrefix()
+    {
+        return static::$prefix;
+    }
 
     /**
-     * Set or get the vendor directory URI
-     * @param  String  $uri
-     * @return String
+     * @param $vendorUri
+     * @return self
      */
-    public static function vendorUri($uri=null) {
-        if($uri)
-            static::$_vendorUri = rtrim($uri, '/') . '/';
+    public function setVendorPath($vendorUri)
+    {
+        static::$vendorPath = rtrim($vendorUri, '/') . '/';
 
-        else {
-            // The default value is the 'vendor' directory in a (child-)theme directory
-            if(static::$_vendorUri === null)
-                static::$_vendorUri = get_stylesheet_directory_uri() . '/vendor/';
+        return $this;
+    }
 
-            return static::$_vendorUri;
+    /**
+     * Get the vendor path, optionally appended with an extra path
+     * @param  string $path
+     * @return string
+     */
+    public static function getVendorPath($path = null)
+    {
+        // The default value is the 'vendor' directory in a (child-)theme directory
+        if (static::$vendorPath === null) {
+            static::$vendorPath = get_stylesheet_directory() . '/vendor/';
         }
+
+        // Append the extra path if not null
+        $vendorPath = static::$vendorPath;
+        if ($path !== null) {
+            $vendorPath .= $path;
+        }
+
+        return $vendorPath;
+    }
+
+    /**
+     * @param string $vendorUri
+     * @return self
+     */
+    public function setVendorUri($vendorUri)
+    {
+        static::$vendorUri = rtrim($vendorUri, '/') . '/';
+
+        return $this;
+    }
+
+    /**
+     * Get the vendor URI, optionally appended with an extra path
+     * @param  string $path
+     * @return string
+     */
+    public static function getVendorUri($path = null)
+    {
+        // The default value is the 'vendor' directory in a (child-)theme directory
+        if (static::$vendorUri === null) {
+            static::$vendorUri = get_stylesheet_directory_uri() . '/vendor/';
+        }
+
+        // Append the extra path if not null
+        $vendorUri = static::$vendorUri;
+        if ($path !== null) {
+            $vendorUri .= $path;
+        }
+
+        return $vendorUri;
     }
 }
