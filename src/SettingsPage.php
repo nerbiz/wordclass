@@ -2,191 +2,214 @@
 
 namespace Nerbiz\Wordclass;
 
-use Nerbiz\Wordclass\Traits\CanSetPrefix;
-
 class SettingsPage
 {
-    use CanSetPrefix;
-
     /**
      * The title of the settings page
-     * @var String
+     * @var string
      */
-    protected $pageTitle;
+    protected $pageTitle = 'Theme settings';
 
     /**
      * The settings page slug, will be prepended with prefix
-     * @var String
+     * @var string
      */
     protected $pageSlug;
 
     /**
      * The group name of the settings, will be prepended with prefix
-     * @var String
+     * @var string
      */
-    protected $settingsGroup;
+    protected $settingsGroup = 'settings';
 
     /**
-     * @see create()
+     * The icon of the menu item
+     * @var string
      */
-    protected function __construct($title, $settingsgroup, $icon, $menuposition)
-    {
-        $this->pageTitle = $title;
-
-        // The page slug is the title converted to slug, by default
-        $this->pageSlug = static::prefix() . '-' . Utilities::createSlug($title);
-
-        // The group in which all settings go
-        $this->settingsGroup = static::prefix() . '-' . $settingsgroup;
-
-        add_action('admin_menu', function () use ($icon, $menuposition) {
-            if (current_user_can('manage_options')) {
-                add_menu_page(
-                    // Page title
-                    $this->pageTitle,
-                    // Menu title
-                    $this->pageTitle,
-                    // Capability
-                    'manage_options',
-                    // Menu slug
-                    $this->pageSlug,
-                    // Output content
-                    function () {
-                        echo '
-                            <div class="wrap">
-                                <h1>' . $this->pageTitle . '</h1>
-                                <form action="options.php" method="POST">';
-                        // Output nonce, action, and option_page fields for a settings page
-                        settings_fields($this->settingsGroup);
-                        // Print out all settings sections added to the settings page
-                        do_settings_sections($this->pageSlug);
-                        submit_button('Opslaan');
-                        echo '
-                                </form>
-                            </div>';
-                    },
-                    $icon,
-                    $menuposition
-                );
-            }
-        }, 100);
-
-        return $this;
-    }
+    protected $icon = 'dashicons-admin-settings';
 
     /**
-     * Overwrite the page slug with a custom one
-     * Prefix will be prepended
-     * @param  string  $slug
+     * The button position in the menu
+     * @var int
+     */
+    protected $menuPosition;
+
+    /**
+     * @param $pageTitle
      * @return self
      */
-    public function pageSlug($slug)
+    public function setPageTitle($pageTitle)
     {
-        $this->pageSlug = static::prefix() . '-' . $slug;
+        $this->pageTitle = $pageTitle;
 
         return $this;
     }
 
     /**
-     * Create input elements of various types, with current (escaped) value filled in
-     * @param  array  $arguments  Options for the element
+     * @param  string $pageSlug
+     * @return self
      */
-    protected function inputText($arguments)
+    public function setPageSlug($pageSlug)
+    {
+        $this->pageSlug = $pageSlug;
+
+        return $this;
+    }
+
+    /**
+     * @param string $settingsGroup
+     * @return self
+     */
+    public function setSettingsGroup($settingsGroup)
+    {
+        $this->settingsGroup = $settingsGroup;
+
+        return $this;
+    }
+
+    /**
+     * @param string $icon
+     * @return self
+     */
+    public function setIcon($icon)
+    {
+        $this->icon = $icon;
+
+        return $this;
+    }
+
+    /**
+     * @param int $menuPosition
+     * @return self
+     */
+    public function setMenuPosition($menuPosition)
+    {
+        $this->menuPosition = $menuPosition;
+
+        return $this;
+    }
+
+    /**
+     * Create an input[text] element, with current (escaped) value filled in
+     * @param  string $name The input name
+     * @return string
+     */
+    protected function inputText($name)
     {
         return sprintf(
             '<input type="text" class="regular-text" name="%s" value="%s">',
-            $arguments['name'],
-            esc_attr(get_option($arguments['name']))
+            $name,
+            esc_attr(get_option($name))
         );
     }
 
-    protected function inputCheckbox($arguments)
+    /**
+     * Create an input[checkbox] element, with current (escaped) value filled in
+     * @param  $name The input name
+     * @return string
+     */
+    protected function inputCheckbox($name)
     {
         return sprintf(
             '<input type="checkbox" name="%s" value="1" %s>',
-            $arguments['name'],
-            checked(1, get_option($arguments['name']), false)
+            $name,
+            checked(1, get_option($name), false)
         );
     }
 
-    protected function inputWysiwyg($arguments)
+    /**
+     * Create an editor, with current (escaped) value filled in
+     * @param  $name The name of the input
+     * @return false|string
+     */
+    protected function inputEditor($name)
     {
         // Buffer the output, because wp_editor() echoes
         ob_start();
-        wp_editor(wp_kses_post(get_option($arguments['name'])), $arguments['name'], [
-            'wpautop'       => true,
-            'media_buttons' => true,
-            'textarea_name' => $arguments['name'],
-            'editor_height' => 200
-        ]);
+
+        wp_editor(
+            apply_filters('the_content', get_option($name)),
+            $name,
+            [
+                'wpautop'       => true,
+                'media_buttons' => true,
+                'textarea_name' => $name,
+                'editor_height' => 200
+            ]
+        );
+
         return ob_get_clean();
     }
 
     /**
-     * Decide what kind of input field to create
-     * @param  array  $arguments  'type' must be given in this array
+     * Decide what kind of input field to create and echo it
+     * @param  array $arguments 'type' must be provided in this array
+     * @return void
+     * @throws \InvalidArgumentException If the required array key(s) are not set
+     * @throws \Exception If the input type is not supported
      */
     public function decideInput($arguments)
     {
+        if (! isset($arguments['type'], $arguments['name'])) {
+            throw new \InvalidArgumentException(sprintf(
+                "%s(): parameter 'arguments' needs to contain 'type'",
+                __METHOD__
+            ));
+        }
+
+        // Construct the method name
         $type = ucfirst($arguments['type']);
-        echo $this->{'input' . $type}($arguments);
+        $methodName = 'input' . $type;
+
+        if (method_exists($this, $methodName)) {
+            echo $this->{$methodName}($arguments['name']);
+        } else {
+            throw new \Exception(sprintf(
+                "%s(): Unsupported input type '%s' requested",
+                __METHOD__,
+                is_object($arguments['type']) ? get_class($arguments['type']) : $arguments['type']
+            ));
+        }
     }
 
     /**
      * Add a settings section to the settings page
-     * @param  string  $id        Section ID
-     * @param  string  $title     Section title
-     * @param  string  $subtitle  Function that echoes content between title and fields
-     * @param  array   $fields    Input fields for the settings, as name:options pairs:
-     *                             title: the title of the input field
-     *                             type: the type of the input field
+     * @param  string $id       Section ID, prefix will be prepended
+     * @param  string $title
+     * @param  string $subtitle
+     * @param  array  $fields   Input fields for the settings, as name:options pairs
+     * Fields:
+     * title: the title of the input field
+     * type: the type of the input field
      * @return self
      */
     public function addSection($id, $title, $subtitle = '', $fields = [])
     {
         add_action('admin_init', function () use ($id, $title, $subtitle, $fields) {
-            $prefix = static::prefix();
-            $sectionId = $prefix . '-' . $id;
+            $sectionId = Init::getPrefix() . '-' . $id;
+            $pageSlug = Init::getPrefix() . '-' . $this->pageSlug;
 
-            add_settings_section(
-                // ID to identify the section
-                $sectionId,
-                // Section title
-                $title,
-                // Section subtitle
-                function () use ($subtitle) {
-                    echo $subtitle;
-                },
-                // Slug of the settings page
-                $this->pageSlug
-            );
+            // Subtitle argument needs to be an echo'ing function
+            $subtitle = function () use ($subtitle) {
+                echo $subtitle;
+            };
 
+            // Add the section
+            add_settings_section($sectionId, $title, $subtitle, $pageSlug);
+
+            // Add the fields to the section
             foreach ($fields as $name => $options) {
-                $nameHyphen = $prefix . '-' . $name;
-                $nameUnderscore = $prefix . '_' . $name;
+                $nameHyphen = Init::getPrefix() . '-' . $name;
+                $nameUnderscore = Init::getPrefix() . '_' . $name;
 
-                register_setting(
-                    $this->settingsGroup,
-                    $nameUnderscore
-                );
+                // Register the setting name to the group
+                register_setting($this->settingsGroup, $nameUnderscore);
 
-                add_settings_field(
-                    // ID to identify the field
-                    $nameHyphen,
-                    // Title of the setting
-                    $options['title'],
-                    // Function that echoes the input field
-                    [$this, 'decideInput'],
-                    // Slug of the page to show this setting on
-                    $this->pageSlug,
-                    // Slug (ID) of the section
-                    $sectionId,
-                    // Arguments for the above function
-                    [
-                        'type' => $options['type'],
-                        'name' => $nameUnderscore
-                    ]
-                );
+                // Add the field for the setting
+                add_settings_field($nameHyphen, $options['title'], [$this, 'decideInput'], $pageSlug, $sectionId, [
+                    'type' => $options['type'],
+                    'name' => $nameUnderscore
+                ]);
             }
         });
 
@@ -194,23 +217,44 @@ class SettingsPage
     }
 
     /**
-     * Initialize the creation chain
-     * @param  string   $title          Title of the settings page
-     * @param  string   $settingsgroup  The name of the group in which all settings go
-     * @param  string   $icon           The name/URL/base64 of the icon
-     * @param  int  $menuposition   Where the item appears in the menu
-     * @return SettingsPage  An instance of this class
+     * Add the settings page
+     * @return void
      */
-    public static function create($title, $settingsgroup = null, $icon = null, $menuposition = null)
+    public function create()
     {
-        if ($settingsgroup === null) {
-            $settingsgroup = 'settings';
+        // Derive the page slug if it's not set yet
+        if ($this->pageSlug === null) {
+            $this->pageSlug = (new Utilities())->createSlug($this->pageTitle);
         }
 
-        if ($icon === null) {
-            $icon = 'dashicons-admin-settings';
-        }
+        $pageSlug = Init::getPrefix() . '-' . $this->pageSlug;
+        $settingsGroup = Init::getPrefix() . '-' . $this->settingsGroup;
 
-        return new static($title, $settingsgroup, $icon, $menuposition);
+        add_action('admin_menu', function () use ($pageSlug, $settingsGroup) {
+            if (current_user_can('manage_options')) {
+                $renderFunction = function () use ($pageSlug, $settingsGroup) {
+                    echo '
+                        <div class="wrap">
+                            <h1>' . $this->pageTitle . '</h1>
+                            <form action="options.php" method="POST">';
+
+                    // Output nonce, action, and option_page fields for a settings page
+                    settings_fields($settingsGroup);
+                    // Print out all settings sections added to the settings page
+                    do_settings_sections($pageSlug);
+                    submit_button(__('Save settings', 'wordclass'));
+
+                    echo '
+                            </form>
+                        </div>';
+                };
+
+                // Add the settings page
+                add_menu_page(
+                    $this->pageTitle, $this->pageTitle, 'manage_options', $pageSlug,
+                    $renderFunction, $this->icon, $this->menuPosition
+                );
+            }
+        }, 100);
     }
 }

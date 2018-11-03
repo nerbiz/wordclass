@@ -5,58 +5,77 @@ namespace Nerbiz\Wordclass;
 class Taxonomy
 {
     /**
-     * Various Taxonomy properties
-     * @var Mixed
+     * The ID of the taxonomy
+     * @var string
      */
     protected $id;
-    protected $name;
+
+    /**
+     * The slug of the taxonomy
+     * @var string
+     */
     protected $slug;
+
+    /**
+     * The name of the taxonomy
+     * @var string
+     */
+    protected $name;
+
+    /**
+     * The singular name of the taxonomy
+     * @var string
+     */
     protected $singularName;
+
+    /**
+     * The description of the taxonomy
+     * @var string
+     */
     protected $description;
 
     /**
-     * The labels for the taxonomy
-     * @var Array
+     * The labels of the taxonomy
+     * @var array
      */
-    protected $labels = null;
+    protected $labels = [];
 
     /**
-     * The arguments for the taxonomy
-     * @var Array
+     * The arguments of the taxonomy
+     * @var array
      */
-    protected $arguments = null;
+    protected $arguments = [];
 
     /**
-     * @see create()
+     * The post types that have this taxonomy
+     * @var array
      */
-    protected function __construct($id)
-    {
-        $this->id = $id;
-    }
+    protected $postTypes = [];
 
     /**
-     * Set the name of the taxonomy
-     * The slug is derived from this name
-     * The description is set using this value
-     * Those can be changed set with other methods
-     * @param  string  $name
+     * @param  string $id
      * @return self
      */
-    public function name($name)
+    public function setId($id)
     {
-        $this->name = $name;
-        $this->slug = Utilities::createSlug($name);
-        $this->description = 'Custom Taxonomy: ' . $name;
+        $this->id = Init::getPrefix() . '_' . $id;
 
         return $this;
     }
 
     /**
-     * Set the slug of the taxonomy
-     * @param  string  $slug
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param  string $slug
      * @return self
      */
-    public function slug($slug)
+    public function setSlug($slug)
     {
         $this->slug = $slug;
 
@@ -64,23 +83,32 @@ class Taxonomy
     }
 
     /**
-     * Set the singular name of the taxonomy
-     * @param  string  $singular
+     * @param  string $name
      * @return self
      */
-    public function singular($singular)
+    public function setName($name)
     {
-        $this->singularName = $singular;
+        $this->name = $name;
 
         return $this;
     }
 
     /**
-     * Set the description of the CPT
-     * @param  string  $description
+     * @param  string $singularName
      * @return self
      */
-    public function description($description)
+    public function setSingularName($singularName)
+    {
+        $this->singularName = $singularName;
+
+        return $this;
+    }
+
+    /**
+     * @param  string $description
+     * @return self
+     */
+    public function setDescription($description)
     {
         $this->description = $description;
 
@@ -88,33 +116,57 @@ class Taxonomy
     }
 
     /**
-     * Set the post type(s) that this is a taxonomy of
-     * @param  string|array $posttypes
+     * @param  array $labels
      * @return self
      */
-    public function forPostType($posttypes)
+    public function setLabels(array $labels)
     {
-        $posttypes = (array) $posttypes;
-
-        // Make sure the types are strings
-        // (could use __toString() method in case of an object)
-        foreach ($posttypes as $key => $type) {
-            $posttypes[$key] = (string) $type;
-        }
-
-        $this->postTypes = $posttypes;
+        $this->labels = $labels;
 
         return $this;
     }
 
     /**
-     * Set labels for the taxonomy
-     * @param  array  $labels  (Optional) overwrite the default values (merged)
-     * @return self;
+     * @param  array $arguments
+     * @return self
      */
-    public function labels($labels = [])
+    public function setArguments(array $arguments)
     {
-        $this->labels = array_replace_recursive([
+        $this->arguments = $arguments;
+
+        return $this;
+    }
+
+    /**
+     * @param  string|array $postTypes
+     * @return self
+     */
+    public function setPostTypes($postTypes)
+    {
+        $postTypes = (array) $postTypes;
+
+        // Make sure the post types are a string
+        foreach ($postTypes as $key => $type) {
+            // Post type objects can be passed
+            if ($type instanceof PostType) {
+                $postTypes[$key] = $type->getId();
+            } else {
+                $postTypes[$key] = (string) $type;
+            }
+        }
+
+        $this->postTypes = $postTypes;
+
+        return $this;
+    }
+
+    /**
+     * Get the default labels, replaced with custom ones
+     * @return array
+     */
+    public function getLabels()
+    {
+        return array_replace_recursive([
             'name'                       => $this->name,
             'singular_name'              => $this->singularName,
             'menu_name'                  => $this->name,
@@ -135,26 +187,17 @@ class Taxonomy
             'no_terms'                   => sprintf(__('No %s', 'wordclass'), $this->name),
             'items_list'                 => sprintf(__('%s list', 'wordclass'), $this->name),
             'items_list_navigation'      => sprintf(__('%s list navigation', 'wordclass'), $this->name),
-        ], $labels);
-
-        return $this;
+        ], $this->labels);
     }
 
     /**
-     * Set arguments for the taxonomy
-     * @param  array  $arguments  (Optional) overwrite the default values (merged)
-     * @return self
+     * Get the default arguments, merged with custom ones
+     * @return array
      */
-    public function arguments($arguments = [])
+    public function getArguments()
     {
-        // Set the labels, if not set yet
-        if ($this->labels === null) {
-            $this->labels();
-        }
-
-        // Overwrite defaults, if arguments are given
-        $this->arguments = array_replace_recursive([
-            'labels'             => $this->labels,
+        return array_replace_recursive([
+            'labels'             => $this->getLabels(),
             'description'        => $this->description,
             'hierarchical'       => true,
             'public'             => true,
@@ -171,45 +214,23 @@ class Taxonomy
                 'with_front'   => false,
                 'hierarchical' => false,
             ],
-        ], $arguments);
-
-        return $this;
+        ], $this->arguments);
     }
 
     /**
      * Add the taxonomy
      * @return self
      */
-    public function add()
+    public function create()
     {
-        // Set the arguments, if not set yet
-        if (! $this->arguments) {
-            $this->arguments();
+        if ($this->slug === null) {
+            $this->slug = (new Utilities())->createSlug($this->name);
         }
 
         add_action('init', function () {
-            register_taxonomy($this->id, $this->postTypes, $this->arguments);
-        }, 0);
+            register_taxonomy($this->id, $this->postTypes, $this->getArguments());
+        }, 10);
 
         return $this;
-    }
-
-    /**
-     * When echo'd, return the ID
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Initialize the creation chain
-     * @param  string  $id  ID of the taxonomy
-     * @return Taxonomy  An instance of this class
-     */
-    public static function create($id)
-    {
-        return new static($id);
     }
 }
