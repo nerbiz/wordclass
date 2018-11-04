@@ -1,5 +1,10 @@
 # Release notes
 
+## 1.0.1
+
+* Init::getVendorPath() and Init::getVendorUri() are not static anymore (but the properties still are).
+* The inputs of SettingsPage now accept an arguments array, like before.
+
 ## 1.0.0
 
 * Changed the namespace from Wordclass to Nerbiz\Wordclass.
