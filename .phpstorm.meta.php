@@ -12,7 +12,6 @@ namespace PHPSTORM_META {
             'Helpers'            => \Nerbiz\Wordclass\Helpers::class,
             'Init'               => \Nerbiz\Wordclass\Init::class,
             'Metabox'            => \Nerbiz\Wordclass\Metabox::class,
-            'PageBuilder'        => \Nerbiz\Wordclass\PageBuilder::class,
             'Plugins'            => \Nerbiz\Wordclass\Plugins::class,
             'PostType'           => \Nerbiz\Wordclass\PostType::class,
             'SettingsPage'       => \Nerbiz\Wordclass\SettingsPage::class,
@@ -21,7 +20,6 @@ namespace PHPSTORM_META {
             'Theme'              => \Nerbiz\Wordclass\Theme::class,
             'Utilities'          => \Nerbiz\Wordclass\Utilities::class,
             'Webpack'            => \Nerbiz\Wordclass\Webpack::class,
-            'Widgets'            => \Nerbiz\Wordclass\Widgets::class,
             'Premade\Shortcodes' => \Nerbiz\Wordclass\Premade\Shortcodes::class,
         ])
     );

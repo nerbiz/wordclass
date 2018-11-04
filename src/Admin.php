@@ -6,7 +6,7 @@ class Admin
 {
     /**
      * Redirect to a custom URL after login, based on role
-     * @param  array  $roleUrls role:url pairs
+     * @param  array $roleUrls role:url pairs
      * @return self
      */
     public function roleRedirects(array $roleUrls)
