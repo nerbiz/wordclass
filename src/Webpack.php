@@ -13,7 +13,9 @@ class Webpack
     public function __construct()
     {
         // Empty object, fallback in case a file is never parsed
-        static::$manifest = (object) [];
+        if (static::$manifest === null) {
+            static::$manifest = (object) [];
+        }
     }
 
     /**
