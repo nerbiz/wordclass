@@ -1,5 +1,10 @@
 # Release notes
 
+## 1.1.0
+
+* Added a default prefix to Init, and the constants now use that prefix.
+* Removed the 'docs' directory, I'm creating a wiki instead.
+
 ## 1.0.1
 
 * Init::getVendorPath() and Init::getVendorUri() are not static anymore (but the properties still are).
