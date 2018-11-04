@@ -5,6 +5,16 @@ namespace Nerbiz\Wordclass;
 class Editor
 {
     /**
+     * @var Init
+     */
+    protected $init;
+
+    public function __construct()
+    {
+        $this->init = new Init();
+    }
+
+    /**
      * Force the extra button rows of the TinyMCE editor to show
      * @param  bool $keepButton Keep the toggle button
      * @return self
@@ -146,16 +156,17 @@ class Editor
      *   null places the button at the end
      * @param  int    $toolbarNumber The toolbar number, 1 = default, 2/3/4 = advanced, false to not add
      * @return self
+     * @throws \ReflectionException
      */
     public function addPlugin($name, $after = null, $toolbarNumber = 1)
     {
         $pluginPath = 'tinymce/tinymce/plugins/' . $name . '/plugin.min.js';
 
         // The plugin needs to exist
-        if (is_readable(Init::getVendorPath($pluginPath))) {
+        if (is_readable($this->init->getVendorPath($pluginPath))) {
             // Add the plugin
             add_filter('mce_external_plugins', function ($plugins) use ($name, $pluginPath) {
-                $plugins[$name] = Init::getVendorUri($pluginPath);
+                $plugins[$name] = $this->init->getVendorUri($pluginPath);
                 return $plugins;
             });
 
@@ -216,7 +227,7 @@ class Editor
         // Add the shortcode buttons plugin
         add_filter('mce_external_plugins', function ($plugins) {
             $pluginPath = 'nerbiz/wordclass/includes/js/tinymce/plugins/wcshortcodebuttons/plugin.js';
-            $plugins['wc_shortcodebuttons'] = Init::getVendorUri($pluginPath);
+            $plugins['wc_shortcodebuttons'] = $this->init->getVendorUri($pluginPath);
 
             return $plugins;
         });

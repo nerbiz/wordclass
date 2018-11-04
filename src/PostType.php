@@ -5,6 +5,11 @@ namespace Nerbiz\Wordclass;
 class PostType
 {
     /**
+     * @var Init
+     */
+    protected $init;
+
+    /**
      * The ID of the post type
      * @var string
      */
@@ -52,6 +57,11 @@ class PostType
      */
     protected $taxonomies = [];
 
+    public function __construct()
+    {
+        $this->init = new Init();
+    }
+
     /**
      * Set the post type ID, will be prefixed
      * @param  string $id
@@ -59,7 +69,7 @@ class PostType
      */
     public function setId($id)
     {
-        $this->id = Init::getPrefix() . '_' . $id;
+        $this->id = $this->init->getPrefix() . '_' . $id;
 
         return $this;
     }

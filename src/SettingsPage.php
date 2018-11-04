@@ -5,6 +5,11 @@ namespace Nerbiz\Wordclass;
 class SettingsPage
 {
     /**
+     * @var Init
+     */
+    protected $init;
+
+    /**
      * The title of the settings page
      * @var string
      */
@@ -33,6 +38,11 @@ class SettingsPage
      * @var int
      */
     protected $menuPosition;
+
+    public function __construct()
+    {
+        $this->init = new Init();
+    }
 
     /**
      * @param $pageTitle
@@ -91,49 +101,49 @@ class SettingsPage
 
     /**
      * Create an input[text] element, with current (escaped) value filled in
-     * @param  string $name The input name
+     * @param  array $arguments
      * @return string
      */
-    protected function inputText($name)
+    protected function inputText(array $arguments)
     {
         return sprintf(
             '<input type="text" class="regular-text" name="%s" value="%s">',
-            $name,
-            esc_attr(get_option($name))
+            $arguments['name'],
+            esc_attr(get_option($arguments['name']))
         );
     }
 
     /**
      * Create an input[checkbox] element, with current (escaped) value filled in
-     * @param  $name The input name
+     * @param  array $arguments
      * @return string
      */
-    protected function inputCheckbox($name)
+    protected function inputCheckbox(array $arguments)
     {
         return sprintf(
             '<input type="checkbox" name="%s" value="1" %s>',
-            $name,
-            checked(1, get_option($name), false)
+            $arguments['name'],
+            checked(1, get_option($arguments['name']), false)
         );
     }
 
     /**
      * Create an editor, with current (escaped) value filled in
-     * @param  $name The name of the input
+     * @param  array $arguments
      * @return false|string
      */
-    protected function inputEditor($name)
+    protected function inputEditor(array $arguments)
     {
         // Buffer the output, because wp_editor() echoes
         ob_start();
 
         wp_editor(
-            apply_filters('the_content', get_option($name)),
-            $name,
+            apply_filters('the_content', get_option($arguments['name'])),
+            $arguments['name'],
             [
                 'wpautop'       => true,
                 'media_buttons' => true,
-                'textarea_name' => $name,
+                'textarea_name' => $arguments['name'],
                 'editor_height' => 200
             ]
         );
@@ -143,16 +153,16 @@ class SettingsPage
 
     /**
      * Decide what kind of input field to create and echo it
-     * @param  array $arguments 'type' must be provided in this array
+     * @param  array $arguments 'type' and 'name' must be provided in this array
      * @return void
      * @throws \InvalidArgumentException If the required array key(s) are not set
      * @throws \Exception If the input type is not supported
      */
-    public function decideInput($arguments)
+    public function decideInput(array $arguments)
     {
         if (! isset($arguments['type'], $arguments['name'])) {
             throw new \InvalidArgumentException(sprintf(
-                "%s(): parameter 'arguments' needs to contain 'type'",
+                "%s(): parameter 'arguments' needs to contain 'type' and 'name'",
                 __METHOD__
             ));
         }
@@ -162,7 +172,7 @@ class SettingsPage
         $methodName = 'input' . $type;
 
         if (method_exists($this, $methodName)) {
-            echo $this->{$methodName}($arguments['name']);
+            echo $this->{$methodName}($arguments);
         } else {
             throw new \Exception(sprintf(
                 "%s(): Unsupported input type '%s' requested",
@@ -186,8 +196,8 @@ class SettingsPage
     public function addSection($id, $title, $subtitle = '', $fields = [])
     {
         add_action('admin_init', function () use ($id, $title, $subtitle, $fields) {
-            $sectionId = Init::getPrefix() . '-' . $id;
-            $pageSlug = Init::getPrefix() . '-' . $this->pageSlug;
+            $sectionId = $this->init->getPrefix() . '-' . $id;
+            $pageSlug = $this->init->getPrefix() . '-' . $this->pageSlug;
 
             // Subtitle argument needs to be an echo'ing function
             $subtitle = function () use ($subtitle) {
@@ -199,8 +209,8 @@ class SettingsPage
 
             // Add the fields to the section
             foreach ($fields as $name => $options) {
-                $nameHyphen = Init::getPrefix() . '-' . $name;
-                $nameUnderscore = Init::getPrefix() . '_' . $name;
+                $nameHyphen = $this->init->getPrefix() . '-' . $name;
+                $nameUnderscore = $this->init->getPrefix() . '_' . $name;
 
                 // Register the setting name to the group
                 register_setting($this->settingsGroup, $nameUnderscore);
@@ -227,8 +237,8 @@ class SettingsPage
             $this->pageSlug = (new Utilities())->createSlug($this->pageTitle);
         }
 
-        $pageSlug = Init::getPrefix() . '-' . $this->pageSlug;
-        $settingsGroup = Init::getPrefix() . '-' . $this->settingsGroup;
+        $pageSlug = $this->init->getPrefix() . '-' . $this->pageSlug;
+        $settingsGroup = $this->init->getPrefix() . '-' . $this->settingsGroup;
 
         add_action('admin_menu', function () use ($pageSlug, $settingsGroup) {
             if (current_user_can('manage_options')) {

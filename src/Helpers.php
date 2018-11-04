@@ -5,6 +5,16 @@ namespace Nerbiz\Wordclass;
 class Helpers
 {
     /**
+     * @var Init
+     */
+    protected $init;
+
+    public function __construct()
+    {
+        $this->init = new Init();
+    }
+
+    /**
      * Get the URL of a featured image
      * @param  int    $imageId    The ID of the image
      * @param  string $sizeName   The name of one of the regisered image sizes
@@ -67,7 +77,7 @@ class Helpers
      */
     public function getMetaImage($postId, $key, $sizeName = 'large', $returnType = 'url', $delimiter = '-')
     {
-        $prefixedKey = Init::getPrefix() . $delimiter . $key;
+        $prefixedKey = $this->init->getPrefix() . $delimiter . $key;
         $imageId = get_post_meta($postId, $prefixedKey, true);
 
         return $this->getImage($imageId, $sizeName, $returnType);
@@ -120,7 +130,7 @@ class Helpers
      */
     public function getOption($name)
     {
-        $optionName = Init::getPrefix() . '_' . $name;
+        $optionName = $this->init->getPrefix() . '_' . $name;
         $value = trim(get_option($optionName));
 
         if ($value === '') {
@@ -138,7 +148,7 @@ class Helpers
      */
     public function setOption($name, $value)
     {
-        $optionName = Init::getPrefix() . '_' . $name;
+        $optionName = $this->init->getPrefix() . '_' . $name;
         update_option($optionName, $value);
 
         return $this;
@@ -151,7 +161,7 @@ class Helpers
      */
     public function deleteOption($name, $prefixAppend = '_')
     {
-        $optionName = Init::getPrefix() . '_' . $name;
+        $optionName = $this->init->getPrefix() . '_' . $name;
         delete_option($optionName);
 
         return $this;
@@ -166,7 +176,7 @@ class Helpers
      */
     public function getPostMeta($postId, $key, $single = true)
     {
-        $metaKey = Init::getPrefix() . '_' . $key;
+        $metaKey = $this->init->getPrefix() . '_' . $key;
 
         return get_post_meta($postId, $metaKey, $single);
     }

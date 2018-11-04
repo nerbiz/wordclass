@@ -2,6 +2,8 @@
 
 namespace Nerbiz\Wordclass;
 
+use Composer\Autoload\ClassLoader;
+
 class Init
 {
     /**
@@ -102,7 +104,7 @@ class Init
     /**
      * @return string
      */
-    public static function getPrefix()
+    public function getPrefix()
     {
         return static::$prefix;
     }
@@ -122,12 +124,16 @@ class Init
      * Get the vendor path, optionally appended with an extra path
      * @param  string $path
      * @return string
+     * @throws \ReflectionException
      */
-    public static function getVendorPath($path = null)
+    public function getVendorPath($path = null)
     {
-        // The default value is the 'vendor' directory in a (child-)theme directory
+        // Set the default path, if not set yet
         if (static::$vendorPath === null) {
-            static::$vendorPath = get_stylesheet_directory() . '/vendor/';
+            // Derive the vendor path from the location of the Composer classloader
+            $reflection = new \ReflectionClass(ClassLoader::class);
+            $vendorPath = dirname(dirname($reflection->getFileName()));
+            $this->setVendorPath($vendorPath);
         }
 
         // Append the extra path if not null
@@ -154,12 +160,15 @@ class Init
      * Get the vendor URI, optionally appended with an extra path
      * @param  string $path
      * @return string
+     * @throws \ReflectionException
      */
-    public static function getVendorUri($path = null)
+    public function getVendorUri($path = null)
     {
         // The default value is the 'vendor' directory in a (child-)theme directory
         if (static::$vendorUri === null) {
-            static::$vendorUri = get_stylesheet_directory_uri() . '/vendor/';
+            // Get the relative path by removing the document root from the full path
+            $vendorUri = home_url(str_replace($_SERVER['DOCUMENT_ROOT'], '', $this->getVendorPath()));
+            $this->setVendorUri($vendorUri);
         }
 
         // Append the extra path if not null
