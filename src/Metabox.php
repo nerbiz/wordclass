@@ -7,6 +7,11 @@ use CMB2;
 class Metabox
 {
     /**
+     * @var Init
+     */
+    protected $init;
+
+    /**
      * The ID of the metabox
      * @var string
      */
@@ -38,7 +43,8 @@ class Metabox
 
     public function __construct()
     {
-        require_once Init::getVendorPath('cmb2/cmb2/init.php');
+        $this->init = new Init();
+        require_once $this->init->getVendorPath('cmb2/cmb2/init.php');
     }
 
     /**
@@ -108,7 +114,7 @@ class Metabox
              * Required
              */
             // ID of the metabox
-            'id'               => Init::getPrefix() . '-' . $this->id,
+            'id'               => $this->init->getPrefix() . '-' . $this->id,
             // Title of the metabox
             'title'            => $this->title,
             // Post type(s)
@@ -155,7 +161,7 @@ class Metabox
     public function addField(array $fieldProperties)
     {
         // Prefix the field ID
-        $fieldProperties['id'] = Init::getPrefix() . '-' . $fieldProperties['id'];
+        $fieldProperties['id'] = $this->init->getPrefix() . '-' . $fieldProperties['id'];
 
         $this->fields[] = $fieldProperties;
 

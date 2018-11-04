@@ -5,6 +5,11 @@ namespace Nerbiz\Wordclass;
 class Taxonomy
 {
     /**
+     * @var Init
+     */
+    protected $init;
+
+    /**
      * The ID of the taxonomy
      * @var string
      */
@@ -52,13 +57,18 @@ class Taxonomy
      */
     protected $postTypes = [];
 
+    public function __construct()
+    {
+        $this->init = new Init();
+    }
+
     /**
      * @param  string $id
      * @return self
      */
     public function setId($id)
     {
-        $this->id = Init::getPrefix() . '_' . $id;
+        $this->id = $this->init->getPrefix() . '_' . $id;
 
         return $this;
     }

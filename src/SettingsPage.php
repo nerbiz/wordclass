@@ -5,6 +5,11 @@ namespace Nerbiz\Wordclass;
 class SettingsPage
 {
     /**
+     * @var Init
+     */
+    protected $init;
+
+    /**
      * The title of the settings page
      * @var string
      */
@@ -33,6 +38,11 @@ class SettingsPage
      * @var int
      */
     protected $menuPosition;
+
+    public function __construct()
+    {
+        $this->init = new Init();
+    }
 
     /**
      * @param $pageTitle
@@ -186,8 +196,8 @@ class SettingsPage
     public function addSection($id, $title, $subtitle = '', $fields = [])
     {
         add_action('admin_init', function () use ($id, $title, $subtitle, $fields) {
-            $sectionId = Init::getPrefix() . '-' . $id;
-            $pageSlug = Init::getPrefix() . '-' . $this->pageSlug;
+            $sectionId = $this->init->getPrefix() . '-' . $id;
+            $pageSlug = $this->init->getPrefix() . '-' . $this->pageSlug;
 
             // Subtitle argument needs to be an echo'ing function
             $subtitle = function () use ($subtitle) {
@@ -199,8 +209,8 @@ class SettingsPage
 
             // Add the fields to the section
             foreach ($fields as $name => $options) {
-                $nameHyphen = Init::getPrefix() . '-' . $name;
-                $nameUnderscore = Init::getPrefix() . '_' . $name;
+                $nameHyphen = $this->init->getPrefix() . '-' . $name;
+                $nameUnderscore = $this->init->getPrefix() . '_' . $name;
 
                 // Register the setting name to the group
                 register_setting($this->settingsGroup, $nameUnderscore);
@@ -227,8 +237,8 @@ class SettingsPage
             $this->pageSlug = (new Utilities())->createSlug($this->pageTitle);
         }
 
-        $pageSlug = Init::getPrefix() . '-' . $this->pageSlug;
-        $settingsGroup = Init::getPrefix() . '-' . $this->settingsGroup;
+        $pageSlug = $this->init->getPrefix() . '-' . $this->pageSlug;
+        $settingsGroup = $this->init->getPrefix() . '-' . $this->settingsGroup;
 
         add_action('admin_menu', function () use ($pageSlug, $settingsGroup) {
             if (current_user_can('manage_options')) {
