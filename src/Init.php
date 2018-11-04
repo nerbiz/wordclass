@@ -10,7 +10,7 @@ class Init
      * The default prefix to use
      * @var string
      */
-    protected static $prefix;
+    protected static $prefix = 'nw';
 
     /**
      * The path to the vendor directory
@@ -77,14 +77,14 @@ class Init
     public function defineConstants()
     {
         // The absolute paths to the template/stylesheet directory
-        define('WC_THEME_PATH', get_template_directory() . '/');
-        define('WC_TEMPLATE_PATH', WC_THEME_PATH);
-        define('WC_STYLESHEET_PATH', get_stylesheet_directory() . '/');
+        define(strtoupper(static::$prefix) . '_THEME_PATH', get_template_directory() . '/');
+        define(strtoupper(static::$prefix) . '_TEMPLATE_PATH', constant(strtoupper(static::$prefix) . '_THEME_PATH'));
+        define(strtoupper(static::$prefix) . '_STYLESHEET_PATH', get_stylesheet_directory() . '/');
 
         // The URI paths to the template/stylesheet directory
-        define('WC_THEME_URI', get_template_directory_uri() . '/');
-        define('WC_TEMPLATE_URI', WC_THEME_URI);
-        define('WC_STYLESHEET_URI', get_stylesheet_directory_uri() . '/');
+        define(strtoupper(static::$prefix) . '_THEME_URI', get_template_directory_uri() . '/');
+        define(strtoupper(static::$prefix) . '_TEMPLATE_URI', constant(strtoupper(static::$prefix) . '_THEME_URI'));
+        define(strtoupper(static::$prefix) . '_STYLESHEET_URI', get_stylesheet_directory_uri() . '/');
 
         return $this;
     }
