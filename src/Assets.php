@@ -80,9 +80,9 @@ class Assets
 
                 // Register the asset
                 if ($assetType == 'css') {
-                    wp_enqueue_style($handle, $options['uri'], $options['after'], $options['version'], $options['media']);
+                    wp_enqueue_style($handle, $options['uri'], $options['deps'], $options['ver'], $options['media']);
                 } elseif ($assetType == 'js') {
-                    wp_enqueue_script($handle, $options['uri'], $options['after'], $options['version'], $options['footer']);
+                    wp_enqueue_script($handle, $options['uri'], $options['deps'], $options['ver'], $options['footer']);
                 }
             }
         });
@@ -96,7 +96,7 @@ class Assets
      * @param array|string $options   Either an options array, or only a URI (string)
      * Options:
      * uri: URI to the file
-     * after: the assets that have to load before this one (default: none)
+     * deps: the assets that have to load before this one (default: none)
      * For css
      *   media: the 'media' attribute of the style tag (default: 'all')
      * For js
@@ -118,12 +118,14 @@ class Assets
         // Merge the options with default ones
         if ($assetType == 'css') {
             return array_replace([
-                'after' => [],
+                'deps'  => [],
+                'ver'   => null,
                 'media' => 'all',
             ], $options);
         } elseif ($assetType == 'js') {
             return array_replace([
-                'after'  => [],
+                'deps'  => [],
+                'ver'   => null,
                 'footer' => true,
             ], $options);
         }
