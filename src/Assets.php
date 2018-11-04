@@ -5,34 +5,6 @@ namespace Nerbiz\Wordclass;
 class Assets
 {
     /**
-     * This string is appended to all asset URLs, if cache busting is enabled
-     * @var string
-     */
-    protected $assetAppend = '';
-
-    /**
-     * Enable cache busting by appending asset URIs
-     * @return self
-     */
-    public function enableCacheBusting()
-    {
-        $this->assetAppend = '?v=' . time();
-
-        return $this;
-    }
-
-    /**
-     * Disable cache busting
-     * @return self
-     */
-    public function disableCacheBusting()
-    {
-        $this->assetAppend = '';
-
-        return $this;
-    }
-
-    /**
      * Add CSS asset(s) to the theme
      * @param array $assets handle:options pairs
      * @return self
@@ -108,9 +80,9 @@ class Assets
 
                 // Register the asset
                 if ($assetType == 'css') {
-                    wp_enqueue_style($handle, $options['uri'], $options['after'], null, $options['media']);
+                    wp_enqueue_style($handle, $options['uri'], $options['after'], $options['version'], $options['media']);
                 } elseif ($assetType == 'js') {
-                    wp_enqueue_script($handle, $options['uri'], $options['after'], null, $options['footer']);
+                    wp_enqueue_script($handle, $options['uri'], $options['after'], $options['version'], $options['footer']);
                 }
             }
         });
@@ -140,26 +112,38 @@ class Assets
 
         // Prepend the URI with the (child)theme URI if it's relative
         if (! preg_match('~^(https?:)?//~', $options['uri'])) {
-            $options['uri'] = sprintf(
-                '%s/%s%s',
-                get_stylesheet_directory_uri(),
-                $options['uri'],
-                $this->assetAppend
-            );
+            $options['uri'] = '/' . ltrim($options['uri'], '/');
         }
 
         // Merge the options with default ones
         if ($assetType == 'css') {
-            return array_merge([
+            return array_replace([
                 'after' => [],
-                'media' => 'all'
+                'media' => 'all',
             ], $options);
         } elseif ($assetType == 'js') {
-            return array_merge([
+            return array_replace([
                 'after'  => [],
-                'footer' => true
+                'footer' => true,
             ], $options);
         }
+    }
+
+    /**
+     * Remove the jQuery asset
+     * @return self
+     */
+    public function removeJquery()
+    {
+        add_action('init', function () {
+            // Don't replace on admin
+            if (! is_admin()) {
+                // Remove the normal jQuery include
+                wp_deregister_script('jquery');
+            }
+        });
+
+        return $this;
     }
 
     /**
@@ -169,13 +153,11 @@ class Assets
      */
     public function jQueryVersion($version)
     {
+        $this->removeJquery();
+
         add_action('init', function () use ($version) {
             // Don't replace on admin
             if (! is_admin()) {
-                // Remove the normal jQuery include
-                wp_deregister_script('jquery');
-
-                // Set the custom one
                 wp_enqueue_script(
                     'jquery',
                     sprintf('//ajax.googleapis.com/ajax/libs/jquery/%s/jquery.min.js', $version),
