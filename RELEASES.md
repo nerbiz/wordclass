@@ -1,5 +1,11 @@
 # Release notes
 
+## 1.1.1
+
+* Fixed: Webpack was emptying the parsed manifest.
+* Added Assets::removeJquery().
+* Removed cache busting from Assets, using the default Wordpress way instead.
+
 ## 1.1.0
 
 * Added a default prefix to Init, and the constants now use that prefix.
