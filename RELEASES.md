@@ -1,5 +1,9 @@
 # Release notes
 
+## 1.1.2
+
+* Removed the replacement option from Editor::removeButton(), just use Editor::replaceButton() instead.
+
 ## 1.1.1
 
 * Fixed: Webpack was emptying the parsed manifest.
