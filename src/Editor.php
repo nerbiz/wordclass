@@ -96,20 +96,19 @@ class Editor
      * Remove or replace a button from the TinyMCE editor
      * @param  string $name          The name of the button to remove
      * @param  int    $toolbarNumber The toolbar number, 1 = default, 2/3/4 = advanced
-     * @param  string $replacement   The name of the button to replace the removed one with
      * @return self
      */
-    public function removeButton($name, $toolbarNumber = 1, $replacement = null)
+    public function removeButton($name, $toolbarNumber = 1)
     {
         $filter = $this->getButtonsFilter($toolbarNumber);
 
-        add_filter($filter, function ($buttons) use ($name, $replacement) {
+        add_filter($filter, function ($buttons) use ($name) {
             $removeButtonKey = array_search($name, $buttons);
 
             // Only remove/replace the button if it exists
             // Using array_splice(), because unset() doesn't reset array keys
             if ($removeButtonKey !== false) {
-                array_splice($buttons, $removeButtonKey, 1, $replacement);
+                array_splice($buttons, $removeButtonKey, 1);
             }
 
             return $buttons;
@@ -119,15 +118,29 @@ class Editor
     }
 
     /**
-     * @param string $name
-     * @param string $replaceWith
-     * @param int    $toolbarNumber
+     * Remove or replace a button from the TinyMCE editor
+     * @param  string $name          The name of the button to remove
+     * @param  string $replaceWith   The name of the button to replace the removed one with
+     * @param  int    $toolbarNumber The toolbar number, 1 = default, 2/3/4 = advanced
      * @return self
-     * @see self::removeButton()
      */
     public function replaceButton($name, $replaceWith, $toolbarNumber = 1)
     {
-        return $this->removeButton($name, $toolbarNumber, $replaceWith);
+        $filter = $this->getButtonsFilter($toolbarNumber);
+
+        add_filter($filter, function ($buttons) use ($name, $replaceWith) {
+            $removeButtonKey = array_search($name, $buttons);
+
+            // Only remove/replace the button if it exists
+            // Using array_splice(), because unset() doesn't reset array keys
+            if ($removeButtonKey !== false) {
+                array_splice($buttons, $removeButtonKey, 1, $replaceWith);
+            }
+
+            return $buttons;
+        });
+
+        return $this;
     }
 
     /**
