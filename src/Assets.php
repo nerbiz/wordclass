@@ -108,13 +108,20 @@ class Assets {
      */
     public static function jqueryVersion($version) {
         add_action('init', function() use ($version) {
+            $isWpLogin = (isset($GLOBALS['pagenow']) && $GLOBALS['pagenow'] == 'wp-login.php');
+
             // Don't replace on admin
-            if( ! is_admin()) {
+            if( ! is_admin() && ! $isWpLogin) {
                 // Remove the normal jQuery include
                 wp_deregister_script('jquery');
 
                 // Then set the custom one
-                wp_enqueue_script('jquery', '//ajax.googleapis.com/ajax/libs/jquery/'.$version.'/jquery.min.js', [], $version);
+                wp_enqueue_script(
+                    'jquery',
+                    '//ajax.googleapis.com/ajax/libs/jquery/'.$version.'/jquery.min.js',
+                    [],
+                    $version
+                );
             }
         });
     }

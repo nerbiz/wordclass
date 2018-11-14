@@ -101,8 +101,10 @@ class Taxonomy {
      * @return $this
      */
     public function forPostType($posttypes) {
-        $posttypes = (array) $posttypes;
-
+        if (! is_array($posttypes)) {
+            $posttypes = [$posttypes];
+        }
+        
         // Make sure the types are strings
         // (could use __toString() method in case of an object)
         foreach($posttypes as $key => $type)

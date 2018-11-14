@@ -8,8 +8,11 @@ class Theme {
      * @param Null|String|Array  $posttypes  (Optional) Enable for specific post types only
      */
     public static function enableFeaturedImages($posttypes=null) {
-        if($posttypes !== null)
-            $posttypes = (array) $posttypes;
+        if ($posttypes !== null) {
+            if (! is_array($posttypes)) {
+                $posttypes = [$posttypes];
+            }
+        }
 
         add_action('after_setup_theme', function() use($posttypes) {
             if($posttypes === null)
@@ -31,8 +34,9 @@ class Theme {
             $features = ['caption', 'comment-form', 'comment-list', 'gallery', 'search-form'];
 
         // Make sure the features are an array
-        if( ! is_array($features))
-            $features = (array) $features;
+        if( ! is_array($features)) {
+            $features = [$features];
+        }
 
         add_action('after_setup_theme', function() use($features) {
             add_theme_support('html5', $features);
@@ -63,7 +67,7 @@ class Theme {
      * @param Integer  $height
      * @param Boolean  $crop        Whether to resize (false) or crop (true) images
      */
-    public function addImageSize($name, $optionName, $width, $height, $crop=false) {
+    public static function addImageSize($name, $optionName, $width, $height, $crop=false) {
         add_action('after_setup_theme', function() use($name, $optionName, $width, $height, $crop) {
             add_image_size($name, $width, $height, $crop);
 

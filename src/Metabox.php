@@ -2,8 +2,7 @@
 
 namespace Wordclass;
 
-require_once __DIR__ . '/../../../webdevstudios/cmb2/init.php';
-
+use Composer\Autoload\ClassLoader;
 use CMB2;
 
 class Metabox {
@@ -29,6 +28,12 @@ class Metabox {
      * @see create()
      */
     private function __construct($id, $title, $posttypes, $options=[]) {
+        // Derive the vendor path from the location of the Composer classloader
+        $reflection = new \ReflectionClass(ClassLoader::class);
+        $vendorPath = dirname(dirname($reflection->getFileName()));
+        // Include CMB2
+        require_once $vendorPath . '/cmb2/cmb2/init.php';
+
         $this->_options = array_replace_recursive([
             /**
              * Required
@@ -117,7 +122,9 @@ class Metabox {
      * @return Object  An instance of this class
      */
     public static function create($id, $title, $posttypes, $options=[]) {
-        $posttypes = (array) $posttypes;
+        if (! is_array($posttypes)) {
+            $posttypes = [$posttypes];
+        }
 
         // Make sure the post types are a string (could use __toString() of an object)
         foreach($posttypes as $key => $type)
