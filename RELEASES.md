@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.9.3
+
+* Various fixes, now supports PHP 7.2.
+
 ## 0.9.2
 
 * Added Assets::jqueryVersion(), to replace the jQuery that Wordpress sets with a different version.
