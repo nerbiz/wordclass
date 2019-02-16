@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.9.4
+
+* Fixed: including CMB2 could fail, if multiple vendor directories exist.
+
 ## 0.9.3
 
 * Various fixes, now supports PHP 7.2.
