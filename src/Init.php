@@ -10,8 +10,15 @@ class Init {
     private static $_prefix = null;
 
     /**
-     * A custom URI to the vendor directory
-     * The default is a 'vendor' directory in the theme directory
+     * The path to the vendor directory
+     * The default is the 'vendor' directory in the theme directory
+     * @var String
+     */
+    private static $_vendorPath = null;
+
+    /**
+     * The URI to the vendor directory
+     * The default is the 'vendor' directory in the theme directory
      * @var String
      */
     private static $_vendorUri = null;
@@ -85,6 +92,26 @@ class Init {
             static::$_prefix = $prefix;
         else
             return static::$_prefix;
+    }
+
+
+
+    /**
+     * Set or get the vendor directory path
+     * @param  String  $path
+     * @return String
+     */
+    public static function vendorPath($path=null) {
+        if($path)
+            static::$_vendorPath = rtrim($path, '/') . '/';
+
+        else {
+            // The default value is the 'vendor' directory in a (child-)theme directory
+            if(static::$_vendorPath === null)
+                static::$_vendorPath = get_stylesheet_directory() . '/vendor/';
+
+            return static::$_vendorPath;
+        }
     }
 
 
