@@ -185,11 +185,12 @@ class SettingsPage
                 <img class="image-preview" src="%s" width="100" height="100">
             </div>
             <input type="button" class="button upload-media-button" value="%s" data-attachment-id="%s">
-            <input type="hidden" name="%s">',
+            <input type="hidden" name="%s" value="%s">',
             $currentMediaUrl,
             __('Select media', 'wordclass'),
             get_option($arguments['name']),
-            $arguments['name']
+            $arguments['name'],
+            get_option($arguments['name'])
         );
     }
 
