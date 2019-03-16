@@ -169,7 +169,6 @@ class Editor
      *   null places the button at the end
      * @param  int    $toolbarNumber The toolbar number, 1 = default, 2/3/4 = advanced, false to not add
      * @return self
-     * @throws \ReflectionException
      */
     public function addPlugin($name, $after = null, $toolbarNumber = 1)
     {

@@ -2,8 +2,6 @@
 
 namespace Nerbiz\Wordclass;
 
-use Composer\Autoload\ClassLoader;
-
 class Init
 {
     /**
@@ -124,16 +122,12 @@ class Init
      * Get the vendor path, optionally appended with an extra path
      * @param  string $path
      * @return string
-     * @throws \ReflectionException
      */
     public function getVendorPath($path = null)
     {
-        // Set the default path, if not set yet
-        if (static::$vendorPath === null) {
-            // Derive the vendor path from the location of the Composer classloader
-            $reflection = new \ReflectionClass(ClassLoader::class);
-            $vendorPath = dirname(dirname($reflection->getFileName()));
-            $this->setVendorPath($vendorPath);
+        // The default value is the 'vendor' directory in a (child-)theme directory
+        if(static::$vendorPath === null) {
+            static::$vendorPath = get_stylesheet_directory() . '/vendor/';
         }
 
         // Append the extra path if not null
@@ -160,7 +154,6 @@ class Init
      * Get the vendor URI, optionally appended with an extra path
      * @param  string $path
      * @return string
-     * @throws \ReflectionException
      */
     public function getVendorUri($path = null)
     {

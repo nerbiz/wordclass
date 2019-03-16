@@ -39,9 +39,27 @@ class SettingsPage
      */
     protected $menuPosition;
 
+    /**
+     * Indicates whether the required scripts are added
+     * Prevents including twice
+     * @var bool
+     */
+    protected static $scriptsAdded = false;
+
     public function __construct()
     {
         $this->init = new Init();
+
+        // Add the required scripts
+        if (! static::$scriptsAdded) {
+            $assets = Factory::make('Assets');
+            $mediaUploadHandle = $this->init->getPrefix() . '-media-upload';
+            $assets->addAdminJs([
+                $mediaUploadHandle => $this->init->getVendorUri('nerbiz/wordclass/includes/js/media-upload.js')
+            ]);
+
+            static::$scriptsAdded = true;
+        }
     }
 
     /**
@@ -149,6 +167,30 @@ class SettingsPage
         );
 
         return ob_get_clean();
+    }
+
+    /**
+     * Create a media select/upload element
+     * @param array $arguments
+     * @return string
+     */
+    protected function inputMedia(array $arguments)
+    {
+        wp_enqueue_media();
+
+        $currentMediaUrl = trim(wp_get_attachment_image_url(get_option($arguments['name'])));
+
+        return sprintf(
+            '<div class="image-preview-wrapper">
+                <img class="image-preview" src="%s" width="100" height="100">
+            </div>
+            <input type="button" class="button upload-media-button" value="%s" data-attachment-id="%s">
+            <input type="hidden" name="%s">',
+            $currentMediaUrl,
+            __('Select media', 'wordclass'),
+            get_option($arguments['name']),
+            $arguments['name']
+        );
     }
 
     /**

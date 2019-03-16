@@ -1,2 +1,5 @@
 # Composer dependencies
 vendor/*
+
+# PHP Storm
+.idea

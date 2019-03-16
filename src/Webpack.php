@@ -27,7 +27,7 @@ class Webpack
     public function parse($path = null)
     {
         if ($path === null) {
-            $path = get_template_directory() . '/dist/manifest.json';
+            $path = get_stylesheet_directory() . '/dist/manifest.json';
         }
 
         if (! is_readable($path)) {
