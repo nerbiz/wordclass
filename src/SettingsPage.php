@@ -213,7 +213,8 @@ class SettingsPage
                 $nameUnderscore = $this->init->getPrefix() . '_' . $name;
 
                 // Register the setting name to the group
-                register_setting($this->settingsGroup, $nameUnderscore);
+                $settingsGroup = $this->init->getPrefix() . '-' . $this->settingsGroup;
+                register_setting($settingsGroup, $nameUnderscore);
 
                 // Add the field for the setting
                 add_settings_field($nameHyphen, $options['title'], [$this, 'decideInput'], $pageSlug, $sectionId, [
