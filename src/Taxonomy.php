@@ -148,12 +148,14 @@ class Taxonomy
     }
 
     /**
-     * @param  string|array $postTypes
+     * @param  string|array|PostType $postTypes
      * @return self
      */
     public function setPostTypes($postTypes)
     {
-        $postTypes = (array) $postTypes;
+        if (! is_array($postTypes)) {
+            $postTypes = [$postTypes];
+        }
 
         // Make sure the post types are a string
         foreach ($postTypes as $key => $type) {

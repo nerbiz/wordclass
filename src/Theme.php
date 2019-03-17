@@ -12,7 +12,9 @@ class Theme
     public function enableFeaturedImages($postTypes = null)
     {
         if ($postTypes !== null) {
-            $postTypes = (array) $postTypes;
+            if (! is_array($postTypes)) {
+                $postTypes = [$postTypes];
+            }
         }
 
         add_action('after_setup_theme', function () use ($postTypes) {
@@ -46,7 +48,7 @@ class Theme
 
         // Make sure the features are an array
         if (! is_array($features)) {
-            $features = (array) $features;
+            $features = [$features];
         }
 
         add_action('after_setup_theme', function () use ($features) {

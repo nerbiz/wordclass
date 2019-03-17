@@ -166,12 +166,14 @@ class PostType
     }
 
     /**
-     * @param  string|array $taxonomies
+     * @param  string|array|Taxonomy $taxonomies
      * @return self
      */
     public function setTaxonomies($taxonomies)
     {
-        $taxonomies = (array) $taxonomies;
+        if (! is_array($taxonomies)) {
+            $taxonomies = [$taxonomies];
+        }
 
         // Make sure the post types are a string
         foreach ($taxonomies as $key => $name) {
