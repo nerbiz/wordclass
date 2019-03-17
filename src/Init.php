@@ -88,6 +88,19 @@ class Init
     }
 
     /**
+     * @return self
+     */
+    public function loadTranslations()
+    {
+        load_theme_textdomain(
+            'wordclass',
+            dirname(__FILE__, 2) . '/includes/languages'
+        );
+        
+        return $this;
+    }
+
+    /**
      * Set the prefix to use for various things
      * @param string $prefix
      * @return self
