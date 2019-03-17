@@ -1,7 +1,10 @@
 jQuery(document).ready(function ($) {
-    // Uploading files
     var fileFrame;
-    var oldAttachmentId = wp.media.model.settings.post.id; // Store the old id
+
+    // Store the old id
+    var oldAttachmentId = (wp.media)
+        ? wp.media.model.settings.post.id
+        : null;
 
     $('.upload-media-button').on('click', function (event) {
         event.preventDefault();
