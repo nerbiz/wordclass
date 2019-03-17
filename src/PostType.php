@@ -46,6 +46,12 @@ class PostType
     protected $labels = [];
 
     /**
+     * The features the post type supports
+     * @var array
+     */
+    protected $supports = ['title', 'editor'];
+
+    /**
      * The arguments for the post type
      * @var array
      */
@@ -138,6 +144,17 @@ class PostType
     }
 
     /**
+     * @param array $supports
+     * @return self
+     */
+    public function setSupports($supports)
+    {
+        $this->supports = $supports;
+
+        return $this;
+    }
+
+    /**
      * @param  array $arguments
      * @return self
      */
@@ -216,7 +233,7 @@ class PostType
             'label'               => $this->name,
             'description'         => $this->description,
             'labels'              => $this->getLabels(),
-            'supports'            => ['title', 'editor', 'excerpt', 'thumbnail', 'page-attributes'],
+            'supports'            => $this->supports,
             'taxonomies'          => $this->taxonomies,
             'hierarchical'        => false,
             'public'              => true,
@@ -251,7 +268,7 @@ class PostType
         }
 
         add_action('init', function () {
-            register_post_type($this->id, $this->getArguments());
+            register_post_type($this->getId(), $this->getArguments());
         }, 10);
 
         return $this;
