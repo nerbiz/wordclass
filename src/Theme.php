@@ -5,14 +5,14 @@ namespace Nerbiz\Wordclass;
 class Theme
 {
     /**
-     * Enable the 'featured image' metabox on post edit screens
-     * @param  null|string|array $postTypes (Optional) Enable for specific post types only
+     * Enable the featured image on post edit screens
+     * @param string|array|null $postTypes Enable for specific post types only
      * @return self
      */
     public function enableFeaturedImages($postTypes = null)
     {
         if ($postTypes !== null) {
-            if (! is_array($postTypes)) {
+            if (!is_array($postTypes)) {
                 $postTypes = [$postTypes];
             }
         }
@@ -21,10 +21,8 @@ class Theme
             // Enable for all post types
             if ($postTypes === null) {
                 add_theme_support('post-thumbnails');
-            }
-
-            // Enable only for the give post types
-            else {
+            } else {
+                // Enable only for the give post types
                 foreach ($postTypes as $postType) {
                     add_post_type_support($postType, 'post-thumbnails');
                 }
@@ -36,7 +34,7 @@ class Theme
 
     /**
      * Allow the use of HTML5 in core Wordpress features
-     * @param  array  $features  The list of features to enable HTML5 for
+     * @param  array $features The list of features to enable HTML5 for
      * @return self
      */
     public function enableHtml5Support($features = null)
@@ -47,7 +45,7 @@ class Theme
         }
 
         // Make sure the features are an array
-        if (! is_array($features)) {
+        if (!is_array($features)) {
             $features = [$features];
         }
 
@@ -62,7 +60,7 @@ class Theme
      * Set the size of featured images
      * @param  int  $width
      * @param  int  $height
-     * @param  bool $crop   Whether to resize (false) or crop (true) images
+     * @param  bool $crop Whether to resize (false) or crop (true) images
      * @return self
      */
     public function setFeaturedImageSize($width, $height, $crop = false)

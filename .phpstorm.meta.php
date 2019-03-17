@@ -11,7 +11,6 @@ namespace PHPSTORM_META {
             'Fixes'              => \Nerbiz\Wordclass\Fixes::class,
             'Helpers'            => \Nerbiz\Wordclass\Helpers::class,
             'Init'               => \Nerbiz\Wordclass\Init::class,
-            'Metabox'            => \Nerbiz\Wordclass\Metabox::class,
             'Plugins'            => \Nerbiz\Wordclass\Plugins::class,
             'PostType'           => \Nerbiz\Wordclass\PostType::class,
             'SettingsPage'       => \Nerbiz\Wordclass\SettingsPage::class,
