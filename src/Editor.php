@@ -247,4 +247,29 @@ class Editor
         // Add the buttons to the editor
         return $this->addButton('wc_shortcodes', $after, $toolbarNumber);
     }
+
+    /**
+     * Prevent users from using an <h1> element in the editor
+     * @return self
+     */
+    public function removeH1FromFormats()
+    {
+        add_filter('tiny_mce_before_init', function ($args) {
+            $blockFormats = [
+                'Paragraph=p',
+                'Heading 2=h2',
+                'Heading 3=h3',
+                'Heading 4=h4',
+                'Heading 5=h5',
+                'Heading 6=h6',
+                'Preformatted=pre',
+            ];
+
+            $args['block_formats'] = implode(';', $blockFormats);
+
+            return $args;
+        });
+
+        return $this;
+    }
 }
