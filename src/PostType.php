@@ -171,7 +171,7 @@ class PostType
      */
     public function setTaxonomies($taxonomies)
     {
-        if (! is_array($taxonomies)) {
+        if (!is_array($taxonomies)) {
             $taxonomies = [$taxonomies];
         }
 
@@ -181,7 +181,7 @@ class PostType
             if ($name instanceof Taxonomy) {
                 $taxonomies[$key] = $name->getId();
             } else {
-                $taxonomies[$key] = (string) $name;
+                $taxonomies[$key] = (string)$name;
             }
         }
 
@@ -197,31 +197,31 @@ class PostType
     public function getLabels()
     {
         return array_replace([
-            'name'                  => $this->name,
-            'singular_name'         => $this->singularName,
-            'menu_name'             => $this->name,
-            'name_admin_bar'        => $this->singularName,
-            'archives'              => sprintf(__('%s archive', 'wordclass'), $this->name),
-            'parent_item_colon'     => sprintf(__('Parent %s:', 'wordclass'), $this->singularName),
-            'all_items'             => sprintf(__('All %s', 'wordclass'), $this->name),
-            'add_new_item'          => sprintf(__('Add new %s', 'wordclass'), $this->singularName),
-            'add_new'               => sprintf(__('Add new %s', 'wordclass'), $this->singularName),
-            'new_item'              => sprintf(__('New %s', 'wordclass'), $this->singularName),
-            'edit_item'             => sprintf(__('Edit %s', 'wordclass'), $this->singularName),
-            'update_item'           => sprintf(__('Update %s', 'wordclass'), $this->singularName),
-            'view_item'             => sprintf(__('View %s', 'wordclass'), $this->singularName),
-            'search_items'          => sprintf(__('Search %s', 'wordclass'), $this->singularName),
-            'not_found'             => __('Not found', 'wordclass'),
-            'not_found_in_trash'    => __('Not found in trash', 'wordclass'),
-            'featured_image'        => __('Featured image', 'wordclass'),
-            'set_featured_image'    => __('Set featured image', 'wordclass'),
+            'name' => $this->name,
+            'singular_name' => $this->singularName,
+            'menu_name' => $this->name,
+            'name_admin_bar' => $this->singularName,
+            'archives' => sprintf(__('%s archive', 'wordclass'), $this->name),
+            'parent_item_colon' => sprintf(__('Parent %s:', 'wordclass'), $this->singularName),
+            'all_items' => sprintf(__('All %s', 'wordclass'), $this->name),
+            'add_new_item' => sprintf(__('Add new %s', 'wordclass'), $this->singularName),
+            'add_new' => sprintf(__('Add new %s', 'wordclass'), $this->singularName),
+            'new_item' => sprintf(__('New %s', 'wordclass'), $this->singularName),
+            'edit_item' => sprintf(__('Edit %s', 'wordclass'), $this->singularName),
+            'update_item' => sprintf(__('Update %s', 'wordclass'), $this->singularName),
+            'view_item' => sprintf(__('View %s', 'wordclass'), $this->singularName),
+            'search_items' => sprintf(__('Search %s', 'wordclass'), $this->singularName),
+            'not_found' => __('Not found', 'wordclass'),
+            'not_found_in_trash' => __('Not found in trash', 'wordclass'),
+            'featured_image' => __('Featured image', 'wordclass'),
+            'set_featured_image' => __('Set featured image', 'wordclass'),
             'remove_featured_image' => __('Remove featured image', 'wordclass'),
-            'use_featured_image'    => __('Use as featured image', 'wordclass'),
-            'insert_into_item'      => sprintf(__('Insert into %s', 'wordclass'), $this->singularName),
+            'use_featured_image' => __('Use as featured image', 'wordclass'),
+            'insert_into_item' => sprintf(__('Insert into %s', 'wordclass'), $this->singularName),
             'uploaded_to_this_item' => sprintf(__('Uploaded to this %s', 'wordclass'), $this->singularName),
-            'items_list'            => sprintf(__('%s list', 'wordclass'), $this->name),
+            'items_list' => sprintf(__('%s list', 'wordclass'), $this->name),
             'items_list_navigation' => sprintf(__('%s list navigation', 'wordclass'), $this->name),
-            'filter_items_list'     => sprintf(__('Filter %s list', 'wordclass'), $this->name),
+            'filter_items_list' => sprintf(__('Filter %s list', 'wordclass'), $this->name),
         ], $this->labels);
     }
 
@@ -232,28 +232,13 @@ class PostType
     public function getArguments()
     {
         return array_replace_recursive([
-            'label'               => $this->name,
-            'description'         => $this->description,
-            'labels'              => $this->getLabels(),
-            'supports'            => $this->supports,
-            'taxonomies'          => $this->taxonomies,
-            'hierarchical'        => false,
-            'public'              => true,
-            'show_ui'             => true,
-            'show_in_menu'        => true,
-            'menu_position'       => 5,
-            'show_in_admin_bar'   => true,
-            'show_in_nav_menus'   => true,
-            'can_export'          => true,
-            'has_archive'         => false,
-            'exclude_from_search' => false,
-            'publicly_queryable'  => true,
-            'capability_type'     => 'page',
-            'rewrite'             => [
-                'slug'       => $this->slug,
-                'with_front' => false,
-                'feeds'      => true,
-                'pages'      => true,
+            'label' => $this->name,
+            'description' => $this->description,
+            'labels' => $this->getLabels(),
+            'supports' => $this->supports,
+            'taxonomies' => $this->taxonomies,
+            'rewrite' => [
+                'slug' => $this->slug,
             ],
         ], $this->arguments);
     }
