@@ -2,6 +2,8 @@
 
 namespace Nerbiz\Wordclass;
 
+use Nerbiz\Wordclass\SettingInputs\SettingInputsManager;
+
 class SettingsPage
 {
     /**
@@ -118,93 +120,13 @@ class SettingsPage
     }
 
     /**
-     * Create an input[text] element, with current (escaped) value filled in
-     * @param  array $arguments
-     * @return string
-     */
-    protected function inputText(array $arguments)
-    {
-        return sprintf(
-            '<input type="text" class="regular-text" name="%s" value="%s">',
-            $arguments['name'],
-            esc_attr(get_option($arguments['name']))
-        );
-    }
-
-    /**
-     * Create an input[checkbox] element, with current (escaped) value filled in
-     * @param  array $arguments
-     * @return string
-     */
-    protected function inputCheckbox(array $arguments)
-    {
-        return sprintf(
-            '<input type="checkbox" name="%s" value="1" %s>',
-            $arguments['name'],
-            checked(1, get_option($arguments['name']), false)
-        );
-    }
-
-    /**
-     * Create an editor, with current (escaped) value filled in
-     * @param  array $arguments
-     * @return false|string
-     */
-    protected function inputEditor(array $arguments)
-    {
-        // Buffer the output, because wp_editor() echoes
-        ob_start();
-
-        wp_editor(
-            apply_filters('the_content', get_option($arguments['name'])),
-            $arguments['name'],
-            [
-                'wpautop'       => true,
-                'media_buttons' => true,
-                'textarea_name' => $arguments['name'],
-                'editor_height' => 200
-            ]
-        );
-
-        return ob_get_clean();
-    }
-
-    /**
-     * Create a media select/upload element
-     * @param array $arguments
-     * @return string
-     */
-    protected function inputMedia(array $arguments)
-    {
-        wp_enqueue_media();
-
-        $currentMediaUrl = trim(wp_get_attachment_image_url(get_option($arguments['name'])));
-
-        return sprintf(
-            '<div class="media-upload-input">
-                <div class="image-preview-wrapper">
-                    <img class="image-preview" src="%s" width="100" height="100" style="border: 1px #ccc solid;">
-                </div>
-                <input type="button" class="button upload-media-button" value="%s">
-                <a href="#" class="clear-media-button" style="margin-left: 20px; vertical-align: sub;">%s</a>
-                <input type="hidden" name="%s" value="%s">
-            </div>',
-            $currentMediaUrl,
-            __('Select media', 'wordclass'),
-            __('Clear', 'wordclass'),
-            $arguments['name'],
-            get_option($arguments['name'])
-        );
-    }
-
-    /**
      * Decide what kind of input field to create and echo it
      * @param  array $arguments 'type' and 'name' must be provided in this array
      * @return void
      * @throws \InvalidArgumentException If the required array key(s) are not set
-     * @throws \Exception If the input type is not supported
+     * @throws \Exception
      */
-    public function decideInput(array $arguments)
+    public function renderInput(array $arguments)
     {
         if (! isset($arguments['type'], $arguments['name'])) {
             throw new \InvalidArgumentException(sprintf(
@@ -213,19 +135,9 @@ class SettingsPage
             ));
         }
 
-        // Construct the method name
-        $type = ucfirst($arguments['type']);
-        $methodName = 'input' . $type;
-
-        if (method_exists($this, $methodName)) {
-            echo $this->{$methodName}($arguments);
-        } else {
-            throw new \Exception(sprintf(
-                "%s(): Unsupported input type '%s' requested",
-                __METHOD__,
-                is_object($arguments['type']) ? get_class($arguments['type']) : $arguments['type']
-            ));
-        }
+        $settingInputsManager = new SettingInputsManager();
+        $input = $settingInputsManager->getInput($arguments);
+        echo $input->render();
     }
 
     /**
@@ -263,10 +175,9 @@ class SettingsPage
                 register_setting($settingsGroup, $nameUnderscore);
 
                 // Add the field for the setting
-                add_settings_field($nameHyphen, $options['title'], [$this, 'decideInput'], $pageSlug, $sectionId, [
-                    'type' => $options['type'],
-                    'name' => $nameUnderscore
-                ]);
+                $options['name'] = $nameUnderscore;
+                add_settings_field($nameHyphen, $options['title'], [$this, 'renderInput'],
+                    $pageSlug, $sectionId, $options);
             }
         });
 
