@@ -56,7 +56,7 @@ class Shortcode
      * @param  string $tag
      * @return self
      */
-    public function setTag($tag)
+    public function setTag(string $tag): self
     {
         $this->tag = $tag;
 
@@ -67,7 +67,7 @@ class Shortcode
      * @param  bool $enclosing
      * @return self
      */
-    public function setEnclosing($enclosing)
+    public function setEnclosing(bool $enclosing): self
     {
         $this->enclosing = $enclosing;
 
@@ -78,7 +78,7 @@ class Shortcode
      * @param  callable $handler
      * @return self
      */
-    public function setHandler($handler)
+    public function setHandler(callable $handler): self
     {
         if (is_callable($handler)) {
             $this->handler = $handler;
@@ -91,7 +91,7 @@ class Shortcode
      * @param  string $optionLabel
      * @return self
      */
-    public function setOptionLabel($optionLabel)
+    public function setOptionLabel(string $optionLabel): self
     {
         $this->optionLabel = $optionLabel;
 
@@ -99,9 +99,10 @@ class Shortcode
     }
 
     /**
+     * Get properties for the modal dialog
      * @return array
      */
-    public function getModalDialogProperties()
+    public function getModalDialogProperties(): array
     {
         return [
             'tag'         => $this->tag,
@@ -127,8 +128,11 @@ class Shortcode
      *   checked: (optional) to show the checkbox checked by default (default is false)
      * @return self
      */
-    public function addAttribute($name, $defaultValue = null, array $inputProperties = null)
-    {
+    public function addAttribute(
+        string $name,
+        ?string $defaultValue = null,
+        ?array $inputProperties = null
+    ): self {
         // Add the default value, also used for the list of supported attributes
         $this->defaultValues[$name] = $defaultValue;
 
@@ -157,13 +161,13 @@ class Shortcode
     /**
      * Add a label for the modal dialog
      * This doesn't add anything to the shortcode
-     * @param  string $text
+     * @param  string|null $text
      * @return self
      */
-    public function addModalText($text = null)
+    public function addModalText(?string $text = null): self
     {
         // An empty label creates an empty line
-        if (trim($text) === null) {
+        if ($text === null) {
             $text = html_entity_decode('&nbsp;');
         }
 
@@ -179,7 +183,7 @@ class Shortcode
      * Add an empty line to the modal dialog
      * @return self
      */
-    public function addModalEmptyLine()
+    public function addModalEmptyLine(): self
     {
         return $this->addModalText(null);
     }
@@ -188,7 +192,7 @@ class Shortcode
      * Create the shortcode
      * @return self
      */
-    public function create()
+    public function create(): self
     {
         add_shortcode($this->tag, function ($attributes, $content = null) {
             $attributes = shortcode_atts($this->defaultValues, $attributes, $this->tag);

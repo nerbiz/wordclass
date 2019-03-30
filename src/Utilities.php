@@ -10,21 +10,21 @@ class Utilities
      * @param  string|null $name    The name in the email link
      * @return string
      */
-    public function obscureEmailLink($address, $name = null)
+    public function obscureEmailLink(string $address, ?string $name = null): string
     {
         if ($name !== null) {
             return sprintf(
                 '<a href="%1$s%2$s <%3$s>">%3$s</a>',
-                $this->toNumericHtmlEntity('mailto:'),
-                $this->toNumericHtmlEntity($name),
-                $this->toNumericHtmlEntity($address)
+                $this->stringToNumericHtmlEntities('mailto:'),
+                $this->stringToNumericHtmlEntities($name),
+                $this->stringToNumericHtmlEntities($address)
             );
         }
 
         return sprintf(
             '<a href="%1$s%2$s">%2$s</a>',
-            $this->toNumericHtmlEntity('mailto:'),
-            $this->toNumericHtmlEntity($address)
+            $this->stringToNumericHtmlEntities('mailto:'),
+            $this->stringToNumericHtmlEntities($address)
         );
     }
 
@@ -33,22 +33,22 @@ class Utilities
      * @param  string $number
      * @return string
      */
-    public function obscurePhoneLink($number)
+    public function obscurePhoneLink(string $number): string
     {
         return sprintf(
             '<a href="%1$s%2$s">%2$s</a>',
-            $this->toNumericHtmlEntity('tel:'),
-            $this->toNumericHtmlEntity($number)
+            $this->stringToNumericHtmlEntities('tel:'),
+            $this->stringToNumericHtmlEntities($number)
         );
     }
 
     /**
      * Convert a string to numeric HTML entities
      * Example: 'test' becomes '&#116;&#101;&#115;&#116;'
-     * @param  $string
+     * @param string $string
      * @return string
      */
-    public function toNumericHtmlEntity($string)
+    public function stringToNumericHtmlEntities(string $string): string
     {
         $output = '';
         foreach (str_split($string) as $character) {
@@ -63,7 +63,7 @@ class Utilities
      * @param  string $string
      * @return string
      */
-    public function createSlug($string)
+    public function createSlug(string $string): string
     {
         $slug = html_entity_decode($string);
         $slug = remove_accents($slug);

@@ -65,10 +65,10 @@ class SettingsPage
     }
 
     /**
-     * @param $pageTitle
+     * @param string $pageTitle
      * @return self
      */
-    public function setPageTitle($pageTitle)
+    public function setPageTitle(string $pageTitle): self
     {
         $this->pageTitle = $pageTitle;
 
@@ -79,7 +79,7 @@ class SettingsPage
      * @param  string $pageSlug
      * @return self
      */
-    public function setPageSlug($pageSlug)
+    public function setPageSlug(string $pageSlug): self
     {
         $this->pageSlug = $pageSlug;
 
@@ -90,7 +90,7 @@ class SettingsPage
      * @param string $settingsGroup
      * @return self
      */
-    public function setSettingsGroup($settingsGroup)
+    public function setSettingsGroup(string $settingsGroup): self
     {
         $this->settingsGroup = $settingsGroup;
 
@@ -101,7 +101,7 @@ class SettingsPage
      * @param string $icon
      * @return self
      */
-    public function setIcon($icon)
+    public function setIcon(string $icon): self
     {
         $this->icon = $icon;
 
@@ -112,7 +112,7 @@ class SettingsPage
      * @param int $menuPosition
      * @return self
      */
-    public function setMenuPosition($menuPosition)
+    public function setMenuPosition(int $menuPosition): self
     {
         $this->menuPosition = $menuPosition;
 
@@ -120,13 +120,13 @@ class SettingsPage
     }
 
     /**
-     * Decide what kind of input field to create and echo it
+     * Echo HTML of an input element
      * @param  array $arguments 'type' and 'name' must be provided in this array
      * @return void
      * @throws \InvalidArgumentException If the required array key(s) are not set
      * @throws \Exception
      */
-    public function renderInput(array $arguments)
+    public function renderInput(array $arguments): void
     {
         if (! isset($arguments['type'], $arguments['name'])) {
             throw new \InvalidArgumentException(sprintf(
@@ -142,17 +142,21 @@ class SettingsPage
 
     /**
      * Add a settings section to the settings page
-     * @param  string $id       Section ID, prefix will be prepended
-     * @param  string $title
-     * @param  string $subtitle
-     * @param  array  $fields   Input fields for the settings, as name:options pairs
+     * @param  string      $id       Section ID, prefix will be prepended
+     * @param  string      $title
+     * @param  string|null $subtitle
+     * @param  array       $fields   Input fields for the settings, as name:options pairs
      * Fields:
      * title: the title of the input field
      * type: the type of the input field
      * @return self
      */
-    public function addSection($id, $title, $subtitle = '', $fields = [])
-    {
+    public function addSection(
+        string $id,
+        string $title,
+        ?string $subtitle = null,
+        array $fields = []
+    ): self {
         add_action('admin_init', function () use ($id, $title, $subtitle, $fields) {
             $sectionId = $this->init->getPrefix() . '-' . $id;
             $pageSlug = $this->init->getPrefix() . '-' . $this->pageSlug;
@@ -186,9 +190,9 @@ class SettingsPage
 
     /**
      * Add the settings page
-     * @return void
+     * @return self
      */
-    public function create()
+    public function create(): self
     {
         // Derive the page slug if it's not set yet
         if ($this->pageSlug === null) {
@@ -224,5 +228,7 @@ class SettingsPage
                 );
             }
         }, 100);
+
+        return $this;
     }
 }

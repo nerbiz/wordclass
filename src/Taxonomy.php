@@ -66,7 +66,7 @@ class Taxonomy
      * @param  string $id
      * @return self
      */
-    public function setId($id)
+    public function setId(string $id): self
     {
         $this->id = $this->init->getPrefix() . '_' . $id;
 
@@ -76,7 +76,7 @@ class Taxonomy
     /**
      * @return string
      */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
@@ -85,7 +85,7 @@ class Taxonomy
      * @param  string $slug
      * @return self
      */
-    public function setSlug($slug)
+    public function setSlug(string $slug): self
     {
         $this->slug = $slug;
 
@@ -96,7 +96,7 @@ class Taxonomy
      * @param  string $name
      * @return self
      */
-    public function setName($name)
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -107,7 +107,7 @@ class Taxonomy
      * @param  string $singularName
      * @return self
      */
-    public function setSingularName($singularName)
+    public function setSingularName(string $singularName): self
     {
         $this->singularName = $singularName;
 
@@ -118,7 +118,7 @@ class Taxonomy
      * @param  string $description
      * @return self
      */
-    public function setDescription($description)
+    public function setDescription(string $description): self
     {
         $this->description = $description;
 
@@ -129,7 +129,7 @@ class Taxonomy
      * @param  array $labels
      * @return self
      */
-    public function setLabels(array $labels)
+    public function setLabels(array $labels): self
     {
         $this->labels = $labels;
 
@@ -140,7 +140,7 @@ class Taxonomy
      * @param  array $arguments
      * @return self
      */
-    public function setArguments(array $arguments)
+    public function setArguments(array $arguments): self
     {
         $this->arguments = $arguments;
 
@@ -151,7 +151,7 @@ class Taxonomy
      * @param  string|array|PostType $postTypes
      * @return self
      */
-    public function setPostTypes($postTypes)
+    public function setPostTypes($postTypes): self
     {
         if (! is_array($postTypes)) {
             $postTypes = [$postTypes];
@@ -176,7 +176,7 @@ class Taxonomy
      * Get the default labels, replaced with custom ones
      * @return array
      */
-    public function getLabels()
+    public function getLabels(): array
     {
         return array_replace_recursive([
             'name'                       => $this->name,
@@ -206,7 +206,7 @@ class Taxonomy
      * Get the default arguments, merged with custom ones
      * @return array
      */
-    public function getArguments()
+    public function getArguments(): array
     {
         return array_replace_recursive([
             'labels'             => $this->getLabels(),
@@ -233,7 +233,7 @@ class Taxonomy
      * Add the taxonomy
      * @return self
      */
-    public function create()
+    public function create(): self
     {
         if ($this->slug === null) {
             $this->slug = (new Utilities())->createSlug($this->name);

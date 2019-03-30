@@ -12,9 +12,8 @@ class Webpack
 
     public function __construct()
     {
-        // Empty object, fallback in case a file is never parsed
         if (static::$manifest === null) {
-            static::$manifest = (object) [];
+            static::$manifest = (object)[];
         }
     }
 
@@ -24,7 +23,7 @@ class Webpack
      * @return self
      * @throws \Exception If the path is not readable
      */
-    public function parse($path = null)
+    public function parse(?string $path = null): self
     {
         if ($path === null) {
             $path = get_stylesheet_directory() . '/dist/manifest.json';
@@ -49,7 +48,7 @@ class Webpack
      * @param  string $originalFilename
      * @return string|null
      */
-    public static function getAsset($originalFilename)
+    public static function getAsset(string $originalFilename): ?string
     {
         if (property_exists(static::$manifest, $originalFilename)) {
             return static::$manifest->{$originalFilename};

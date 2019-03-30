@@ -73,7 +73,7 @@ class PostType
      * @param  string $id
      * @return self
      */
-    public function setId($id)
+    public function setId(string $id): self
     {
         $this->id = $this->init->getPrefix() . '_' . $id;
 
@@ -83,7 +83,7 @@ class PostType
     /**
      * @return string
      */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
@@ -92,7 +92,7 @@ class PostType
      * @param  string $name
      * @return self
      */
-    public function setName($name)
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -103,7 +103,7 @@ class PostType
      * @param  string $slug
      * @return self
      */
-    public function setSlug($slug)
+    public function setSlug(string $slug): self
     {
         $this->slug = $slug;
 
@@ -114,7 +114,7 @@ class PostType
      * @param  string $singularName
      * @return self
      */
-    public function setSingularName($singularName)
+    public function setSingularName(string $singularName): self
     {
         $this->singularName = $singularName;
 
@@ -125,7 +125,7 @@ class PostType
      * @param  string $description
      * @return self
      */
-    public function setDescription($description)
+    public function setDescription(string $description): self
     {
         $this->description = $description;
 
@@ -136,7 +136,7 @@ class PostType
      * @param  array $labels
      * @return self
      */
-    public function setLabels(array $labels)
+    public function setLabels(array $labels): self
     {
         $this->labels = $labels;
 
@@ -147,7 +147,7 @@ class PostType
      * @param array $supports
      * @return self
      */
-    public function setSupports($supports)
+    public function setSupports(array $supports): self
     {
         $this->supports = $supports;
 
@@ -158,7 +158,7 @@ class PostType
      * @param  array $arguments
      * @return self
      */
-    public function setArguments(array $arguments)
+    public function setArguments(array $arguments): self
     {
         $this->arguments = $arguments;
 
@@ -169,7 +169,7 @@ class PostType
      * @param  string|array|Taxonomy $taxonomies
      * @return self
      */
-    public function setTaxonomies($taxonomies)
+    public function setTaxonomies($taxonomies): self
     {
         if (!is_array($taxonomies)) {
             $taxonomies = [$taxonomies];
@@ -194,7 +194,7 @@ class PostType
      * Get the default labels, replaced with custom ones
      * @return array
      */
-    public function getLabels()
+    public function getLabels(): array
     {
         return array_replace([
             'name' => $this->name,
@@ -227,9 +227,9 @@ class PostType
 
     /**
      * Get the default arguments, replaced with custom ones
-     * @return self
+     * @return array
      */
-    public function getArguments()
+    public function getArguments(): array
     {
         return array_replace_recursive([
             'label' => $this->name,
@@ -247,7 +247,7 @@ class PostType
      * Add the post type
      * @return self
      */
-    public function create()
+    public function create(): self
     {
         // Derive a slug, if it's not set yet
         if ($this->slug === null) {

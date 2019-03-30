@@ -19,7 +19,7 @@ class Plugins
     {
         $this->utilities = new Utilities();
 
-        $this->config = [
+        $this->setConfig([
             // Unique ID for hashing notices for multiple instances of TGMPA
             'id'           => uniqid('', true),
             // Default absolute path to bundled plugins
@@ -30,7 +30,7 @@ class Plugins
             'parent_slug'  => 'themes.php',
             // Capability needed to view plugin install page, should be a capability associated with the parent menu used
             'capability'   => 'edit_theme_options',
-            // Show admin notices or not
+            // Whether to show admin notices
             'has_notices'  => true,
             // If false, a user cannot dismiss the nag message
             'dismissable'  => true,
@@ -40,7 +40,7 @@ class Plugins
             'is_automatic' => false,
             // Message to output right before the plugins table
             'message'      => ''
-        ];
+        ]);
     }
 
     /**
@@ -48,7 +48,7 @@ class Plugins
      * @param  array $config Values that will overwrite the defaults
      * @return self
      */
-    public function config(array $config = [])
+    public function setConfig(array $config = []): self
     {
         $this->config = array_replace($this->config, $config);
 
@@ -76,7 +76,7 @@ class Plugins
      *   to determine if a plugin is active
      * @return self
      */
-    public function include(array $plugins)
+    public function include(array $plugins): self
     {
         add_action('tgmpa_register', function () use ($plugins) {
             $includePlugins = [];

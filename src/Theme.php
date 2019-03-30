@@ -9,7 +9,7 @@ class Theme
      * @param string|array|null $postTypes Enable for specific post types only
      * @return self
      */
-    public function enableFeaturedImages($postTypes = null)
+    public function enableFeaturedImages($postTypes = null): self
     {
         if ($postTypes !== null) {
             if (!is_array($postTypes)) {
@@ -37,7 +37,7 @@ class Theme
      * @param  array $features The list of features to enable HTML5 for
      * @return self
      */
-    public function enableHtml5Support($features = null)
+    public function enableHtml5Support(array $features = null): self
     {
         // By default, all features are HTML5-enabled
         if ($features === null) {
@@ -63,7 +63,7 @@ class Theme
      * @param  bool $crop Whether to resize (false) or crop (true) images
      * @return self
      */
-    public function setFeaturedImageSize($width, $height, $crop = false)
+    public function setFeaturedImageSize(int $width, int $height, bool $crop = false): self
     {
         add_action('after_setup_theme', function () use ($width, $height, $crop) {
             set_post_thumbnail_size($width, $height, $crop);
@@ -81,8 +81,13 @@ class Theme
      * @param  bool   $crop          Whether to resize (false) or crop (true) images
      * @return self
      */
-    public function addImageSize($name, $nameInChooser, $width, $height, $crop = false)
-    {
+    public function addImageSize(
+        string $name,
+        string $nameInChooser,
+        int $width,
+        int $height,
+        bool $crop = false
+    ): self {
         add_action('after_setup_theme', function () use ($name, $nameInChooser, $width, $height, $crop) {
             add_image_size($name, $width, $height, $crop);
 
@@ -101,7 +106,7 @@ class Theme
      * @param  array $menus Menus in location:description pairs
      * @return self
      */
-    public function addMenus(array $menus)
+    public function addMenus(array $menus): self
     {
         add_action('after_setup_theme', function () use ($menus) {
             register_nav_menus($menus);
@@ -115,7 +120,7 @@ class Theme
      * When using this, remove the <title> tag from <head>
      * @return self
      */
-    public function automaticTitle()
+    public function automaticTitle(): self
     {
         add_action('after_setup_theme', function () {
             add_theme_support('title-tag');

@@ -32,7 +32,7 @@ class Init
      * @return self
      * @throws \Exception
      */
-    public function autoload($namespace, $path, $relative = false)
+    public function autoload(string $namespace, string $path, bool $relative = false): self
     {
         spl_autoload_register(function ($class) use ($namespace, $path, $relative) {
             // Ensure 1 trailing slash
@@ -72,7 +72,7 @@ class Init
      * Define some useful constants
      * @return self
      */
-    public function defineConstants()
+    public function defineConstants(): self
     {
         // The absolute paths to the template/stylesheet directory
         define(strtoupper(static::$prefix) . '_THEME_PATH', get_template_directory() . '/');
@@ -88,9 +88,10 @@ class Init
     }
 
     /**
+     * Load translation files
      * @return self
      */
-    public function loadTranslations()
+    public function loadTranslations(): self
     {
         load_theme_textdomain(
             'wordclass',
@@ -105,7 +106,7 @@ class Init
      * @param string $prefix
      * @return self
      */
-    public function setPrefix($prefix)
+    public function setPrefix(string $prefix): self
     {
         static::$prefix = $prefix;
 
@@ -115,16 +116,16 @@ class Init
     /**
      * @return string
      */
-    public function getPrefix()
+    public function getPrefix(): string
     {
         return static::$prefix;
     }
 
     /**
-     * @param $vendorUri
+     * @param string $vendorUri
      * @return self
      */
-    public function setVendorPath($vendorUri)
+    public function setVendorPath(string $vendorUri): self
     {
         static::$vendorPath = rtrim($vendorUri, '/') . '/';
 
@@ -133,10 +134,10 @@ class Init
 
     /**
      * Get the vendor path, optionally appended with an extra path
-     * @param  string $path
+     * @param  string|null $path
      * @return string
      */
-    public function getVendorPath($path = null)
+    public function getVendorPath(?string $path = null): string
     {
         // The default value is the 'vendor' directory in a (child-)theme directory
         if(static::$vendorPath === null) {
@@ -156,7 +157,7 @@ class Init
      * @param string $vendorUri
      * @return self
      */
-    public function setVendorUri($vendorUri)
+    public function setVendorUri(string $vendorUri): self
     {
         static::$vendorUri = rtrim($vendorUri, '/') . '/';
 
@@ -165,10 +166,10 @@ class Init
 
     /**
      * Get the vendor URI, optionally appended with an extra path
-     * @param  string $path
+     * @param  string|null $path
      * @return string
      */
-    public function getVendorUri($path = null)
+    public function getVendorUri(?string $path = null): string
     {
         // The default value is the 'vendor' directory in a (child-)theme directory
         if (static::$vendorUri === null) {
