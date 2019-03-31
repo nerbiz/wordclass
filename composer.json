@@ -15,7 +15,6 @@
   },
   "require": {
     "php": "^7.1",
-    "cmb2/cmb2": "^2.4",
     "tgmpa/tgm-plugin-activation": "^2.6",
     "tinymce/tinymce": "^4.6"
   },

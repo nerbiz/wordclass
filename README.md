@@ -32,7 +32,6 @@ If you have some ideas about expanding or improving this project, I'm open for s
 ## Credits
 
 These are the packages/plugins this project uses:
-* [CMB2](https://github.com/cmb2/cmb2)
 * [TGM Plugin Activation](https://github.com/tgmpa/tgm-plugin-activation)
 * [TinyMCE](https://github.com/tinymce/tinymce)
 
