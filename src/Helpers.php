@@ -25,7 +25,7 @@ class Helpers
      * html: an <img> element
      * @return string|array
      */
-    public function getImage($imageId, $sizeName = 'large', $returnType = 'url')
+    public function getImage(int $imageId, string $sizeName = 'large', string $returnType = 'url')
     {
         switch ($returnType) {
             case 'url':
@@ -55,10 +55,10 @@ class Helpers
      * @param  int    $postId
      * @param  string $sizeName
      * @param  string $returnType
-     * @return array|string
-     * @see self::getImage()
+     * @return string|array
+     * @see Helpers::getImage()
      */
-    public function getFeaturedImage($postId, $sizeName = 'large', $returnType = 'url')
+    public function getFeaturedImage(int $postId, string $sizeName = 'large', string $returnType = 'url')
     {
         $imageId = get_post_thumbnail_id($postId);
 
@@ -72,11 +72,16 @@ class Helpers
      * @param string $sizeName
      * @param string $returnType
      * @param string $delimiter
-     * @return array|string
-     * @see self::getImage()
+     * @return string|array
+     * @see Helpers::getImage()
      */
-    public function getMetaImage($postId, $key, $sizeName = 'large', $returnType = 'url', $delimiter = '-')
-    {
+    public function getMetaImage(
+        int $postId,
+        string $key,
+        string $sizeName = 'large',
+        string $returnType = 'url',
+        string $delimiter = '-'
+    ) {
         $prefixedKey = $this->init->getPrefix() . $delimiter . $key;
         $imageId = get_post_meta($postId, $prefixedKey, true);
 
@@ -88,7 +93,7 @@ class Helpers
      * @param  string $taxonomyName
      * @return string|null
      */
-    public function getTaxonomySlug($taxonomyName)
+    public function getTaxonomySlug(string $taxonomyName): ?string
     {
         $taxonomies = get_taxonomies(['name' => $taxonomyName], 'objects');
 
@@ -104,7 +109,7 @@ class Helpers
      * @param  string $taxonomy
      * @return array
      */
-    public function getTaxonomyItems($taxonomy)
+    public function getTaxonomyItems(string $taxonomy): array
     {
         return get_terms([
             'taxonomy'   => $taxonomy,
@@ -118,17 +123,17 @@ class Helpers
      * @param  string|array $taxonomies
      * @return array
      */
-    public function getPostTaxonomies($postId, $taxonomies)
+    public function getPostTaxonomies(int $postId, $taxonomies): array
     {
         return wp_get_object_terms($postId, $taxonomies);
     }
 
     /**
      * Get an option, implicitly using a prefix
-     * @param  $name The name of the option (without prefix)
+     * @param  string $name The name of the option (without prefix)
      * @return string|null
      */
-    public function getOption($name)
+    public function getOption(string $name): ?string
     {
         $optionName = $this->init->getPrefix() . '_' . $name;
         $value = trim(get_option($optionName));
@@ -142,11 +147,11 @@ class Helpers
 
     /**
      * Set an option, implicitly using a prefix
-     * @param  $name The name of the option (without prefix)
-     * @param  $value
+     * @param  string $name The name of the option (without prefix)
+     * @param  mixed  $value
      * @return self
      */
-    public function setOption($name, $value)
+    public function setOption(string $name, $value): self
     {
         $optionName = $this->init->getPrefix() . '_' . $name;
         update_option($optionName, $value);
@@ -159,7 +164,7 @@ class Helpers
      * @param  string $name The name of the option (without prefix)
      * @return self
      */
-    public function deleteOption($name, $prefixAppend = '_')
+    public function deleteOption(string $name): self
     {
         $optionName = $this->init->getPrefix() . '_' . $name;
         delete_option($optionName);
@@ -174,7 +179,7 @@ class Helpers
      * @param  bool   $single
      * @return mixed
      */
-    public function getPostMeta($postId, $key, $single = true)
+    public function getPostMeta(int $postId, string $key, bool $single = true)
     {
         $metaKey = $this->init->getPrefix() . '_' . $key;
 

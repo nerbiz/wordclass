@@ -14,8 +14,7 @@
     }
   },
   "require": {
-    "php": ">=5.4",
-    "cmb2/cmb2": "^2.4",
+    "php": "^7.1",
     "tgmpa/tgm-plugin-activation": "^2.6",
     "tinymce/tinymce": "^4.6"
   },

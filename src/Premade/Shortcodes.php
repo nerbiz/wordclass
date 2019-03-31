@@ -13,7 +13,7 @@ class Shortcodes
      * @return Shortcode
      * @throws \ReflectionException
      */
-    public function homeUrl()
+    public function homeUrl(): Shortcode
     {
         return Factory::make('Shortcode')
             ->setTag('home_url')
@@ -32,7 +32,7 @@ class Shortcodes
      * @return Shortcode
      * @throws \ReflectionException
      */
-    public function copyright()
+    public function copyright(): Shortcode
     {
         return Factory::make('Shortcode')
             ->setTag('copyright')
@@ -68,7 +68,7 @@ class Shortcodes
      * @return Shortcode
      * @throws \ReflectionException
      */
-    public function pageLink()
+    public function pageLink(): Shortcode
     {
         // Construct the page options for the dropdown
         $pageOptions = [

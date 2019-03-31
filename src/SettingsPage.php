@@ -2,6 +2,8 @@
 
 namespace Nerbiz\Wordclass;
 
+use Nerbiz\Wordclass\SettingInputs\SettingInputsManager;
+
 class SettingsPage
 {
     /**
@@ -39,16 +41,34 @@ class SettingsPage
      */
     protected $menuPosition;
 
+    /**
+     * Indicates whether the required scripts are added
+     * Prevents including twice
+     * @var bool
+     */
+    protected static $scriptsAdded = false;
+
     public function __construct()
     {
         $this->init = new Init();
+
+        // Add the required scripts
+        if (! static::$scriptsAdded) {
+            $assets = Factory::make('Assets');
+            $mediaUploadHandle = $this->init->getPrefix() . '-media-upload';
+            $assets->addAdminJs([
+                $mediaUploadHandle => $this->init->getVendorUri('nerbiz/wordclass/includes/js/media-upload.js')
+            ]);
+
+            static::$scriptsAdded = true;
+        }
     }
 
     /**
-     * @param $pageTitle
+     * @param string $pageTitle
      * @return self
      */
-    public function setPageTitle($pageTitle)
+    public function setPageTitle(string $pageTitle): self
     {
         $this->pageTitle = $pageTitle;
 
@@ -59,7 +79,7 @@ class SettingsPage
      * @param  string $pageSlug
      * @return self
      */
-    public function setPageSlug($pageSlug)
+    public function setPageSlug(string $pageSlug): self
     {
         $this->pageSlug = $pageSlug;
 
@@ -70,7 +90,7 @@ class SettingsPage
      * @param string $settingsGroup
      * @return self
      */
-    public function setSettingsGroup($settingsGroup)
+    public function setSettingsGroup(string $settingsGroup): self
     {
         $this->settingsGroup = $settingsGroup;
 
@@ -81,7 +101,7 @@ class SettingsPage
      * @param string $icon
      * @return self
      */
-    public function setIcon($icon)
+    public function setIcon(string $icon): self
     {
         $this->icon = $icon;
 
@@ -92,7 +112,7 @@ class SettingsPage
      * @param int $menuPosition
      * @return self
      */
-    public function setMenuPosition($menuPosition)
+    public function setMenuPosition(int $menuPosition): self
     {
         $this->menuPosition = $menuPosition;
 
@@ -100,65 +120,13 @@ class SettingsPage
     }
 
     /**
-     * Create an input[text] element, with current (escaped) value filled in
-     * @param  array $arguments
-     * @return string
-     */
-    protected function inputText(array $arguments)
-    {
-        return sprintf(
-            '<input type="text" class="regular-text" name="%s" value="%s">',
-            $arguments['name'],
-            esc_attr(get_option($arguments['name']))
-        );
-    }
-
-    /**
-     * Create an input[checkbox] element, with current (escaped) value filled in
-     * @param  array $arguments
-     * @return string
-     */
-    protected function inputCheckbox(array $arguments)
-    {
-        return sprintf(
-            '<input type="checkbox" name="%s" value="1" %s>',
-            $arguments['name'],
-            checked(1, get_option($arguments['name']), false)
-        );
-    }
-
-    /**
-     * Create an editor, with current (escaped) value filled in
-     * @param  array $arguments
-     * @return false|string
-     */
-    protected function inputEditor(array $arguments)
-    {
-        // Buffer the output, because wp_editor() echoes
-        ob_start();
-
-        wp_editor(
-            apply_filters('the_content', get_option($arguments['name'])),
-            $arguments['name'],
-            [
-                'wpautop'       => true,
-                'media_buttons' => true,
-                'textarea_name' => $arguments['name'],
-                'editor_height' => 200
-            ]
-        );
-
-        return ob_get_clean();
-    }
-
-    /**
-     * Decide what kind of input field to create and echo it
+     * Echo HTML of an input element
      * @param  array $arguments 'type' and 'name' must be provided in this array
      * @return void
      * @throws \InvalidArgumentException If the required array key(s) are not set
-     * @throws \Exception If the input type is not supported
+     * @throws \Exception
      */
-    public function decideInput(array $arguments)
+    public function renderInput(array $arguments): void
     {
         if (! isset($arguments['type'], $arguments['name'])) {
             throw new \InvalidArgumentException(sprintf(
@@ -167,34 +135,28 @@ class SettingsPage
             ));
         }
 
-        // Construct the method name
-        $type = ucfirst($arguments['type']);
-        $methodName = 'input' . $type;
-
-        if (method_exists($this, $methodName)) {
-            echo $this->{$methodName}($arguments);
-        } else {
-            throw new \Exception(sprintf(
-                "%s(): Unsupported input type '%s' requested",
-                __METHOD__,
-                is_object($arguments['type']) ? get_class($arguments['type']) : $arguments['type']
-            ));
-        }
+        $settingInputsManager = new SettingInputsManager();
+        $input = $settingInputsManager->getInput($arguments);
+        echo $input->render();
     }
 
     /**
      * Add a settings section to the settings page
-     * @param  string $id       Section ID, prefix will be prepended
-     * @param  string $title
-     * @param  string $subtitle
-     * @param  array  $fields   Input fields for the settings, as name:options pairs
+     * @param  string      $id       Section ID, prefix will be prepended
+     * @param  string      $title
+     * @param  string|null $subtitle
+     * @param  array       $fields   Input fields for the settings, as name:options pairs
      * Fields:
      * title: the title of the input field
      * type: the type of the input field
      * @return self
      */
-    public function addSection($id, $title, $subtitle = '', $fields = [])
-    {
+    public function addSection(
+        string $id,
+        string $title,
+        ?string $subtitle = null,
+        array $fields = []
+    ): self {
         add_action('admin_init', function () use ($id, $title, $subtitle, $fields) {
             $sectionId = $this->init->getPrefix() . '-' . $id;
             $pageSlug = $this->init->getPrefix() . '-' . $this->pageSlug;
@@ -213,13 +175,13 @@ class SettingsPage
                 $nameUnderscore = $this->init->getPrefix() . '_' . $name;
 
                 // Register the setting name to the group
-                register_setting($this->settingsGroup, $nameUnderscore);
+                $settingsGroup = $this->init->getPrefix() . '-' . $this->settingsGroup;
+                register_setting($settingsGroup, $nameUnderscore);
 
                 // Add the field for the setting
-                add_settings_field($nameHyphen, $options['title'], [$this, 'decideInput'], $pageSlug, $sectionId, [
-                    'type' => $options['type'],
-                    'name' => $nameUnderscore
-                ]);
+                $options['name'] = $nameUnderscore;
+                add_settings_field($nameHyphen, $options['title'], [$this, 'renderInput'],
+                    $pageSlug, $sectionId, $options);
             }
         });
 
@@ -228,9 +190,9 @@ class SettingsPage
 
     /**
      * Add the settings page
-     * @return void
+     * @return self
      */
-    public function create()
+    public function create(): self
     {
         // Derive the page slug if it's not set yet
         if ($this->pageSlug === null) {
@@ -266,5 +228,7 @@ class SettingsPage
                 );
             }
         }, 100);
+
+        return $this;
     }
 }

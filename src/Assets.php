@@ -9,7 +9,7 @@ class Assets
      * @param array $assets handle:options pairs
      * @return self
      */
-    public function addThemeCss(array $assets)
+    public function addThemeCss(array $assets): self
     {
         return $this->addAssets('css', 'wp_enqueue_scripts', $assets);
     }
@@ -19,7 +19,7 @@ class Assets
      * @param array $assets handle:options pairs
      * @return self
      */
-    public function addThemeJs(array $assets)
+    public function addThemeJs(array $assets): self
     {
         return $this->addAssets('js', 'wp_enqueue_scripts', $assets);
     }
@@ -29,7 +29,7 @@ class Assets
      * @param array $assets handle:options pairs
      * @return self
      */
-    public function addAdminCss(array $assets)
+    public function addAdminCss(array $assets): self
     {
         return $this->addAssets('css', 'admin_enqueue_scripts', $assets);
     }
@@ -39,7 +39,7 @@ class Assets
      * @param array $assets handle:options pairs
      * @return self
      */
-    public function addAdminJs(array $assets)
+    public function addAdminJs(array $assets): self
     {
         return $this->addAssets('js', 'admin_enqueue_scripts', $assets);
     }
@@ -49,7 +49,7 @@ class Assets
      * @param array $assets handle:options pairs
      * @return self
      */
-    public function addLoginCss(array $assets)
+    public function addLoginCss(array $assets): self
     {
         return $this->addAssets('css', 'login_enqueue_scripts', $assets);
     }
@@ -59,7 +59,7 @@ class Assets
      * @param array $assets handle:options pairs
      * @return self
      */
-    public function addLoginJs(array $assets)
+    public function addLoginJs(array $assets): self
     {
         return $this->addAssets('js', 'login_enqueue_scripts', $assets);
     }
@@ -68,11 +68,11 @@ class Assets
      * Add assets
      * @param string $assetType The type of asset, 'css' or 'js'
      * @param string $hook      The hook to register the assets in
-     * @param array $assets     handle:option pairs
+     * @param array  $assets    handle:option pairs
      * @return self
-     * @see self::parseAssetOptions()
+     * @see Assets::parseAssetOptions()
      */
-    protected function addAssets($assetType, $hook, array $assets)
+    protected function addAssets(string $assetType, string $hook, array $assets): self
     {
         add_action($hook, function () use ($assetType, $assets) {
             foreach ($assets as $handle => $options) {
@@ -103,7 +103,7 @@ class Assets
      *   footer: add this script to the header (false) or the footer (true) (default: true)
      * @return array
      */
-    protected function parseAssetOptions($assetType, $options)
+    protected function parseAssetOptions(string $assetType, $options): array
     {
         // Convert the shorthand URI to an options array
         if (is_string($options)) {
@@ -135,7 +135,7 @@ class Assets
      * Remove the jQuery asset
      * @return self
      */
-    public function removeJquery()
+    public function removeJquery(): self
     {
         add_action('init', function () {
             // Don't replace on admin
@@ -153,13 +153,15 @@ class Assets
      * @param  string $version jQuery version to use
      * @return self
      */
-    public function jQueryVersion($version)
+    public function jQueryVersion(string $version): self
     {
         $this->removeJquery();
 
         add_action('init', function () use ($version) {
+            $isWpLogin = (isset($GLOBALS['pagenow']) && $GLOBALS['pagenow'] == 'wp-login.php');
+
             // Don't replace on admin
-            if (! is_admin()) {
+            if( ! is_admin() && ! $isWpLogin) {
                 wp_enqueue_script(
                     'jquery',
                     sprintf('//ajax.googleapis.com/ajax/libs/jquery/%s/jquery.min.js', $version),

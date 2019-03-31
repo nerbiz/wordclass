@@ -5,24 +5,24 @@ namespace Nerbiz\Wordclass;
 class Theme
 {
     /**
-     * Enable the 'featured image' metabox on post edit screens
-     * @param  null|string|array $postTypes (Optional) Enable for specific post types only
+     * Enable the featured image on post edit screens
+     * @param string|array|null $postTypes Enable for specific post types only
      * @return self
      */
-    public function enableFeaturedImages($postTypes = null)
+    public function enableFeaturedImages($postTypes = null): self
     {
         if ($postTypes !== null) {
-            $postTypes = (array) $postTypes;
+            if (!is_array($postTypes)) {
+                $postTypes = [$postTypes];
+            }
         }
 
         add_action('after_setup_theme', function () use ($postTypes) {
             // Enable for all post types
             if ($postTypes === null) {
                 add_theme_support('post-thumbnails');
-            }
-
-            // Enable only for the give post types
-            else {
+            } else {
+                // Enable only for the give post types
                 foreach ($postTypes as $postType) {
                     add_post_type_support($postType, 'post-thumbnails');
                 }
@@ -34,10 +34,10 @@ class Theme
 
     /**
      * Allow the use of HTML5 in core Wordpress features
-     * @param  array  $features  The list of features to enable HTML5 for
+     * @param  array $features The list of features to enable HTML5 for
      * @return self
      */
-    public function enableHtml5Support($features = null)
+    public function enableHtml5Support(array $features = null): self
     {
         // By default, all features are HTML5-enabled
         if ($features === null) {
@@ -45,8 +45,8 @@ class Theme
         }
 
         // Make sure the features are an array
-        if (! is_array($features)) {
-            $features = (array) $features;
+        if (!is_array($features)) {
+            $features = [$features];
         }
 
         add_action('after_setup_theme', function () use ($features) {
@@ -60,10 +60,10 @@ class Theme
      * Set the size of featured images
      * @param  int  $width
      * @param  int  $height
-     * @param  bool $crop   Whether to resize (false) or crop (true) images
+     * @param  bool $crop Whether to resize (false) or crop (true) images
      * @return self
      */
-    public function setFeaturedImageSize($width, $height, $crop = false)
+    public function setFeaturedImageSize(int $width, int $height, bool $crop = false): self
     {
         add_action('after_setup_theme', function () use ($width, $height, $crop) {
             set_post_thumbnail_size($width, $height, $crop);
@@ -81,8 +81,13 @@ class Theme
      * @param  bool   $crop          Whether to resize (false) or crop (true) images
      * @return self
      */
-    public function addImageSize($name, $nameInChooser, $width, $height, $crop = false)
-    {
+    public function addImageSize(
+        string $name,
+        string $nameInChooser,
+        int $width,
+        int $height,
+        bool $crop = false
+    ): self {
         add_action('after_setup_theme', function () use ($name, $nameInChooser, $width, $height, $crop) {
             add_image_size($name, $width, $height, $crop);
 
@@ -101,7 +106,7 @@ class Theme
      * @param  array $menus Menus in location:description pairs
      * @return self
      */
-    public function addMenus(array $menus)
+    public function addMenus(array $menus): self
     {
         add_action('after_setup_theme', function () use ($menus) {
             register_nav_menus($menus);
@@ -115,7 +120,7 @@ class Theme
      * When using this, remove the <title> tag from <head>
      * @return self
      */
-    public function automaticTitle()
+    public function automaticTitle(): self
     {
         add_action('after_setup_theme', function () {
             add_theme_support('title-tag');

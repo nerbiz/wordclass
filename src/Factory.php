@@ -14,7 +14,7 @@ class Factory
      * @throws \ReflectionException If the class is not found
      * @throws \Exception If no parameter value is given, and there is no default
      */
-    public static function make($classname, $arguments = [])
+    public static function make(string $classname, array $arguments = []): object
     {
         // Prepend the namespace to the classname if needed
         if (strpos($classname, __NAMESPACE__) === false) {

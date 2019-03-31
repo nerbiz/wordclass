@@ -46,6 +46,12 @@ class PostType
     protected $labels = [];
 
     /**
+     * The features the post type supports
+     * @var array
+     */
+    protected $supports = ['title', 'editor'];
+
+    /**
      * The arguments for the post type
      * @var array
      */
@@ -67,7 +73,7 @@ class PostType
      * @param  string $id
      * @return self
      */
-    public function setId($id)
+    public function setId(string $id): self
     {
         $this->id = $this->init->getPrefix() . '_' . $id;
 
@@ -77,7 +83,7 @@ class PostType
     /**
      * @return string
      */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
@@ -86,7 +92,7 @@ class PostType
      * @param  string $name
      * @return self
      */
-    public function setName($name)
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -97,7 +103,7 @@ class PostType
      * @param  string $slug
      * @return self
      */
-    public function setSlug($slug)
+    public function setSlug(string $slug): self
     {
         $this->slug = $slug;
 
@@ -108,7 +114,7 @@ class PostType
      * @param  string $singularName
      * @return self
      */
-    public function setSingularName($singularName)
+    public function setSingularName(string $singularName): self
     {
         $this->singularName = $singularName;
 
@@ -119,7 +125,7 @@ class PostType
      * @param  string $description
      * @return self
      */
-    public function setDescription($description)
+    public function setDescription(string $description): self
     {
         $this->description = $description;
 
@@ -130,9 +136,20 @@ class PostType
      * @param  array $labels
      * @return self
      */
-    public function setLabels(array $labels)
+    public function setLabels(array $labels): self
     {
         $this->labels = $labels;
+
+        return $this;
+    }
+
+    /**
+     * @param array $supports
+     * @return self
+     */
+    public function setSupports(array $supports): self
+    {
+        $this->supports = $supports;
 
         return $this;
     }
@@ -141,7 +158,7 @@ class PostType
      * @param  array $arguments
      * @return self
      */
-    public function setArguments(array $arguments)
+    public function setArguments(array $arguments): self
     {
         $this->arguments = $arguments;
 
@@ -149,12 +166,14 @@ class PostType
     }
 
     /**
-     * @param  string|array $taxonomies
+     * @param  string|array|Taxonomy $taxonomies
      * @return self
      */
-    public function setTaxonomies($taxonomies)
+    public function setTaxonomies($taxonomies): self
     {
-        $taxonomies = (array) $taxonomies;
+        if (!is_array($taxonomies)) {
+            $taxonomies = [$taxonomies];
+        }
 
         // Make sure the post types are a string
         foreach ($taxonomies as $key => $name) {
@@ -162,7 +181,7 @@ class PostType
             if ($name instanceof Taxonomy) {
                 $taxonomies[$key] = $name->getId();
             } else {
-                $taxonomies[$key] = (string) $name;
+                $taxonomies[$key] = (string)$name;
             }
         }
 
@@ -175,66 +194,51 @@ class PostType
      * Get the default labels, replaced with custom ones
      * @return array
      */
-    public function getLabels()
+    public function getLabels(): array
     {
         return array_replace([
-            'name'                  => $this->name,
-            'singular_name'         => $this->singularName,
-            'menu_name'             => $this->name,
-            'name_admin_bar'        => $this->singularName,
-            'archives'              => sprintf(__('%s archive', 'wordclass'), $this->name),
-            'parent_item_colon'     => sprintf(__('Parent %s:', 'wordclass'), $this->singularName),
-            'all_items'             => sprintf(__('All %s', 'wordclass'), $this->name),
-            'add_new_item'          => sprintf(__('Add new %s', 'wordclass'), $this->singularName),
-            'add_new'               => sprintf(__('Add new %s', 'wordclass'), $this->singularName),
-            'new_item'              => sprintf(__('New %s', 'wordclass'), $this->singularName),
-            'edit_item'             => sprintf(__('Edit %s', 'wordclass'), $this->singularName),
-            'update_item'           => sprintf(__('Update %s', 'wordclass'), $this->singularName),
-            'view_item'             => sprintf(__('View %s', 'wordclass'), $this->singularName),
-            'search_items'          => sprintf(__('Search %s', 'wordclass'), $this->singularName),
-            'not_found'             => __('Not found', 'wordclass'),
-            'not_found_in_trash'    => __('Not found in trash', 'wordclass'),
-            'featured_image'        => __('Featured image', 'wordclass'),
-            'set_featured_image'    => __('Set featured image', 'wordclass'),
+            'name' => $this->name,
+            'singular_name' => $this->singularName,
+            'menu_name' => $this->name,
+            'name_admin_bar' => $this->singularName,
+            'archives' => sprintf(__('%s archive', 'wordclass'), $this->name),
+            'parent_item_colon' => sprintf(__('Parent %s:', 'wordclass'), $this->singularName),
+            'all_items' => sprintf(__('All %s', 'wordclass'), $this->name),
+            'add_new_item' => sprintf(__('Add new %s', 'wordclass'), $this->singularName),
+            'add_new' => sprintf(__('Add new %s', 'wordclass'), $this->singularName),
+            'new_item' => sprintf(__('New %s', 'wordclass'), $this->singularName),
+            'edit_item' => sprintf(__('Edit %s', 'wordclass'), $this->singularName),
+            'update_item' => sprintf(__('Update %s', 'wordclass'), $this->singularName),
+            'view_item' => sprintf(__('View %s', 'wordclass'), $this->singularName),
+            'search_items' => sprintf(__('Search %s', 'wordclass'), $this->singularName),
+            'not_found' => __('Not found', 'wordclass'),
+            'not_found_in_trash' => __('Not found in trash', 'wordclass'),
+            'featured_image' => __('Featured image', 'wordclass'),
+            'set_featured_image' => __('Set featured image', 'wordclass'),
             'remove_featured_image' => __('Remove featured image', 'wordclass'),
-            'use_featured_image'    => __('Use as featured image', 'wordclass'),
-            'insert_into_item'      => sprintf(__('Insert into %s', 'wordclass'), $this->singularName),
+            'use_featured_image' => __('Use as featured image', 'wordclass'),
+            'insert_into_item' => sprintf(__('Insert into %s', 'wordclass'), $this->singularName),
             'uploaded_to_this_item' => sprintf(__('Uploaded to this %s', 'wordclass'), $this->singularName),
-            'items_list'            => sprintf(__('%s list', 'wordclass'), $this->name),
+            'items_list' => sprintf(__('%s list', 'wordclass'), $this->name),
             'items_list_navigation' => sprintf(__('%s list navigation', 'wordclass'), $this->name),
-            'filter_items_list'     => sprintf(__('Filter %s list', 'wordclass'), $this->name),
+            'filter_items_list' => sprintf(__('Filter %s list', 'wordclass'), $this->name),
         ], $this->labels);
     }
 
     /**
      * Get the default arguments, replaced with custom ones
-     * @return self
+     * @return array
      */
-    public function getArguments()
+    public function getArguments(): array
     {
         return array_replace_recursive([
-            'label'               => $this->name,
-            'description'         => $this->description,
-            'labels'              => $this->getLabels(),
-            'supports'            => ['title', 'editor', 'excerpt', 'thumbnail', 'page-attributes'],
-            'taxonomies'          => $this->taxonomies,
-            'hierarchical'        => false,
-            'public'              => true,
-            'show_ui'             => true,
-            'show_in_menu'        => true,
-            'menu_position'       => 5,
-            'show_in_admin_bar'   => true,
-            'show_in_nav_menus'   => true,
-            'can_export'          => true,
-            'has_archive'         => false,
-            'exclude_from_search' => false,
-            'publicly_queryable'  => true,
-            'capability_type'     => 'page',
-            'rewrite'             => [
-                'slug'       => $this->slug,
-                'with_front' => false,
-                'feeds'      => true,
-                'pages'      => true,
+            'label' => $this->name,
+            'description' => $this->description,
+            'labels' => $this->getLabels(),
+            'supports' => $this->supports,
+            'taxonomies' => $this->taxonomies,
+            'rewrite' => [
+                'slug' => $this->slug,
             ],
         ], $this->arguments);
     }
@@ -243,7 +247,7 @@ class PostType
      * Add the post type
      * @return self
      */
-    public function create()
+    public function create(): self
     {
         // Derive a slug, if it's not set yet
         if ($this->slug === null) {
@@ -251,7 +255,7 @@ class PostType
         }
 
         add_action('init', function () {
-            register_post_type($this->id, $this->getArguments());
+            register_post_type($this->getId(), $this->getArguments());
         }, 10);
 
         return $this;

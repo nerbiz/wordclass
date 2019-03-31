@@ -19,7 +19,7 @@ class Editor
      * @param  bool $keepButton Keep the toggle button
      * @return self
      */
-    public function forceAdvanced($keepButton = false)
+    public function forceAdvanced(bool $keepButton = false): self
     {
         // Remove the toggle button
         if (! $keepButton) {
@@ -40,7 +40,7 @@ class Editor
      * @param  int $number The toolbar number, 1 = default, 2/3/4 = advanced
      * @return string
      */
-    protected function getButtonsFilter($number)
+    protected function getButtonsFilter(int $number): string
     {
         // Fallback, and the filter name for toolbar 1
         $filter = 'mce_buttons';
@@ -55,14 +55,14 @@ class Editor
 
     /**
      * Add a button to the TinyMCE editor
-     * @param  string $name          The name of the button
-     * @param  string $after         The name of the button to place the new button after
+     * @param  string      $name          The name of the button
+     * @param  string|null $after         The name of the button to place the new button after
      *   'first' places the button as the first one
      *   null places the button at the end
-     * @param  int    $toolbarNumber The toolbar number, 1 = default, 2/3/4 = advanced
+     * @param  int         $toolbarNumber The toolbar number, 1 = default, 2/3/4 = advanced
      * @return self
      */
-    public function addButton($name, $after = null, $toolbarNumber = 1)
+    public function addButton(string $name, ?string $after = null, int $toolbarNumber = 1): self
     {
         $filter = $this->getButtonsFilter($toolbarNumber);
 
@@ -98,7 +98,7 @@ class Editor
      * @param  int    $toolbarNumber The toolbar number, 1 = default, 2/3/4 = advanced
      * @return self
      */
-    public function removeButton($name, $toolbarNumber = 1)
+    public function removeButton(string $name, int $toolbarNumber = 1): self
     {
         $filter = $this->getButtonsFilter($toolbarNumber);
 
@@ -124,7 +124,7 @@ class Editor
      * @param  int    $toolbarNumber The toolbar number, 1 = default, 2/3/4 = advanced
      * @return self
      */
-    public function replaceButton($name, $replaceWith, $toolbarNumber = 1)
+    public function replaceButton(string $name, string $replaceWith, int $toolbarNumber = 1): self
     {
         $filter = $this->getButtonsFilter($toolbarNumber);
 
@@ -145,16 +145,20 @@ class Editor
 
     /**
      * Move a button, optionally from one toolbar to another
-     * @param  string $name              The name of the button
-     * @param  string $after             The name of the button to place the new button after
+     * @param  string      $name              The name of the button
+     * @param  string|null $after             The name of the button to place the new button after
      *   'first' places the button as the first one
      *   null places the button at the end
-     * @param  int    $fromToolbarNumber The toolbar number, 1 = default, 2/3/4 = advanced
-     * @param  int    $toToolbarNumber   The toolbar to move the button to, same toolbar if null
+     * @param  int         $fromToolbarNumber The toolbar number, 1 = default, 2/3/4 = advanced
+     * @param  int         $toToolbarNumber   The toolbar to move the button to, same toolbar if null
      * @return self
      */
-    public function moveButton($name, $after = null, $fromToolbarNumber = 1, $toToolbarNumber = 1)
-    {
+    public function moveButton(
+        string $name,
+        ?string $after = null,
+        int $fromToolbarNumber = 1,
+        int $toToolbarNumber = 1
+    ): self {
         $this->removeButton($name, $fromToolbarNumber);
         $this->addButton($name, $after, $toToolbarNumber);
 
@@ -163,15 +167,14 @@ class Editor
 
     /**
      * Add a TinyMCE plugin to the editor
-     * @param  string $name          The name of the plugin
-     * @param  string $after         The name of the button to place the new button after
+     * @param  string      $name          The name of the plugin
+     * @param  string|null $after         The name of the button to place the new button after
      *   'first' places the button as the first one
      *   null places the button at the end
-     * @param  int    $toolbarNumber The toolbar number, 1 = default, 2/3/4 = advanced, false to not add
+     * @param  int         $toolbarNumber The toolbar number, 1 = default, 2/3/4 = advanced, false to not add
      * @return self
-     * @throws \ReflectionException
      */
-    public function addPlugin($name, $after = null, $toolbarNumber = 1)
+    public function addPlugin(string $name, ?string $after = null, int $toolbarNumber = 1): self
     {
         $pluginPath = 'tinymce/tinymce/plugins/' . $name . '/plugin.min.js';
 
@@ -195,15 +198,15 @@ class Editor
     /**
      * Add a shortcodes dropdown to a TinyMCE editor toolbar
      * @param  array[Shortcode] $shortcodes A list of shortcodes to add as buttons
-     * @param  string $after                The name of the button to place the new button after
+     * @param  string|null $after                The name of the button to place the new button after
      *   'first' places the button as the first one
      *   null places the button at the end
-     * @param  int    $toolbarNumber        The toolbar number, 1 = default, 2/3/4 = advanced
+     * @param  int         $toolbarNumber        The toolbar number, 1 = default, 2/3/4 = advanced
      * @return self
      * @throws \InvalidArgumentException If the array contains at least 1 item that isn't a Shortcode object
      * @throws \Exception If there are no shortcodes to add to the toolbar
      */
-    public function addShortcodesDropdown(array $shortcodes, $after = null, $toolbarNumber = 1)
+    public function addShortcodesDropdown(array $shortcodes, ?string $after = null, int $toolbarNumber = 1): self
     {
         $allDialogProperties = [];
         foreach ($shortcodes as $shortcode) {
@@ -247,5 +250,30 @@ class Editor
 
         // Add the buttons to the editor
         return $this->addButton('wc_shortcodes', $after, $toolbarNumber);
+    }
+
+    /**
+     * Prevent users from using an <h1> element in the editor
+     * @return self
+     */
+    public function removeH1FromFormats(): self
+    {
+        add_filter('tiny_mce_before_init', function ($args) {
+            $blockFormats = [
+                'Paragraph=p',
+                'Heading 2=h2',
+                'Heading 3=h3',
+                'Heading 4=h4',
+                'Heading 5=h5',
+                'Heading 6=h6',
+                'Preformatted=pre',
+            ];
+
+            $args['block_formats'] = implode(';', $blockFormats);
+
+            return $args;
+        });
+
+        return $this;
     }
 }

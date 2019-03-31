@@ -2,8 +2,6 @@
 
 namespace Nerbiz\Wordclass;
 
-use Composer\Autoload\ClassLoader;
-
 class Init
 {
     /**
@@ -34,7 +32,7 @@ class Init
      * @return self
      * @throws \Exception
      */
-    public function autoload($namespace, $path, $relative = false)
+    public function autoload(string $namespace, string $path, bool $relative = false): self
     {
         spl_autoload_register(function ($class) use ($namespace, $path, $relative) {
             // Ensure 1 trailing slash
@@ -74,7 +72,7 @@ class Init
      * Define some useful constants
      * @return self
      */
-    public function defineConstants()
+    public function defineConstants(): self
     {
         // The absolute paths to the template/stylesheet directory
         define(strtoupper(static::$prefix) . '_THEME_PATH', get_template_directory() . '/');
@@ -90,11 +88,25 @@ class Init
     }
 
     /**
+     * Load translation files
+     * @return self
+     */
+    public function loadTranslations(): self
+    {
+        load_theme_textdomain(
+            'wordclass',
+            dirname(__FILE__, 2) . '/includes/languages'
+        );
+        
+        return $this;
+    }
+
+    /**
      * Set the prefix to use for various things
      * @param string $prefix
      * @return self
      */
-    public function setPrefix($prefix)
+    public function setPrefix(string $prefix): self
     {
         static::$prefix = $prefix;
 
@@ -104,16 +116,16 @@ class Init
     /**
      * @return string
      */
-    public function getPrefix()
+    public function getPrefix(): string
     {
         return static::$prefix;
     }
 
     /**
-     * @param $vendorUri
+     * @param string $vendorUri
      * @return self
      */
-    public function setVendorPath($vendorUri)
+    public function setVendorPath(string $vendorUri): self
     {
         static::$vendorPath = rtrim($vendorUri, '/') . '/';
 
@@ -122,18 +134,14 @@ class Init
 
     /**
      * Get the vendor path, optionally appended with an extra path
-     * @param  string $path
+     * @param  string|null $path
      * @return string
-     * @throws \ReflectionException
      */
-    public function getVendorPath($path = null)
+    public function getVendorPath(?string $path = null): string
     {
-        // Set the default path, if not set yet
-        if (static::$vendorPath === null) {
-            // Derive the vendor path from the location of the Composer classloader
-            $reflection = new \ReflectionClass(ClassLoader::class);
-            $vendorPath = dirname(dirname($reflection->getFileName()));
-            $this->setVendorPath($vendorPath);
+        // The default value is the 'vendor' directory in a (child-)theme directory
+        if(static::$vendorPath === null) {
+            static::$vendorPath = get_stylesheet_directory() . '/vendor/';
         }
 
         // Append the extra path if not null
@@ -149,7 +157,7 @@ class Init
      * @param string $vendorUri
      * @return self
      */
-    public function setVendorUri($vendorUri)
+    public function setVendorUri(string $vendorUri): self
     {
         static::$vendorUri = rtrim($vendorUri, '/') . '/';
 
@@ -158,11 +166,10 @@ class Init
 
     /**
      * Get the vendor URI, optionally appended with an extra path
-     * @param  string $path
+     * @param  string|null $path
      * @return string
-     * @throws \ReflectionException
      */
-    public function getVendorUri($path = null)
+    public function getVendorUri(?string $path = null): string
     {
         // The default value is the 'vendor' directory in a (child-)theme directory
         if (static::$vendorUri === null) {

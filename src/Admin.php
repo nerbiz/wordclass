@@ -9,7 +9,7 @@ class Admin
      * @param  array $roleUrls role:url pairs
      * @return self
      */
-    public function roleRedirects(array $roleUrls)
+    public function roleRedirects(array $roleUrls): self
     {
         add_filter('login_redirect', function ($redirectUrl, $request, $user) use ($roleUrls) {
             // Check if the user has roles
@@ -46,15 +46,15 @@ class Admin
 
     /**
      * Set a custom footer text in admin
-     * @param string $html  The text/html to display
-     * @param string $place Where to place the text
+     * @param string      $html  The text/html to display
+     * @param string|null $place Where to place the text
      * Places:
      * 'before' = before the current text
      * 'after' = after the current text
      * null (or anything else) = overwrite
      * @return self
      */
-    public function footerText($html, $place = null)
+    public function footerText(string $html, ?string $place = null): self
     {
         add_filter('admin_footer_text', function ($current) use ($html, $place) {
             if ($place == 'before') {
