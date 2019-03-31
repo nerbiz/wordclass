@@ -1,5 +1,18 @@
 # Release notes
 
+## 1.2.0
+
+* Updated the PHP requirement to version 7.1.
+* Added a media input type for a settings page.
+* Added Init::loadTranslations().
+* Added Editor::removeH1FromFormats().
+* 'supports' is now a separate property in PostType, with its own setter.
+* Removed the Metabox class, because it was actually limiting the [CMB2](https://github.com/CMB2/CMB2) functionality.
+* Removed many default post type arguments, relying on WP defaults instead.
+* Fixed: wrong method of converting to array.
+* Fixed: Init::getVendorPath() didn't return the right path when another Composer directory existed.
+* Fixed: couldn't submit settings page (error: options page not found).
+
 ## 1.1.2
 
 * Removed the replacement option from Editor::removeButton(), just use Editor::replaceButton() instead.
