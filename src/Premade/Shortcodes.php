@@ -79,8 +79,9 @@ class Shortcodes
         ];
 
         foreach (get_posts([
-            'post_type'   => 'page',
-            'post_status' => 'publish',
+            'post_type'      => 'page',
+            'post_status'    => 'publish',
+            'posts_per_page' => -1,
         ]) as $page) {
             $pageOptions[] = [
                 'value' => $page->ID,
