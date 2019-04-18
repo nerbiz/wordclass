@@ -1,5 +1,9 @@
 # Release notes
 
+## 1.2.1
+
+* Fixed: vendor URI broke when Wordpress is in a subdirectory.
+
 ## 1.2.0
 
 * Updated the PHP requirement to version 7.1.
