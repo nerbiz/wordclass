@@ -97,7 +97,7 @@ class Init
             'wordclass',
             dirname(__FILE__, 2) . '/includes/languages'
         );
-        
+
         return $this;
     }
 
@@ -141,7 +141,7 @@ class Init
     {
         // The default value is the 'vendor' directory in a (child-)theme directory
         if(static::$vendorPath === null) {
-            static::$vendorPath = get_stylesheet_directory() . '/vendor/';
+            $this->setVendorPath(get_stylesheet_directory() . '/vendor/');
         }
 
         // Append the extra path if not null
@@ -173,9 +173,7 @@ class Init
     {
         // The default value is the 'vendor' directory in a (child-)theme directory
         if (static::$vendorUri === null) {
-            // Get the relative path by removing the document root from the full path
-            $vendorUri = home_url(str_replace($_SERVER['DOCUMENT_ROOT'], '', $this->getVendorPath()));
-            $this->setVendorUri($vendorUri);
+            $this->setVendorUri(get_stylesheet_directory_uri() . '/vendor/');
         }
 
         // Append the extra path if not null
