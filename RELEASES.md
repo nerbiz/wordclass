@@ -1,5 +1,9 @@
 # Release notes
 
+## 1.2.2
+
+* Fixed: the premade page link shortcode didn't show all pages in the TinyMCE modal.
+
 ## 1.2.1
 
 * Fixed: vendor URI broke when Wordpress is in a subdirectory.
