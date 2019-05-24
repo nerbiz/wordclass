@@ -1,5 +1,9 @@
 # Release notes
 
+## 1.2.3
+
+* Removed many default taxonomy arguments, relying on WP defaults instead.
+
 ## 1.2.2
 
 * Fixed: the premade page link shortcode didn't show all pages in the TinyMCE modal.
