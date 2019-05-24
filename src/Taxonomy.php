@@ -211,20 +211,8 @@ class Taxonomy
         return array_replace_recursive([
             'labels'             => $this->getLabels(),
             'description'        => $this->description,
-            'hierarchical'       => true,
-            'public'             => true,
-            'publicly_queryable' => true,
-            'show_ui'            => true,
-            'show_in_menu'       => true,
-            'show_in_nav_menus'  => true,
-            'show_in_rest'       => false,
-            'show_admin_column'  => true,
-            'show_tagcloud'      => true,
-            'capabilities'       => [],
             'rewrite'            => [
                 'slug'         => $this->slug,
-                'with_front'   => false,
-                'hierarchical' => false,
             ],
         ], $this->arguments);
     }
