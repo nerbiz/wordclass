@@ -1,5 +1,9 @@
 # Release notes
 
+## 1.2.5
+
+* Fixed: Helpers::getFeaturedImage() didn't always pass an int to Helpers::getImage().
+
 ## 1.2.4
 
 * Added the textarea input type for settings pages.
