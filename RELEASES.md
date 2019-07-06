@@ -1,5 +1,9 @@
 # Release notes
 
+## 1.2.4
+
+* Added the textarea input type for settings pages.
+
 ## 1.2.3
 
 * Removed many default taxonomy arguments, relying on WP defaults instead.
