@@ -62,7 +62,7 @@ class Helpers
     {
         $imageId = get_post_thumbnail_id($postId);
 
-        return $this->getImage($imageId, $sizeName, $returnType);
+        return $this->getImage((int)$imageId, $sizeName, $returnType);
     }
 
     /**
