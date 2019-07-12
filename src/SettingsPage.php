@@ -194,39 +194,29 @@ class SettingsPage
      */
     public function create(): self
     {
-        // Derive the page slug if it's not set yet
-        if ($this->pageSlug === null) {
-            $this->pageSlug = (new Utilities())->createSlug($this->pageTitle);
-        }
-
-        $pageSlug = $this->init->getPrefix() . '-' . $this->pageSlug;
-        $settingsGroup = $this->init->getPrefix() . '-' . $this->settingsGroup;
-
-        add_action('admin_menu', function () use ($pageSlug, $settingsGroup) {
-            if (current_user_can('manage_options')) {
-                $renderFunction = function () use ($pageSlug, $settingsGroup) {
-                    echo '
-                        <div class="wrap">
-                            <h1>' . $this->pageTitle . '</h1>
-                            <form action="options.php" method="POST">';
-
-                    // Output nonce, action, and option_page fields for a settings page
-                    settings_fields($settingsGroup);
-                    // Print out all settings sections added to the settings page
-                    do_settings_sections($pageSlug);
-                    submit_button(__('Save settings', 'wordclass'));
-
-                    echo '
-                            </form>
-                        </div>';
-                };
-
-                // Add the settings page
-                add_menu_page(
-                    $this->pageTitle, $this->pageTitle, 'manage_options', $pageSlug,
-                    $renderFunction, $this->icon, $this->menuPosition
-                );
+        add_action('admin_menu', function () {
+            // Derive the page slug if it's not set yet
+            if ($this->pageSlug === null) {
+                $this->pageSlug = (new Utilities())->createSlug($this->pageTitle);
             }
+
+            $pageSlug = $this->init->getPrefix() . '-' . $this->pageSlug;
+            $renderFunction = function () use ($pageSlug) {
+                // For use in the template
+                $settingsPage = $this;
+                require __DIR__ . '/../includes/html/settings-page-template.php';
+            };
+
+            // Add the settings page
+            add_menu_page(
+                $this->pageTitle,
+                $this->pageTitle,
+                'manage_options',
+                $pageSlug,
+                $renderFunction,
+                $this->icon,
+                $this->menuPosition
+            );
         }, 100);
 
         return $this;
