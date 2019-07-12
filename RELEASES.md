@@ -1,5 +1,9 @@
 # Release notes
 
+## 1.3.0
+
+* SettingsPage now renders a page with tabs per section.
+
 ## 1.2.5
 
 * Fixed: Helpers::getFeaturedImage() didn't always pass an int to Helpers::getImage().
