@@ -1,5 +1,9 @@
 # Release notes
 
+## 1.3.1
+
+* Added Init::setTimezone(), uses the 'timezone_string' Wordpress option by default.
+
 ## 1.3.0
 
 * SettingsPage now renders a page with tabs per section.
