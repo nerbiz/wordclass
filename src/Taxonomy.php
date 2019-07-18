@@ -229,6 +229,10 @@ class Taxonomy
 
         add_action('init', function () {
             register_taxonomy($this->id, $this->postTypes, $this->getArguments());
+
+            foreach ($this->postTypes as $postType) {
+                register_taxonomy_for_object_type($this->id, $postType);
+            }
         }, 10);
 
         return $this;
