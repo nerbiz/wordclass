@@ -17,7 +17,7 @@ class Plugins
 
     public function __construct()
     {
-        $this->utilities = new Utilities();
+        $this->utilities = Factory::make('Utilities');
 
         $this->setConfig([
             // Unique ID for hashing notices for multiple instances of TGMPA

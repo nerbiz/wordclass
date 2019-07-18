@@ -59,7 +59,7 @@ class Taxonomy
 
     public function __construct()
     {
-        $this->init = new Init();
+        $this->init = Factory::make('Init');
     }
 
     /**
@@ -220,11 +220,12 @@ class Taxonomy
     /**
      * Add the taxonomy
      * @return self
+     * @throws \ReflectionException
      */
     public function create(): self
     {
         if ($this->slug === null) {
-            $this->slug = (new Utilities())->createSlug($this->name);
+            $this->slug = Factory::make('Utilities')->createSlug($this->name);
         }
 
         add_action('init', function () {
