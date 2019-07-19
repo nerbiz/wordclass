@@ -1,5 +1,9 @@
 # Release notes
 
+## 1.4.1
+
+* Fixed: Fixed: added missing CSS for moving the admin bar.
+
 ## 1.4.0
 
 * Added the AdminBar class, with method to move the admin bar.
