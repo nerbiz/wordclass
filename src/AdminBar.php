@@ -18,6 +18,9 @@ class AdminBar
             $init = Factory::make('Init');
             $assets = Factory::make('Assets');
             $mediaUploadHandle = $init->getPrefix() . '-admin-bar';
+            $assets->addThemeCss([
+                $mediaUploadHandle => $init->getVendorUri('nerbiz/wordclass/includes/css/admin-bar.css'),
+            ]);
             $assets->addThemeJs([
                 $mediaUploadHandle => $init->getVendorUri('nerbiz/wordclass/includes/js/admin-bar.js'),
             ]);
