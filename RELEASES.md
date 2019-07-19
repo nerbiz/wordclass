@@ -1,5 +1,10 @@
 # Release notes
 
+## 1.4.0
+
+* Added the AdminBar class, with method to move the admin bar.
+* Added an extra function for registering a taxonomy. See the [docs](https://codex.wordpress.org/Function_Reference/register_taxonomy) under 'Usage'.
+
 ## 1.3.1
 
 * Added Init::setTimezone(), uses the 'timezone_string' Wordpress option by default.
