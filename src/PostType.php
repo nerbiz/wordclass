@@ -65,7 +65,7 @@ class PostType
 
     public function __construct()
     {
-        $this->init = new Init();
+        $this->init = Factory::make('Init');
     }
 
     /**
@@ -246,12 +246,13 @@ class PostType
     /**
      * Add the post type
      * @return self
+     * @throws \ReflectionException
      */
     public function create(): self
     {
         // Derive a slug, if it's not set yet
         if ($this->slug === null) {
-            $this->slug = (new Utilities())->createSlug($this->name);
+            $this->slug = Factory::make('Utilities')->createSlug($this->name);
         }
 
         add_action('init', function () {

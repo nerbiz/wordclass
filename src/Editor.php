@@ -11,7 +11,7 @@ class Editor
 
     public function __construct()
     {
-        $this->init = new Init();
+        $this->init = Factory::make('Init');
     }
 
     /**

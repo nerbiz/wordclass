@@ -50,7 +50,7 @@ class SettingsPage
 
     public function __construct()
     {
-        $this->init = new Init();
+        $this->init = Factory::make('Init');
 
         // Add the required scripts
         if (! static::$scriptsAdded) {
@@ -197,7 +197,7 @@ class SettingsPage
         add_action('admin_menu', function () {
             // Derive the page slug if it's not set yet
             if ($this->pageSlug === null) {
-                $this->pageSlug = (new Utilities())->createSlug($this->pageTitle);
+                $this->pageSlug = Factory::make('Utilities')->createSlug($this->pageTitle);
             }
 
             $pageSlug = $this->init->getPrefix() . '-' . $this->pageSlug;

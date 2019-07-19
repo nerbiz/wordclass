@@ -5,6 +5,7 @@ namespace PHPSTORM_META {
         \Nerbiz\Wordclass\Factory::make(0),
         map([
             'Admin'              => \Nerbiz\Wordclass\Admin::class,
+            'AdminBar'           => \Nerbiz\Wordclass\AdminBar::class,
             'Assets'             => \Nerbiz\Wordclass\Assets::class,
             'Editor'             => \Nerbiz\Wordclass\Editor::class,
             'Factory'            => \Nerbiz\Wordclass\Factory::class,
