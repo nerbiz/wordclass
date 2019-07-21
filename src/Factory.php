@@ -7,6 +7,12 @@ use ReflectionClass;
 class Factory
 {
     /**
+     * A collection of reusable instances
+     * @var array
+     */
+    protected static $instances = [];
+
+    /**
      * Create and return a new instance
      * @param  string $classname The name of the class to initiate
      * @param  array  $arguments Constructor arguments, in name:value pairs
@@ -50,5 +56,21 @@ class Factory
         }
 
         return $reflection->newInstanceArgs($constructorArguments);
+    }
+
+    /**
+     * Return a reusable instance (Multiton pattern)
+     * @param string $classname
+     * @param array  $arguments
+     * @return object
+     * @throws \ReflectionException
+     */
+    public static function reuse(string $classname, array $arguments = []): object
+    {
+        if (! isset(static::$instances[$classname])) {
+            static::$instances[$classname] = static::make($classname, $arguments);
+        }
+
+        return static::$instances[$classname];
     }
 }
