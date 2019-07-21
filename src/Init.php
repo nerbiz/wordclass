@@ -203,4 +203,15 @@ class Init
 
         return $this;
     }
+
+    /**
+     * Include the functions file for convenience
+     * @return self
+     */
+    public function includeHelperFunctions(): self
+    {
+        require_once __DIR__ . '/../includes/php/helper-functions.php';
+
+        return $this;
+    }
 }
