@@ -2,7 +2,7 @@
 
 namespace Nerbiz\Wordclass;
 
-class PostType
+class PostType implements WordclassInterface
 {
     /**
      * @var Init

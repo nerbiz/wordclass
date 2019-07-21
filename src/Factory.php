@@ -7,14 +7,20 @@ use ReflectionClass;
 class Factory
 {
     /**
+     * A collection of reusable instances
+     * @var array
+     */
+    protected static $instances = [];
+
+    /**
      * Create and return a new instance
      * @param  string $classname The name of the class to initiate
      * @param  array  $arguments Constructor arguments, in name:value pairs
-     * @return object
+     * @return WordclassInterface
      * @throws \ReflectionException If the class is not found
      * @throws \Exception If no parameter value is given, and there is no default
      */
-    public static function make(string $classname, array $arguments = []): object
+    public static function make(string $classname, array $arguments = []): WordclassInterface
     {
         // Prepend the namespace to the classname if needed
         if (strpos($classname, __NAMESPACE__) === false) {
@@ -24,6 +30,17 @@ class Factory
         }
 
         $reflection = new ReflectionClass($fullyQualifiedClassname);
+
+        // Check if the requested class implements the right interface
+        if (! $reflection->implementsInterface(WordclassInterface::class)) {
+            throw new \Exception(sprintf(
+                "%s(): requested class '%s' does not implement '%s'",
+                __METHOD__,
+                $fullyQualifiedClassname,
+                WordclassInterface::class
+            ));
+        }
+
         $constructorArguments = [];
 
         // Create the constructor arguments in the right order
@@ -50,5 +67,21 @@ class Factory
         }
 
         return $reflection->newInstanceArgs($constructorArguments);
+    }
+
+    /**
+     * Return a reusable instance (Multiton pattern)
+     * @param string $classname
+     * @param array  $arguments
+     * @return WordclassInterface
+     * @throws \ReflectionException
+     */
+    public static function reuse(string $classname, array $arguments = []): WordclassInterface
+    {
+        if (! isset(static::$instances[$classname])) {
+            static::$instances[$classname] = static::make($classname, $arguments);
+        }
+
+        return static::$instances[$classname];
     }
 }

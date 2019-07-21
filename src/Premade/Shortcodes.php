@@ -4,8 +4,9 @@ namespace Nerbiz\Wordclass\Premade;
 
 use Nerbiz\Wordclass\Factory;
 use Nerbiz\Wordclass\Shortcode;
+use Nerbiz\Wordclass\WordclassInterface;
 
-class Shortcodes
+class Shortcodes implements WordclassInterface
 {
     /**
      * [home_url]

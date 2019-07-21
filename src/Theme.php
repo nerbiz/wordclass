@@ -2,7 +2,7 @@
 
 namespace Nerbiz\Wordclass;
 
-class Theme
+class Theme implements WordclassInterface
 {
     /**
      * Enable the featured image on post edit screens

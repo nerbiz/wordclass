@@ -2,7 +2,7 @@
 
 namespace Nerbiz\Wordclass;
 
-class Init
+class Init implements WordclassInterface
 {
     /**
      * The default prefix to use
@@ -200,6 +200,17 @@ class Init
         if ($timezoneString !== '') {
             date_default_timezone_set($timezoneString);
         }
+
+        return $this;
+    }
+
+    /**
+     * Include the functions file for convenience
+     * @return self
+     */
+    public function includeHelperFunctions(): self
+    {
+        require_once __DIR__ . '/../includes/php/helper-functions.php';
 
         return $this;
     }
