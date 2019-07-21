@@ -1,8 +1,15 @@
 # Release notes
 
+## 1.5.0
+
+* Added a Multiton pattern to Factory.
+* Added the WordclassInterface for a stricter Factory.
+* Added a helper functions file, for easier use of Helpers.
+* Removed Helpers methods that didn't work since removing the Metabox class.
+
 ## 1.4.1
 
-* Fixed: Fixed: added missing CSS for moving the admin bar.
+* Fixed: added missing CSS for moving the admin bar.
 
 ## 1.4.0
 
