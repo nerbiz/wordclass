@@ -8,7 +8,6 @@ namespace PHPSTORM_META {
             'AdminBar'           => \Nerbiz\Wordclass\AdminBar::class,
             'Assets'             => \Nerbiz\Wordclass\Assets::class,
             'Editor'             => \Nerbiz\Wordclass\Editor::class,
-            'Factory'            => \Nerbiz\Wordclass\Factory::class,
             'Fixes'              => \Nerbiz\Wordclass\Fixes::class,
             'Helpers'            => \Nerbiz\Wordclass\Helpers::class,
             'Init'               => \Nerbiz\Wordclass\Init::class,

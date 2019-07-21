@@ -4,7 +4,7 @@ namespace Nerbiz\Wordclass;
 
 use Nerbiz\Wordclass\SettingInputs\SettingInputsManager;
 
-class SettingsPage
+class SettingsPage implements WordclassInterface
 {
     /**
      * @var Init

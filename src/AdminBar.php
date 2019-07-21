@@ -2,7 +2,7 @@
 
 namespace Nerbiz\Wordclass;
 
-class AdminBar
+class AdminBar implements WordclassInterface
 {
     /**
      * Indicates whether the required scripts are added

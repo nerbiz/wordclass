@@ -2,7 +2,7 @@
 
 namespace Nerbiz\Wordclass;
 
-class Plugins
+class Plugins implements WordclassInterface
 {
     /**
      * @var Utilities

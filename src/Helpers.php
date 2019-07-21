@@ -2,7 +2,7 @@
 
 namespace Nerbiz\Wordclass;
 
-class Helpers
+class Helpers implements WordclassInterface
 {
     /**
      * @var Init
