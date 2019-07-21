@@ -11,7 +11,7 @@ class Helpers
 
     public function __construct()
     {
-        $this->init = new Init();
+        $this->init = Factory::make('Init');
     }
 
     /**
@@ -63,29 +63,6 @@ class Helpers
         $imageId = get_post_thumbnail_id($postId);
 
         return $this->getImage((int)$imageId, $sizeName, $returnType);
-    }
-
-    /**
-     * Wrapper for getImage(), using post meta
-     * @param int    $postId
-     * @param string $key
-     * @param string $sizeName
-     * @param string $returnType
-     * @param string $delimiter
-     * @return string|array
-     * @see Helpers::getImage()
-     */
-    public function getMetaImage(
-        int $postId,
-        string $key,
-        string $sizeName = 'large',
-        string $returnType = 'url',
-        string $delimiter = '-'
-    ) {
-        $prefixedKey = $this->init->getPrefix() . $delimiter . $key;
-        $imageId = get_post_meta($postId, $prefixedKey, true);
-
-        return $this->getImage($imageId, $sizeName, $returnType);
     }
 
     /**
@@ -170,19 +147,5 @@ class Helpers
         delete_option($optionName);
 
         return $this;
-    }
-
-    /**
-     * Wrapper for get_post_meta(), implicitly using a prefix
-     * @param  int    $postId
-     * @param  string $key
-     * @param  bool   $single
-     * @return mixed
-     */
-    public function getPostMeta(int $postId, string $key, bool $single = true)
-    {
-        $metaKey = $this->init->getPrefix() . '_' . $key;
-
-        return get_post_meta($postId, $metaKey, $single);
     }
 }
