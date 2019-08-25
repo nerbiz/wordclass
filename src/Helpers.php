@@ -82,30 +82,6 @@ class Helpers implements WordclassInterface
     }
 
     /**
-     * Get a list of items of a taxonomy
-     * @param  string $taxonomy
-     * @return array
-     */
-    public function getTaxonomyItems(string $taxonomy): array
-    {
-        return get_terms([
-            'taxonomy'   => $taxonomy,
-            'hide_empty' => false
-        ]);
-    }
-
-    /**
-     * Get the taxonomies a post has
-     * @param  int          $postId
-     * @param  string|array $taxonomies
-     * @return array
-     */
-    public function getPostTaxonomies(int $postId, $taxonomies): array
-    {
-        return wp_get_object_terms($postId, $taxonomies);
-    }
-
-    /**
      * Get an option, implicitly using a prefix
      * @param  string $name The name of the option (without prefix)
      * @return string|null
