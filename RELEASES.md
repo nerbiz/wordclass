@@ -1,6 +1,15 @@
 # Release notes
 
+## 1.6.0
+#### 2019-08-25
+
+* The current tab is now remembered on settings pages, after saving.
+* Added Factory::reuse() to the PhpStorm meta helper file.
+* Removed the unneeded Helpers::getPostTaxonomies() and Helpers::getTaxonomyItems().
+* Added release dates to the RELEASES.md file.
+
 ## 1.5.0
+#### 2019-07-21
 
 * Added a Multiton pattern to Factory.
 * Added the WordclassInterface for a stricter Factory.
@@ -8,43 +17,53 @@
 * Removed Helpers methods that didn't work since removing the Metabox class.
 
 ## 1.4.1
+#### 2019-07-19
 
 * Fixed: added missing CSS for moving the admin bar.
 
 ## 1.4.0
+#### 2019-07-19
 
 * Added the AdminBar class, with method to move the admin bar.
 * Added an extra function for registering a taxonomy. See the [docs](https://codex.wordpress.org/Function_Reference/register_taxonomy) under 'Usage'.
 
 ## 1.3.1
+#### 2019-07-13
 
 * Added Init::setTimezone(), uses the 'timezone_string' Wordpress option by default.
 
 ## 1.3.0
+#### 2019-07-12
 
 * SettingsPage now renders a page with tabs per section.
 
 ## 1.2.5
+#### 2019-07-06
 
 * Fixed: Helpers::getFeaturedImage() didn't always pass an int to Helpers::getImage().
 
 ## 1.2.4
+#### 2019-07-06
 
 * Added the textarea input type for settings pages.
 
 ## 1.2.3
+#### 2019-05-24
 
 * Removed many default taxonomy arguments, relying on WP defaults instead.
 
 ## 1.2.2
+#### 2019-04-18
 
 * Fixed: the premade page link shortcode didn't show all pages in the TinyMCE modal.
 
 ## 1.2.1
+#### 2019-04-18
 
 * Fixed: vendor URI broke when Wordpress is in a subdirectory.
 
 ## 1.2.0
+#### 2019-03-31
 
 * Updated the PHP requirement to version 7.1.
 * Added a media input type for a settings page.
@@ -58,26 +77,31 @@
 * Fixed: couldn't submit settings page (error: options page not found).
 
 ## 1.1.2
+#### 2018-11-06
 
 * Removed the replacement option from Editor::removeButton(), just use Editor::replaceButton() instead.
 
 ## 1.1.1
+#### 2018-11-04
 
 * Fixed: Webpack was emptying the parsed manifest.
 * Added Assets::removeJquery().
 * Removed cache busting from Assets, using the default Wordpress way instead.
 
 ## 1.1.0
+#### 2018-11-04
 
 * Added a default prefix to Init, and the constants now use that prefix.
 * Removed the 'docs' directory, I'm creating a wiki instead.
 
 ## 1.0.1
+#### 2018-11-04
 
 * Init::getVendorPath() and Init::getVendorUri() are not static anymore (but the properties still are).
 * The inputs of SettingsPage now accept an arguments array, like before.
 
 ## 1.0.0
+#### 2018-11-04
 
 * Changed the namespace from Wordclass to Nerbiz\Wordclass.
 * Added a Factory for creating objects.
@@ -102,15 +126,18 @@
 * Updated the readme file.
 
 ## 0.9.2
+#### 2017-12-04
 
 * Added Assets::jqueryVersion(), to replace the jQuery that Wordpress sets with a different version.
 
 ## 0.9.1
+#### 2017-12-04
 
 * Added Helpers::getPostMeta(), which is get_post_meta() with an implicit prefix, for convenience.
 * Helpers::getMetaImage() now uses a prefix implicitly.
 
 ## 0.9.0
+#### 2017-10-29
 
 * Added: Metabox now sets a prefix to a metabox ID, and its field IDs.
 * Added Theme::enableHtml5Support().
@@ -119,10 +146,12 @@
 * Using normal semver versioning from now on.
 
 ## 0.8.7.1
+#### 2017-10-09
 
 * Added release notes for v0.8.7
 
 ## 0.8.7
+#### 2017-10-09
 
 * Translating should now work properly.
   * Variables are not supported, so only the static strings are now translatable.
@@ -133,6 +162,7 @@
   * The text domain for Wordclass is set to 'wordclass'.
 
 ## 0.8.6
+#### 2017-10-08
 
 * Added Shortcodes::googleAnalytics().
 * Added the CanTranslate trait, which is now used by all classes that translate (this enables passing a text domain as a variable, which is usually not possible).
@@ -143,6 +173,7 @@
 * CMB2 is now included by Metabox, so no manual including anymore.
 
 ## 0.8.5
+#### 2017-10-07
 
 * Added Helpers::option(), for getting and setting options in the Wordpress options database table. Option prefix is automatically added.
 * Added Helpers::deleteOption(), for removing an option from Wordpress options database table. Option prefix is automatically added.
@@ -151,6 +182,7 @@
 * Fixed: SettingsPage wasn't working after the last update, section and field IDs were mixed up.
 
 ## 0.8.4
+#### 2017-09-29
 
 * Added Shortcodes::pageLink(), which creates the [page_link] shortcode (+ documentation).
 * Shortcodes without parameters now insert into the editor without using a modal dialog.
@@ -158,18 +190,22 @@
 * Swapped $toolbar and $after parameters of Editor::addShortcodeButton().
 
 ## 0.8.3.3
+#### 2017-09-29
 
 * Fixed: all shortcode buttons used the options dialog of the last one. You can now add multiple shortcode buttons normally.
 
 ## 0.8.3.2
+#### 2017-09-29
 
 * Fixed: there was a hardcoded path in Editor, it's flexible now.
 
 ## 0.8.3.1
+#### 2017-09-25
 
 * The Shortcodes dropdown values now use value:label pairs.
 
 ## 0.8.3
+#### 2017-09-24
 
 * Major overhaul of Shortcodes: shortcodes now also add a button to the TinyMCE editor.
 * Added the CanSetPrefix trait.
@@ -180,6 +216,7 @@
 * The order of parameters of Editor methods is now more natural.
 
 ## 0.8.0
+#### 2017-09-24
 
 * Added the new Fixes class (+ docs), which contains fixes for general Wordpress errors, will add more in the future.
 * Added Admin::footerText(), for changing the footer text on wp-admin.
@@ -192,28 +229,34 @@
 * Simplified the Editor docs.
 
 ## 0.7.1
+#### 2017-09-15
 
 * Added Editor::addPlugin() to easily add a plugin to the TinyMCE editor.
 
 ## 0.7.0
+#### 2017-09-14
 
 * Added the Editor class, for modifying the TinyMCE editor.
 
 ## 0.6.12
+#### 2017-06-01
 
 * Removed the usage of 'plural' from PostType and Taxonomy, it just uses 'name' now.
 
 ## 0.6.11
+#### 2017-05-27
 
 * Added credits to the readme.
 * Expanded the Shortcodes example.
 * Fixed: non-existing array indexes error in Metabox.
 
 ## 0.6.10.1
+#### 2017-05-20
 
 * The settings group name is now optional in SettingsPage.
 
 ## 0.6.10
+#### 2017-05-20
 
 * Many improvements to SettingsPage
   * A separate page and menu item are now created, instead of a submenu of Settings.
@@ -224,20 +267,24 @@
   * See the updated docs for more information on the above.
 
 ## 0.6.9
+#### 2017-05-14
 
 * Added a missing 'static' keyword to some methods.
 * Fixed: the 'include' method name caused an 'unexpected include' error.
 
 ## 0.6.8
+#### 2017-05-14
 
 * Default widgets sidebar description is now empty, and only translatable if given (in Widgets::addSidebar()).
 
 ## 0.6.7
+#### 2017-05-14
 
 * Admin::roleRedirects() now accepts a wildcard character ('*').
 * Fixed: Admin::roleRedirects() didn't properly check the role, when role/url strings were given (not an array).
 
 ## 0.6.6
+#### 2017-05-14
 
 * Removed CanSetTextDomain::setTextDomain(), replaced by ::textDomain().
 * CanSetTextDomain::textDomain() can now get and set the text domain.
@@ -245,30 +292,36 @@
 * Text domain should now be called with static::textDomain(), instead of static::$_textDomain.
 
 ## 0.6.5
+#### 2017-05-13
 
 * Fixed: regex had no ending delimiter.
 
 ## 0.6.4
+#### 2017-05-13
 
 * Admin::showBar() now supports 'auto' setting (when no argument is given, same result as not calling this method).
 * Admin::roleRedirects() now implicitly makes relative URLs when a given URL doesn't start with 'http(s)://'.
 * Improved the URL regex in Assets.
 
 ## 0.6.3
+#### 2017-05-13
 
 * Plugins::include() now supports shorter syntax, see the docs for more info.
 * Updated the Plugins documentations.
 
 ## 0.6.2
+#### 2017-05-13
 
 * Simplified Plugins, and using static methods now.
 * Updated the Plugins documentation.
 
 ## 0.6.1
+#### 2017-05-13
 
 * Fixed: Plugins::include() wasn't chainable.
 
 ## 0.6.0
+#### 2017-05-13
 
 * !! Removed Autoloader.
 * Added Init, which now holds the autoloader (Init::autoloader()).
@@ -276,25 +329,28 @@
 * Added documentation for Init.
 
 ## 0.5.1
+#### 2017-05-06
 
 * Fixed: Fixed: wrong method in Utilities documentation.
 
 ## 0.5.0
+#### 2017-05-06
 
 * Added the Plugins class, with documentation.
 
 ## 0.4.2
+#### 2017-05-06
 
 * Feature branch of the last release was not merged, should be good now.
 
 ## 0.4.1
+#### 2017-05-06
 
 * Added Composer dependencies.
 * Enabled phone link (when on mobile) in Utilities::obscurePhoneLink().
 
 ## 0.4.0
-
-Pretty big release this time.
+#### 2017-05-06
 
 * Finished documenting the whole package.
 * The 'desc' field of a metabox item can now be translated.
@@ -312,10 +368,12 @@ Pretty big release this time.
 * Utilities::stringToBinary() now returns a string without spaces.
 
 ## 0.3.1
+#### 2017-03-30
 
 * Fixed: Helpers image wrapper methods still used the old args order.
 
 ## 0.3
+#### 2017-03-30
 
 * Admin::roleRedirect() now also accepts 2 string arguments instead of 1 array, when only setting 1 redirect (see docs).
 * Added a TODO file.
@@ -325,11 +383,13 @@ Pretty big release this time.
 * Added documentation.
 
 ## 0.2.1
+#### 2017-03-20
 
 * Added the Autoloader again, for when not using Composer.
 * Added Admin::roleRedirect(), to specify a custom URL to redirect to after login, based on user role.
 
 ## 0.2.0
+#### 2017-03-19
 
 * Taxonomy::getSlug() is now Helpers::getTaxonomySlug().
 * Added Helpers::getTaxonomyItems().
@@ -337,17 +397,21 @@ Pretty big release this time.
 * Added these release notes.
 
 ## 0.1.3
+#### 2017-03-19
 
 * Added Theme::autoWindowTitle(), which lets Wordpress define the &lt;title&gt; tag.
 
 ## 0.1.2
+#### 2017-03-16
 
 * Removed Autoloader class, because Composer now handles that.
 
 ## 0.1.1
+#### 2017-03-16
 
 * Fixed: composer.json format error.
 
 ## 0.1.0
+#### 2017-03-16
 
 Initial release with many classes.
