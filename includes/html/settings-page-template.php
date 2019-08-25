@@ -9,6 +9,7 @@ if (! isset($wp_settings_sections[$pageSlug])) {
 }
 
 $settingsGroup = $settingsPage->init->getPrefix() . '-' . $settingsPage->settingsGroup;
+$currentTab = $_GET['tab'] ?? null;
 ?>
 
 <div class="wrap">
@@ -22,7 +23,17 @@ $settingsGroup = $settingsPage->init->getPrefix() . '-' . $settingsPage->setting
         <?php // Output tab buttons, first is active at page load ?>
         <?php $first = true; ?>
         <?php foreach ($wp_settings_sections[$pageSlug] as $section): ?>
-            <a href="#<?php echo $section['id']; ?>" class="nav-tab <?php echo $first ? 'nav-tab-active' : ''; ?>">
+            <?php
+            // See if the tab is active
+            $active = ($currentTab !== null)
+                ? ($currentTab === $section['id'])
+                : $first;
+            ?>
+
+            <a href="#"
+               class="nav-tab <?php echo $active ? 'nav-tab-active' : ''; ?>"
+               data-tab-id="<?php echo $section['id']; ?>"
+            >
                 <?php echo $section['title']; ?>
             </a>
 
@@ -36,10 +47,16 @@ $settingsGroup = $settingsPage->init->getPrefix() . '-' . $settingsPage->setting
         <?php // Output sections, first is visible at page load ?>
         <?php $first = true; ?>
         <?php foreach ((array)$wp_settings_sections[$pageSlug] as $section): ?>
+            <?php
+            // See if the tab is active
+            $active = ($currentTab !== null)
+                ? ($currentTab === $section['id'])
+                : $first;
+            ?>
+
             <div class="wordclass-settings-section"
                  id="<?php echo $section['id']; ?>"
-                 style="<?php echo $first ? '' : 'display: none;'; ?>"
-                 data-test="<?php echo $key; ?>"
+                 style="<?php echo $active ? '' : 'display: none;'; ?>"
             >
                 <?php // Section title ?>
                 <?php if (isset($section['title'])): ?>
@@ -71,6 +88,31 @@ $settingsGroup = $settingsPage->init->getPrefix() . '-' . $settingsPage->setting
 </div>
 
 <script>
+    function setCurrentTab(value) {
+        var parameters = {};
+
+        // Convert the query string to a parameters object
+        var matches;
+        var regEx = /[?&]?([^=&]+)(?:=([^&]*)|)/g;
+        while (matches = regEx.exec(window.location.search)) {
+            parameters[matches[1]] = matches[2];
+        }
+
+        // Set or overwrite the tab parameter value
+        parameters.tab = value;
+
+        // Convert the parameters object back to a query string
+        var queryStringArray = [];
+        for (var key in parameters) {
+            queryStringArray.push(key + '=' + parameters[key]);
+        }
+
+        // Update the page URL (history) and referrer input field
+        var newQueryString = window.location.pathname + '?' + queryStringArray.join('&');
+        window.history.replaceState('', '', newQueryString);
+        $('[name="_wp_http_referer"]').val(newQueryString);
+    }
+
     // The tab switching mechanism
     jQuery(document).ready(function ($) {
         var $tabButtons = $('.nav-tab');
@@ -79,6 +121,10 @@ $settingsGroup = $settingsPage->init->getPrefix() . '-' . $settingsPage->setting
         $tabButtons.on('click', function (event) {
             event.preventDefault();
             var $clickedButton = $(event.target);
+            var tabId = $clickedButton.data('tabId');
+
+            // Update the tab ID in the URL
+            setCurrentTab(tabId);
 
             // Make the clicked button visually active
             $tabButtons.removeClass('nav-tab-active')
@@ -87,7 +133,7 @@ $settingsGroup = $settingsPage->init->getPrefix() . '-' . $settingsPage->setting
 
             // Show the corresponding section
             $sections.css('display', 'none')
-                .filter($clickedButton.attr('href'))
+                .filter('#' + tabId)
                 .css('display', 'block');
         });
     });
