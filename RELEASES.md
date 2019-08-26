@@ -1,5 +1,13 @@
 # Release notes
 
+## 1.7.0
+#### 2019-08-26
+
+* Added the Yoast class.
+* Added the PostColumnsEditor and PostColumn classes.
+* Converted internal factory usage to normal 'new' statements.
+* Small adjustments to README.md.
+
 ## 1.6.0
 #### 2019-08-25
 
