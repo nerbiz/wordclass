@@ -86,19 +86,9 @@ class PostColumnsEditor implements WordclassInterface
      * @param string   $name
      * @param callable $callback
      * @return void
-     * @throws \Exception
      */
     public static function addOrderByMethod(string $name, callable $callback): void
     {
-        if (! is_callable($callback)) {
-            throw new \Exception(sprintf(
-                "%s(): sorting callback '%s' is not callable",
-                __METHOD__,
-                is_object($callback) ? get_class($callback) : $callback
-            ));
-        }
-
-        // Add the sorting callback
         static::$sortingCallbacks[$name] = $callback;
     }
 
@@ -164,7 +154,7 @@ class PostColumnsEditor implements WordclassInterface
      */
     protected function applyMutations(): void
     {
-        add_filter('manage_'.$this->postType.'_posts_columns', function (array $columns) {
+        add_filter('manage_' . $this->postType . '_posts_columns', function (array $columns) {
             if (count($this->columnsToAdd) < 1) {
                 return $columns;
             }

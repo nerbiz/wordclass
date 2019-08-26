@@ -64,7 +64,6 @@ class Shortcodes implements WordclassInterface
      * 'class' is optional, adds a CSS class to the element
      * 'target' is optional, adds a 'target' attribute to the element
      * @return Shortcode
-     * @throws \ReflectionException
      */
     public function pageLink(): Shortcode
     {
