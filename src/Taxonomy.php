@@ -59,7 +59,7 @@ class Taxonomy implements WordclassInterface
 
     public function __construct()
     {
-        $this->init = Factory::make('Init');
+        $this->init = new Init();
     }
 
     /**
@@ -220,12 +220,11 @@ class Taxonomy implements WordclassInterface
     /**
      * Add the taxonomy
      * @return self
-     * @throws \ReflectionException
      */
     public function create(): self
     {
         if ($this->slug === null) {
-            $this->slug = Factory::make('Utilities')->createSlug($this->name);
+            $this->slug = (new Utilities())->createSlug($this->name);
         }
 
         add_action('init', function () {

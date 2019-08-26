@@ -50,11 +50,11 @@ class SettingsPage implements WordclassInterface
 
     public function __construct()
     {
-        $this->init = Factory::make('Init');
+        $this->init = new Init();
 
         // Add the required scripts
         if (! static::$scriptsAdded) {
-            $assets = Factory::make('Assets');
+            $assets = new Assets();
             $mediaUploadHandle = $this->init->getPrefix() . '-media-upload';
             $assets->addAdminJs([
                 $mediaUploadHandle => $this->init->getVendorUri('nerbiz/wordclass/includes/js/media-upload.js')
@@ -197,7 +197,7 @@ class SettingsPage implements WordclassInterface
         add_action('admin_menu', function () {
             // Derive the page slug if it's not set yet
             if ($this->pageSlug === null) {
-                $this->pageSlug = Factory::make('Utilities')->createSlug($this->pageTitle);
+                $this->pageSlug = (new Utilities())->createSlug($this->pageTitle);
             }
 
             $pageSlug = $this->init->getPrefix() . '-' . $this->pageSlug;

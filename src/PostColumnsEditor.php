@@ -37,7 +37,7 @@ class PostColumnsEditor implements WordclassInterface
      * A list of columns to add
      * @var PostColumn[]
      */
-    protected $postColumnsToAdd = [];
+    protected $columnsToAdd = [];
 
     /**
      * A list of columns to remove
@@ -109,6 +109,7 @@ class PostColumnsEditor implements WordclassInterface
     public function setDefaultOrderByMethod(string $defaultOrderByMethod): self
     {
         $this->defaultOrderByMethod = $defaultOrderByMethod;
+
         return $this;
     }
 
@@ -119,6 +120,7 @@ class PostColumnsEditor implements WordclassInterface
     public function setDefaultOrder(string $defaultOrder): self
     {
         $this->defaultOrder = $defaultOrder;
+
         return $this;
     }
 
@@ -128,7 +130,8 @@ class PostColumnsEditor implements WordclassInterface
      */
     public function addColumn(PostColumn $postColumn): self
     {
-        $this->postColumnsToAdd[] = $postColumn;
+        $this->columnsToAdd[] = $postColumn;
+
         return $this;
     }
 
@@ -139,6 +142,7 @@ class PostColumnsEditor implements WordclassInterface
     public function removeColumn(string $columnName): self
     {
         $this->columnsToRemove[] = $columnName;
+
         return $this;
     }
 
@@ -161,12 +165,12 @@ class PostColumnsEditor implements WordclassInterface
     protected function applyMutations(): void
     {
         add_filter('manage_'.$this->postType.'_posts_columns', function (array $columns) {
-            if (count($this->postColumnsToAdd) < 1) {
+            if (count($this->columnsToAdd) < 1) {
                 return $columns;
             }
 
             // First add the columns that need to be placed at the end
-            foreach ($this->postColumnsToAdd as $postColumn) {
+            foreach ($this->columnsToAdd as $postColumn) {
                 if ($postColumn->getAfter() === null) {
                     $columns[$postColumn->getName()] = $postColumn->getLabel();
                 }
@@ -174,7 +178,7 @@ class PostColumnsEditor implements WordclassInterface
 
             // Then add columns that need to be placed after another
             $adjustedColumns = [];
-            foreach ($this->postColumnsToAdd as $postColumn) {
+            foreach ($this->columnsToAdd as $postColumn) {
                 if ($postColumn->getAfter() !== null) {
                     foreach ($columns as $key => $column) {
                         $adjustedColumns[$key] = $column;
@@ -188,7 +192,7 @@ class PostColumnsEditor implements WordclassInterface
             }
 
             // Add any missing columns, in case the 'after' column was not found
-            foreach ($this->postColumnsToAdd as $postColumn) {
+            foreach ($this->columnsToAdd as $postColumn) {
                 if (! isset($adjustedColumns[$postColumn->getName()])) {
                     $adjustedColumns[$postColumn->getName()] = $postColumn->getLabel();
                 }
@@ -212,7 +216,7 @@ class PostColumnsEditor implements WordclassInterface
     protected function applyRenderFunctions(): void
     {
         add_action('manage_' . $this->postType . '_posts_custom_column', function (string $column, int $postId) {
-            foreach ($this->postColumnsToAdd as $postColumn) {
+            foreach ($this->columnsToAdd as $postColumn) {
                 if ($column === $postColumn->getName()) {
                     $renderFunction = $postColumn->getRenderFunction();
 
@@ -232,7 +236,7 @@ class PostColumnsEditor implements WordclassInterface
     {
         // Add the sorting names
         add_filter('manage_edit-' . $this->postType . '_sortable_columns', function (array $columns) {
-            foreach ($this->postColumnsToAdd as $postColumn) {
+            foreach ($this->columnsToAdd as $postColumn) {
                 $columns[$postColumn->getName()] = $postColumn->getOrderBy();
             }
 

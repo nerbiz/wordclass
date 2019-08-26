@@ -70,6 +70,7 @@ class PostColumn implements WordclassInterface
     public function setOrderBy(string $orderBy): self
     {
         $this->orderBy = $orderBy;
+
         return $this;
     }
 
@@ -88,6 +89,7 @@ class PostColumn implements WordclassInterface
     public function setAfter(string $after): self
     {
         $this->after = $after;
+
         return $this;
     }
 
@@ -106,6 +108,7 @@ class PostColumn implements WordclassInterface
     public function setRenderFunction(callable $renderFunction): self
     {
         $this->renderFunction = $renderFunction;
+
         return $this;
     }
 }

@@ -5,11 +5,6 @@ namespace Nerbiz\Wordclass;
 class Plugins implements WordclassInterface
 {
     /**
-     * @var Utilities
-     */
-    protected $utilities;
-
-    /**
      * The TGMPA configuration options
      * @var array
      */
@@ -17,8 +12,6 @@ class Plugins implements WordclassInterface
 
     public function __construct()
     {
-        $this->utilities = Factory::make('Utilities');
-
         $this->setConfig([
             // Unique ID for hashing notices for multiple instances of TGMPA
             'id'           => uniqid('', true),
@@ -92,7 +85,7 @@ class Plugins implements WordclassInterface
 
                 // Derive the slug from the name, if not given
                 if (! isset($options['slug'])) {
-                    $options['slug'] = $this->utilities->createSlug($name);
+                    $options['slug'] = (new Utilities())->createSlug($name);
                 }
 
                 $includePlugins[] = $options;

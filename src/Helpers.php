@@ -11,7 +11,7 @@ class Helpers implements WordclassInterface
 
     public function __construct()
     {
-        $this->init = Factory::make('Init');
+        $this->init = new Init();
     }
 
     /**

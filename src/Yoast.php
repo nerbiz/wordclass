@@ -9,9 +9,9 @@ class Yoast implements WordclassInterface
      * @param string $postType The post type to add a breadcrumb to
      * @param int    $pageId The ID of the page in the breadcrumb link
      * @param int    $offset The location of the breadcrumb
-     * @return void
+     * @return self
      */
-    public function addBreadcrumb(string $postType, int $pageId, int $offset = -1): void
+    public function addBreadcrumb(string $postType, int $pageId, int $offset = -1): self
     {
         add_filter('wpseo_breadcrumb_links', function ($links) use ($postType, $pageId, $offset) {
             // Adjust the breadcrumbs for the posts
@@ -27,5 +27,7 @@ class Yoast implements WordclassInterface
 
             return $links;
         });
+
+        return $this;
     }
 }
