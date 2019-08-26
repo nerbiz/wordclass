@@ -19,6 +19,7 @@ namespace PHPSTORM_META {
             'Theme'              => \Nerbiz\Wordclass\Theme::class,
             'Utilities'          => \Nerbiz\Wordclass\Utilities::class,
             'Webpack'            => \Nerbiz\Wordclass\Webpack::class,
+            'Yoast'              => \Nerbiz\Wordclass\Yoast::class,
             'Premade\Shortcodes' => \Nerbiz\Wordclass\Premade\Shortcodes::class,
         ])
     );
@@ -41,6 +42,7 @@ namespace PHPSTORM_META {
             'Theme'              => \Nerbiz\Wordclass\Theme::class,
             'Utilities'          => \Nerbiz\Wordclass\Utilities::class,
             'Webpack'            => \Nerbiz\Wordclass\Webpack::class,
+            'Yoast'              => \Nerbiz\Wordclass\Yoast::class,
             'Premade\Shortcodes' => \Nerbiz\Wordclass\Premade\Shortcodes::class,
         ])
     );
