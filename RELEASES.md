@@ -1,5 +1,10 @@
 # Release notes
 
+## 1.7.1
+#### 2019-08-26
+
+* Removed an unnecessary is_callable() check.
+
 ## 1.7.0
 #### 2019-08-26
 
