@@ -15,8 +15,8 @@ class AdminBar implements WordclassInterface
     {
         // Add the required script
         if (! static::$moveBarScriptAdded) {
-            $init = Factory::make('Init');
-            $assets = Factory::make('Assets');
+            $init = new Init();
+            $assets = new Assets();
             $mediaUploadHandle = $init->getPrefix() . '-admin-bar';
             $assets->addThemeCss([
                 $mediaUploadHandle => $init->getVendorUri('nerbiz/wordclass/includes/css/admin-bar.css'),

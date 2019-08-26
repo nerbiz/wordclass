@@ -6,7 +6,7 @@ I created this, because I got confused with a number of Wordpress functions, tha
 
 ## Installation
 
-Include this project with [Composer](https://getcomposer.org/):
+Wordclass requires PHP 7.1 or higher, and can be installed with [Composer](https://getcomposer.org/):
 ```
 composer require nerbiz/wordclass
 ```
@@ -15,15 +15,7 @@ composer require nerbiz/wordclass
 
 The docs are outdated, I'm planning on making a wiki for the new version 1.x. Please note that the update from version 0.x to 1.x has a ton of breaking changes, which is why it's a major release.
 
-The classes methods are well documented, but the starting point is the Factory:
-```php
-use Nerbiz\Wordclass\Factory as Wordclass;
-
-// Creating an Init object as an example
-Wordclass::make('Init')
-    ->defineConstants()
-    ->setPrefix('xx');
-```
+All classes have proper DocBlocks, so that'll have to do for for the time being.
 
 ## Contributing
 

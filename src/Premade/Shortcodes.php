@@ -2,7 +2,6 @@
 
 namespace Nerbiz\Wordclass\Premade;
 
-use Nerbiz\Wordclass\Factory;
 use Nerbiz\Wordclass\Shortcode;
 use Nerbiz\Wordclass\WordclassInterface;
 
@@ -12,11 +11,10 @@ class Shortcodes implements WordclassInterface
      * [home_url]
      * Outputs the home URL of the website, with trailing slash
      * @return Shortcode
-     * @throws \ReflectionException
      */
     public function homeUrl(): Shortcode
     {
-        return Factory::make('Shortcode')
+        return (new Shortcode())
             ->setTag('home_url')
             ->setEnclosing(false)
             ->setOptionLabel(__('Home URL', 'wordclass'))
@@ -31,11 +29,10 @@ class Shortcodes implements WordclassInterface
      * 'year' is optional, defaults to current
      * Creates a '© 2015 - 2018 Site name' line (where 2015 would be the start year)
      * @return Shortcode
-     * @throws \ReflectionException
      */
     public function copyright(): Shortcode
     {
-        return Factory::make('Shortcode')
+        return (new Shortcode())
             ->setTag('copyright')
             ->setEnclosing(false)
             ->setOptionLabel(__('Copyright', 'wordclass'))
@@ -90,7 +87,7 @@ class Shortcodes implements WordclassInterface
             ];
         };
 
-        return Factory::make('Shortcode')
+        return (new Shortcode())
             ->setTag('page_link')
             ->setEnclosing(true)
             ->setOptionLabel(__('Page link', 'wordclass'))

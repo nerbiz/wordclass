@@ -12,6 +12,8 @@ namespace PHPSTORM_META {
             'Helpers'            => \Nerbiz\Wordclass\Helpers::class,
             'Init'               => \Nerbiz\Wordclass\Init::class,
             'Plugins'            => \Nerbiz\Wordclass\Plugins::class,
+            'PostColumn'         => \Nerbiz\Wordclass\PostColumn::class,
+            'PostColumnsEditor'  => \Nerbiz\Wordclass\PostColumnsEditor::class,
             'PostType'           => \Nerbiz\Wordclass\PostType::class,
             'SettingsPage'       => \Nerbiz\Wordclass\SettingsPage::class,
             'Shortcode'          => \Nerbiz\Wordclass\Shortcode::class,
@@ -19,6 +21,7 @@ namespace PHPSTORM_META {
             'Theme'              => \Nerbiz\Wordclass\Theme::class,
             'Utilities'          => \Nerbiz\Wordclass\Utilities::class,
             'Webpack'            => \Nerbiz\Wordclass\Webpack::class,
+            'Yoast'              => \Nerbiz\Wordclass\Yoast::class,
             'Premade\Shortcodes' => \Nerbiz\Wordclass\Premade\Shortcodes::class,
         ])
     );
@@ -34,6 +37,8 @@ namespace PHPSTORM_META {
             'Helpers'            => \Nerbiz\Wordclass\Helpers::class,
             'Init'               => \Nerbiz\Wordclass\Init::class,
             'Plugins'            => \Nerbiz\Wordclass\Plugins::class,
+            'PostColumn'         => \Nerbiz\Wordclass\PostColumn::class,
+            'PostColumnsEditor'  => \Nerbiz\Wordclass\PostColumnsEditor::class,
             'PostType'           => \Nerbiz\Wordclass\PostType::class,
             'SettingsPage'       => \Nerbiz\Wordclass\SettingsPage::class,
             'Shortcode'          => \Nerbiz\Wordclass\Shortcode::class,
@@ -41,6 +46,7 @@ namespace PHPSTORM_META {
             'Theme'              => \Nerbiz\Wordclass\Theme::class,
             'Utilities'          => \Nerbiz\Wordclass\Utilities::class,
             'Webpack'            => \Nerbiz\Wordclass\Webpack::class,
+            'Yoast'              => \Nerbiz\Wordclass\Yoast::class,
             'Premade\Shortcodes' => \Nerbiz\Wordclass\Premade\Shortcodes::class,
         ])
     );

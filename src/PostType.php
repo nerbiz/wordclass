@@ -65,7 +65,7 @@ class PostType implements WordclassInterface
 
     public function __construct()
     {
-        $this->init = Factory::make('Init');
+        $this->init = new Init();
     }
 
     /**
@@ -246,13 +246,12 @@ class PostType implements WordclassInterface
     /**
      * Add the post type
      * @return self
-     * @throws \ReflectionException
      */
     public function create(): self
     {
         // Derive a slug, if it's not set yet
         if ($this->slug === null) {
-            $this->slug = Factory::make('Utilities')->createSlug($this->name);
+            $this->slug = (new Utilities())->createSlug($this->name);
         }
 
         add_action('init', function () {
