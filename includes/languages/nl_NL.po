@@ -1,197 +1,274 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"POT-Creation-Date: 2017-10-09 10:52+0000\n"
-"PO-Revision-Date: 2017-10-09 16:49+0000\n"
-"Last-Translator: admin <nerbiz@gmail.com>\n"
-"Language-Team: Dutch\n"
-"Language: nl-NL\n"
+"POT-Creation-Date: 2019-09-02 18:03+0000\n"
+"PO-Revision-Date: 2019-09-02 18:29+0000\n"
+"Last-Translator: Sybren Dijkstra <nerbiz@gmail.com>\n"
+"Language-Team: Nederlands\n"
+"Language: nl_NL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Loco - https://localise.biz/\n"
+"X-Generator: Loco https://localise.biz/\n"
 "Report-Msgid-Bugs-To: \n"
-"Plural-Forms: nplurals=2; plural=n != 1"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Loco-Version: 2.3.0; wp-5.2.2"
 
-#: vendor/nerbiz/wordclass/src/Taxonomy.php:128
-#: vendor/nerbiz/wordclass/src/PostType.php:125
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:185
+#: vendor/nerbiz/wordclass/src/PostType.php:206
 #, php-format
 msgid "All %s"
 msgstr "Alle %s"
 
-#: vendor/nerbiz/wordclass/src/Taxonomy.php:129
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:186
 #, php-format
 msgid "Parent %s"
 msgstr "Bovenliggende %s"
 
-#: vendor/nerbiz/wordclass/src/Taxonomy.php:130
-#: vendor/nerbiz/wordclass/src/PostType.php:124
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:187
+#: vendor/nerbiz/wordclass/src/PostType.php:205
 #, php-format
 msgid "Parent %s:"
 msgstr "Bovenliggende %s:"
 
-#: vendor/nerbiz/wordclass/src/Taxonomy.php:131
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:188
 #, php-format
 msgid "New %s name"
 msgstr "Nieuwe %s naam"
 
-#: vendor/nerbiz/wordclass/src/Taxonomy.php:132
-#: vendor/nerbiz/wordclass/src/PostType.php:126
-#: vendor/nerbiz/wordclass/src/PostType.php:127
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:189
+#: vendor/nerbiz/wordclass/src/PostType.php:207
+#: vendor/nerbiz/wordclass/src/PostType.php:208
 #, php-format
 msgid "Add new %s"
 msgstr "Nieuwe %s toevoegen"
 
-#: vendor/nerbiz/wordclass/src/Taxonomy.php:133
-#: vendor/nerbiz/wordclass/src/PostType.php:129
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:190
+#: vendor/nerbiz/wordclass/src/PostType.php:210
 #, php-format
 msgid "Edit %s"
 msgstr "%s bewerken"
 
-#: vendor/nerbiz/wordclass/src/Taxonomy.php:134
-#: vendor/nerbiz/wordclass/src/PostType.php:130
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:191
+#: vendor/nerbiz/wordclass/src/PostType.php:211
 #, php-format
 msgid "Update %s"
 msgstr "%s updaten"
 
-#: vendor/nerbiz/wordclass/src/Taxonomy.php:135
-#: vendor/nerbiz/wordclass/src/PostType.php:131
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:192
+#: vendor/nerbiz/wordclass/src/PostType.php:212
 #, php-format
 msgid "View %s"
 msgstr "%s bekijken"
 
-#: vendor/nerbiz/wordclass/src/Taxonomy.php:136
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:193
 #, php-format
 msgid "Separate %s with commas"
 msgstr "Scheid %s met comma's"
 
-#: vendor/nerbiz/wordclass/src/Taxonomy.php:137
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:194
 #, php-format
 msgid "Add or remove %s"
 msgstr "%s toevoegen of verwijderen"
 
-#: vendor/nerbiz/wordclass/src/Taxonomy.php:138
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:195
 msgid "Choose from the most used"
 msgstr "Kies uit de meest gebruikte"
 
-#: vendor/nerbiz/wordclass/src/Taxonomy.php:139
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:196
 #, php-format
 msgid "Popular %s"
 msgstr "Populaire %s"
 
-#: vendor/nerbiz/wordclass/src/Taxonomy.php:140
-#: vendor/nerbiz/wordclass/src/PostType.php:132
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:197
+#: vendor/nerbiz/wordclass/src/PostType.php:213
 #, php-format
 msgid "Search %s"
 msgstr "Zoek %s"
 
-#: vendor/nerbiz/wordclass/src/Taxonomy.php:141
-#: vendor/nerbiz/wordclass/src/PostType.php:133
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:198
+#: vendor/nerbiz/wordclass/src/PostType.php:214
 msgid "Not found"
 msgstr "Niet gevonden"
 
-#: vendor/nerbiz/wordclass/src/Taxonomy.php:142
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:199
 #, php-format
 msgid "No %s"
 msgstr "Geen %s"
 
-#: vendor/nerbiz/wordclass/src/Taxonomy.php:143
-#: vendor/nerbiz/wordclass/src/PostType.php:141
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:200
+#: vendor/nerbiz/wordclass/src/PostType.php:222
 #, php-format
 msgid "%s list"
 msgstr "%s lijst"
 
-#: vendor/nerbiz/wordclass/src/Taxonomy.php:144
-#: vendor/nerbiz/wordclass/src/PostType.php:142
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:201
+#: vendor/nerbiz/wordclass/src/PostType.php:223
 #, php-format
 msgid "%s list navigation"
 msgstr "%s lijst navigatie"
 
-#: vendor/nerbiz/wordclass/src/Shortcodes.php:287
-msgid "Home URL"
-msgstr "Home URL"
-
-#: vendor/nerbiz/wordclass/src/Shortcodes.php:309
-msgid "Copyright"
-msgstr "Copyright"
-
-#: vendor/nerbiz/wordclass/src/Shortcodes.php:313
-msgid "Year"
-msgstr "Jaar"
-
-#: vendor/nerbiz/wordclass/src/Shortcodes.php:316
-msgid "Default value is the current year"
-msgstr "Standaardwaarde is het huidige jaar"
-
-#: vendor/nerbiz/wordclass/src/Shortcodes.php:342
-msgid "Google Analytics"
-msgstr "Google Analytics"
-
-#: vendor/nerbiz/wordclass/src/Shortcodes.php:346
-msgid "Tracking code"
-msgstr "Tracking code"
-
-#: vendor/nerbiz/wordclass/src/Shortcodes.php:412
-msgid "Page link"
-msgstr "Pagina link"
-
-#: vendor/nerbiz/wordclass/src/Shortcodes.php:416
-msgid "Page"
-msgstr "Pagina"
-
-#: vendor/nerbiz/wordclass/src/Shortcodes.php:419
-msgid "- Please choose -"
-msgstr "- Maak een keuze -"
-
-#: vendor/nerbiz/wordclass/src/Shortcodes.php:423
-msgid "CSS class"
-msgstr "CSS klasse"
-
-#: vendor/nerbiz/wordclass/src/Shortcodes.php:428
-msgid "'target' attribute"
-msgstr "'target' attribuut"
-
-#: vendor/nerbiz/wordclass/src/PostType.php:123
+#: vendor/nerbiz/wordclass/src/PostType.php:204
 #, php-format
 msgid "%s archive"
 msgstr "%s archief"
 
-#: vendor/nerbiz/wordclass/src/PostType.php:128
+#: vendor/nerbiz/wordclass/src/PostType.php:209
 #, php-format
 msgid "New %s"
 msgstr "Nieuwe %s"
 
-#: vendor/nerbiz/wordclass/src/PostType.php:134
+#: vendor/nerbiz/wordclass/src/PostType.php:215
 msgid "Not found in trash"
 msgstr "Niet gevonden in de prullenbak"
 
-#: vendor/nerbiz/wordclass/src/PostType.php:135
+#: vendor/nerbiz/wordclass/src/PostType.php:216
 msgid "Featured image"
 msgstr "Uitgelichte afbeelding"
 
-#: vendor/nerbiz/wordclass/src/PostType.php:136
+#: vendor/nerbiz/wordclass/src/PostType.php:217
 msgid "Set featured image"
 msgstr "Uitgelichte afbeelding instellen"
 
-#: vendor/nerbiz/wordclass/src/PostType.php:137
+#: vendor/nerbiz/wordclass/src/PostType.php:218
 msgid "Remove featured image"
 msgstr "Uitgelichte afbeelding verwijderen"
 
-#: vendor/nerbiz/wordclass/src/PostType.php:138
+#: vendor/nerbiz/wordclass/src/PostType.php:219
 msgid "Use as featured image"
 msgstr "Als uitgelichte afbeelding gebruiken"
 
-#: vendor/nerbiz/wordclass/src/PostType.php:139
+#: vendor/nerbiz/wordclass/src/PostType.php:220
 #, php-format
 msgid "Insert into %s"
 msgstr "In %s invoegen"
 
-#: vendor/nerbiz/wordclass/src/PostType.php:140
+#: vendor/nerbiz/wordclass/src/PostType.php:221
 #, php-format
 msgid "Uploaded to this %s"
 msgstr "Geüpload naar deze %s"
 
-#: vendor/nerbiz/wordclass/src/PostType.php:143
+#: vendor/nerbiz/wordclass/src/PostType.php:224
 #, php-format
 msgid "Filter %s list"
 msgstr "%s lijst filteren"
+
+#: vendor/nerbiz/wordclass/src/Mail.php:29
+msgid "SMTP settings"
+msgstr "SMTP instellingen"
+
+#: vendor/nerbiz/wordclass/src/Mail.php:30
+msgid "SMTP values"
+msgstr "SMTP waardes"
+
+#: vendor/nerbiz/wordclass/src/Mail.php:31
+msgid "Enable SMTP?"
+msgstr "SMTP gebruiken?"
+
+#: vendor/nerbiz/wordclass/src/Mail.php:32
+msgid "Host"
+msgstr "Host"
+
+#: vendor/nerbiz/wordclass/src/Mail.php:33
+msgid "Port"
+msgstr "Poort"
+
+#: vendor/nerbiz/wordclass/src/Mail.php:34
+msgid "Encryption"
+msgstr "Encryptie"
+
+#: vendor/nerbiz/wordclass/src/Mail.php:35
+msgid "Username"
+msgstr "Gebruikersnaam"
+
+#: vendor/nerbiz/wordclass/src/Mail.php:38
+msgid "Password"
+msgstr "Wachtwoord"
+
+#: vendor/nerbiz/wordclass/src/Mail.php:39
+msgid "The password is stored encrypted"
+msgstr "Het wachtwoord wordt versleuteld opgeslagen"
+
+#: vendor/nerbiz/wordclass/src/Mail.php:42
+msgid "Test settings"
+msgstr "Instellingen testen"
+
+#: vendor/nerbiz/wordclass/src/Mail.php:43
+msgid "Recipient"
+msgstr "Ontvanger"
+
+#: vendor/nerbiz/wordclass/src/Mail.php:44
+msgid "Subject"
+msgstr "Onderwerp"
+
+#: vendor/nerbiz/wordclass/src/Mail.php:45
+msgid "Content"
+msgstr "Inhoud"
+
+#: vendor/nerbiz/wordclass/src/Mail.php:48
+msgid "Send testmail?"
+msgstr "Testmail verzenden?"
+
+#: vendor/nerbiz/wordclass/src/Mail.php:49
+msgid "If checked, a testmail will be sent when saving these settings"
+msgstr "Indien aangevinkt, wordt er een testmail verstuurd bij het opslaan"
+
+#: vendor/nerbiz/wordclass/src/AdminBar.php:43
+msgid "Move bar"
+msgstr "Balk verplaatsen"
+
+#: vendor/nerbiz/wordclass/includes/html/settings-page-template.php:89
+msgid "Save settings"
+msgstr "Instellingen opslaan"
+
+#: vendor/nerbiz/wordclass/src/Premade/Shortcodes.php:20
+msgid "Home URL"
+msgstr "Home URL"
+
+#: vendor/nerbiz/wordclass/src/Premade/Shortcodes.php:38
+msgid "Copyright"
+msgstr "Copyright"
+
+#: vendor/nerbiz/wordclass/src/Premade/Shortcodes.php:41
+msgid "Year"
+msgstr "Jaar"
+
+#: vendor/nerbiz/wordclass/src/Premade/Shortcodes.php:42
+msgid "Default value is the current year"
+msgstr "Standaardwaarde is het huidige jaar"
+
+#: vendor/nerbiz/wordclass/src/Premade/Shortcodes.php:74
+msgid "- Please choose -"
+msgstr "- Maak een keuze -"
+
+#: vendor/nerbiz/wordclass/src/Premade/Shortcodes.php:92
+msgid "Page link"
+msgstr "Pagina link"
+
+#: vendor/nerbiz/wordclass/src/Premade/Shortcodes.php:95
+msgid "Page"
+msgstr "Pagina"
+
+#: vendor/nerbiz/wordclass/src/Premade/Shortcodes.php:100
+msgid "CSS class"
+msgstr "CSS klasse"
+
+#: vendor/nerbiz/wordclass/src/Premade/Shortcodes.php:104
+msgid "'target' attribute"
+msgstr "'target' attribuut"
+
+#: vendor/nerbiz/wordclass/src/Premade/Shortcodes.php:108
+msgid "Empty"
+msgstr "Leeg"
+
+#: vendor/nerbiz/wordclass/src/SettingInputs/Post.php:26
+msgid "- Choose one -"
+msgstr "- Kies een -"
+
+#: vendor/nerbiz/wordclass/src/SettingInputs/Media.php:28
+msgid "Select media"
+msgstr "Selecteer media"
+
+#: vendor/nerbiz/wordclass/src/SettingInputs/Media.php:29
+msgid "Clear"
+msgstr "Leegmaken"
