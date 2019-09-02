@@ -9,19 +9,42 @@ use SMTP;
 
 class Mail
 {
-    public function __construct()
+    /**
+     * The key to encrypt and decrypt the SMTP password with
+     * @var string
+     */
+    protected $encryptionKey;
+
+    /**
+     * @param string|null $encryptionKey The key to encrypt and decrypt the SMTP password with
+     */
+    public function __construct(?string $encryptionKey = null)
     {
         // Include the PHPMailer classfiles
         require_once ABSPATH . WPINC . '/class-phpmailer.php';
         require_once ABSPATH . WPINC . '/class-smtp.php';
+
+        $this->encryptionKey = $encryptionKey;
     }
 
     /**
-     * @param string|null $encryptionKey The key to encrypt/decrypt the SMTP password with
+     * Add required elements for enabling sending mail with SMTP
      * @return self
      * @throws Exception
      */
-    public function addSmtpSettingsPage(?string $encryptionKey = null): self
+    public function addSmtpSupport(): self
+    {
+        $this->addSmtpSettingsPage();
+        $this->addSmtpMailHook();
+
+        return $this;
+    }
+
+    /**
+     * @return self
+     * @throws Exception
+     */
+    protected function addSmtpSettingsPage(): self
     {
         // Create the settings page
         $settingsPage = new SettingsPage();
@@ -51,7 +74,7 @@ class Mail
             ])
             ->create();
 
-        $crypto = new Crypto($encryptionKey ?? SECURE_AUTH_KEY);
+        $crypto = new Crypto($this->encryptionKey ?? SECURE_AUTH_KEY);
         $passwordField = (new Init())->getPrefix() . '_smtp_password';
         $enableTestField = (new Init())->getPrefix() . '_smtp_test_enable';
 
@@ -74,6 +97,19 @@ class Mail
             // Always reset to unchecked
             return '';
         }, 10, 2);
+
+        return $this;
+    }
+
+    /**
+     * Apply the SMTP settings to all outgoing WP mail
+     * @return self
+     */
+    protected function addSmtpMailHook(): self
+    {
+        add_action('phpmailer_init', function (PHPMailer $phpMailer) {
+            return $this->applySmtpToPhpMailer($phpMailer);
+        });
 
         return $this;
     }
@@ -119,19 +155,6 @@ class Mail
                 );
             });
         }
-    }
-
-    /**
-     * Apply the SMTP settings to all outgoing WP mail
-     * @return self
-     */
-    public function enableSmtp(): self
-    {
-        add_action('phpmailer_init', function (PHPMailer $phpMailer) {
-            return $this->applySmtpToPhpMailer($phpMailer);
-        });
-
-        return $this;
     }
 
     /**
