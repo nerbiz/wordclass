@@ -1,5 +1,10 @@
 # Release notes
 
+## 1.7.2
+#### 2019-09-02
+
+* SettingsPage now supports being a subpage.
+
 ## 1.7.1
 #### 2019-08-26
 
