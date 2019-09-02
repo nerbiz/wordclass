@@ -1,5 +1,14 @@
 # Release notes
 
+## 1.8
+#### 2019-09-02
+
+* Added the Mail and Crypto classes, for using SMTP with all WP mail.
+* Added the 'password' settings page input type.
+* Added support for descriptions below settings input fields.
+* Fixed: different settings pages could have the same settings group, resulting in values being lost.
+* Fixed: settings page messages showed twice in some cases.
+
 ## 1.7.2
 #### 2019-09-02
 
