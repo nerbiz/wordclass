@@ -1,5 +1,10 @@
 # Release notes
 
+## 1.8.2
+#### 2019-09-02
+
+* SMTP support can now be added with 1 method call.
+
 ## 1.8.1
 #### 2019-09-02
 
