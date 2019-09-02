@@ -8,7 +8,6 @@ if (! isset($wp_settings_sections[$pageSlug])) {
     return;
 }
 
-$settingsGroup = $settingsPage->init->getPrefix() . '-' . $settingsPage->settingsGroup;
 $currentTab = $_GET['tab'] ?? null;
 ?>
 
@@ -17,7 +16,11 @@ $currentTab = $_GET['tab'] ?? null;
         <?php echo $settingsPage->pageTitle; ?>
     </h1>
 
-    <?php settings_errors(); ?>
+    <?php
+    if ($settingsPage->parentSlug === null) {
+        settings_errors();
+    }
+    ?>
 
     <h2 class="nav-tab-wrapper">
         <?php // Output tab buttons, first is active at page load ?>
@@ -42,7 +45,7 @@ $currentTab = $_GET['tab'] ?? null;
     </h2>
 
     <form action="options.php" method="POST">
-        <?php settings_fields($settingsGroup); ?>
+        <?php settings_fields($settingsPage->getSettingsGroup()); ?>
 
         <?php // Output sections, first is visible at page load ?>
         <?php $first = true; ?>

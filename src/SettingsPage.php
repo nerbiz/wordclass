@@ -30,10 +30,10 @@ class SettingsPage implements WordclassInterface
     protected $pageSlug;
 
     /**
-     * The group name of the settings, will be prepended with prefix
-     * @var string
+     * The group name of the settings
+     * @var string|null
      */
-    protected $settingsGroup = 'settings';
+    protected $settingsGroup = null;
 
     /**
      * The icon of the menu item
@@ -115,6 +115,23 @@ class SettingsPage implements WordclassInterface
     }
 
     /**
+     * Get the settings group name
+     * @return string
+     */
+    public function getSettingsGroup(): string
+    {
+        if ($this->settingsGroup !== null) {
+            return $this->settingsGroup;
+        }
+
+        return sprintf(
+            '%s-settings-%s',
+            $this->init->getPrefix(),
+            (new Utilities())->createSlug($this->pageTitle)
+        );
+    }
+
+    /**
      * @param string $icon
      * @return self
      */
@@ -154,7 +171,11 @@ class SettingsPage implements WordclassInterface
 
         $settingInputsManager = new SettingInputsManager();
         $input = $settingInputsManager->getInput($arguments);
-        echo $input->render();
+        $inputHtml = $input->render();
+        if (isset($arguments['description']) && trim($arguments['description']) !== '') {
+            $inputHtml .= sprintf('<p class="description">%s</p>', $arguments['description']);
+        }
+        echo $inputHtml;
     }
 
     /**
@@ -192,8 +213,7 @@ class SettingsPage implements WordclassInterface
                 $nameUnderscore = $this->init->getPrefix() . '_' . $name;
 
                 // Register the setting name to the group
-                $settingsGroup = $this->init->getPrefix() . '-' . $this->settingsGroup;
-                register_setting($settingsGroup, $nameUnderscore);
+                register_setting($this->getSettingsGroup(), $nameUnderscore);
 
                 // Add the field for the setting
                 $options['name'] = $nameUnderscore;
