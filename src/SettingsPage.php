@@ -171,7 +171,11 @@ class SettingsPage implements WordclassInterface
 
         $settingInputsManager = new SettingInputsManager();
         $input = $settingInputsManager->getInput($arguments);
-        echo $input->render();
+        $inputHtml = $input->render();
+        if (isset($arguments['description']) && trim($arguments['description']) !== '') {
+            $inputHtml .= sprintf('<p class="description">%s</p>', $arguments['description']);
+        }
+        echo $inputHtml;
     }
 
     /**
