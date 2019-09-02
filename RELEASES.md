@@ -1,6 +1,11 @@
 # Release notes
 
-## 1.8
+## 1.8.1
+#### 2019-09-02
+
+* Updated translations (Dutch).
+
+## 1.8.0
 #### 2019-09-02
 
 * Added the Mail and Crypto classes, for using SMTP with all WP mail.
