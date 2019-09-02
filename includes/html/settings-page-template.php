@@ -16,7 +16,11 @@ $currentTab = $_GET['tab'] ?? null;
         <?php echo $settingsPage->pageTitle; ?>
     </h1>
 
-    <?php settings_errors(); ?>
+    <?php
+    if ($settingsPage->parentSlug === null) {
+        settings_errors();
+    }
+    ?>
 
     <h2 class="nav-tab-wrapper">
         <?php // Output tab buttons, first is active at page load ?>
