@@ -36,7 +36,7 @@ class Mail
                 'smtp_password' => [
                     'type' => 'password',
                     'title' => __('Password', 'wordclass'),
-                    'description' => __('The stored password is encrypted for security reasons', 'wordclass'),
+                    'description' => __('The password is stored encrypted', 'wordclass'),
                 ],
             ])
             ->addSection('smtp_test', __('Test settings', 'wordclass'), null, [
