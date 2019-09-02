@@ -18,6 +18,12 @@ class SettingsPage implements WordclassInterface
     protected $pageTitle = 'Theme settings';
 
     /**
+     * The slug of the parent page, if this needs to be a subpage
+     * @var string|null
+     */
+    protected $parentSlug = null;
+
+    /**
      * The settings page slug, will be prepended with prefix
      * @var string
      */
@@ -71,6 +77,17 @@ class SettingsPage implements WordclassInterface
     public function setPageTitle(string $pageTitle): self
     {
         $this->pageTitle = $pageTitle;
+
+        return $this;
+    }
+
+    /**
+     * @param string|null $parentSlug
+     * @return self
+     */
+    public function setParentSlug(string $parentSlug): self
+    {
+        $this->parentSlug = $parentSlug;
 
         return $this;
     }
@@ -208,15 +225,28 @@ class SettingsPage implements WordclassInterface
             };
 
             // Add the settings page
-            add_menu_page(
-                $this->pageTitle,
-                $this->pageTitle,
-                'manage_options',
-                $pageSlug,
-                $renderFunction,
-                $this->icon,
-                $this->menuPosition
-            );
+            if ($this->parentSlug !== null) {
+                // As a subpage, if a parent slug is given
+                add_submenu_page(
+                    $this->parentSlug,
+                    $this->pageTitle,
+                    $this->pageTitle,
+                    'manage_options',
+                    $pageSlug,
+                    $renderFunction
+                );
+            } else {
+                // Or as a separate page
+                add_menu_page(
+                    $this->pageTitle,
+                    $this->pageTitle,
+                    'manage_options',
+                    $pageSlug,
+                    $renderFunction,
+                    $this->icon,
+                    $this->menuPosition
+                );
+            }
         }, 100);
 
         return $this;
