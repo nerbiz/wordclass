@@ -2,6 +2,7 @@
 
 namespace Nerbiz\Wordclass;
 
+use Nerbiz\Wordclass\InputFields\AbstractInputField;
 use Nerbiz\Wordclass\SettingInputs\SettingInputsManager;
 
 class SettingsPage implements WordclassInterface
@@ -196,8 +197,9 @@ class SettingsPage implements WordclassInterface
         array $fields = []
     ): self {
         add_action('admin_init', function () use ($id, $title, $subtitle, $fields) {
-            $sectionId = $this->init->getPrefix() . '-' . $id;
-            $pageSlug = $this->init->getPrefix() . '-' . $this->pageSlug;
+            $prefix = $this->init->getPrefix();
+            $sectionId = $prefix . '-' . $id;
+            $pageSlug = $prefix . '-' . $this->pageSlug;
 
             // Subtitle argument needs to be an echo'ing function
             $subtitle = function () use ($subtitle) {
@@ -209,16 +211,43 @@ class SettingsPage implements WordclassInterface
 
             // Add the fields to the section
             foreach ($fields as $name => $options) {
-                $nameHyphen = $this->init->getPrefix() . '-' . $name;
-                $nameUnderscore = $this->init->getPrefix() . '_' . $name;
+                if ($options instanceof AbstractInputField) {
+                    $inputField = $options;
 
-                // Register the setting name to the group
-                register_setting($this->getSettingsGroup(), $nameUnderscore);
+                    // Register the setting name to the group
+                    register_setting(
+                        $this->getSettingsGroup(),
+                        $prefix . '_' . $inputField->getName()
+                    );
 
-                // Add the field for the setting
-                $options['name'] = $nameUnderscore;
-                add_settings_field($nameHyphen, $options['title'], [$this, 'renderInput'],
-                    $pageSlug, $sectionId, $options);
+                    // Add the field for the setting
+                    add_settings_field(
+                        $prefix . '-' . $inputField->getName(),
+                        $inputField->getTitle(),
+                        function () use ($inputField) {
+                            echo $inputField->render();
+                        },
+                        $pageSlug,
+                        $sectionId
+                    );
+                } else {
+                    $nameHyphen = $prefix . '-' . $name;
+                    $nameUnderscore = $prefix . '_' . $name;
+
+                    // Register the setting name to the group
+                    register_setting($this->getSettingsGroup(), $nameUnderscore);
+
+                    // Add the field for the setting
+                    $options['name'] = $nameUnderscore;
+                    add_settings_field(
+                        $nameHyphen,
+                        $options['title'],
+                        [$this, 'renderInput'],
+                        $pageSlug,
+                        $sectionId,
+                        $options
+                    );
+                }
             }
         });
 
