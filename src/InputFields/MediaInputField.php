@@ -2,8 +2,36 @@
 
 namespace Nerbiz\Wordclass\InputFields;
 
+use Nerbiz\Wordclass\Assets;
+use Nerbiz\Wordclass\Init;
+
 class MediaInputField extends AbstractInputField
 {
+    /**
+     * Indicates whether the required scripts are added
+     * Prevents including twice
+     * @var bool
+     */
+    protected static $scriptsAdded = false;
+
+    public function __construct(string $name, string $title, ?string $description = null)
+    {
+        // Add the required scripts (once)
+        if (! static::$scriptsAdded) {
+            $init = new Init();
+            $assets = new Assets();
+
+            $mediaUploadHandle = $init->getPrefix() . '-media-upload';
+            $assets->addAdminJs([
+                $mediaUploadHandle => $init->getVendorUri('nerbiz/wordclass/includes/js/media-upload.js')
+            ]);
+
+            static::$scriptsAdded = true;
+        }
+
+        parent::__construct($name, $title, $description);
+    }
+
     /**
      * {@inheritdoc}
      */

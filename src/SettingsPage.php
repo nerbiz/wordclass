@@ -47,27 +47,9 @@ class SettingsPage
      */
     protected $menuPosition;
 
-    /**
-     * Indicates whether the required scripts are added
-     * Prevents including twice
-     * @var bool
-     */
-    protected static $scriptsAdded = false;
-
     public function __construct()
     {
         $this->init = new Init();
-
-        // Add the required scripts
-        if (! static::$scriptsAdded) {
-            $assets = new Assets();
-            $mediaUploadHandle = $this->init->getPrefix() . '-media-upload';
-            $assets->addAdminJs([
-                $mediaUploadHandle => $this->init->getVendorUri('nerbiz/wordclass/includes/js/media-upload.js')
-            ]);
-
-            static::$scriptsAdded = true;
-        }
     }
 
     /**
