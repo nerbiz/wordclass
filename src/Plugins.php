@@ -2,7 +2,7 @@
 
 namespace Nerbiz\Wordclass;
 
-class Plugins implements WordclassInterface
+class Plugins
 {
     /**
      * The TGMPA configuration options

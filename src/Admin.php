@@ -2,7 +2,7 @@
 
 namespace Nerbiz\Wordclass;
 
-class Admin implements WordclassInterface
+class Admin
 {
     /**
      * Redirect to a custom URL after login, based on role

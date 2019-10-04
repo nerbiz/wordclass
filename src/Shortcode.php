@@ -2,7 +2,7 @@
 
 namespace Nerbiz\Wordclass;
 
-class Shortcode implements WordclassInterface
+class Shortcode
 {
     /**
      * The shortcode tag

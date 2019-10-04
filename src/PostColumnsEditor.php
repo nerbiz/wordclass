@@ -2,7 +2,7 @@
 
 namespace Nerbiz\Wordclass;
 
-class PostColumnsEditor implements WordclassInterface
+class PostColumnsEditor
 {
     /**
      * Sorting callbacks in [name => callback] pairs

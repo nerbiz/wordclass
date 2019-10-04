@@ -4,7 +4,7 @@ namespace Nerbiz\Wordclass;
 
 use Nerbiz\Wordclass\InputFields\AbstractInputField;
 
-class SettingsPage implements WordclassInterface
+class SettingsPage
 {
     /**
      * @var Init

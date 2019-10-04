@@ -2,7 +2,7 @@
 
 namespace Nerbiz\Wordclass;
 
-class Taxonomy implements WordclassInterface
+class Taxonomy
 {
     /**
      * @var Init

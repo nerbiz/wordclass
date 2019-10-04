@@ -2,7 +2,7 @@
 
 namespace Nerbiz\Wordclass;
 
-class Utilities implements WordclassInterface
+class Utilities
 {
     /**
      * Obscure an email to make it harder for bots to see

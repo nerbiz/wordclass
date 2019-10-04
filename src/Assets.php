@@ -2,7 +2,7 @@
 
 namespace Nerbiz\Wordclass;
 
-class Assets implements WordclassInterface
+class Assets
 {
     /**
      * Add CSS asset(s) to the theme

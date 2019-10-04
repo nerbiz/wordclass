@@ -2,7 +2,7 @@
 
 namespace Nerbiz\Wordclass;
 
-class Editor implements WordclassInterface
+class Editor
 {
     /**
      * @var Init

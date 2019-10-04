@@ -2,7 +2,7 @@
 
 namespace Nerbiz\Wordclass;
 
-class Yoast implements WordclassInterface
+class Yoast
 {
     /**
      * Add a custom breadcrumb

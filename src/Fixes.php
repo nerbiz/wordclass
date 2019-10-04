@@ -2,7 +2,7 @@
 
 namespace Nerbiz\Wordclass;
 
-class Fixes implements WordclassInterface
+class Fixes
 {
     /**
      * Should fix: 'Unable to locate WordPress plugin directory.'

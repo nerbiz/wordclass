@@ -2,7 +2,7 @@
 
 namespace Nerbiz\Wordclass;
 
-class Init implements WordclassInterface
+class Init
 {
     /**
      * The default prefix to use
