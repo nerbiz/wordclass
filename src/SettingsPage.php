@@ -154,10 +154,13 @@ class SettingsPage
 
             // Add the fields to the section
             foreach ($fields as $inputField) {
+                // Use the section ID as the name prefix
+                $inputField->setNamePrefix($id);
+
                 // Register the setting name to the group
                 register_setting(
                     $this->getSettingsGroup(),
-                    $prefix . '_' . $inputField->getName()
+                    $inputField->getPrefixedName()
                 );
 
                 // Add the field for the setting

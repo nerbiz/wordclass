@@ -45,7 +45,7 @@ class PostInputField extends AbstractInputField
                     return $current . sprintf(
                         '<option value="%s" %s>%s</option>',
                         $post->ID,
-                        selected($post->ID, get_option($this->name), false),
+                        selected($post->ID, get_option($this->getPrefixedName()), false),
                         $post->post_title
                     );
                 }, '');
@@ -67,7 +67,7 @@ class PostInputField extends AbstractInputField
                 <option value="">%s</option>
                 %s
             </select>',
-            $this->name,
+            $this->getPrefixedName(),
             __('- Choose one -', 'wordclass'),
             $groupsString
         );

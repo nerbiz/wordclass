@@ -41,7 +41,7 @@ class MediaInputField extends AbstractInputField
 
         // The currently stored value
         $currentMediaUrl = wp_get_attachment_image_url(
-            esc_attr(get_option($this->name)),
+            esc_attr(get_option($this->getPrefixedName())),
             'thumbnail'
         );
 
@@ -57,8 +57,8 @@ class MediaInputField extends AbstractInputField
             $currentMediaUrl,
             __('Select media', 'wordclass'),
             __('Clear', 'wordclass'),
-            $this->name,
-            esc_attr(get_option($this->name))
+            $this->getPrefixedName(),
+            esc_attr(get_option($this->getPrefixedName()))
         );
     }
 }
