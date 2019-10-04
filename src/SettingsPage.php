@@ -3,7 +3,6 @@
 namespace Nerbiz\Wordclass;
 
 use Nerbiz\Wordclass\InputFields\AbstractInputField;
-use Nerbiz\Wordclass\SettingInputs\SettingInputsManager;
 
 class SettingsPage implements WordclassInterface
 {
@@ -155,39 +154,11 @@ class SettingsPage implements WordclassInterface
     }
 
     /**
-     * Echo HTML of an input element
-     * @param  array $arguments 'type' and 'name' must be provided in this array
-     * @return void
-     * @throws \InvalidArgumentException If the required array key(s) are not set
-     * @throws \Exception
-     */
-    public function renderInput(array $arguments): void
-    {
-        if (! isset($arguments['type'], $arguments['name'])) {
-            throw new \InvalidArgumentException(sprintf(
-                "%s(): parameter 'arguments' needs to contain 'type' and 'name'",
-                __METHOD__
-            ));
-        }
-
-        $settingInputsManager = new SettingInputsManager();
-        $input = $settingInputsManager->getInput($arguments);
-        $inputHtml = $input->render();
-        if (isset($arguments['description']) && trim($arguments['description']) !== '') {
-            $inputHtml .= sprintf('<p class="description">%s</p>', $arguments['description']);
-        }
-        echo $inputHtml;
-    }
-
-    /**
      * Add a settings section to the settings page
-     * @param  string      $id       Section ID, prefix will be prepended
-     * @param  string      $title
-     * @param  string|null $subtitle
-     * @param  array       $fields   Input fields for the settings, as name:options pairs
-     * Fields:
-     * title: the title of the input field
-     * type: the type of the input field
+     * @param  string               $id       Section ID, prefix will be prepended
+     * @param  string               $title
+     * @param  string|null          $subtitle
+     * @param  AbstractInputField[] $fields   Input fields for the settings
      * @return self
      */
     public function addSection(
@@ -210,44 +181,23 @@ class SettingsPage implements WordclassInterface
             add_settings_section($sectionId, $title, $subtitle, $pageSlug);
 
             // Add the fields to the section
-            foreach ($fields as $name => $options) {
-                if ($options instanceof AbstractInputField) {
-                    $inputField = $options;
+            foreach ($fields as $inputField) {
+                // Register the setting name to the group
+                register_setting(
+                    $this->getSettingsGroup(),
+                    $prefix . '_' . $inputField->getName()
+                );
 
-                    // Register the setting name to the group
-                    register_setting(
-                        $this->getSettingsGroup(),
-                        $prefix . '_' . $inputField->getName()
-                    );
-
-                    // Add the field for the setting
-                    add_settings_field(
-                        $prefix . '-' . $inputField->getName(),
-                        $inputField->getTitle(),
-                        function () use ($inputField) {
-                            echo $inputField->render();
-                        },
-                        $pageSlug,
-                        $sectionId
-                    );
-                } else {
-                    $nameHyphen = $prefix . '-' . $name;
-                    $nameUnderscore = $prefix . '_' . $name;
-
-                    // Register the setting name to the group
-                    register_setting($this->getSettingsGroup(), $nameUnderscore);
-
-                    // Add the field for the setting
-                    $options['name'] = $nameUnderscore;
-                    add_settings_field(
-                        $nameHyphen,
-                        $options['title'],
-                        [$this, 'renderInput'],
-                        $pageSlug,
-                        $sectionId,
-                        $options
-                    );
-                }
+                // Add the field for the setting
+                add_settings_field(
+                    $prefix . '-' . $inputField->getName(),
+                    $inputField->getTitle(),
+                    function () use ($inputField) {
+                        echo $inputField->render();
+                    },
+                    $pageSlug,
+                    $sectionId
+                );
             }
         });
 
