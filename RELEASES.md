@@ -1,5 +1,10 @@
 # Release notes
 
+## 1.8.3
+#### 2019-10-04
+
+* Added new InputField classes, SettingsPage now also supports those.
+
 ## 1.8.2
 #### 2019-09-02
 
