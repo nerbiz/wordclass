@@ -5,16 +5,6 @@ namespace Nerbiz\Wordclass;
 class Editor
 {
     /**
-     * @var Init
-     */
-    protected $init;
-
-    public function __construct()
-    {
-        $this->init = new Init();
-    }
-
-    /**
      * Force the extra button rows of the TinyMCE editor to show
      * @param  bool $keepButton Keep the toggle button
      * @return self
@@ -179,10 +169,10 @@ class Editor
         $pluginPath = 'tinymce/tinymce/plugins/' . $name . '/plugin.min.js';
 
         // The plugin needs to exist
-        if (is_readable($this->init->getVendorPath($pluginPath))) {
+        if (is_readable(Init::getVendorPath($pluginPath))) {
             // Add the plugin
             add_filter('mce_external_plugins', function ($plugins) use ($name, $pluginPath) {
-                $plugins[$name] = $this->init->getVendorUri($pluginPath);
+                $plugins[$name] = Init::getVendorUri($pluginPath);
                 return $plugins;
             });
 
@@ -243,7 +233,7 @@ class Editor
         // Add the shortcode buttons plugin
         add_filter('mce_external_plugins', function ($plugins) {
             $pluginPath = 'nerbiz/wordclass/includes/js/tinymce/plugins/wcshortcodebuttons/plugin.js';
-            $plugins['wc_shortcodebuttons'] = $this->init->getVendorUri($pluginPath);
+            $plugins['wc_shortcodebuttons'] = Init::getVendorUri($pluginPath);
 
             return $plugins;
         });

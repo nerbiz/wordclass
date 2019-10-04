@@ -7,11 +7,6 @@ use Nerbiz\Wordclass\InputFields\AbstractInputField;
 class SettingsPage
 {
     /**
-     * @var Init
-     */
-    protected $init;
-
-    /**
      * The title of the settings page
      * @var string
      */
@@ -46,11 +41,6 @@ class SettingsPage
      * @var int
      */
     protected $menuPosition;
-
-    public function __construct()
-    {
-        $this->init = new Init();
-    }
 
     /**
      * @param string $pageTitle
@@ -108,7 +98,7 @@ class SettingsPage
 
         return sprintf(
             '%s-settings-%s',
-            $this->init->getPrefix(),
+            Init::getPrefix(),
             (new Utilities())->createSlug($this->pageTitle)
         );
     }
@@ -150,7 +140,7 @@ class SettingsPage
         array $fields = []
     ): self {
         add_action('admin_init', function () use ($id, $title, $subtitle, $fields) {
-            $prefix = $this->init->getPrefix();
+            $prefix = Init::getPrefix();
             $sectionId = $prefix . '-' . $id;
             $pageSlug = $prefix . '-' . $this->pageSlug;
 
@@ -198,7 +188,7 @@ class SettingsPage
                 $this->pageSlug = (new Utilities())->createSlug($this->pageTitle);
             }
 
-            $pageSlug = $this->init->getPrefix() . '-' . $this->pageSlug;
+            $pageSlug = Init::getPrefix() . '-' . $this->pageSlug;
             $renderFunction = function () use ($pageSlug) {
                 // For use in the template
                 $settingsPage = $this;

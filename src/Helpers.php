@@ -5,16 +5,6 @@ namespace Nerbiz\Wordclass;
 class Helpers
 {
     /**
-     * @var Init
-     */
-    protected $init;
-
-    public function __construct()
-    {
-        $this->init = new Init();
-    }
-
-    /**
      * Get the URL of a featured image
      * @param  int    $imageId    The ID of the image
      * @param  string $sizeName   The name of one of the regisered image sizes
@@ -88,7 +78,7 @@ class Helpers
      */
     public function getOption(string $name): ?string
     {
-        $optionName = $this->init->getPrefix() . '_' . $name;
+        $optionName = Init::getPrefix() . '_' . $name;
         $value = trim(get_option($optionName));
 
         if ($value === '') {
@@ -106,7 +96,7 @@ class Helpers
      */
     public function setOption(string $name, $value): self
     {
-        $optionName = $this->init->getPrefix() . '_' . $name;
+        $optionName = Init::getPrefix() . '_' . $name;
         update_option($optionName, $value);
 
         return $this;
@@ -119,7 +109,7 @@ class Helpers
      */
     public function deleteOption(string $name): self
     {
-        $optionName = $this->init->getPrefix() . '_' . $name;
+        $optionName = Init::getPrefix() . '_' . $name;
         delete_option($optionName);
 
         return $this;

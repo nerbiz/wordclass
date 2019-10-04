@@ -31,7 +31,7 @@ abstract class AbstractInputField
      */
     public function __construct(string $name, string $title, ?string $description = null)
     {
-        $this->name = (new Init())->getPrefix() . '_' . $name;
+        $this->name = Init::getPrefix() . '_' . $name;
         $this->title = $title;
         $this->description = $description;
     }

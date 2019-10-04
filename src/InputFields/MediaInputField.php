@@ -18,12 +18,11 @@ class MediaInputField extends AbstractInputField
     {
         // Add the required scripts (once)
         if (! static::$scriptsAdded) {
-            $init = new Init();
             $assets = new Assets();
 
-            $mediaUploadHandle = $init->getPrefix() . '-media-upload';
+            $mediaUploadHandle = Init::getPrefix() . '-media-upload';
             $assets->addAdminJs([
-                $mediaUploadHandle => $init->getVendorUri('nerbiz/wordclass/includes/js/media-upload.js')
+                $mediaUploadHandle => Init::getVendorUri('nerbiz/wordclass/includes/js/media-upload.js')
             ]);
 
             static::$scriptsAdded = true;
