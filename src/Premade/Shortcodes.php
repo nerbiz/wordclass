@@ -25,40 +25,6 @@ class Shortcodes
     }
 
     /**
-     * [copyright year='2018']
-     * 'year' is optional, defaults to current
-     * Creates a '© 2015 - 2018 Site name' line (where 2015 would be the start year)
-     * @return Shortcode
-     */
-    public function copyright(): Shortcode
-    {
-        return (new Shortcode())
-            ->setTag('copyright')
-            ->setEnclosing(false)
-            ->setOptionLabel(__('Copyright', 'wordclass'))
-            ->addAttribute('year', date('Y'), [
-                'type'    => 'text',
-                'label'   => __('Year', 'wordclass'),
-                'tooltip' => __('Default value is the current year', 'wordclass'),
-            ])
-            ->setHandler(function ($attributes) {
-                $currentYear = (int) date('Y');
-
-                if (! isset($attributes['year'])) {
-                    $years = $currentYear;
-                } else {
-                    $years = (int) $attributes['year'];
-                    if ($attributes['year'] < $currentYear) {
-                        $years .= ' - ' . $currentYear;
-                    }
-                }
-
-                return '&copy; ' . $years . ' ' . get_bloginfo('name');
-            })
-            ->create();
-    }
-
-    /**
      * [page_link id="1" class="css-class" target="_blank"]link text[/page_link]
      * Creates an <a> element that links to a page
      * 'class' is optional, adds a CSS class to the element
