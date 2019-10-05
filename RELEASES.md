@@ -1,5 +1,18 @@
 # Release notes
 
+## 2.0.0-beta.1
+#### 2019-10-05
+
+* Input fields now have the section ID as a prefix (example: xx_sectionId_inputName, where 'xx' is the prefix in Init).
+* Static properties are now accessed statically.
+* Utilities methods are now static.
+* Added the Pool class (Multiton pattern), replaces Factory::reuse().
+* Removed SettingInputs classes, in favour of the new InputField classes.
+* Removed Factory class, in favour of the new Pool class.
+* Removed the WordclassInterface.
+* Removed the unneeded 'copyright' premade shortcode.
+* Other small improvements.
+
 ## 1.8.3
 #### 2019-10-04
 
