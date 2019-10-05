@@ -3,6 +3,10 @@
 namespace Nerbiz\Wordclass;
 
 use Exception;
+use Nerbiz\Wordclass\InputFields\CheckboxInputField;
+use Nerbiz\Wordclass\InputFields\PasswordInputField;
+use Nerbiz\Wordclass\InputFields\TextareaInputField;
+use Nerbiz\Wordclass\InputFields\TextInputField;
 use PHPMailer;
 use phpmailerException;
 use SMTP;
@@ -50,27 +54,19 @@ class Mail
         $settingsPage = new SettingsPage();
         $settingsPage->setParentSlug('options-general.php')
             ->setPageTitle(__('SMTP settings', 'wordclass'))
-            ->addSection('smtp_values', __('SMTP values', 'wordclass'), null, [
-                'smtp_enable' => ['type' => 'checkbox', 'title' => __('Enable SMTP?', 'wordclass')],
-                'smtp_host' => ['type' => 'text', 'title' => __('Host', 'wordclass')],
-                'smtp_port' => ['type' => 'text', 'title' => __('Port', 'wordclass')],
-                'smtp_encryption' => ['type' => 'text', 'title' => __('Encryption', 'wordclass')],
-                'smtp_username' => ['type' => 'text', 'title' => __('Username', 'wordclass')],
-                'smtp_password' => [
-                    'type' => 'password',
-                    'title' => __('Password', 'wordclass'),
-                    'description' => __('The password is stored encrypted', 'wordclass'),
-                ],
+            ->addSection('smtp', __('SMTP values', 'wordclass'), null, [
+                new CheckboxInputField('enable', __('Enable SMTP?', 'wordclass')),
+                new TextInputField('host', __('Host', 'wordclass')),
+                new TextInputField('port', __('Port', 'wordclass')),
+                new TextInputField('encryption', __('Encryption', 'wordclass')),
+                new TextInputField('username', __('Username', 'wordclass')),
+                new PasswordInputField('password', __('Password', 'wordclass'), __('The password is stored encrypted', 'wordclass')),
             ])
             ->addSection('smtp_test', __('Test settings', 'wordclass'), null, [
-                'smtp_test_recipient' => ['type' => 'text', 'title' => __('Recipient', 'wordclass')],
-                'smtp_test_subject' => ['type' => 'text', 'title' => __('Subject', 'wordclass')],
-                'smtp_test_content' => ['type' => 'textarea', 'title' => __('Content', 'wordclass')],
-                'smtp_test_enable' => [
-                    'type' => 'checkbox',
-                    'title' => __('Send testmail?', 'wordclass'),
-                    'description' => __('If checked, a testmail will be sent when saving these settings', 'wordclass'),
-                ],
+                new TextInputField('recipient', __('Recipient', 'wordclass')),
+                new TextInputField('subject', __('Subject', 'wordclass')),
+                new TextareaInputField('content', __('Content', 'wordclass')),
+                new CheckboxInputField('enable', __('Send testmail?', 'wordclass'), __('If checked, a testmail will be sent when saving these settings', 'wordclass')),
             ])
             ->create();
 
@@ -147,7 +143,7 @@ class Mail
             });
         } catch (phpmailerException $e) {
             // Add an admin notice
-            add_action('admin_notices', function () {
+            add_action('admin_notices', function () use ($phpMailer) {
                 echo sprintf(
                     '<div class="notice notice-error is-dismissible"><p>%s<br>%s</p></div>',
                     __('An error occured when trying to send the testmail:', 'wordpress'),
