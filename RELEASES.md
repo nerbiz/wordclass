@@ -1,5 +1,10 @@
 # Release notes
 
+## 2.0.0-beta.2
+#### 2019-10-05
+
+* Fixed: Mail wasn't using the new InputField classes.
+
 ## 2.0.0-beta.1
 #### 2019-10-05
 
