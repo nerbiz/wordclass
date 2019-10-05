@@ -214,7 +214,7 @@ class Taxonomy
     public function create(): self
     {
         if ($this->slug === null) {
-            $this->slug = (new Utilities())->createSlug($this->name);
+            $this->slug = Utilities::createSlug($this->name);
         }
 
         add_action('init', function () {

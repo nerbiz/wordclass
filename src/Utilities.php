@@ -10,21 +10,21 @@ class Utilities
      * @param  string|null $name    The name in the email link
      * @return string
      */
-    public function obscureEmailLink(string $address, ?string $name = null): string
+    public static function obscureEmailLink(string $address, ?string $name = null): string
     {
         if ($name !== null) {
             return sprintf(
                 '<a href="%1$s%2$s <%3$s>">%3$s</a>',
-                $this->stringToNumericHtmlEntities('mailto:'),
-                $this->stringToNumericHtmlEntities($name),
-                $this->stringToNumericHtmlEntities($address)
+                static::stringToNumericHtmlEntities('mailto:'),
+                static::stringToNumericHtmlEntities($name),
+                static::stringToNumericHtmlEntities($address)
             );
         }
 
         return sprintf(
             '<a href="%1$s%2$s">%2$s</a>',
-            $this->stringToNumericHtmlEntities('mailto:'),
-            $this->stringToNumericHtmlEntities($address)
+            static::stringToNumericHtmlEntities('mailto:'),
+            static::stringToNumericHtmlEntities($address)
         );
     }
 
@@ -33,12 +33,12 @@ class Utilities
      * @param  string $number
      * @return string
      */
-    public function obscurePhoneLink(string $number): string
+    public static function obscurePhoneLink(string $number): string
     {
         return sprintf(
             '<a href="%1$s%2$s">%2$s</a>',
-            $this->stringToNumericHtmlEntities('tel:'),
-            $this->stringToNumericHtmlEntities($number)
+            static::stringToNumericHtmlEntities('tel:'),
+            static::stringToNumericHtmlEntities($number)
         );
     }
 
@@ -48,7 +48,7 @@ class Utilities
      * @param string $string
      * @return string
      */
-    public function stringToNumericHtmlEntities(string $string): string
+    public static function stringToNumericHtmlEntities(string $string): string
     {
         $output = '';
         foreach (str_split($string) as $character) {
@@ -63,7 +63,7 @@ class Utilities
      * @param  string $string
      * @return string
      */
-    public function createSlug(string $string): string
+    public static function createSlug(string $string): string
     {
         $slug = html_entity_decode($string);
         $slug = remove_accents($slug);

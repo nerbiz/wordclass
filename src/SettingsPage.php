@@ -99,7 +99,7 @@ class SettingsPage
         return sprintf(
             '%s-settings-%s',
             Init::getPrefix(),
-            (new Utilities())->createSlug($this->pageTitle)
+            Utilities::createSlug($this->pageTitle)
         );
     }
 
@@ -188,7 +188,7 @@ class SettingsPage
         add_action('admin_menu', function () {
             // Derive the page slug if it's not set yet
             if ($this->pageSlug === null) {
-                $this->pageSlug = (new Utilities())->createSlug($this->pageTitle);
+                $this->pageSlug = Utilities::createSlug($this->pageTitle);
             }
 
             $pageSlug = Init::getPrefix() . '-' . $this->pageSlug;

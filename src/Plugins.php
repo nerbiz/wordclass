@@ -85,7 +85,7 @@ class Plugins
 
                 // Derive the slug from the name, if not given
                 if (! isset($options['slug'])) {
-                    $options['slug'] = (new Utilities())->createSlug($name);
+                    $options['slug'] = Utilities::createSlug($name);
                 }
 
                 $includePlugins[] = $options;
