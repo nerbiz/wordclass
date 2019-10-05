@@ -2,8 +2,35 @@
 
 namespace Nerbiz\Wordclass\InputFields;
 
+use Nerbiz\Wordclass\Assets;
+use Nerbiz\Wordclass\Init;
+
 class MediaInputField extends AbstractInputField
 {
+    /**
+     * Indicates whether the required scripts are added
+     * Prevents including twice
+     * @var bool
+     */
+    protected static $scriptsAdded = false;
+
+    public function __construct(string $name, string $title, ?string $description = null)
+    {
+        // Add the required scripts (once)
+        if (! static::$scriptsAdded) {
+            $assets = new Assets();
+
+            $mediaUploadHandle = Init::getPrefix() . '-media-upload';
+            $assets->addAdminJs([
+                $mediaUploadHandle => Init::getVendorUri('nerbiz/wordclass/includes/js/media-upload.js')
+            ]);
+
+            static::$scriptsAdded = true;
+        }
+
+        parent::__construct($name, $title, $description);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -14,7 +41,7 @@ class MediaInputField extends AbstractInputField
 
         // The currently stored value
         $currentMediaUrl = wp_get_attachment_image_url(
-            esc_attr(get_option($this->name)),
+            esc_attr(get_option($this->getPrefixedName())),
             'thumbnail'
         );
 
@@ -30,8 +57,8 @@ class MediaInputField extends AbstractInputField
             $currentMediaUrl,
             __('Select media', 'wordclass'),
             __('Clear', 'wordclass'),
-            $this->name,
-            esc_attr(get_option($this->name))
+            $this->getPrefixedName(),
+            esc_attr(get_option($this->getPrefixedName()))
         );
     }
 }

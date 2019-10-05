@@ -2,7 +2,7 @@
 
 namespace Nerbiz\Wordclass;
 
-class Assets implements WordclassInterface
+class Assets
 {
     /**
      * Add CSS asset(s) to the theme
@@ -158,10 +158,10 @@ class Assets implements WordclassInterface
         $this->removeJquery();
 
         add_action('init', function () use ($version) {
-            $isWpLogin = (isset($GLOBALS['pagenow']) && $GLOBALS['pagenow'] == 'wp-login.php');
+            global $pagenow;
 
             // Don't replace on admin
-            if( ! is_admin() && ! $isWpLogin) {
+            if(! is_admin() && $pagenow !== 'wp-login.php') {
                 wp_enqueue_script(
                     'jquery',
                     sprintf('//ajax.googleapis.com/ajax/libs/jquery/%s/jquery.min.js', $version),

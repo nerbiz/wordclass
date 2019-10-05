@@ -11,8 +11,8 @@ class TextareaInputField extends AbstractInputField
     {
         return sprintf(
             '<textarea class="regular-text" name="%s">%s</textarea>',
-            $this->name,
-            esc_attr(get_option($this->name))
+            $this->getPrefixedName(),
+            esc_attr(get_option($this->getPrefixedName()))
         );
     }
 }

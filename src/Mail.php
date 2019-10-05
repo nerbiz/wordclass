@@ -75,8 +75,8 @@ class Mail
             ->create();
 
         $crypto = new Crypto($this->encryptionKey ?? SECURE_AUTH_KEY);
-        $passwordField = (new Init())->getPrefix() . '_smtp_password';
-        $enableTestField = (new Init())->getPrefix() . '_smtp_test_enable';
+        $passwordField = Init::getPrefix() . '_smtp_password';
+        $enableTestField = Init::getPrefix() . '_smtp_test_enable';
 
         // Encrypt the SMTP password before storing
         add_filter('pre_update_option_' . $passwordField, function ($newValue, $oldValue) use ($crypto) {

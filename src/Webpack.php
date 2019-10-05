@@ -2,7 +2,7 @@
 
 namespace Nerbiz\Wordclass;
 
-class Webpack implements WordclassInterface
+class Webpack
 {
     /**
      * The parsed Webpack manifest

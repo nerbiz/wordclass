@@ -3,15 +3,9 @@
 namespace Nerbiz\Wordclass;
 
 use Nerbiz\Wordclass\InputFields\AbstractInputField;
-use Nerbiz\Wordclass\SettingInputs\SettingInputsManager;
 
-class SettingsPage implements WordclassInterface
+class SettingsPage
 {
-    /**
-     * @var Init
-     */
-    protected $init;
-
     /**
      * The title of the settings page
      * @var string
@@ -47,29 +41,6 @@ class SettingsPage implements WordclassInterface
      * @var int
      */
     protected $menuPosition;
-
-    /**
-     * Indicates whether the required scripts are added
-     * Prevents including twice
-     * @var bool
-     */
-    protected static $scriptsAdded = false;
-
-    public function __construct()
-    {
-        $this->init = new Init();
-
-        // Add the required scripts
-        if (! static::$scriptsAdded) {
-            $assets = new Assets();
-            $mediaUploadHandle = $this->init->getPrefix() . '-media-upload';
-            $assets->addAdminJs([
-                $mediaUploadHandle => $this->init->getVendorUri('nerbiz/wordclass/includes/js/media-upload.js')
-            ]);
-
-            static::$scriptsAdded = true;
-        }
-    }
 
     /**
      * @param string $pageTitle
@@ -127,8 +98,8 @@ class SettingsPage implements WordclassInterface
 
         return sprintf(
             '%s-settings-%s',
-            $this->init->getPrefix(),
-            (new Utilities())->createSlug($this->pageTitle)
+            Init::getPrefix(),
+            Utilities::createSlug($this->pageTitle)
         );
     }
 
@@ -155,39 +126,11 @@ class SettingsPage implements WordclassInterface
     }
 
     /**
-     * Echo HTML of an input element
-     * @param  array $arguments 'type' and 'name' must be provided in this array
-     * @return void
-     * @throws \InvalidArgumentException If the required array key(s) are not set
-     * @throws \Exception
-     */
-    public function renderInput(array $arguments): void
-    {
-        if (! isset($arguments['type'], $arguments['name'])) {
-            throw new \InvalidArgumentException(sprintf(
-                "%s(): parameter 'arguments' needs to contain 'type' and 'name'",
-                __METHOD__
-            ));
-        }
-
-        $settingInputsManager = new SettingInputsManager();
-        $input = $settingInputsManager->getInput($arguments);
-        $inputHtml = $input->render();
-        if (isset($arguments['description']) && trim($arguments['description']) !== '') {
-            $inputHtml .= sprintf('<p class="description">%s</p>', $arguments['description']);
-        }
-        echo $inputHtml;
-    }
-
-    /**
      * Add a settings section to the settings page
-     * @param  string      $id       Section ID, prefix will be prepended
-     * @param  string      $title
-     * @param  string|null $subtitle
-     * @param  array       $fields   Input fields for the settings, as name:options pairs
-     * Fields:
-     * title: the title of the input field
-     * type: the type of the input field
+     * @param  string               $id       Section ID, prefix will be prepended
+     * @param  string               $title
+     * @param  string|null          $subtitle
+     * @param  AbstractInputField[] $fields   Input fields for the settings
      * @return self
      */
     public function addSection(
@@ -197,7 +140,7 @@ class SettingsPage implements WordclassInterface
         array $fields = []
     ): self {
         add_action('admin_init', function () use ($id, $title, $subtitle, $fields) {
-            $prefix = $this->init->getPrefix();
+            $prefix = Init::getPrefix();
             $sectionId = $prefix . '-' . $id;
             $pageSlug = $prefix . '-' . $this->pageSlug;
 
@@ -210,44 +153,26 @@ class SettingsPage implements WordclassInterface
             add_settings_section($sectionId, $title, $subtitle, $pageSlug);
 
             // Add the fields to the section
-            foreach ($fields as $name => $options) {
-                if ($options instanceof AbstractInputField) {
-                    $inputField = $options;
+            foreach ($fields as $inputField) {
+                // Use the section ID as the name prefix
+                $inputField->setNamePrefix($id);
 
-                    // Register the setting name to the group
-                    register_setting(
-                        $this->getSettingsGroup(),
-                        $prefix . '_' . $inputField->getName()
-                    );
+                // Register the setting name to the group
+                register_setting(
+                    $this->getSettingsGroup(),
+                    $inputField->getPrefixedName()
+                );
 
-                    // Add the field for the setting
-                    add_settings_field(
-                        $prefix . '-' . $inputField->getName(),
-                        $inputField->getTitle(),
-                        function () use ($inputField) {
-                            echo $inputField->render();
-                        },
-                        $pageSlug,
-                        $sectionId
-                    );
-                } else {
-                    $nameHyphen = $prefix . '-' . $name;
-                    $nameUnderscore = $prefix . '_' . $name;
-
-                    // Register the setting name to the group
-                    register_setting($this->getSettingsGroup(), $nameUnderscore);
-
-                    // Add the field for the setting
-                    $options['name'] = $nameUnderscore;
-                    add_settings_field(
-                        $nameHyphen,
-                        $options['title'],
-                        [$this, 'renderInput'],
-                        $pageSlug,
-                        $sectionId,
-                        $options
-                    );
-                }
+                // Add the field for the setting
+                add_settings_field(
+                    $prefix . '-' . $inputField->getName(),
+                    $inputField->getTitle(),
+                    function () use ($inputField) {
+                        echo $inputField->render();
+                    },
+                    $pageSlug,
+                    $sectionId
+                );
             }
         });
 
@@ -263,10 +188,10 @@ class SettingsPage implements WordclassInterface
         add_action('admin_menu', function () {
             // Derive the page slug if it's not set yet
             if ($this->pageSlug === null) {
-                $this->pageSlug = (new Utilities())->createSlug($this->pageTitle);
+                $this->pageSlug = Utilities::createSlug($this->pageTitle);
             }
 
-            $pageSlug = $this->init->getPrefix() . '-' . $this->pageSlug;
+            $pageSlug = Init::getPrefix() . '-' . $this->pageSlug;
             $renderFunction = function () use ($pageSlug) {
                 // For use in the template
                 $settingsPage = $this;

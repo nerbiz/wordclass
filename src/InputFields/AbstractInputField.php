@@ -25,15 +25,32 @@ abstract class AbstractInputField
     protected $description;
 
     /**
+     * The prefix for the input name
+     * @var string
+     */
+    protected $namePrefix = '';
+
+    /**
      * @param string      $name
      * @param string      $title
      * @param string|null $description
      */
     public function __construct(string $name, string $title, ?string $description = null)
     {
-        $this->name = (new Init())->getPrefix() . '_' . $name;
+        $this->name = $name;
         $this->title = $title;
         $this->description = $description;
+    }
+
+    /**
+     * @param string $namePrefix
+     * @return self
+     */
+    public function setNamePrefix(string $namePrefix): self
+    {
+        $this->namePrefix = $namePrefix . '_';
+
+        return $this;
     }
 
     /**
@@ -87,6 +104,29 @@ abstract class AbstractInputField
     public function getName(): string
     {
         return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNamePrefix(): string
+    {
+        return $this->namePrefix;
+    }
+
+    /**
+     * Get a prefixed input name
+     * @return string
+     */
+    public function getPrefixedName(): string
+    {
+        // Return a longer name, if a prefix exists
+        return sprintf(
+            '%s_%s%s',
+            Init::getPrefix(),
+            $this->getNamePrefix(),
+            $this->getName()
+        );
     }
 
     /**

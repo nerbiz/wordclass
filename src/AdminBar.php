@@ -2,7 +2,7 @@
 
 namespace Nerbiz\Wordclass;
 
-class AdminBar implements WordclassInterface
+class AdminBar
 {
     /**
      * Indicates whether the required scripts are added
@@ -15,14 +15,13 @@ class AdminBar implements WordclassInterface
     {
         // Add the required script
         if (! static::$moveBarScriptAdded) {
-            $init = new Init();
             $assets = new Assets();
-            $mediaUploadHandle = $init->getPrefix() . '-admin-bar';
+            $mediaUploadHandle = Init::getPrefix() . '-admin-bar';
             $assets->addThemeCss([
-                $mediaUploadHandle => $init->getVendorUri('nerbiz/wordclass/includes/css/admin-bar.css'),
+                $mediaUploadHandle => Init::getVendorUri('nerbiz/wordclass/includes/css/admin-bar.css'),
             ]);
             $assets->addThemeJs([
-                $mediaUploadHandle => $init->getVendorUri('nerbiz/wordclass/includes/js/admin-bar.js'),
+                $mediaUploadHandle => Init::getVendorUri('nerbiz/wordclass/includes/js/admin-bar.js'),
             ]);
 
             static::$moveBarScriptAdded = true;

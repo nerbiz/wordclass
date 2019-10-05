@@ -11,8 +11,8 @@ class CheckboxInputField extends AbstractInputField
     {
         return sprintf(
             '<input type="checkbox" name="%s" value="1" %s>',
-            $this->name,
-            checked(1, esc_attr(get_option($this->name)), false)
+            $this->getPrefixedName(),
+            checked(1, esc_attr(get_option($this->getPrefixedName())), false)
         );
     }
 }

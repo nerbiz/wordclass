@@ -2,13 +2,8 @@
 
 namespace Nerbiz\Wordclass;
 
-class PostType implements WordclassInterface
+class PostType
 {
-    /**
-     * @var Init
-     */
-    protected $init;
-
     /**
      * The ID of the post type
      * @var string
@@ -63,11 +58,6 @@ class PostType implements WordclassInterface
      */
     protected $taxonomies = [];
 
-    public function __construct()
-    {
-        $this->init = new Init();
-    }
-
     /**
      * Set the post type ID, will be prefixed
      * @param  string $id
@@ -75,7 +65,7 @@ class PostType implements WordclassInterface
      */
     public function setId(string $id): self
     {
-        $this->id = $this->init->getPrefix() . '_' . $id;
+        $this->id = Init::getPrefix() . '_' . $id;
 
         return $this;
     }
@@ -251,7 +241,7 @@ class PostType implements WordclassInterface
     {
         // Derive a slug, if it's not set yet
         if ($this->slug === null) {
-            $this->slug = (new Utilities())->createSlug($this->name);
+            $this->slug = Utilities::createSlug($this->name);
         }
 
         add_action('init', function () {

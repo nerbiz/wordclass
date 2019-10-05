@@ -2,7 +2,7 @@
 
 namespace Nerbiz\Wordclass;
 
-class PostColumn implements WordclassInterface
+class PostColumn
 {
     /**
      * @var string

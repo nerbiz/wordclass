@@ -11,8 +11,8 @@ class TextInputField extends AbstractInputField
     {
         return sprintf(
             '<input type="text" class="regular-text" name="%s" value="%s">',
-            $this->name,
-            esc_attr(get_option($this->name))
+            $this->getPrefixedName(),
+            esc_attr(get_option($this->getPrefixedName()))
         );
     }
 }

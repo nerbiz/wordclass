@@ -5,7 +5,7 @@ namespace Nerbiz\Wordclass\Premade;
 use Nerbiz\Wordclass\Shortcode;
 use Nerbiz\Wordclass\WordclassInterface;
 
-class Shortcodes implements WordclassInterface
+class Shortcodes
 {
     /**
      * [home_url]
@@ -20,40 +20,6 @@ class Shortcodes implements WordclassInterface
             ->setOptionLabel(__('Home URL', 'wordclass'))
             ->setHandler(function () {
                 return rtrim(home_url(), '/') . '/';
-            })
-            ->create();
-    }
-
-    /**
-     * [copyright year='2018']
-     * 'year' is optional, defaults to current
-     * Creates a '© 2015 - 2018 Site name' line (where 2015 would be the start year)
-     * @return Shortcode
-     */
-    public function copyright(): Shortcode
-    {
-        return (new Shortcode())
-            ->setTag('copyright')
-            ->setEnclosing(false)
-            ->setOptionLabel(__('Copyright', 'wordclass'))
-            ->addAttribute('year', date('Y'), [
-                'type'    => 'text',
-                'label'   => __('Year', 'wordclass'),
-                'tooltip' => __('Default value is the current year', 'wordclass'),
-            ])
-            ->setHandler(function ($attributes) {
-                $currentYear = (int) date('Y');
-
-                if (! isset($attributes['year'])) {
-                    $years = $currentYear;
-                } else {
-                    $years = (int) $attributes['year'];
-                    if ($attributes['year'] < $currentYear) {
-                        $years .= ' - ' . $currentYear;
-                    }
-                }
-
-                return '&copy; ' . $years . ' ' . get_bloginfo('name');
             })
             ->create();
     }

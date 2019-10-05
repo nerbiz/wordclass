@@ -2,7 +2,7 @@
 
 namespace Nerbiz\Wordclass;
 
-class Init implements WordclassInterface
+class Init
 {
     /**
      * The default prefix to use
@@ -25,32 +25,28 @@ class Init implements WordclassInterface
     /**
      * Set the prefix to use for various things
      * @param string $prefix
-     * @return self
+     * @return void
      */
-    public function setPrefix(string $prefix): self
+    public static function setPrefix(string $prefix): void
     {
         static::$prefix = $prefix;
-
-        return $this;
     }
 
     /**
      * @return string
      */
-    public function getPrefix(): string
+    public static function getPrefix(): string
     {
         return static::$prefix;
     }
 
     /**
      * @param string $vendorUri
-     * @return self
+     * @return void
      */
-    public function setVendorPath(string $vendorUri): self
+    public static function setVendorPath(string $vendorUri): void
     {
         static::$vendorPath = rtrim($vendorUri, '/') . '/';
-
-        return $this;
     }
 
     /**
@@ -58,11 +54,11 @@ class Init implements WordclassInterface
      * @param  string|null $path
      * @return string
      */
-    public function getVendorPath(?string $path = null): string
+    public static function getVendorPath(?string $path = null): string
     {
         // The default value is the 'vendor' directory in a (child-)theme directory
         if(static::$vendorPath === null) {
-            $this->setVendorPath(get_stylesheet_directory() . '/vendor/');
+            static::setVendorPath(get_stylesheet_directory() . '/vendor/');
         }
 
         // Append the extra path if not null
@@ -76,13 +72,11 @@ class Init implements WordclassInterface
 
     /**
      * @param string $vendorUri
-     * @return self
+     * @return void
      */
-    public function setVendorUri(string $vendorUri): self
+    public static function setVendorUri(string $vendorUri): void
     {
         static::$vendorUri = rtrim($vendorUri, '/') . '/';
-
-        return $this;
     }
 
     /**
@@ -90,11 +84,11 @@ class Init implements WordclassInterface
      * @param  string|null $path
      * @return string
      */
-    public function getVendorUri(?string $path = null): string
+    public static function getVendorUri(?string $path = null): string
     {
         // The default value is the 'vendor' directory in a (child-)theme directory
         if (static::$vendorUri === null) {
-            $this->setVendorUri(get_stylesheet_directory_uri() . '/vendor/');
+            static::setVendorUri(get_stylesheet_directory_uri() . '/vendor/');
         }
 
         // Append the extra path if not null

@@ -2,7 +2,7 @@
 
 namespace Nerbiz\Wordclass;
 
-class Plugins implements WordclassInterface
+class Plugins
 {
     /**
      * The TGMPA configuration options
@@ -85,7 +85,7 @@ class Plugins implements WordclassInterface
 
                 // Derive the slug from the name, if not given
                 if (! isset($options['slug'])) {
-                    $options['slug'] = (new Utilities())->createSlug($name);
+                    $options['slug'] = Utilities::createSlug($name);
                 }
 
                 $includePlugins[] = $options;
