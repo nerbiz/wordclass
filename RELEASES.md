@@ -1,5 +1,11 @@
 # Release notes
 
+## 2.0.0-beta.3
+#### 2019-11-11
+
+* Settings pages don't use the Settings API anymore.
+* SettingsPage now supports custom capability, to allow editors to edit settings, for instance.
+
 ## 2.0.0-beta.2
 #### 2019-10-05
 
