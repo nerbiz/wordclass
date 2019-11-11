@@ -25,10 +25,10 @@ class SettingsPage
     protected $pageSlug;
 
     /**
-     * The group name of the settings
-     * @var string|null
+     * The capability required for using the settings page
+     * @var string
      */
-    protected $settingsGroup = null;
+    protected $capability = 'manage_options';
 
     /**
      * The icon of the menu item
@@ -43,87 +43,10 @@ class SettingsPage
     protected $menuPosition;
 
     /**
-     * @param string $pageTitle
-     * @return self
+     * The sections of the settings page
+     * @var SettingsPageSection[]
      */
-    public function setPageTitle(string $pageTitle): self
-    {
-        $this->pageTitle = $pageTitle;
-
-        return $this;
-    }
-
-    /**
-     * @param string|null $parentSlug
-     * @return self
-     */
-    public function setParentSlug(string $parentSlug): self
-    {
-        $this->parentSlug = $parentSlug;
-
-        return $this;
-    }
-
-    /**
-     * @param  string $pageSlug
-     * @return self
-     */
-    public function setPageSlug(string $pageSlug): self
-    {
-        $this->pageSlug = $pageSlug;
-
-        return $this;
-    }
-
-    /**
-     * @param string $settingsGroup
-     * @return self
-     */
-    public function setSettingsGroup(string $settingsGroup): self
-    {
-        $this->settingsGroup = $settingsGroup;
-
-        return $this;
-    }
-
-    /**
-     * Get the settings group name
-     * @return string
-     */
-    public function getSettingsGroup(): string
-    {
-        if ($this->settingsGroup !== null) {
-            return $this->settingsGroup;
-        }
-
-        return sprintf(
-            '%s-settings-%s',
-            Init::getPrefix(),
-            Utilities::createSlug($this->pageTitle)
-        );
-    }
-
-    /**
-     * @param string $icon
-     * @return self
-     */
-    public function setIcon(string $icon): self
-    {
-        $this->icon = $icon;
-
-        return $this;
-    }
-
-    /**
-     * @param int $menuPosition
-     * @return self
-     */
-    public function setMenuPosition(int $menuPosition): self
-    {
-        $this->menuPosition = $menuPosition;
-
-        return $this;
-    }
+    protected $sections = [];
 
     /**
      * Add a settings section to the settings page
@@ -139,42 +62,13 @@ class SettingsPage
         ?string $subtitle = null,
         array $fields = []
     ): self {
-        add_action('admin_init', function () use ($id, $title, $subtitle, $fields) {
-            $prefix = Init::getPrefix();
-            $sectionId = $prefix . '-' . $id;
-            $pageSlug = $prefix . '-' . $this->pageSlug;
+        // Use the section ID as the input field name prefix
+        foreach ($fields as $inputField) {
+            $inputField->setNamePrefix($id);
+        }
 
-            // Subtitle argument needs to be an echo'ing function
-            $subtitle = function () use ($subtitle) {
-                echo $subtitle;
-            };
-
-            // Add the section
-            add_settings_section($sectionId, $title, $subtitle, $pageSlug);
-
-            // Add the fields to the section
-            foreach ($fields as $inputField) {
-                // Use the section ID as the name prefix
-                $inputField->setNamePrefix($id);
-
-                // Register the setting name to the group
-                register_setting(
-                    $this->getSettingsGroup(),
-                    $inputField->getPrefixedName()
-                );
-
-                // Add the field for the setting
-                add_settings_field(
-                    $prefix . '-' . $inputField->getName(),
-                    $inputField->getTitle(),
-                    function () use ($inputField) {
-                        echo $inputField->render();
-                    },
-                    $pageSlug,
-                    $sectionId
-                );
-            }
-        });
+        // Add the section
+        $this->sections[] = new SettingsPageSection($id, $title, $subtitle, $fields);
 
         return $this;
     }
@@ -186,26 +80,25 @@ class SettingsPage
     public function create(): self
     {
         add_action('admin_menu', function () {
-            // Derive the page slug if it's not set yet
-            if ($this->pageSlug === null) {
-                $this->pageSlug = Utilities::createSlug($this->pageTitle);
-            }
+            // Store values, if submitted
+            $this->storeValues();
 
-            $pageSlug = Init::getPrefix() . '-' . $this->pageSlug;
-            $renderFunction = function () use ($pageSlug) {
+            // The function that renders the settings page
+            $renderFunction = function () {
                 // For use in the template
                 $settingsPage = $this;
                 require __DIR__ . '/../includes/html/settings-page-template.php';
             };
 
             // Add the settings page
+            $pageSlug = Init::getPrefix() . '-' . $this->getPageSlug();
             if ($this->parentSlug !== null) {
                 // As a subpage, if a parent slug is given
                 add_submenu_page(
                     $this->parentSlug,
                     $this->pageTitle,
                     $this->pageTitle,
-                    'manage_options',
+                    $this->capability,
                     $pageSlug,
                     $renderFunction
                 );
@@ -214,7 +107,7 @@ class SettingsPage
                 add_menu_page(
                     $this->pageTitle,
                     $this->pageTitle,
-                    'manage_options',
+                    $this->capability,
                     $pageSlug,
                     $renderFunction,
                     $this->icon,
@@ -224,5 +117,168 @@ class SettingsPage
         }, 100);
 
         return $this;
+    }
+
+    /**
+     * Store submitted values
+     * @return void
+     */
+    protected function storeValues(): void
+    {
+        // Return when POST is empty
+        if (count($_POST) < 1) {
+            return;
+        }
+
+        // Check if the current user is allowed to update the values
+        if (! current_user_can($this->capability)) {
+            wp_die(__("You don't have the right permissions to update these settings.", 'wordclass'));
+        }
+
+        // Check if the nonce is valid
+        if (! wp_verify_nonce($_POST['_wpnonce'] ?? '', $this->getPageSlug())) {
+            wp_die(__('Invalid nonce value, please refresh the page and try again.', 'wordclass'));
+        }
+
+        // Store all submitted values
+        foreach ($this->sections as $section) {
+            foreach ($section->getFields() as $field) {
+                $name = $field->getPrefixedName();
+
+                if (isset($_POST[$name])) {
+                    update_option($name, $_POST[$name]);
+                }
+            }
+        }
+
+        // Show the default 'Settings saved' message
+        add_settings_error('general', 'settings_updated', __('Settings saved.'), 'updated');
+    }
+
+    /**
+     * @return string
+     */
+    public function getPageTitle(): string
+    {
+        return $this->pageTitle;
+    }
+
+    /**
+     * @param string $pageTitle
+     * @return self
+     */
+    public function setPageTitle(string $pageTitle): self
+    {
+        $this->pageTitle = $pageTitle;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getParentSlug(): ?string
+    {
+        return $this->parentSlug;
+    }
+
+    /**
+     * @param string|null $parentSlug
+     * @return self
+     */
+    public function setParentSlug(?string $parentSlug): self
+    {
+        $this->parentSlug = $parentSlug;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPageSlug(): string
+    {
+        // Derive the page slug if it's not set yet
+        if ($this->pageSlug === null) {
+            $this->setPageSlug(Utilities::createSlug($this->pageTitle));
+        }
+
+        return $this->pageSlug;
+    }
+
+    /**
+     * @param string $pageSlug
+     * @return self
+     */
+    public function setPageSlug(string $pageSlug): self
+    {
+        $this->pageSlug = $pageSlug;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCapability(): string
+    {
+        return $this->capability;
+    }
+
+    /**
+     * @param string $capability
+     * @return self
+     */
+    public function setCapability(string $capability): self
+    {
+        $this->capability = $capability;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return $this->icon;
+    }
+
+    /**
+     * @param string $icon
+     * @return self
+     */
+    public function setIcon(string $icon): self
+    {
+        $this->icon = $icon;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMenuPosition(): int
+    {
+        return $this->menuPosition;
+    }
+
+    /**
+     * @param int $menuPosition
+     * @return self
+     */
+    public function setMenuPosition(int $menuPosition): self
+    {
+        $this->menuPosition = $menuPosition;
+
+        return $this;
+    }
+
+    /**
+     * @return SettingsPageSection[]
+     */
+    public function getSections(): array
+    {
+        return $this->sections;
     }
 }

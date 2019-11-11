@@ -1,10 +1,8 @@
 <?php
-if (! isset($settingsPage, $pageSlug)) {
-    return;
-}
 
-global $wp_settings_sections, $wp_settings_fields;
-if (! isset($wp_settings_sections[$pageSlug])) {
+use Nerbiz\Wordclass\SettingsPage;
+
+if (! isset($settingsPage) || ! $settingsPage instanceof SettingsPage) {
     return;
 }
 
@@ -13,11 +11,12 @@ $currentTab = $_GET['tab'] ?? null;
 
 <div class="wrap">
     <h1>
-        <?php echo $settingsPage->pageTitle; ?>
+        <?php echo $settingsPage->getPageTitle(); ?>
     </h1>
 
     <?php
-    if ($settingsPage->parentSlug === null) {
+    // Prevent double errors
+    if ($settingsPage->getParentSlug() === null) {
         settings_errors();
     }
     ?>
@@ -25,65 +24,62 @@ $currentTab = $_GET['tab'] ?? null;
     <h2 class="nav-tab-wrapper">
         <?php // Output tab buttons, first is active at page load ?>
         <?php $first = true; ?>
-        <?php foreach ($wp_settings_sections[$pageSlug] as $section): ?>
+        <?php foreach ($settingsPage->getSections() as $section): ?>
             <?php
             // See if the tab is active
             $active = ($currentTab !== null)
-                ? ($currentTab === $section['id'])
+                ? ($currentTab === $section->getId())
                 : $first;
+            $first = false;
             ?>
 
             <a href="#"
                class="nav-tab <?php echo $active ? 'nav-tab-active' : ''; ?>"
-               data-tab-id="<?php echo $section['id']; ?>"
+               data-tab-id="<?php echo $section->getId(); ?>"
             >
-                <?php echo $section['title']; ?>
+                <?php echo $section->getTitle(); ?>
             </a>
-
-            <?php $first = false; ?>
         <?php endforeach; ?>
     </h2>
 
-    <form action="options.php" method="POST">
-        <?php settings_fields($settingsPage->getSettingsGroup()); ?>
+    <form method="POST">
+        <?php wp_nonce_field($settingsPage->getPageSlug()); ?>
 
         <?php // Output sections, first is visible at page load ?>
         <?php $first = true; ?>
-        <?php foreach ((array)$wp_settings_sections[$pageSlug] as $section): ?>
+        <?php foreach ($settingsPage->getSections() as $section): ?>
             <?php
             // See if the tab is active
             $active = ($currentTab !== null)
-                ? ($currentTab === $section['id'])
+                ? ($currentTab === $section->getId())
                 : $first;
+            $first = false;
             ?>
 
             <div class="wordclass-settings-section"
-                 id="<?php echo $section['id']; ?>"
+                 id="<?php echo $section->getId(); ?>"
                  style="<?php echo $active ? '' : 'display: none;'; ?>"
             >
                 <?php // Section title ?>
-                <?php if (isset($section['title'])): ?>
-                    <h2>
-                        <?php echo $section['title']; ?>
-                    </h2>
-                <?php endif; ?>
+                <h2><?php echo $section->getTitle(); ?></h2>
 
                 <?php // Subtitle callback ?>
-                <?php if (isset($section['callback'])) {
-                    call_user_func($section['callback'], $section);
-                } ?>
-
-                <?php  if (! isset($wp_settings_fields[$pageSlug][$section['id']])) {
-                    continue;
-                } ?>
+                <?php if ($section->getSubtitle() !== null): ?>
+                    <h4><?php echo $section->getSubtitle(); ?></h4>
+                <?php endif; ?>
 
                 <table class="form-table">
-                    <?php // Output settings fields ?>
-                    <?php do_settings_fields($pageSlug, $section['id']); ?>
+                    <tbody>
+                        <?php // Output settings fields ?>
+                        <?php foreach ($section->getFields() as $field): ?>
+                            <tr>
+                                <th scope="row"><?php echo $field->getTitle(); ?></th>
+                                <td><?php echo $field->render(); ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
                 </table>
             </div>
-
-            <?php $first = false; ?>
         <?php endforeach; ?>
 
         <?php submit_button(__('Save settings', 'wordclass')); ?>
