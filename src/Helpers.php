@@ -2,6 +2,8 @@
 
 namespace Nerbiz\Wordclass;
 
+use InvalidArgumentException;
+
 class Helpers
 {
     /**
@@ -13,7 +15,8 @@ class Helpers
      * url: the image URL
      * array: [url, width, height, is_intermediate]
      * html: an <img> element
-     * @return string|array
+     * @return array|string
+     * @throws InvalidArgumentException
      */
     public function getImage(int $imageId, string $sizeName = 'large', string $returnType = 'url')
     {
@@ -31,7 +34,7 @@ class Helpers
                 break;
             
             default:
-                throw new \InvalidArgumentException(sprintf(
+                throw new InvalidArgumentException(sprintf(
                     "%s() expects parameter 'returnType' to be 'url', 'array' or 'html', '%s' given",
                     __METHOD__,
                     is_object($returnType) ? get_class($returnType) : gettype($returnType)
@@ -45,7 +48,7 @@ class Helpers
      * @param  int    $postId
      * @param  string $sizeName
      * @param  string $returnType
-     * @return string|array
+     * @return array|string
      * @see Helpers::getImage()
      */
     public function getFeaturedImage(int $postId, string $sizeName = 'large', string $returnType = 'url')
@@ -56,62 +59,17 @@ class Helpers
     }
 
     /**
-     * Get the slug of a taxonomy
-     * @param  string $taxonomyName
-     * @return string|null
+     * Get an image from an option name
+     * @param string $optionName
+     * @param string $sizeName
+     * @param string $returnType
+     * @return array|string
+     * @see Helpers::getImage()
      */
-    public function getTaxonomySlug(string $taxonomyName): ?string
+    public function getOptionImage(string $optionName, string $sizeName = 'large', string $returnType = 'url')
     {
-        $taxonomies = get_taxonomies(['name' => $taxonomyName], 'objects');
+        $imageId = (new Options())->get($optionName);
 
-        if (isset($taxonomies[$taxonomyName]->rewrite['slug'])) {
-            return $taxonomies[$taxonomyName]->rewrite['slug'];
-        }
-
-        return null;
-    }
-
-    /**
-     * Get an option, implicitly using a prefix
-     * @param  string $name The name of the option (without prefix)
-     * @return string|null
-     */
-    public function getOption(string $name): ?string
-    {
-        $optionName = Init::getPrefix() . '_' . $name;
-        $value = trim(get_option($optionName));
-
-        if ($value === '') {
-            return null;
-        }
-
-        return $value;
-    }
-
-    /**
-     * Set an option, implicitly using a prefix
-     * @param  string $name The name of the option (without prefix)
-     * @param  mixed  $value
-     * @return self
-     */
-    public function setOption(string $name, $value): self
-    {
-        $optionName = Init::getPrefix() . '_' . $name;
-        update_option($optionName, $value);
-
-        return $this;
-    }
-
-    /**
-     * Delete an option, implicitly using a prefix
-     * @param  string $name The name of the option (without prefix)
-     * @return self
-     */
-    public function deleteOption(string $name): self
-    {
-        $optionName = Init::getPrefix() . '_' . $name;
-        delete_option($optionName);
-
-        return $this;
+        return $this->getImage((int)$imageId, $sizeName, $returnType);
     }
 }
