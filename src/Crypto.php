@@ -16,25 +16,15 @@ class Crypto
      * The cipher to use for encrypting and decrypting
      * @var string
      */
-    protected $cipher;
+    protected $cipher = 'aes-256-cbc';
 
     /**
      * @param string $encryptionKey
-     * @param string $cipher
      * @throws Exception
      */
-    public function __construct(string $encryptionKey, string $cipher = 'aes-256-cbc')
+    public function __construct(string $encryptionKey)
     {
         $this->encryptionKey = $encryptionKey;
-        $this->cipher = $cipher;
-
-        if (! in_array($cipher, openssl_get_cipher_methods())) {
-            throw new Exception(sprintf(
-                "%s(): the cipher '%s' is not available",
-                __METHOD__,
-                $cipher
-            ));
-        }
     }
 
     /**
