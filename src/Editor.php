@@ -2,6 +2,9 @@
 
 namespace Nerbiz\Wordclass;
 
+use Exception;
+use InvalidArgumentException;
+
 class Editor
 {
     /**
@@ -193,8 +196,8 @@ class Editor
      *   null places the button at the end
      * @param  int         $toolbarNumber        The toolbar number, 1 = default, 2/3/4 = advanced
      * @return self
-     * @throws \InvalidArgumentException If the array contains at least 1 item that isn't a Shortcode object
-     * @throws \Exception If there are no shortcodes to add to the toolbar
+     * @throws InvalidArgumentException If the array contains at least 1 item that isn't a Shortcode object
+     * @throws Exception If there are no shortcodes to add to the toolbar
      */
     public function addShortcodesDropdown(array $shortcodes, ?string $after = null, int $toolbarNumber = 1): self
     {
@@ -202,7 +205,7 @@ class Editor
         foreach ($shortcodes as $shortcode) {
             // The array needs to contain Shortcode objects
             if (! $shortcode instanceof Shortcode) {
-                throw new \InvalidArgumentException(sprintf(
+                throw new InvalidArgumentException(sprintf(
                     "%s() expects parameter 'shortcodes' to be an array of Shortcode objects, '%s' given",
                     __METHOD__,
                     is_object($shortcode) ? get_class($shortcode) : gettype($shortcode)
@@ -218,7 +221,7 @@ class Editor
 
         // There needs to be at least 1 shortcode to add
         if (count($allDialogProperties) === 0) {
-            throw new \Exception(sprintf(
+            throw new Exception(sprintf(
                 "%s(): there are no shortcodes to add to the toolbar, set at least 1 with an option label",
                 __METHOD__
             ));

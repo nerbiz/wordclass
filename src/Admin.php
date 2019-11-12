@@ -6,32 +6,32 @@ class Admin
 {
     /**
      * Redirect to a custom URL after login, based on role
-     * @param  array $roleUrls role:url pairs
+     * @param string $role
+     * @param string $url
      * @return self
      */
-    public function roleRedirects(array $roleUrls): self
+    public function roleRedirect(string $role, string $url): self
     {
-        add_filter('login_redirect', function ($redirectUrl, $request, $user) use ($roleUrls) {
+        // Specific roles take precedence over a wildcard
+        $priority = ($role === '*') ? 10 : 20;
+
+        add_filter('login_redirect', function ($redirectUrl, $request, $user) use ($role, $url) {
             // Check if the user has roles
             if (isset($user->roles) && is_array($user->roles)) {
-                // Loop over all the given role:url pairs, and use the first match
-                foreach ($roleUrls as $role => $url) {
-                    if (in_array($role, $user->roles)) {
-                        $newUrl = $url;
-                        break;
-                    }
-                }
-
                 // If there weren't any matches, look for a wildcard
-                if (! isset($newUrl) && array_key_exists('*', $roleUrls)) {
-                    $newUrl = $roleUrls['*'];
+                if ($role === '*') {
+                    $newUrl = $url;
+                } else if (in_array($role, $user->roles)) {
+                    $newUrl = $url;
+                } else {
+                    $newUrl = null;
                 }
 
-                if (isset($newUrl)) {
-                    // Prepend with the home URL if the new URL is relative
+                if ($newUrl !== null) {
                     if (preg_match('~^https?://~', $newUrl)) {
                         return esc_url($newUrl);
                     } else {
+                        // Prepend a relative URL with the home URL
                         return esc_url(home_url('/' . ltrim($newUrl, '/')));
                     }
                 }
@@ -39,7 +39,7 @@ class Admin
 
             // Use the default URL
             return $redirectUrl;
-        }, 10, 3);
+        }, $priority, 3);
 
         return $this;
     }

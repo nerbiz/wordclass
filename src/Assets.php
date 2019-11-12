@@ -6,84 +6,89 @@ class Assets
 {
     /**
      * Add CSS asset(s) to the theme
-     * @param array $assets handle:options pairs
+     * @param string       $handle
+     * @param string|array $options
      * @return self
      */
-    public function addThemeCss(array $assets): self
+    public function addThemeCss(string $handle, $options): self
     {
-        return $this->addAssets('css', 'wp_enqueue_scripts', $assets);
+        return $this->addAssets('css', 'wp_enqueue_scripts', $handle, $options);
     }
 
     /**
      * Add JavaScript asset(s) to the theme
-     * @param array $assets handle:options pairs
+     * @param string       $handle
+     * @param string|array $options
      * @return self
      */
-    public function addThemeJs(array $assets): self
+    public function addThemeJs(string $handle, $options): self
     {
-        return $this->addAssets('js', 'wp_enqueue_scripts', $assets);
+        return $this->addAssets('js', 'wp_enqueue_scripts', $handle, $options);
     }
 
     /**
      * Add CSS asset(s) to admin
-     * @param array $assets handle:options pairs
+     * @param string       $handle
+     * @param string|array $options
      * @return self
      */
-    public function addAdminCss(array $assets): self
+    public function addAdminCss(string $handle, $options): self
     {
-        return $this->addAssets('css', 'admin_enqueue_scripts', $assets);
+        return $this->addAssets('css', 'admin_enqueue_scripts', $handle, $options);
     }
 
     /**
      * Add JavaScript asset(s) to admin
-     * @param array $assets handle:options pairs
+     * @param string       $handle
+     * @param string|array $options
      * @return self
      */
-    public function addAdminJs(array $assets): self
+    public function addAdminJs(string $handle, $options): self
     {
-        return $this->addAssets('js', 'admin_enqueue_scripts', $assets);
+        return $this->addAssets('js', 'admin_enqueue_scripts', $handle, $options);
     }
 
     /**
      * Add CSS asset(s) to the login screen
-     * @param array $assets handle:options pairs
+     * @param string       $handle
+     * @param string|array $options
      * @return self
      */
-    public function addLoginCss(array $assets): self
+    public function addLoginCss(string $handle, $options): self
     {
-        return $this->addAssets('css', 'login_enqueue_scripts', $assets);
+        return $this->addAssets('css', 'login_enqueue_scripts', $handle, $options);
     }
 
     /**
      * Add JavaScript asset(s) to the login screen
-     * @param array $assets handle:options pairs
+     * @param string       $handle
+     * @param string|array $options
      * @return self
      */
-    public function addLoginJs(array $assets): self
+    public function addLoginJs(string $handle, $options): self
     {
-        return $this->addAssets('js', 'login_enqueue_scripts', $assets);
+        return $this->addAssets('js', 'login_enqueue_scripts', $handle, $options);
     }
 
     /**
      * Add assets
-     * @param string $assetType The type of asset, 'css' or 'js'
-     * @param string $hook      The hook to register the assets in
-     * @param array  $assets    handle:option pairs
+     * @param string       $assetType The type of asset, 'css' or 'js'
+     * @param string       $hook      The hook to register the assets in
+     * @param string       $handle
+     * @param string|array $options
      * @return self
      * @see Assets::parseAssetOptions()
      */
-    protected function addAssets(string $assetType, string $hook, array $assets): self
+    protected function addAssets(string $assetType, string $hook, string $handle, $options): self
     {
-        add_action($hook, function () use ($assetType, $assets) {
-            foreach ($assets as $handle => $options) {
-                $options = $this->parseAssetOptions($assetType, $options);
+        add_action($hook, function () use ($assetType, $handle, $options) {
+            $options = $this->parseAssetOptions($assetType, $options);
 
-                // Register the asset
-                if ($assetType == 'css') {
-                    wp_enqueue_style($handle, $options['uri'], $options['deps'], $options['ver'], $options['media']);
-                } elseif ($assetType == 'js') {
-                    wp_enqueue_script($handle, $options['uri'], $options['deps'], $options['ver'], $options['footer']);
-                }
+            // Register the asset
+            if ($assetType == 'css') {
+                wp_enqueue_style($handle, $options['uri'], $options['deps'], $options['ver'], $options['media']);
+            } elseif ($assetType == 'js') {
+                wp_enqueue_script($handle, $options['uri'], $options['deps'], $options['ver'], $options['footer']);
             }
         });
 
@@ -93,14 +98,7 @@ class Assets
     /**
      * Parse asset options for registering
      * @param string       $assetType The type of asset, 'css' or 'js'
-     * @param array|string $options   Either an options array, or only a URI (string)
-     * Options:
-     * uri: URI to the file
-     * deps: the assets that have to load before this one (default: none)
-     * For css
-     *   media: the 'media' attribute of the style tag (default: 'all')
-     * For js
-     *   footer: add this script to the header (false) or the footer (true) (default: true)
+     * @param array|string $options   Either an options array, or only a URI
      * @return array
      */
     protected function parseAssetOptions(string $assetType, $options): array
@@ -138,8 +136,10 @@ class Assets
     public function removeJquery(): self
     {
         add_action('init', function () {
+            global $pagenow;
+
             // Don't replace on admin
-            if (! is_admin()) {
+            if (! is_admin() && $pagenow !== 'wp-login.php') {
                 // Remove the normal jQuery include
                 wp_deregister_script('jquery');
             }
@@ -161,12 +161,13 @@ class Assets
             global $pagenow;
 
             // Don't replace on admin
-            if(! is_admin() && $pagenow !== 'wp-login.php') {
+            if (! is_admin() && $pagenow !== 'wp-login.php') {
                 wp_enqueue_script(
                     'jquery',
                     sprintf('//ajax.googleapis.com/ajax/libs/jquery/%s/jquery.min.js', $version),
                     [],
-                    $version
+                    $version,
+                    true
                 );
             }
         });
