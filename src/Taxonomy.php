@@ -53,14 +53,11 @@ class Taxonomy
     protected $postTypes = [];
 
     /**
-     * @param  string $id
-     * @return self
+     * @param string $id The ID of the taxonomy
      */
-    public function setId(string $id): self
+    public function __construct(string $id)
     {
         $this->id = Init::getPrefix() . '_' . $id;
-
-        return $this;
     }
 
     /**
@@ -80,6 +77,18 @@ class Taxonomy
         $this->slug = $slug;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug(): string
+    {
+        if ($this->slug === null) {
+            $this->slug = Utilities::createSlug($this->name);
+        }
+
+        return $this->slug;
     }
 
     /**
@@ -199,10 +208,10 @@ class Taxonomy
     public function getArguments(): array
     {
         return array_replace_recursive([
-            'labels'             => $this->getLabels(),
-            'description'        => $this->description,
-            'rewrite'            => [
-                'slug'         => $this->slug,
+            'labels'      => $this->getLabels(),
+            'description' => $this->description,
+            'rewrite'     => [
+                'slug' => $this->getSlug(),
             ],
         ], $this->arguments);
     }
@@ -213,10 +222,6 @@ class Taxonomy
      */
     public function create(): self
     {
-        if ($this->slug === null) {
-            $this->slug = Utilities::createSlug($this->name);
-        }
-
         add_action('init', function () {
             register_taxonomy($this->id, $this->postTypes, $this->getArguments());
 

@@ -59,15 +59,11 @@ class PostType
     protected $taxonomies = [];
 
     /**
-     * Set the post type ID, will be prefixed
-     * @param  string $id
-     * @return self
+     * @param string $id The ID of the taxonomy
      */
-    public function setId(string $id): self
+    public function __construct(string $id)
     {
         $this->id = Init::getPrefix() . '_' . $id;
-
-        return $this;
     }
 
     /**
@@ -98,6 +94,18 @@ class PostType
         $this->slug = $slug;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug(): string
+    {
+        if ($this->slug === null) {
+            $this->slug = Utilities::createSlug($this->name);
+        }
+
+        return $this->slug;
     }
 
     /**
@@ -228,7 +236,7 @@ class PostType
             'supports' => $this->supports,
             'taxonomies' => $this->taxonomies,
             'rewrite' => [
-                'slug' => $this->slug,
+                'slug' => $this->getSlug(),
             ],
         ], $this->arguments);
     }
@@ -239,11 +247,6 @@ class PostType
      */
     public function create(): self
     {
-        // Derive a slug, if it's not set yet
-        if ($this->slug === null) {
-            $this->slug = Utilities::createSlug($this->name);
-        }
-
         add_action('init', function () {
             register_post_type($this->getId(), $this->getArguments());
         }, 10);
