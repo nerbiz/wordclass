@@ -68,4 +68,37 @@ class Admin
 
         return $this;
     }
+
+    /**
+     * Add a button to the admin bar, for moving its location
+     * @return void
+     */
+    public function addMoveAdminBarButton(): void
+    {
+        // Add the required styling and script
+        $moveBarHandle = Init::getPrefix() . '-admin-bar';
+        (new Assets())
+            ->addThemeCss(
+                $moveBarHandle,
+                Init::getVendorUri('nerbiz/wordclass/includes/css/admin-bar.css')
+            )
+            ->addThemeJs(
+                $moveBarHandle,
+                Init::getVendorUri('nerbiz/wordclass/includes/js/admin-bar.js')
+            );
+
+        add_action('admin_bar_menu', function ($wpAdminBar) {
+            if (! is_admin()) {
+                $wpAdminBar->add_node([
+                    'id' => 'adminbar-location-toggle',
+                    'title' => '<span class="ab-icon dashicons dashicons-arrow-down-alt"></span>'
+                        . __('Move bar', 'wordclass'),
+                    'href' => '#',
+                    'meta' => [
+                        'class' => 'adminbar-location-toggle-button',
+                    ],
+                ]);
+            }
+        }, 100);
+    }
 }
