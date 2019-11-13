@@ -20,9 +20,9 @@ class Mail
     protected $encryptionKey;
 
     /**
-     * @param string|null $encryptionKey The key to encrypt and decrypt the SMTP password with
+     * @param string $encryptionKey The key to encrypt and decrypt the SMTP password with
      */
-    public function __construct(?string $encryptionKey = null)
+    public function __construct(string $encryptionKey = SECURE_AUTH_KEY)
     {
         // Include the PHPMailer classfiles
         require_once ABSPATH . WPINC . '/class-phpmailer.php';
@@ -70,7 +70,7 @@ class Mail
             ])
             ->create();
 
-        $crypto = new Crypto($this->encryptionKey ?? SECURE_AUTH_KEY);
+        $crypto = new Crypto($this->encryptionKey);
         $passwordField = Init::getPrefix() . '_smtp_password';
         $enableTestField = Init::getPrefix() . '_smtp_test_enable';
 

@@ -57,7 +57,7 @@ if (! function_exists('nw_get_option')) {
      * @param string $name
      * @return string|null
      * @throws Exception
-     * @see Helpers::getOption()
+     * @see Options::get()
      */
     function nw_get_option(string $name): ?string
     {

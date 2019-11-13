@@ -22,7 +22,7 @@ class Crypto
      * @param string $encryptionKey
      * @throws Exception
      */
-    public function __construct(string $encryptionKey)
+    public function __construct(string $encryptionKey = SECURE_AUTH_KEY)
     {
         $this->encryptionKey = $encryptionKey;
     }

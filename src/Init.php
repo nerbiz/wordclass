@@ -41,12 +41,12 @@ class Init
     }
 
     /**
-     * @param string $vendorUri
+     * @param string $vendorPath
      * @return void
      */
-    public static function setVendorPath(string $vendorUri): void
+    public static function setVendorPath(string $vendorPath): void
     {
-        static::$vendorPath = rtrim($vendorUri, '/') . '/';
+        static::$vendorPath = rtrim($vendorPath, '/') . '/';
     }
 
     /**
