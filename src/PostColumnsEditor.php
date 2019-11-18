@@ -171,14 +171,18 @@ class PostColumnsEditor
             // Then add columns that need to be placed after another
             $adjustedColumns = [];
             foreach ($this->columnsToAdd as $postColumn) {
-                if ($postColumn->getAfter() !== null) {
-                    foreach ($columns as $key => $column) {
-                        $adjustedColumns[$key] = $column;
+                foreach ($columns as $key => $column) {
+                    // Duplicate the column into the new array
+                    $adjustedColumns[$key] = $column;
 
-                        // Insert the new column after the 'title' column
-                        if ($key === $postColumn->getAfter()) {
-                            $adjustedColumns[$postColumn->getId()] = $postColumn->getLabel();
-                        }
+                    $after = $postColumn->getAfter();
+                    if ($after === null) {
+                        continue;
+                    }
+
+                    // Insert the new column after another column
+                    if ($key === $after) {
+                        $adjustedColumns[$postColumn->getId()] = $postColumn->getLabel();
                     }
                 }
             }
@@ -213,7 +217,7 @@ class PostColumnsEditor
                     $renderFunction = $postColumn->getRenderFunction();
 
                     if (is_callable($renderFunction)) {
-                        echo $renderFunction($postId);
+                        echo call_user_func($renderFunction, $postId);
                     }
                 }
             }
