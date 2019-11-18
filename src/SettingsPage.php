@@ -142,6 +142,9 @@ class SettingsPage
             wp_die(__('Invalid nonce value, please refresh the page and try again.', 'wordclass'));
         }
 
+        // Strip slashes
+        $_POST = wp_unslash($_POST);
+
         // Store all submitted values
         foreach ($this->sections as $section) {
             foreach ($section->getFields() as $field) {
