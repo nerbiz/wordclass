@@ -15,9 +15,9 @@ class PostColumn
     protected $label;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $orderBy = 'date';
+    protected $orderBy = null;
 
     /**
      * @var string|null
@@ -56,9 +56,9 @@ class PostColumn
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getOrderBy(): string
+    public function getOrderBy(): ?string
     {
         return $this->orderBy;
     }

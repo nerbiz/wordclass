@@ -229,7 +229,10 @@ class PostColumnsEditor
         // Add the sorting names
         add_filter('manage_edit-' . $this->postType . '_sortable_columns', function (array $columns) {
             foreach ($this->columnsToAdd as $postColumn) {
-                $columns[$postColumn->getId()] = $postColumn->getOrderBy();
+                $orderBy = $postColumn->getOrderBy();
+                if ($orderBy !== null) {
+                    $columns[$postColumn->getId()] = $orderBy;
+                }
             }
 
             return $columns;
