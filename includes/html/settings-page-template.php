@@ -43,7 +43,7 @@ $currentTab = $_GET['tab'] ?? null;
     </h2>
 
     <form method="POST">
-        <?php wp_nonce_field($settingsPage->getPageSlug()); ?>
+        <?php wp_nonce_field(); ?>
 
         <?php // Output sections, first is visible at page load ?>
         <?php $first = true; ?>
@@ -82,7 +82,7 @@ $currentTab = $_GET['tab'] ?? null;
             </div>
         <?php endforeach; ?>
 
-        <?php submit_button(__('Save settings', 'wordclass')); ?>
+        <?php submit_button(__('Save settings', 'wordclass'), 'primary', 'submit-nw-settings-page'); ?>
     </form>
 </div>
 

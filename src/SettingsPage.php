@@ -81,7 +81,9 @@ class SettingsPage
     {
         add_action('admin_menu', function () {
             // Store values, if submitted
-            $this->storeValues();
+            if (isset($_POST['submit-nw-settings-page'])) {
+                $this->storeValues();
+            }
 
             // The function that renders the settings page
             $renderFunction = function () {
@@ -136,9 +138,12 @@ class SettingsPage
         }
 
         // Check if the nonce is valid
-        if (! wp_verify_nonce($_POST['_wpnonce'] ?? '', $this->getPageSlug())) {
+        if (! wp_verify_nonce($_POST['_wpnonce'] ?? '')) {
             wp_die(__('Invalid nonce value, please refresh the page and try again.', 'wordclass'));
         }
+
+        // Strip slashes
+        $_POST = wp_unslash($_POST);
 
         // Store all submitted values
         foreach ($this->sections as $section) {
