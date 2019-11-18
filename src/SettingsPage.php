@@ -2,8 +2,6 @@
 
 namespace Nerbiz\Wordclass;
 
-use Nerbiz\Wordclass\InputFields\AbstractInputField;
-
 class SettingsPage
 {
     /**
@@ -16,7 +14,7 @@ class SettingsPage
      * The slug of the parent page, if this needs to be a subpage
      * @var string|null
      */
-    protected $parentSlug = null;
+    protected $parentSlug;
 
     /**
      * The settings page slug, will be prepended with prefix
@@ -47,118 +45,6 @@ class SettingsPage
      * @var SettingsPageSection[]
      */
     protected $sections = [];
-
-    /**
-     * Add a settings section to the settings page
-     * @param  string               $id       Section ID, prefix will be prepended
-     * @param  string               $title
-     * @param  string|null          $subtitle
-     * @param  AbstractInputField[] $fields   Input fields for the settings
-     * @return self
-     */
-    public function addSection(
-        string $id,
-        string $title,
-        ?string $subtitle = null,
-        array $fields = []
-    ): self {
-        // Use the section ID as the input field name prefix
-        foreach ($fields as $inputField) {
-            $inputField->setNamePrefix($id);
-        }
-
-        // Add the section
-        $this->sections[] = new SettingsPageSection($id, $title, $subtitle, $fields);
-
-        return $this;
-    }
-
-    /**
-     * Add the settings page
-     * @return self
-     */
-    public function create(): self
-    {
-        add_action('admin_menu', function () {
-            // Store values, if submitted
-            if (isset($_POST['submit-nw-settings-page'])) {
-                $this->storeValues();
-            }
-
-            // The function that renders the settings page
-            $renderFunction = function () {
-                // For use in the template
-                $settingsPage = $this;
-                require __DIR__ . '/../includes/html/settings-page-template.php';
-            };
-
-            // Add the settings page
-            $pageSlug = Init::getPrefix() . '-' . $this->getPageSlug();
-            if ($this->parentSlug !== null) {
-                // As a subpage, if a parent slug is given
-                add_submenu_page(
-                    $this->parentSlug,
-                    $this->pageTitle,
-                    $this->pageTitle,
-                    $this->capability,
-                    $pageSlug,
-                    $renderFunction
-                );
-            } else {
-                // Or as a separate page
-                add_menu_page(
-                    $this->pageTitle,
-                    $this->pageTitle,
-                    $this->capability,
-                    $pageSlug,
-                    $renderFunction,
-                    $this->icon,
-                    $this->menuPosition
-                );
-            }
-        }, 100);
-
-        return $this;
-    }
-
-    /**
-     * Store submitted values
-     * @return void
-     */
-    protected function storeValues(): void
-    {
-        // Return when POST is empty
-        if (count($_POST) < 1) {
-            return;
-        }
-
-        // Check if the current user is allowed to update the values
-        if (! current_user_can($this->capability)) {
-            wp_die(__("You don't have the right permissions to update these settings.", 'wordclass'));
-        }
-
-        // Check if the nonce is valid
-        if (! wp_verify_nonce($_POST['_wpnonce'] ?? '')) {
-            wp_die(__('Invalid nonce value, please refresh the page and try again.', 'wordclass'));
-        }
-
-        // Strip slashes
-        $_POST = wp_unslash($_POST);
-
-        // Store all submitted values
-        foreach ($this->sections as $section) {
-            foreach ($section->getFields() as $field) {
-                $name = $field->getPrefixedName();
-
-                if (isset($_POST[$name])) {
-                    update_option($name, $_POST[$name]);
-                }
-            }
-        }
-
-        // Show the default 'Settings saved' message
-        add_settings_error('general', 'settings_updated', __('Settings saved.'), 'updated');
-    }
 
     /**
      * @return string
@@ -242,6 +128,42 @@ class SettingsPage
     }
 
     /**
+     * Set the capability based on a role
+     * @param string $role
+     * @return self
+     */
+    public function setCapabilityByRole(string $role): self
+    {
+        switch ($role) {
+            case 'superadmin':
+            case 'super admin':
+            case 'super-admin':
+                $this->capability = 'manage_sites';
+                break;
+            case 'admin':
+            case 'administrator':
+                $this->capability = 'manage_options';
+                break;
+            case 'editor':
+                $this->capability = 'edit_pages';
+                break;
+            case 'author':
+                $this->capability = 'publish_posts';
+                break;
+            case 'contributor':
+                $this->capability = 'edit_posts';
+                break;
+            case 'subscriber':
+                $this->capability = 'read';
+                break;
+            default:
+                $this->capability = 'manage_options';
+        }
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getIcon(): string
@@ -280,10 +202,115 @@ class SettingsPage
     }
 
     /**
+     * Add a settings section to the settings page
+     * @param SettingsPageSection $section
+     * @return self
+     */
+    public function addSection(SettingsPageSection $section): self
+    {
+        // Use the section ID as the input field name prefix
+        foreach ($section->getFields() as $field) {
+            $field->setNamePrefix($section->getId());
+        }
+
+        $this->sections[] = $section;
+
+        return $this;
+    }
+
+    /**
      * @return SettingsPageSection[]
      */
     public function getSections(): array
     {
         return $this->sections;
+    }
+
+    /**
+     * Store submitted values
+     * @return void
+     */
+    protected function storeValues(): void
+    {
+        // Return when POST is empty
+        if (count($_POST) < 1) {
+            return;
+        }
+
+        // Check if the current user is allowed to update the values
+        if (! current_user_can($this->capability)) {
+            wp_die(__("You don't have the right permissions to update these settings.", 'wordclass'));
+        }
+
+        // Check if the nonce is valid
+        if (! wp_verify_nonce($_POST['_wpnonce'] ?? '')) {
+            wp_die(__('Invalid nonce value, please refresh the page and try again.', 'wordclass'));
+        }
+
+        // Strip slashes
+        $_POST = wp_unslash($_POST);
+
+        // Store all submitted values
+        foreach ($this->sections as $section) {
+            foreach ($section->getFields() as $field) {
+                $name = $field->getPrefixedName();
+
+                if (isset($_POST[$name])) {
+                    update_option($name, $_POST[$name]);
+                }
+            }
+        }
+
+        // Show the default 'Settings saved' message
+        add_settings_error('general', 'settings_updated', __('Settings saved.'), 'updated');
+    }
+
+    /**
+     * Add the settings page
+     * @return self
+     */
+    public function create(): self
+    {
+        add_action('admin_menu', function () {
+            // Store values, if submitted
+            if (isset($_POST['submit-nw-settings-page'])) {
+                $this->storeValues();
+            }
+
+            // The function that renders the settings page
+            $renderFunction = function () {
+                // For use in the template
+                $settingsPage = $this;
+                require __DIR__ . '/../includes/html/settings-page-template.php';
+            };
+
+            // Add the settings page
+            $pageSlug = Init::getPrefix() . '-' . $this->getPageSlug();
+            if ($this->parentSlug !== null) {
+                // As a subpage, if a parent slug is given
+                add_submenu_page(
+                    $this->parentSlug,
+                    $this->pageTitle,
+                    $this->pageTitle,
+                    $this->capability,
+                    $pageSlug,
+                    $renderFunction,
+                    $this->menuPosition
+                );
+            } else {
+                // Or as a separate page
+                add_menu_page(
+                    $this->pageTitle,
+                    $this->pageTitle,
+                    $this->capability,
+                    $pageSlug,
+                    $renderFunction,
+                    $this->icon,
+                    $this->menuPosition
+                );
+            }
+        }, 100);
+
+        return $this;
     }
 }
