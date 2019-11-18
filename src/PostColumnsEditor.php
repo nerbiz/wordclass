@@ -2,6 +2,8 @@
 
 namespace Nerbiz\Wordclass;
 
+use WP_Query;
+
 class PostColumnsEditor
 {
     /**
@@ -53,28 +55,28 @@ class PostColumnsEditor
         $this->postType = $postType;
 
         if (! static::$sortingHookAdded) {
-            add_action('pre_get_posts', function (\WP_Query $query) {
-                if (! $this->onCurrentPostTypeScreen($query)) {
+            static::$sortingHookAdded = true;
+
+            add_action('pre_get_posts', function (WP_Query $query) {
+                if (! $this->isOnAdminPage($query)) {
                     return;
                 }
 
                 // Call the custom sorting callback, if it exists
                 $orderBy = $query->get('orderby');
                 if (isset(static::$sortingCallbacks[$orderBy])) {
-                    static::$sortingCallbacks[$orderBy]($query);
+                    call_user_func(static::$sortingCallbacks[$orderBy], $query);
                 }
             }, 10);
-
-            static::$sortingHookAdded = true;
         }
     }
 
     /**
-     * Indicates whether the current page is the admin page for this post type
-     * @param \WP_Query $query
+     * Indicates whether the current page is the admin overview page for this post type
+     * @param WP_Query $query
      * @return bool
      */
-    protected function onCurrentPostTypeScreen(\WP_Query $query): bool
+    protected function isOnAdminPage(WP_Query $query): bool
     {
         global $pagenow;
         $currentPostType = $query->get('post_type');
@@ -162,29 +164,33 @@ class PostColumnsEditor
             // First add the columns that need to be placed at the end
             foreach ($this->columnsToAdd as $postColumn) {
                 if ($postColumn->getAfter() === null) {
-                    $columns[$postColumn->getName()] = $postColumn->getLabel();
+                    $columns[$postColumn->getId()] = $postColumn->getLabel();
                 }
             }
 
             // Then add columns that need to be placed after another
             $adjustedColumns = [];
             foreach ($this->columnsToAdd as $postColumn) {
-                if ($postColumn->getAfter() !== null) {
-                    foreach ($columns as $key => $column) {
-                        $adjustedColumns[$key] = $column;
+                foreach ($columns as $key => $column) {
+                    // Duplicate the column into the new array
+                    $adjustedColumns[$key] = $column;
 
-                        // Insert the new column after the 'title' column
-                        if ($key === $postColumn->getAfter()) {
-                            $adjustedColumns[$postColumn->getName()] = $postColumn->getLabel();
-                        }
+                    $after = $postColumn->getAfter();
+                    if ($after === null) {
+                        continue;
+                    }
+
+                    // Insert the new column after another column
+                    if ($key === $after) {
+                        $adjustedColumns[$postColumn->getId()] = $postColumn->getLabel();
                     }
                 }
             }
 
             // Add any missing columns, in case the 'after' column was not found
             foreach ($this->columnsToAdd as $postColumn) {
-                if (! isset($adjustedColumns[$postColumn->getName()])) {
-                    $adjustedColumns[$postColumn->getName()] = $postColumn->getLabel();
+                if (! isset($adjustedColumns[$postColumn->getId()])) {
+                    $adjustedColumns[$postColumn->getId()] = $postColumn->getLabel();
                 }
             }
 
@@ -205,13 +211,13 @@ class PostColumnsEditor
      */
     protected function applyRenderFunctions(): void
     {
-        add_action('manage_' . $this->postType . '_posts_custom_column', function (string $column, int $postId) {
+        add_action('manage_' . $this->postType . '_posts_custom_column', function (string $columnId, int $postId) {
             foreach ($this->columnsToAdd as $postColumn) {
-                if ($column === $postColumn->getName()) {
+                if ($columnId === $postColumn->getId()) {
                     $renderFunction = $postColumn->getRenderFunction();
 
                     if (is_callable($renderFunction)) {
-                        echo $renderFunction($postId);
+                        echo call_user_func($renderFunction, $postId);
                     }
                 }
             }
@@ -227,7 +233,10 @@ class PostColumnsEditor
         // Add the sorting names
         add_filter('manage_edit-' . $this->postType . '_sortable_columns', function (array $columns) {
             foreach ($this->columnsToAdd as $postColumn) {
-                $columns[$postColumn->getName()] = $postColumn->getOrderBy();
+                $orderBy = $postColumn->getOrderBy();
+                if ($orderBy !== null) {
+                    $columns[$postColumn->getId()] = $orderBy;
+                }
             }
 
             return $columns;
@@ -244,8 +253,8 @@ class PostColumnsEditor
             return;
         }
 
-        add_action('pre_get_posts', function (\WP_Query $query) {
-            if (! $this->onCurrentPostTypeScreen($query)) {
+        add_action('pre_get_posts', function (WP_Query $query) {
+            if (! $this->isOnAdminPage($query)) {
                 return;
             }
 

@@ -15,7 +15,7 @@ class Mail
 {
     /**
      * The key to encrypt and decrypt the SMTP password with
-     * @var string
+     * @var string|null
      */
     protected $encryptionKey;
 
@@ -70,7 +70,11 @@ class Mail
             ])
             ->create();
 
-        $crypto = new Crypto($this->encryptionKey ?? SECURE_AUTH_KEY);
+        if ($this->encryptionKey !== null) {
+            $crypto = new Crypto($this->encryptionKey);
+        } else {
+            $crypto = new Crypto();
+        }
         $passwordField = Init::getPrefix() . '_smtp_password';
         $enableTestField = Init::getPrefix() . '_smtp_test_enable';
 

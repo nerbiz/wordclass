@@ -41,12 +41,12 @@ class Init
     }
 
     /**
-     * @param string $vendorUri
+     * @param string $vendorPath
      * @return void
      */
-    public static function setVendorPath(string $vendorUri): void
+    public static function setVendorPath(string $vendorPath): void
     {
-        static::$vendorPath = rtrim($vendorUri, '/') . '/';
+        static::$vendorPath = rtrim($vendorPath, '/') . '/';
     }
 
     /**
@@ -153,14 +153,37 @@ class Init
     public function defineConstants(): self
     {
         // The absolute paths to the template/stylesheet directory
-        define(strtoupper(static::$prefix) . '_THEME_PATH', get_template_directory() . '/');
-        define(strtoupper(static::$prefix) . '_TEMPLATE_PATH', constant(strtoupper(static::$prefix) . '_THEME_PATH'));
-        define(strtoupper(static::$prefix) . '_STYLESHEET_PATH', get_stylesheet_directory() . '/');
+        define(
+            strtoupper(static::$prefix) . '_THEME_PATH',
+            get_template_directory() . '/'
+        );
+
+        define(
+            strtoupper(static::$prefix) . '_TEMPLATE_PATH',
+            constant(strtoupper(static::$prefix) . '_THEME_PATH')
+        );
+
+        define(
+            strtoupper(static::$prefix) . '_STYLESHEET_PATH',
+            get_stylesheet_directory() . '/'
+        );
+
 
         // The URI paths to the template/stylesheet directory
-        define(strtoupper(static::$prefix) . '_THEME_URI', get_template_directory_uri() . '/');
-        define(strtoupper(static::$prefix) . '_TEMPLATE_URI', constant(strtoupper(static::$prefix) . '_THEME_URI'));
-        define(strtoupper(static::$prefix) . '_STYLESHEET_URI', get_stylesheet_directory_uri() . '/');
+        define(
+            strtoupper(static::$prefix) . '_THEME_URI',
+            get_template_directory_uri() . '/'
+        );
+
+        define(
+            strtoupper(static::$prefix) . '_TEMPLATE_URI',
+            constant(strtoupper(static::$prefix) . '_THEME_URI')
+        );
+
+        define(
+            strtoupper(static::$prefix) . '_STYLESHEET_URI',
+            get_stylesheet_directory_uri() . '/'
+        );
 
         return $this;
     }
