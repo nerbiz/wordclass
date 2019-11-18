@@ -1,5 +1,18 @@
 # Release notes
 
+## 2.0.0-beta.4
+#### 2019-11-18
+
+* Moved option-related methods from Helpers to the new Options class.
+* Moved AdminBar code to the Admin class, and removed AdminBar.
+* Crypto now uses a fixed cipher ('aes-256-cbc').
+* Crypto now has a default encryption key (the SECURE_AUTH_KEY constant), though it's recommended to generate a new one.
+* Added a constructor to PostType and Taxonomy.
+* More logical code in PostType and Txonomy, and renamed create() to register().
+* Custom post columns are now not sortable by default.
+* Better readable code, more logical parameters.
+* Other small improvements.
+
 ## 2.0.0-beta.3
 #### 2019-11-11
 
