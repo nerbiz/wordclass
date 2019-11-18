@@ -17,16 +17,16 @@ class Taxonomy
     protected $slug;
 
     /**
-     * The name of the taxonomy
-     * @var string
-     */
-    protected $name;
-
-    /**
      * The singular name of the taxonomy
      * @var string
      */
     protected $singularName;
+
+    /**
+     * The pluralName of the taxonomy
+     * @var string
+     */
+    protected $pluralName;
 
     /**
      * The description of the taxonomy
@@ -41,16 +41,16 @@ class Taxonomy
     protected $labels = [];
 
     /**
-     * The arguments of the taxonomy
-     * @var array
-     */
-    protected $arguments = [];
-
-    /**
      * The post types that have this taxonomy
      * @var array
      */
     protected $postTypes = [];
+
+    /**
+     * The arguments of the taxonomy
+     * @var array
+     */
+    protected $arguments = [];
 
     /**
      * @param string $id The ID of the taxonomy
@@ -84,22 +84,11 @@ class Taxonomy
      */
     public function getSlug(): string
     {
-        if ($this->slug === null) {
+        if (! isset($this->slug)) {
             $this->slug = Utilities::createSlug($this->name);
         }
 
         return $this->slug;
-    }
-
-    /**
-     * @param  string $name
-     * @return self
-     */
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
     }
 
     /**
@@ -109,6 +98,17 @@ class Taxonomy
     public function setSingularName(string $singularName): self
     {
         $this->singularName = $singularName;
+
+        return $this;
+    }
+
+    /**
+     * @param  string $name
+     * @return self
+     */
+    public function setPluralName(string $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }
@@ -131,42 +131,6 @@ class Taxonomy
     public function setLabels(array $labels): self
     {
         $this->labels = $labels;
-
-        return $this;
-    }
-
-    /**
-     * @param  array $arguments
-     * @return self
-     */
-    public function setArguments(array $arguments): self
-    {
-        $this->arguments = $arguments;
-
-        return $this;
-    }
-
-    /**
-     * @param  string|array|PostType $postTypes
-     * @return self
-     */
-    public function setPostTypes($postTypes): self
-    {
-        if (! is_array($postTypes)) {
-            $postTypes = [$postTypes];
-        }
-
-        // Make sure the post types are a string
-        foreach ($postTypes as $key => $type) {
-            // Post type objects can be passed
-            if ($type instanceof PostType) {
-                $postTypes[$key] = $type->getId();
-            } else {
-                $postTypes[$key] = (string) $type;
-            }
-        }
-
-        $this->postTypes = $postTypes;
 
         return $this;
     }
@@ -202,6 +166,42 @@ class Taxonomy
     }
 
     /**
+     * @param  string|array|PostType $postTypes
+     * @return self
+     */
+    public function setPostTypes($postTypes): self
+    {
+        if (! is_array($postTypes)) {
+            $postTypes = [$postTypes];
+        }
+
+        // Make sure the post types are a string
+        foreach ($postTypes as $key => $type) {
+            // Post type objects can be passed
+            if ($type instanceof PostType) {
+                $postTypes[$key] = $type->getId();
+            } else {
+                $postTypes[$key] = (string) $type;
+            }
+        }
+
+        $this->postTypes = $postTypes;
+
+        return $this;
+    }
+
+    /**
+     * @param  array $arguments
+     * @return self
+     */
+    public function setArguments(array $arguments): self
+    {
+        $this->arguments = $arguments;
+
+        return $this;
+    }
+
+    /**
      * Get the default arguments, merged with custom ones
      * @return array
      */
@@ -217,10 +217,10 @@ class Taxonomy
     }
 
     /**
-     * Add the taxonomy
+     * Register the taxonomy
      * @return self
      */
-    public function create(): self
+    public function register(): self
     {
         add_action('init', function () {
             register_taxonomy($this->id, $this->postTypes, $this->getArguments());
