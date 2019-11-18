@@ -1,5 +1,11 @@
 # Release notes
 
+## 2.0.0-beta.5
+#### 2019-11-18
+
+* Fixed: SettingsPage nonce broke saving of other settings.
+* Fixed: settings values were adding slashes.
+
 ## 2.0.0-beta.4
 #### 2019-11-18
 
