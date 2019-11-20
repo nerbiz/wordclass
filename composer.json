@@ -15,8 +15,7 @@
   },
   "require": {
     "php": "^7.1",
-    "tgmpa/tgm-plugin-activation": "^2.6",
-    "tinymce/tinymce": "^4.6"
+    "tgmpa/tgm-plugin-activation": "^2.6"
   },
   "support" : {
     "docs": "https://github.com/nerbiz/wordclass"
