@@ -23,7 +23,9 @@ If you have some ideas about expanding or improving this project, I'm open for s
 
 ## Credits
 
-This project uses [TGM Plugin Activation](https://github.com/tgmpa/tgm-plugin-activation).
+These are the packages/plugins this project uses:
+* [TGM Plugin Activation](https://github.com/tgmpa/tgm-plugin-activation)
+* [TinyMCE](https://github.com/tinymce/tinymce)
 
 ## License
 

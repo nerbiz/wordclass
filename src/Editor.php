@@ -2,9 +2,6 @@
 
 namespace Nerbiz\Wordclass;
 
-use Exception;
-use InvalidArgumentException;
-
 class Editor
 {
     /**
@@ -186,63 +183,6 @@ class Editor
         }
 
         return $this;
-    }
-
-    /**
-     * Add a shortcodes dropdown to a TinyMCE editor toolbar
-     * @param  array[Shortcode] $shortcodes A list of shortcodes to add as buttons
-     * @param  string|null $after                The name of the button to place the new button after
-     *   'first' places the button as the first one
-     *   null places the button at the end
-     * @param  int         $toolbarNumber        The toolbar number, 1 = default, 2/3/4 = advanced
-     * @return self
-     * @throws InvalidArgumentException If the array contains at least 1 item that isn't a Shortcode object
-     * @throws Exception If there are no shortcodes to add to the toolbar
-     */
-    public function addShortcodesDropdown(array $shortcodes, ?string $after = null, int $toolbarNumber = 1): self
-    {
-        $allDialogProperties = [];
-        foreach ($shortcodes as $shortcode) {
-            // The array needs to contain Shortcode objects
-            if (! $shortcode instanceof Shortcode) {
-                throw new InvalidArgumentException(sprintf(
-                    "%s() expects parameter 'shortcodes' to be an array of Shortcode objects, '%s' given",
-                    __METHOD__,
-                    is_object($shortcode) ? get_class($shortcode) : gettype($shortcode)
-                ));
-            }
-
-            // Add the shortcode properties, if at least a label is set
-            $dialogProperties = $shortcode->getModalDialogProperties();
-            if (trim($dialogProperties['optionLabel']) !== '') {
-                $allDialogProperties[] = $dialogProperties;
-            }
-        }
-
-        // There needs to be at least 1 shortcode to add
-        if (count($allDialogProperties) === 0) {
-            throw new Exception(sprintf(
-                "%s(): there are no shortcodes to add to the toolbar, set at least 1 with an option label",
-                __METHOD__
-            ));
-        }
-
-        // Prepare and add the plugin to TinyMCE
-        add_action('admin_enqueue_scripts', function () use ($allDialogProperties) {
-            // Create a JavaScript array with shortcode properties
-            echo '<script>window.wordclassShortcodeButtons = ' . json_encode($allDialogProperties) . ';</script>' . PHP_EOL;
-        });
-
-        // Add the shortcode buttons plugin
-        add_filter('mce_external_plugins', function ($plugins) {
-            $pluginPath = 'nerbiz/wordclass/includes/js/tinymce/plugins/wcshortcodebuttons/plugin.js';
-            $plugins['wc_shortcodebuttons'] = Init::getVendorUri($pluginPath);
-
-            return $plugins;
-        });
-
-        // Add the buttons to the editor
-        return $this->addButton('wc_shortcodes', $after, $toolbarNumber);
     }
 
     /**
