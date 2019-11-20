@@ -13,9 +13,7 @@ composer require nerbiz/wordclass
 
 ## Usage
 
-The docs are outdated, I'm planning on making a wiki for the new version 1.x. Please note that the update from version 0.x to 1.x has a ton of breaking changes, which is why it's a major release.
-
-All classes have proper DocBlocks, so that'll have to do for for the time being.
+Read the [Wiki pages](https://github.com/nerbiz/wordclass/wiki) to get started. They are based on version 2.0 though, which is still in beta, but seems stable for a full release.
 
 ## Contributing
 
