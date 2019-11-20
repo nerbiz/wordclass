@@ -85,9 +85,9 @@ class Assets
             $options = $this->parseAssetOptions($assetType, $options);
 
             // Register the asset
-            if ($assetType == 'css') {
+            if ($assetType === 'css') {
                 wp_enqueue_style($handle, $options['uri'], $options['deps'], $options['ver'], $options['media']);
-            } elseif ($assetType == 'js') {
+            } elseif ($assetType === 'js') {
                 wp_enqueue_script($handle, $options['uri'], $options['deps'], $options['ver'], $options['footer']);
             }
         });
@@ -114,13 +114,13 @@ class Assets
         }
 
         // Merge the options with default ones
-        if ($assetType == 'css') {
+        if ($assetType === 'css') {
             return array_replace([
                 'deps'  => [],
                 'ver'   => null,
                 'media' => 'all',
             ], $options);
-        } elseif ($assetType == 'js') {
+        } elseif ($assetType === 'js') {
             return array_replace([
                 'deps'  => [],
                 'ver'   => null,

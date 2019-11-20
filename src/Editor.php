@@ -47,7 +47,7 @@ class Editor
      * Add a button to the TinyMCE editor
      * @param  string      $name          The name of the button
      * @param  string|null $after         The name of the button to place the new button after
-     *   'first' places the button as the first one
+     *   '_first' places the button as the first one
      *   null places the button at the end
      * @param  int         $toolbarNumber The toolbar number, 1 = default, 2/3/4 = advanced
      * @return self
@@ -60,7 +60,7 @@ class Editor
             // Decide where to place the button
             if ($after === null) {
                 $buttons[] = $name;
-            } elseif ($after == 'first') {
+            } elseif ($after === '_first') {
                 array_unshift($buttons, $name);
             }
 
@@ -137,7 +137,7 @@ class Editor
      * Move a button, optionally from one toolbar to another
      * @param  string      $name              The name of the button
      * @param  string|null $after             The name of the button to place the new button after
-     *   'first' places the button as the first one
+     *   '_first' places the button as the first one
      *   null places the button at the end
      * @param  int         $fromToolbarNumber The toolbar number, 1 = default, 2/3/4 = advanced
      * @param  int         $toToolbarNumber   The toolbar to move the button to, same toolbar if null
@@ -159,7 +159,7 @@ class Editor
      * Add a TinyMCE plugin to the editor
      * @param  string      $name          The name of the plugin
      * @param  string|null $after         The name of the button to place the new button after
-     *   'first' places the button as the first one
+     *   '_first' places the button as the first one
      *   null places the button at the end
      * @param  int         $toolbarNumber The toolbar number, 1 = default, 2/3/4 = advanced, false to not add
      * @return self

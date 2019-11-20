@@ -57,9 +57,9 @@ class Admin
     public function footerText(string $html, ?string $place = null): self
     {
         add_filter('admin_footer_text', function ($current) use ($html, $place) {
-            if ($place == 'before') {
+            if ($place === 'before') {
                 return $html . ' ' . $current;
-            } elseif ($place == 'after') {
+            } elseif ($place === 'after') {
                 return $current . ' ' . $html;
             } else {
                 return $html;
