@@ -6,51 +6,26 @@ class Theme
 {
     /**
      * Enable the featured image on post edit screens
-     * @param string|array|null $postTypes Enable for specific post types only
+     * @param array|null $postTypes Array of strings and/or PostType objects,
+     *                              enable for specific post types only
      * @return self
      */
-    public function enableFeaturedImages($postTypes = null): self
+    public function enableFeaturedImages(array $postTypes = null): self
     {
-        if ($postTypes !== null) {
-            if (!is_array($postTypes)) {
-                $postTypes = [$postTypes];
-            }
-        }
-
         add_action('after_setup_theme', function () use ($postTypes) {
             // Enable for all post types
             if ($postTypes === null) {
                 add_theme_support('post-thumbnails');
             } else {
                 // Enable only for the give post types
-                foreach ($postTypes as $postType) {
-                    add_post_type_support($postType, 'post-thumbnails');
+                foreach ($postTypes as $key => $postType) {
+                    if ($postType instanceof PostType) {
+                        $postTypes[$key] = $postType->getId();
+                    }
                 }
+
+                add_theme_support('post-thumbnails', $postTypes);
             }
-        });
-
-        return $this;
-    }
-
-    /**
-     * Allow the use of HTML5 in core Wordpress features
-     * @param  array $features The list of features to enable HTML5 for
-     * @return self
-     */
-    public function enableHtml5Support(array $features = null): self
-    {
-        // By default, all features are HTML5-enabled
-        if ($features === null) {
-            $features = ['caption', 'comment-form', 'comment-list', 'gallery', 'search-form'];
-        }
-
-        // Make sure the features are an array
-        if (!is_array($features)) {
-            $features = [$features];
-        }
-
-        add_action('after_setup_theme', function () use ($features) {
-            add_theme_support('html5', $features);
         });
 
         return $this;
@@ -67,6 +42,21 @@ class Theme
     {
         add_action('after_setup_theme', function () use ($width, $height, $crop) {
             set_post_thumbnail_size($width, $height, $crop);
+        });
+
+        return $this;
+    }
+
+    /**
+     * Allow the use of HTML5 in core Wordpress features
+     * @param  array $features The list of features to enable HTML5 for
+     * @return self
+     */
+    public function enableHtml5Support(
+        array $features = ['caption', 'comment-form', 'comment-list', 'gallery', 'search-form']
+    ): self {
+        add_action('after_setup_theme', function () use ($features) {
+            add_theme_support('html5', $features);
         });
 
         return $this;
