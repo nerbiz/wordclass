@@ -1,5 +1,16 @@
 # Release notes
 
+## 2.0.0-beta.6
+#### 2019-11-20
+
+* Renamed 'first' in Editor to '_first', to prevent naming conflicts.
+* Yoast::addBreadcrumb() now supports PostType objects.
+* Webpack is now completely static, and renamed its methods.
+* Removed Shortcode, Premade\Shortcode, Editor::addShortcodesDropdown() and the custom TinyMCE plugin for that dropdown.
+* Removed a couple of Utilities methods.
+* Small improvements to code, making it better or more logical.
+* SettingsPage capability required for working with settings pages can now be set by role name.
+
 ## 2.0.0-beta.5
 #### 2019-11-18
 
