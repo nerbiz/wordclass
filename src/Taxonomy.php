@@ -23,7 +23,7 @@ class Taxonomy
     protected $singularName;
 
     /**
-     * The pluralName of the taxonomy
+     * The plural name of the taxonomy
      * @var string
      */
     protected $pluralName;
@@ -85,7 +85,7 @@ class Taxonomy
     public function getSlug(): string
     {
         if (! isset($this->slug)) {
-            $this->slug = Utilities::createSlug($this->name);
+            $this->slug = Utilities::createSlug($this->pluralName);
         }
 
         return $this->slug;
@@ -103,12 +103,12 @@ class Taxonomy
     }
 
     /**
-     * @param  string $name
+     * @param  string $pluralName
      * @return self
      */
-    public function setPluralName(string $name): self
+    public function setPluralName(string $pluralName): self
     {
-        $this->name = $name;
+        $this->pluralName = $pluralName;
 
         return $this;
     }
@@ -142,10 +142,10 @@ class Taxonomy
     public function getLabels(): array
     {
         return array_replace_recursive([
-            'name'                       => $this->name,
+            'name'                       => $this->pluralName,
             'singular_name'              => $this->singularName,
-            'menu_name'                  => $this->name,
-            'all_items'                  => sprintf(__('All %s', 'wordclass'), $this->name),
+            'menu_name'                  => $this->pluralName,
+            'all_items'                  => sprintf(__('All %s', 'wordclass'), $this->pluralName),
             'parent_item'                => sprintf(__('Parent %s', 'wordclass'), $this->singularName),
             'parent_item_colon'          => sprintf(__('Parent %s:', 'wordclass'), $this->singularName),
             'new_item_name'              => sprintf(__('New %s name', 'wordclass'), $this->singularName),
@@ -153,28 +153,25 @@ class Taxonomy
             'edit_item'                  => sprintf(__('Edit %s', 'wordclass'), $this->singularName),
             'update_item'                => sprintf(__('Update %s', 'wordclass'), $this->singularName),
             'view_item'                  => sprintf(__('View %s', 'wordclass'), $this->singularName),
-            'separate_items_with_commas' => sprintf(__('Separate %s with commas', 'wordclass'), $this->name),
-            'add_or_remove_items'        => sprintf(__('Add or remove %s', 'wordclass'), $this->name),
+            'separate_items_with_commas' => sprintf(__('Separate %s with commas', 'wordclass'), $this->pluralName),
+            'add_or_remove_items'        => sprintf(__('Add or remove %s', 'wordclass'), $this->pluralName),
             'choose_from_most_used'      => __('Choose from the most used', 'wordclass'),
-            'popular_items'              => sprintf(__('Popular %s', 'wordclass'), $this->name),
-            'search_items'               => sprintf(__('Search %s', 'wordclass'), $this->name),
+            'popular_items'              => sprintf(__('Popular %s', 'wordclass'), $this->pluralName),
+            'search_items'               => sprintf(__('Search %s', 'wordclass'), $this->pluralName),
             'not_found'                  => __('Not found', 'wordclass'),
-            'no_terms'                   => sprintf(__('No %s', 'wordclass'), $this->name),
-            'items_list'                 => sprintf(__('%s list', 'wordclass'), $this->name),
-            'items_list_navigation'      => sprintf(__('%s list navigation', 'wordclass'), $this->name),
+            'no_terms'                   => sprintf(__('No %s', 'wordclass'), $this->pluralName),
+            'items_list'                 => sprintf(__('%s list', 'wordclass'), $this->pluralName),
+            'items_list_navigation'      => sprintf(__('%s list navigation', 'wordclass'), $this->pluralName),
         ], $this->labels);
     }
 
     /**
-     * @param  string|array|PostType $postTypes
+     * An array of strings and/or PostType objects
+     * @param  array $postTypes
      * @return self
      */
-    public function setPostTypes($postTypes): self
+    public function setPostTypes(array $postTypes): self
     {
-        if (! is_array($postTypes)) {
-            $postTypes = [$postTypes];
-        }
-
         // Make sure the post types are a string
         foreach ($postTypes as $key => $type) {
             // Post type objects can be passed
@@ -208,6 +205,7 @@ class Taxonomy
     public function getArguments(): array
     {
         return array_replace_recursive([
+            'label'       => $this->pluralName,
             'labels'      => $this->getLabels(),
             'description' => $this->description,
             'rewrite'     => [

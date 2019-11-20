@@ -2,9 +2,6 @@
 
 namespace Nerbiz\Wordclass;
 
-use Exception;
-use InvalidArgumentException;
-
 class Editor
 {
     /**
@@ -50,7 +47,7 @@ class Editor
      * Add a button to the TinyMCE editor
      * @param  string      $name          The name of the button
      * @param  string|null $after         The name of the button to place the new button after
-     *   'first' places the button as the first one
+     *   '_first' places the button as the first one
      *   null places the button at the end
      * @param  int         $toolbarNumber The toolbar number, 1 = default, 2/3/4 = advanced
      * @return self
@@ -63,7 +60,7 @@ class Editor
             // Decide where to place the button
             if ($after === null) {
                 $buttons[] = $name;
-            } elseif ($after == 'first') {
+            } elseif ($after === '_first') {
                 array_unshift($buttons, $name);
             }
 
@@ -140,7 +137,7 @@ class Editor
      * Move a button, optionally from one toolbar to another
      * @param  string      $name              The name of the button
      * @param  string|null $after             The name of the button to place the new button after
-     *   'first' places the button as the first one
+     *   '_first' places the button as the first one
      *   null places the button at the end
      * @param  int         $fromToolbarNumber The toolbar number, 1 = default, 2/3/4 = advanced
      * @param  int         $toToolbarNumber   The toolbar to move the button to, same toolbar if null
@@ -162,7 +159,7 @@ class Editor
      * Add a TinyMCE plugin to the editor
      * @param  string      $name          The name of the plugin
      * @param  string|null $after         The name of the button to place the new button after
-     *   'first' places the button as the first one
+     *   '_first' places the button as the first one
      *   null places the button at the end
      * @param  int         $toolbarNumber The toolbar number, 1 = default, 2/3/4 = advanced, false to not add
      * @return self
@@ -186,63 +183,6 @@ class Editor
         }
 
         return $this;
-    }
-
-    /**
-     * Add a shortcodes dropdown to a TinyMCE editor toolbar
-     * @param  array[Shortcode] $shortcodes A list of shortcodes to add as buttons
-     * @param  string|null $after                The name of the button to place the new button after
-     *   'first' places the button as the first one
-     *   null places the button at the end
-     * @param  int         $toolbarNumber        The toolbar number, 1 = default, 2/3/4 = advanced
-     * @return self
-     * @throws InvalidArgumentException If the array contains at least 1 item that isn't a Shortcode object
-     * @throws Exception If there are no shortcodes to add to the toolbar
-     */
-    public function addShortcodesDropdown(array $shortcodes, ?string $after = null, int $toolbarNumber = 1): self
-    {
-        $allDialogProperties = [];
-        foreach ($shortcodes as $shortcode) {
-            // The array needs to contain Shortcode objects
-            if (! $shortcode instanceof Shortcode) {
-                throw new InvalidArgumentException(sprintf(
-                    "%s() expects parameter 'shortcodes' to be an array of Shortcode objects, '%s' given",
-                    __METHOD__,
-                    is_object($shortcode) ? get_class($shortcode) : gettype($shortcode)
-                ));
-            }
-
-            // Add the shortcode properties, if at least a label is set
-            $dialogProperties = $shortcode->getModalDialogProperties();
-            if (trim($dialogProperties['optionLabel']) !== '') {
-                $allDialogProperties[] = $dialogProperties;
-            }
-        }
-
-        // There needs to be at least 1 shortcode to add
-        if (count($allDialogProperties) === 0) {
-            throw new Exception(sprintf(
-                "%s(): there are no shortcodes to add to the toolbar, set at least 1 with an option label",
-                __METHOD__
-            ));
-        }
-
-        // Prepare and add the plugin to TinyMCE
-        add_action('admin_enqueue_scripts', function () use ($allDialogProperties) {
-            // Create a JavaScript array with shortcode properties
-            echo '<script>window.wordclassShortcodeButtons = ' . json_encode($allDialogProperties) . ';</script>' . PHP_EOL;
-        });
-
-        // Add the shortcode buttons plugin
-        add_filter('mce_external_plugins', function ($plugins) {
-            $pluginPath = 'nerbiz/wordclass/includes/js/tinymce/plugins/wcshortcodebuttons/plugin.js';
-            $plugins['wc_shortcodebuttons'] = Init::getVendorUri($pluginPath);
-
-            return $plugins;
-        });
-
-        // Add the buttons to the editor
-        return $this->addButton('wc_shortcodes', $after, $toolbarNumber);
     }
 
     /**
