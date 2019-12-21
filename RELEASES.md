@@ -1,5 +1,10 @@
 # Release notes
 
+## 2.0.0
+#### 2019-12-21
+
+* Version 2.0.0 is now out of beta.
+
 ## 2.0.0-beta.6
 #### 2019-11-20
 
