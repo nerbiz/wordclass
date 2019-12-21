@@ -13,7 +13,7 @@ composer require nerbiz/wordclass
 
 ## Usage
 
-Read the [Wiki pages](https://github.com/nerbiz/wordclass/wiki) to get started. They are based on version 2.0 though, which is still in beta, but seems stable for a full release.
+Read the [Wiki pages](https://github.com/nerbiz/wordclass/wiki) to get started.
 
 ## Contributing
 
