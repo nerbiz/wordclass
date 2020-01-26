@@ -6,16 +6,17 @@ class Options
 {
     /**
      * Get an option, implicitly using a prefix
-     * @param  string $name The name of the option (without prefix)
-     * @return string|null
+     * @param string $name    The name of the option (without prefix)
+     * @param mixed  $default The value to use when the option is empty
+     * @return mixed
      */
-    public function get(string $name): ?string
+    public function get(string $name, $default = null)
     {
         $optionName = Init::getPrefix() . '_' . $name;
         $value = trim(get_option($optionName));
 
         if ($value === '') {
-            return null;
+            return $default;
         }
 
         return $value;

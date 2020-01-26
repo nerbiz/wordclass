@@ -55,12 +55,13 @@ if (! function_exists('nw_get_option_image')) {
 if (! function_exists('nw_get_option')) {
     /**
      * @param string $name
-     * @return string|null
+     * @param null   $default
+     * @return mixed
      * @throws Exception
      * @see Options::get()
      */
-    function nw_get_option(string $name): ?string
+    function nw_get_option(string $name, $default = null)
     {
-        return Pool::get('nw_options')->get($name);
+        return Pool::get('nw_options')->get($name, $default);
     }
 }
