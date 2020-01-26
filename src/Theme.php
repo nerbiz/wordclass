@@ -106,15 +106,13 @@ class Theme
     }
 
     /**
-     * Let Wordpress handle the window title
-     * When using this, remove the <title> tag from <head>
+     * @deprecated since 2.1.0
+     * @see Pages::automaticWindowTitle()
      * @return self
      */
     public function automaticTitle(): self
     {
-        add_action('after_setup_theme', function () {
-            add_theme_support('title-tag');
-        });
+        (new Pages())->automaticWindowTitle();
 
         return $this;
     }
