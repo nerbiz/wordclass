@@ -1,5 +1,12 @@
 # Release notes
 
+## 2.1.0
+#### 2020-01-26
+
+* Added the Pages class.
+* Option::get() now supports a fallback value, in case the value is empty.
+* Deprecated Theme::automaticTitle() in favour of Pages::automaticWindowTitle().
+
 ## 2.0.0
 #### 2019-12-21
 
