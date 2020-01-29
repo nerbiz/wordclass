@@ -23,6 +23,12 @@ class SettingsPage
     protected $pageSlug;
 
     /**
+     * The unique name of the submit butten
+     * @var string
+     */
+    protected $submitButtonName;
+
+    /**
      * The capability required for using the settings page
      * @var string
      */
@@ -104,6 +110,31 @@ class SettingsPage
     public function setPageSlug(string $pageSlug): self
     {
         $this->pageSlug = $pageSlug;
+
+        // Derive the submit button name from the page slug
+        $this->submitButtonName = sprintf(
+            'submit-settings-%s',
+            $this->pageSlug
+        );
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSubmitButtonName(): string
+    {
+        return $this->submitButtonName;
+    }
+
+    /**
+     * @param string $name
+     * @return self
+     */
+    public function setSubmitButtonName(string $name): self
+    {
+        $this->submitButtonName = $name;
 
         return $this;
     }
@@ -272,8 +303,11 @@ class SettingsPage
     public function create(): self
     {
         add_action('admin_menu', function () {
+            // Ensure creation of page slug (and submit button name)
+            $pageSlug = Init::getPrefix() . '-' . $this->getPageSlug();
+
             // Store values, if submitted
-            if (isset($_POST['submit-nw-settings-page'])) {
+            if (isset($_POST[$this->getSubmitButtonName()])) {
                 $this->storeValues();
             }
 
@@ -285,7 +319,6 @@ class SettingsPage
             };
 
             // Add the settings page
-            $pageSlug = Init::getPrefix() . '-' . $this->getPageSlug();
             if ($this->parentSlug !== null) {
                 // As a subpage, if a parent slug is given
                 add_submenu_page(

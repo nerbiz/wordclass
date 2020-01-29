@@ -82,7 +82,12 @@ $currentTab = $_GET['tab'] ?? null;
             </div>
         <?php endforeach; ?>
 
-        <?php submit_button(__('Save settings', 'wordclass'), 'primary', 'submit-nw-settings-page'); ?>
+        <?php
+        submit_button(
+            __('Save settings', 'wordclass'),
+            'primary',
+            $settingsPage->getSubmitButtonName()
+        ); ?>
     </form>
 </div>
 
