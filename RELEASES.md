@@ -1,5 +1,11 @@
 # Release notes
 
+## 2.1.1
+#### 2020-01-30
+
+* Fixed: Mail was using removed SettingsPage and Helpers methods.
+* Fixed: SettingsPage submit buttons didn't have unique names.
+
 ## 2.1.0
 #### 2020-01-26
 
