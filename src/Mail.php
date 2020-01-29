@@ -54,20 +54,24 @@ class Mail
         $settingsPage = new SettingsPage();
         $settingsPage->setParentSlug('options-general.php')
             ->setPageTitle(__('SMTP settings', 'wordclass'))
-            ->addSection('smtp', __('SMTP values', 'wordclass'), null, [
-                new CheckboxInputField('enable', __('Enable SMTP?', 'wordclass')),
-                new TextInputField('host', __('Host', 'wordclass')),
-                new TextInputField('port', __('Port', 'wordclass')),
-                new TextInputField('encryption', __('Encryption', 'wordclass')),
-                new TextInputField('username', __('Username', 'wordclass')),
-                new PasswordInputField('password', __('Password', 'wordclass'), __('The password is stored encrypted', 'wordclass')),
-            ])
-            ->addSection('smtp_test', __('Test settings', 'wordclass'), null, [
-                new TextInputField('recipient', __('Recipient', 'wordclass')),
-                new TextInputField('subject', __('Subject', 'wordclass')),
-                new TextareaInputField('content', __('Content', 'wordclass')),
-                new CheckboxInputField('enable', __('Send testmail?', 'wordclass'), __('If checked, a testmail will be sent when saving these settings', 'wordclass')),
-            ])
+            ->addSection(
+                new SettingsPageSection('smtp', __('SMTP values', 'wordclass'), null, [
+                    new CheckboxInputField('enable', __('Enable SMTP?', 'wordclass')),
+                    new TextInputField('host', __('Host', 'wordclass')),
+                    new TextInputField('port', __('Port', 'wordclass')),
+                    new TextInputField('encryption', __('Encryption', 'wordclass')),
+                    new TextInputField('username', __('Username', 'wordclass')),
+                    new PasswordInputField('password', __('Password', 'wordclass'), __('The password is stored encrypted', 'wordclass')),
+                ])
+            )
+            ->addSection(
+                new SettingsPageSection('smtp_test', __('Test settings', 'wordclass'), null, [
+                    new TextInputField('recipient', __('Recipient', 'wordclass')),
+                    new TextInputField('subject', __('Subject', 'wordclass')),
+                    new TextareaInputField('content', __('Content', 'wordclass')),
+                    new CheckboxInputField('enable', __('Send testmail?', 'wordclass'), __('If checked, a testmail will be sent when saving these settings', 'wordclass')),
+                ])
+            )
             ->create();
 
         if ($this->encryptionKey !== null) {
@@ -120,19 +124,19 @@ class Mail
     protected function sendTestMail(): void
     {
         $phpMailer = new PHPMailer(true);
-        $helpers = new Helpers();
+        $options = new Options();
 
         $this->applySmtpToPhpMailer($phpMailer);
-        $phpMailer->SMTPDebug = SMTP::DEBUG_CLIENT;
+        $phpMailer->SMTPDebug = SMTP::DEBUG_OFF;
         $phpMailer->CharSet = get_bloginfo('charset');
         $phpMailer->Timeout = 10;
         $phpMailer->ContentType = 'text/plain';
         $phpMailer->isHTML(false);
         $phpMailer->SMTPAutoTLS = false;
         $phpMailer->setFrom(get_option('admin_email'), get_bloginfo('name'));
-        $phpMailer->addAddress($helpers->getOption('smtp_test_recipient'));
-        $phpMailer->Subject = $helpers->getOption('smtp_test_subject');
-        $phpMailer->Body = $helpers->getOption('smtp_test_content');
+        $phpMailer->addAddress($options->get('smtp_test_recipient'));
+        $phpMailer->Subject = $options->get('smtp_test_subject');
+        $phpMailer->Body = $options->get('smtp_test_content');
 
         // Try to send the e-mail
         try {
@@ -163,19 +167,19 @@ class Mail
      */
     protected function applySmtpToPhpMailer(PHPMailer $phpMailer): PHPMailer
     {
-        $helpers = new Helpers();
+        $options = new Options();
 
-        if ($helpers->getOption('smtp_enable') === null) {
+        if ($options->get('smtp_enable') === null) {
             return $phpMailer;
         }
 
         $phpMailer->isSMTP();
-        $phpMailer->Host = $helpers->getOption('smtp_host');
-        $phpMailer->Port = $helpers->getOption('smtp_port');
-        $phpMailer->SMTPSecure = $helpers->getOption('smtp_encryption');
+        $phpMailer->Host = $options->get('smtp_host');
+        $phpMailer->Port = $options->get('smtp_port');
+        $phpMailer->SMTPSecure = $options->get('smtp_encryption');
 
-        $username = $helpers->getOption('smtp_username');
-        $password = $helpers->getOption('smtp_password');
+        $username = $options->get('smtp_username');
+        $password = $options->get('smtp_password');
         if ($username !== null || $password !== null) {
             $phpMailer->SMTPAuth = true;
             $phpMailer->Username = $username;
