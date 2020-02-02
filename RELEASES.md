@@ -1,5 +1,10 @@
 # Release notes
 
+## 2.1.2
+#### 2020-02-02
+
+* SMTP testmail (using Mail class) now uses wp_mail() and shows proper errors.
+
 ## 2.1.1
 #### 2020-01-30
 
