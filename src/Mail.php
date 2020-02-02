@@ -8,8 +8,7 @@ use Nerbiz\Wordclass\InputFields\PasswordInputField;
 use Nerbiz\Wordclass\InputFields\TextareaInputField;
 use Nerbiz\Wordclass\InputFields\TextInputField;
 use PHPMailer;
-use phpmailerException;
-use SMTP;
+use WP_Error;
 
 class Mail
 {
@@ -123,42 +122,53 @@ class Mail
      */
     protected function sendTestMail(): void
     {
-        $phpMailer = new PHPMailer(true);
+        add_action('wp_mail_failed', function(WP_Error $error) {
+            // Add an admin error notice
+            add_action('admin_notices', function () use ($error) {
+                echo sprintf(
+                    '<div class="notice notice-error is-dismissible"><p>%s<br>%s</p></div>',
+                    __('An error occured when trying to send the testmail:', 'wordpress'),
+                    $error->get_error_message()
+                );
+            });
+        });
+
+        // (Try to) send the email
         $options = new Options();
+        $mailIsSent = wp_mail(
+            $this->sanitizeValue($options->get('smtp_test_recipient')),
+            $this->sanitizeValue($options->get('smtp_test_subject')),
+            $this->sanitizeValue($options->get('smtp_test_content')),
+            [
+                'Content-Type: text/html; charset=' . get_bloginfo('charset') . "\r\n",
+                'From: ' . sprintf(
+                    '%s <%s>',
+                    get_bloginfo('name'),
+                    get_option('admin_email')
+                ) . "\r\n",
+            ]
+        );
 
-        $this->applySmtpToPhpMailer($phpMailer);
-        $phpMailer->SMTPDebug = SMTP::DEBUG_OFF;
-        $phpMailer->CharSet = get_bloginfo('charset');
-        $phpMailer->Timeout = 10;
-        $phpMailer->ContentType = 'text/plain';
-        $phpMailer->isHTML(false);
-        $phpMailer->SMTPAutoTLS = false;
-        $phpMailer->setFrom(get_option('admin_email'), get_bloginfo('name'));
-        $phpMailer->addAddress($options->get('smtp_test_recipient'));
-        $phpMailer->Subject = $options->get('smtp_test_subject');
-        $phpMailer->Body = $options->get('smtp_test_content');
-
-        // Try to send the e-mail
-        try {
-            $phpMailer->send();
-
-            // Add an admin notice
+        // Mail is sent successfully
+        if ($mailIsSent) {
+            // Add an admin success notice
             add_action('admin_notices', function () {
                 echo sprintf(
                     '<div class="notice notice-success is-dismissible"><p>%s</p></div>',
                     __('The testmail was sent successfully.', 'wordpress')
                 );
             });
-        } catch (phpmailerException $e) {
-            // Add an admin notice
-            add_action('admin_notices', function () use ($phpMailer) {
-                echo sprintf(
-                    '<div class="notice notice-error is-dismissible"><p>%s<br>%s</p></div>',
-                    __('An error occured when trying to send the testmail:', 'wordpress'),
-                    $phpMailer->ErrorInfo
-                );
-            });
         }
+    }
+
+    /**
+     * Sanitize a value for sending the email
+     * @param string|null $value
+     * @return string
+     */
+    protected function sanitizeValue(?string $value): string
+    {
+        return nl2br(htmlentities(trim(strip_tags($value))));
     }
 
     /**
