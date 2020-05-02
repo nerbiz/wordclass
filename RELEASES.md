@@ -1,5 +1,10 @@
 # Release notes
 
+## 2.1.3
+#### 2020-05-02
+
+* URLs from Webpack::getAssetUrl() are now full URLs, using home_url().
+
 ## 2.1.2
 #### 2020-02-02
 
