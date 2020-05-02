@@ -45,7 +45,7 @@ class Webpack
     public static function getAssetUrl(string $originalFilename): ?string
     {
         if (isset(static::$manifest->{$originalFilename})) {
-            return static::$manifest->{$originalFilename};
+            return esc_url(home_url(static::$manifest->{$originalFilename}));
         }
 
         throw new \Exception(sprintf(
