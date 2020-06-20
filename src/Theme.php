@@ -32,23 +32,7 @@ class Theme
     }
 
     /**
-     * Set the size of featured images
-     * @param  int  $width
-     * @param  int  $height
-     * @param  bool $crop Whether to resize (false) or crop (true) images
-     * @return self
-     */
-    public function setFeaturedImageSize(int $width, int $height, bool $crop = false): self
-    {
-        add_action('after_setup_theme', function () use ($width, $height, $crop) {
-            set_post_thumbnail_size($width, $height, $crop);
-        });
-
-        return $this;
-    }
-
-    /**
-     * Allow the use of HTML5 in core Wordpress features
+     * Allow the use of HTML5 in core WordPress features
      * @param  array $features The list of features to enable HTML5 for
      * @return self
      */
@@ -57,35 +41,6 @@ class Theme
     ): self {
         add_action('after_setup_theme', function () use ($features) {
             add_theme_support('html5', $features);
-        });
-
-        return $this;
-    }
-
-    /**
-     * Add a new image size, and add it to the size chooser
-     * @param  string $name          Key name for the $sizes array
-     * @param  string $nameInChooser Name in the size chooser
-     * @param  int    $width
-     * @param  int    $height
-     * @param  bool   $crop          Whether to resize (false) or crop (true) images
-     * @return self
-     */
-    public function addImageSize(
-        string $name,
-        string $nameInChooser,
-        int $width,
-        int $height,
-        bool $crop = false
-    ): self {
-        add_action('after_setup_theme', function () use ($name, $nameInChooser, $width, $height, $crop) {
-            add_image_size($name, $width, $height, $crop);
-
-            // Set the image size name for the chooser
-            add_filter('image_size_names_choose', function ($sizes) use ($name, $nameInChooser) {
-                $sizes[$name] = $nameInChooser;
-                return $sizes;
-            });
         });
 
         return $this;
@@ -106,13 +61,53 @@ class Theme
     }
 
     /**
-     * @deprecated since 2.1.0
+     * Remove the <meta name="generator" content="WordPress [version]" /> tag from <head>
+     * @return self
+     */
+    public function removeGeneratorMeta(): self
+    {
+        remove_action('wp_head', 'wp_generator');
+
+        return $this;
+    }
+
+    /**
+     * @deprecated 2.1.0
      * @see Pages::automaticWindowTitle()
      * @return self
      */
     public function automaticTitle(): self
     {
         (new Pages())->automaticWindowTitle();
+
+        return $this;
+    }
+
+    /**
+     * @deprecated 2.2.0
+     * @see Media::setFeaturedImageSize()
+     * @return self
+     */
+    public function setFeaturedImageSize(int $width, int $height, bool $crop = false): self
+    {
+        (new Media())->setFeaturedImageSize($width, $height, $crop);
+
+        return $this;
+    }
+
+    /**
+     * @deprecated 2.2.0
+     * @see Media::addImageSize()
+     * @return self
+     */
+    public function addImageSize(
+        string $name,
+        string $nameInChooser,
+        int $width,
+        int $height,
+        bool $crop = false
+    ): self {
+        (new Media())->addImageSize($name, $nameInChooser, $width, $height, $crop);
 
         return $this;
     }
