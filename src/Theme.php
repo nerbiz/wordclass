@@ -48,7 +48,7 @@ class Theme
     }
 
     /**
-     * Allow the use of HTML5 in core Wordpress features
+     * Allow the use of HTML5 in core WordPress features
      * @param  array $features The list of features to enable HTML5 for
      * @return self
      */

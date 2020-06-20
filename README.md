@@ -1,8 +1,8 @@
 # Wordclass
 
-Makes working with Wordpress functionality easier and less bulky.
+Makes working with WordPress functionality easier and less bulky.
 
-I created this, because I got confused with a number of Wordpress functions, that either look too similar, have an unreasonable amount of parameters, or have unrememberable or ambiguous long names. And I couldn't remember the names of hooks. Also, functions.php files tend to get long and messy sometimes, and my [OCD](https://en.wikipedia.org/wiki/Obsessive%E2%80%93compulsive_disorder) is tripping balls when that happens.
+I created this, because I got confused with a number of WordPress functions, that either look too similar, have an unreasonable amount of parameters, or have unrememberable or ambiguous long names. And I couldn't remember the names of hooks. Also, functions.php files tend to get long and messy sometimes, and my [OCD](https://en.wikipedia.org/wiki/Obsessive%E2%80%93compulsive_disorder) is tripping balls when that happens.
 
 ## Installation
 

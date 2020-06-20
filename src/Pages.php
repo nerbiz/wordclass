@@ -7,7 +7,7 @@ use WP_Query;
 class Pages
 {
     /**
-     * Let Wordpress handle the window title
+     * Let WordPress handle the window title
      * When using this, remove the <title> tag from <head>
      * @return self
      */
