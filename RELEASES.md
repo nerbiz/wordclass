@@ -1,5 +1,13 @@
 # Release notes
 
+## 2.2.0
+#### 2020-06-20
+
+* Added Media::addUploadSupport().
+* Added Theme::removeGeneratorMeta().
+* Moved media-related methods to the new Media class (and deprecated the old ones).
+* Now using proper capitalization of the name 'WordPress'.
+
 ## 2.1.3
 #### 2020-05-02
 
