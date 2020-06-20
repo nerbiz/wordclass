@@ -61,6 +61,17 @@ class Theme
     }
 
     /**
+     * Remove the <meta name="generator" content="WordPress [version]" /> tag from <head>
+     * @return self
+     */
+    public function removeGeneratorMeta(): self
+    {
+        remove_action('wp_head', 'wp_generator');
+
+        return $this;
+    }
+
+    /**
      * @deprecated 2.1.0
      * @see Pages::automaticWindowTitle()
      * @return self
