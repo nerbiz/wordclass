@@ -1,5 +1,10 @@
 # Release notes
 
+## 2.2.2
+#### 2020-08-01
+
+* Converted the 'move admin bar' script to pure JavaScript, without jQuery.
+
 ## 2.2.1
 #### 2020-08-01
 
