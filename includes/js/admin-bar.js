@@ -7,37 +7,38 @@ function AdminBar()
 
     /**
      * The main body element
-     * @type {jQuery}
+     * @type {HTMLElement}
      */
-    self.$body = $('body');
+    self.bodyElement = document.body;
 
     /**
      * The button that toggles the bar location
-     * @type {jQuery}
+     * @type {HTMLElement}
      */
-    self.$toggleButton = $('.adminbar-location-toggle-button').find('.ab-item');
+    self.toggleButton = document.getElementById('wp-admin-bar-adminbar-location-toggle')
+        .getElementsByClassName('ab-item')[0];
 
     /**
      * The icon element inside the button
-     * @type {jQuery}
+     * @type {HTMLElement}
      */
-    self.$toggleButtonIcon = self.$toggleButton.find('.dashicons');
+    self.toggleButtonIcon = self.toggleButton.getElementsByClassName('dashicons')[0];
 
     /**
      * Enable the toggle mechanism
      * @return {void}
      */
     self.enableLocationToggle = function() {
-        self.$toggleButton.on('click', function(event) {
+        self.toggleButton.addEventListener('click', function(event) {
             event.preventDefault();
 
-            if (self.$body.hasClass('admin-bar-bottom')) {
+            if (self.bodyElement.classList.contains('admin-bar-bottom')) {
                 // Move the bar to the top
-                self.$body.removeClass('admin-bar-bottom');
+                self.bodyElement.classList.remove('admin-bar-bottom');
                 self.storeLocationValue('top');
             } else {
                 // Move the bar to the bottom
-                self.$body.addClass('admin-bar-bottom');
+                self.bodyElement.classList.add('admin-bar-bottom');
                 self.storeLocationValue('bottom');
             }
 
@@ -50,14 +51,12 @@ function AdminBar()
      * @return {void}
      */
     self.updateIcon = function() {
-        if (self.$body.hasClass('admin-bar-bottom')) {
-            self.$toggleButtonIcon
-                .removeClass('dashicons-arrow-down-alt')
-                .addClass('dashicons-arrow-up-alt');
+        if (self.bodyElement.classList.contains('admin-bar-bottom')) {
+            self.toggleButtonIcon.classList.remove('dashicons-arrow-down-alt');
+            self.toggleButtonIcon.classList.add('dashicons-arrow-up-alt');
         } else {
-            self.$toggleButtonIcon
-                .removeClass('dashicons-arrow-up-alt')
-                .addClass('dashicons-arrow-down-alt');
+            self.toggleButtonIcon.classList.remove('dashicons-arrow-up-alt');
+            self.toggleButtonIcon.classList.add('dashicons-arrow-down-alt');
         }
     };
 
@@ -85,7 +84,7 @@ function AdminBar()
     self.init = function() {
         // Set the initial location
         if (self.getLocationValue() === 'bottom') {
-            self.$body.addClass('admin-bar-bottom');
+            self.bodyElement.classList.add('admin-bar-bottom');
         }
 
         // Set the proper icon
@@ -93,7 +92,7 @@ function AdminBar()
     };
 }
 
-jQuery(document).ready(function ($) {
+document.addEventListener('DOMContentLoaded', function() {
     var adminBar = new AdminBar();
     adminBar.init();
     adminBar.enableLocationToggle();
