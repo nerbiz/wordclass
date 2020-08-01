@@ -1,5 +1,10 @@
 # Release notes
 
+## 2.2.1
+#### 2020-08-01
+
+* Deprecated Init::autoload().
+
 ## 2.2.0
 #### 2020-06-20
 
