@@ -1,0 +1,12 @@
+{
+  "name": "project/name",
+  "autoload": {
+    "psr-4": {
+      "NewProject\\": "classes/"
+    }
+  },
+  "require": {
+    "PHP": "^7.2",
+    "nerbiz/wordclass": "^2.2"
+  }
+}
