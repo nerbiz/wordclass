@@ -109,6 +109,7 @@ class Init
      *                             Then the autoloader shouldn't look for classes/Custom/General.php
      * @return self
      * @throws \Exception
+     * @deprecated since 2.2.1 Use the Composer autoloader instead
      */
     public function autoload(string $namespace, string $path, bool $relative = false): self
     {
