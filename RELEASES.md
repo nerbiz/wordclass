@@ -1,5 +1,10 @@
 # Release notes
 
+## 2.2.3
+#### 2020-08-01
+
+* Added an example for implementing in functions.php.
+
 ## 2.2.2
 #### 2020-08-01
 
