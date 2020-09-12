@@ -1,5 +1,10 @@
 # Release notes
 
+## 2.2.5
+#### 2020-09-12
+
+* Deprecated Init::setTimezone(), because it causes problems.
+
 ## 2.2.4
 #### 2020-09-12
 
