@@ -36,7 +36,7 @@ class YourSettingsPage
      */
     protected function addContactSection(): void
     {
-        $section = new SettingsPageSection('contact', __('Contactgegevens', 'project-text-domain'), null, [
+        $section = new SettingsPageSection('contact', __('Contact', 'project-text-domain'), null, [
             new MediaInputField('logo_id', __('Logo', 'project-text-domain')),
             new TextInputField('company', __('Company name', 'project-text-domain')),
             new TextInputField('street', __('Address', 'project-text-domain')),

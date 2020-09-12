@@ -7,7 +7,7 @@ use Nerbiz\Wordclass\InputFields\CheckboxInputField;
 use Nerbiz\Wordclass\InputFields\PasswordInputField;
 use Nerbiz\Wordclass\InputFields\TextareaInputField;
 use Nerbiz\Wordclass\InputFields\TextInputField;
-use PHPMailer;
+use PHPMailer\PHPMailer\PHPMailer;
 use WP_Error;
 
 class Mail
@@ -23,10 +23,6 @@ class Mail
      */
     public function __construct(?string $encryptionKey = null)
     {
-        // Include the PHPMailer classfiles
-        require_once ABSPATH . WPINC . '/class-phpmailer.php';
-        require_once ABSPATH . WPINC . '/class-smtp.php';
-
         $this->encryptionKey = $encryptionKey;
     }
 
