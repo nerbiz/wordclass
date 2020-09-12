@@ -207,6 +207,7 @@ class Init
      * Set the default timezone
      * @param string $timezoneString
      * @return self
+     * @deprecated 2.2.5 This causes problems, because WordPress sets this too
      */
     public function setTimezone(string $timezoneString = 'auto'): self
     {
