@@ -1,5 +1,10 @@
 # Release notes
 
+## 2.2.4
+#### 2020-09-12
+
+* Fixed: deprecation notice for old PHPMailer, now using new one.
+
 ## 2.2.3
 #### 2020-08-01
 
