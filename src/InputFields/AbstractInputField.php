@@ -7,6 +7,13 @@ use Nerbiz\Wordclass\Init;
 abstract class AbstractInputField
 {
     /**
+     * Whether the input field spans the full width,
+     * instead of having title and field separately
+     * @var bool
+     */
+    protected $fullWidth = false;
+
+    /**
      * The name/id of the input field
      * @var string
      */
@@ -96,6 +103,14 @@ abstract class AbstractInputField
         }
 
         return '';
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFullWidth(): bool
+    {
+        return $this->fullWidth;
     }
 
     /**
