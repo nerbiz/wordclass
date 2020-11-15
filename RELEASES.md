@@ -1,5 +1,10 @@
 # Release notes
 
+## 2.3.0
+#### 2020-11-15
+
+* Added the DescriptionText class for adding text on settings pages.
+
 ## 2.2.5
 #### 2020-09-12
 
