@@ -21,7 +21,7 @@ $currentTab = $_GET['tab'] ?? null;
     }
     ?>
 
-    <h2 class="nav-tab-wrapper">
+    <nav class="nav-tab-wrapper">
         <?php // Output tab buttons, first is active at page load ?>
         <?php $first = true; ?>
         <?php foreach ($settingsPage->getSections() as $section): ?>
@@ -40,7 +40,7 @@ $currentTab = $_GET['tab'] ?? null;
                 <?php echo $section->getTitle(); ?>
             </a>
         <?php endforeach; ?>
-    </h2>
+    </nav>
 
     <form method="POST">
         <?php wp_nonce_field(); ?>
@@ -60,22 +60,33 @@ $currentTab = $_GET['tab'] ?? null;
                  id="<?php echo $section->getId(); ?>"
                  style="<?php echo $active ? '' : 'display: none;'; ?>"
             >
-                <?php // Section title ?>
-                <h2><?php echo $section->getTitle(); ?></h2>
-
                 <?php // Subtitle callback ?>
-                <?php if ($section->getSubtitle() !== null): ?>
-                    <h4><?php echo $section->getSubtitle(); ?></h4>
+                <?php if (($subtitle = $section->getSubtitle()) !== null): ?>
+                    <h2><?php echo $subtitle; ?></h2>
                 <?php endif; ?>
 
                 <table class="form-table">
                     <tbody>
                         <?php // Output settings fields ?>
                         <?php foreach ($section->getFields() as $field): ?>
-                            <tr>
-                                <th scope="row"><?php echo $field->getTitle(); ?></th>
-                                <td><?php echo $field->render(); ?></td>
-                            </tr>
+                            <?php if ($field->isFullWidth()): ?>
+                                <tr>
+                                    <td colspan="2" style="padding-left: 0;">
+                                        <?php if (($title = $field->getTitle()) !== ''): ?>
+                                            <h3 style="margin: 0;">
+                                                <?php echo $field->getTitle(); ?>
+                                            </h3>
+                                        <?php endif; ?>
+
+                                        <?php echo $field->render(); ?>
+                                    </td>
+                                </tr>
+                            <?php else: ?>
+                                <tr>
+                                    <th scope="row"><?php echo $field->getTitle(); ?></th>
+                                    <td><?php echo $field->render(); ?></td>
+                                </tr>
+                            <?php endif; ?>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
