@@ -25,4 +25,21 @@ class EditorInputField extends AbstractInputField
 
         return ob_get_clean();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function prependRender(): string
+    {
+        $this->description .= '<br>&nbsp;';
+        return parent::appendRender();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function appendRender(): string
+    {
+        return '';
+    }
 }
