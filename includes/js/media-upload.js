@@ -105,7 +105,7 @@ function MediaUploadInput($element)
                 // Set the attachment ID in the input field
                 self.$inputField.val(attachment.id);
                 // Show the image preview and filename
-                self.$imagePreview.attr('src', attachment.url);
+                self.$imagePreview.attr('src', attachment.sizes.thumbnail.url);
                 self.$chosenMediaFilename.text(attachment.filename);
 
                 // Restore the main post ID
