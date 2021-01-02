@@ -43,20 +43,15 @@ class MediaInputField extends AbstractInputField
             'thumbnail'
         );
 
-        return sprintf(
-            '<div class="media-upload-input">
-                <div class="image-preview-wrapper">
-                    <img class="image-preview" src="%s" width="100" height="100" style="border: 1px #ccc solid;">
-                </div>
-                <input type="button" class="button upload-media-button" value="%s">
-                <a href="#" class="clear-media-button" style="margin-left: 20px; vertical-align: sub;">%s</a>
-                <input type="hidden" name="%s" value="%s">
-            </div>',
-            $currentMediaUrl,
-            __('Select media', 'wordclass'),
-            __('Clear', 'wordclass'),
-            $this->getPrefixedName(),
+        // Other values for the template
+        $currentMediaFilename = basename(get_attached_file(
             esc_attr(get_option($this->getPrefixedName()))
-        );
+        ));
+        $prefixedName = $this->getPrefixedName();
+        $inputValue = esc_attr(get_option($this->getPrefixedName()));
+
+        ob_start();
+        require __DIR__ . '/../../includes/html/media-input-field.php';
+        return ob_get_clean();
     }
 }
