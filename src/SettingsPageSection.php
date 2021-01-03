@@ -33,7 +33,7 @@ class SettingsPageSection
     /**
      * @param string               $id
      * @param string               $title
-     * @param string               $subtitle
+     * @param string|null          $subtitle
      * @param AbstractInputField[] $fields
      */
     public function __construct(string $id, string $title, ?string $subtitle = null, array $fields)
