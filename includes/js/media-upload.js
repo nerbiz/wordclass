@@ -28,13 +28,19 @@ function MediaUploadInput($element)
      * The image element that shows the selected attachment
      * @type {jQuery|HTMLElement}
      */
-    self.$imagePreview = self.$element.find('.image-preview');
+    self.$imagePreview = self.$element.find('.media-preview');
 
     /**
      * The input field containing the value (selected attachment ID)
      * @type {jQuery|HTMLElement}
      */
     self.$inputField = self.$element.find('input[type="hidden"]');
+
+    /**
+     * The element that contains the filename of the currently selected media
+     * @type {jQuery|HTMLElement}
+     */
+    self.$chosenMediaFilename = self.$element.find('.chosen-media-filename');
 
     /**
      * A 1x1 transparent white pixel, used as image placeholder
@@ -96,10 +102,11 @@ function MediaUploadInput($element)
                 // We set multiple to false so only get one image from the uploader
                 var attachment = self.fileFrame.state().get('selection').first().toJSON();
 
-                // Show the image preview
-                self.$imagePreview.attr('src', attachment.url);
                 // Set the attachment ID in the input field
                 self.$inputField.val(attachment.id);
+                // Show the image preview and filename
+                self.$imagePreview.attr('src', attachment.sizes.thumbnail.url);
+                self.$chosenMediaFilename.text(attachment.filename);
 
                 // Restore the main post ID
                 wp.media.model.settings.post.id = window.mediaUploadInputSettings.oldAttachmentId;
@@ -120,6 +127,7 @@ function MediaUploadInput($element)
 
             self.$imagePreview.attr('src', self.transparentPixelBase64);
             self.$inputField.val('');
+            self.$chosenMediaFilename.text(self.$chosenMediaFilename.data('fallbackText'));
         });
     };
 }
