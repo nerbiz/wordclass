@@ -72,11 +72,11 @@ class Theme
     }
 
     /**
-     * Replace 'ver=' parameter values with a hash
+     * Replace 'ver=' asset parameter values with a hash
      * @param string $salt
      * @return self
      */
-    public function hashVersionParameters(string $salt): self
+    public function hashAssetVersions(string $salt): self
     {
         $applyHash = function (string $url) use ($salt): string
         {
