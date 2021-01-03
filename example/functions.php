@@ -39,10 +39,21 @@ Webpack::readManifest($manifestPath);
     ->addLoginCss('theme-login', Webpack::getAssetUrl('login.css'))
     ->addLoginJs('theme-login', Webpack::getAssetUrl('login.js'));
 
+// Create post types and/or taxonomies
+// Moved to a separate class, to not pollute the functions.php file too much
+$postTypesTaxonomies = new YourPostTypesTaxonomies();
+$cptCalendarItem = $postTypesTaxonomies->createCalendarItemPostType();
+$postTypesTaxonomies->createCalendarItemTagTaxonomy($cptCalendarItem);
+
 // Set some theme options
 (new Theme())
-    // Don't show WordPress version information (for security)
+    // Don't show version information (for security)
     ->removeGeneratorMeta()
+    ->hashAssetVersions('your-salt-string')
+    // You can enable featured images for specific post types (array)
+    // (PostType objects are supported)
+    ->enableFeaturedImages(['page', $cptCalendarItem])
+    // Or enable it for all post types (empty)
     ->enableFeaturedImages()
     ->enableHtml5Support()
     ->addMenus([
@@ -88,12 +99,6 @@ global $wp_version;
 // Create a custom settings page
 // Moved to a separate class, to not pollute the functions.php file too much
 (new YourSettingsPage())->create();
-
-// Create post types and/or taxonomies
-// Moved to a separate class, to not pollute the functions.php file too much
-$postTypesTaxonomies = new YourPostTypesTaxonomies();
-$cptCalendarItem = $postTypesTaxonomies->createCalendarItemPostType();
-$postTypesTaxonomies->createCalendarItemTagTaxonomy($cptCalendarItem);
 
 // Adjust the TinyMCE editor (if you're not using Gutenberg)
 (new Editor())

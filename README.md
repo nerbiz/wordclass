@@ -13,7 +13,9 @@ composer require nerbiz/wordclass
 
 ## Usage
 
-Read the [Wiki pages](https://github.com/nerbiz/wordclass/wiki) to get started.
+You can find usage examples in the [example files](https://github.com/nerbiz/wordclass/tree/master/example).
+
+Read the [wiki pages](https://github.com/nerbiz/wordclass/wiki) for more information.
 
 ## Contributing
 
