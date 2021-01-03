@@ -1,5 +1,13 @@
 # Release notes
 
+## 2.4.0
+#### 2021-01-03
+
+* Added Theme::hashAssetVersions().
+* Media input field now shows currently selected filename.
+* Fixed: proper thumbnail is now shown in media input field, after selecting a file.
+* Descriptions for editor input fields are now shown above the editor.
+
 ## 2.3.0
 #### 2020-11-15
 
