@@ -13,12 +13,15 @@ if (! function_exists('nw_get_image')) {
      * @param string $sizeName
      * @param string $returnType
      * @return array|string
-     * @throws Exception
      * @see Helpers::getImage()
      */
     function nw_get_image(int $imageId, string $sizeName = 'large', string $returnType = 'url')
     {
-        return Pool::get('nw_helpers')->getImage($imageId, $sizeName, $returnType);
+        try {
+            return Pool::get('nw_helpers')->getImage($imageId, $sizeName, $returnType);
+        } catch (Exception $exception) {
+            // The try will always succeed, because Pool::set() is called in this file
+        }
     }
 }
 
@@ -28,12 +31,15 @@ if (! function_exists('nw_get_featured_image')) {
      * @param string $sizeName
      * @param string $returnType
      * @return array|string
-     * @throws Exception
      * @see Helpers::getFeaturedImage()
      */
     function nw_get_featured_image(int $postId, string $sizeName = 'large', string $returnType = 'url')
     {
-        return Pool::get('nw_helpers')->getFeaturedImage($postId, $sizeName, $returnType);
+        try {
+            return Pool::get('nw_helpers')->getFeaturedImage($postId, $sizeName, $returnType);
+        } catch (Exception $exception) {
+            // The try will always succeed, because Pool::set() is called in this file
+        }
     }
 }
 
@@ -43,12 +49,15 @@ if (! function_exists('nw_get_option_image')) {
      * @param string $sizeName
      * @param string $returnType
      * @return array_string
-     * @throws Exception
      * @see Helpers::getOptionImage()
      */
     function nw_get_option_image(string $optionName, string $sizeName = 'large', string $returnType = 'url')
     {
-        return Pool::get('nw_helpers')->getOptionImage($optionName, $sizeName, $returnType);
+        try {
+            return Pool::get('nw_helpers')->getOptionImage($optionName, $sizeName, $returnType);
+        } catch (Exception $exception) {
+            // The try will always succeed, because Pool::set() is called in this file
+        }
     }
 }
 
@@ -57,11 +66,14 @@ if (! function_exists('nw_get_option')) {
      * @param string $name
      * @param null   $default
      * @return mixed
-     * @throws Exception
      * @see Options::get()
      */
     function nw_get_option(string $name, $default = null)
     {
-        return Pool::get('nw_options')->get($name, $default);
+        try {
+            return Pool::get('nw_options')->get($name, $default);
+        } catch (Exception $exception) {
+            // The try will always succeed, because Pool::set() is called in this file
+        }
     }
 }
