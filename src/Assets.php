@@ -176,22 +176,22 @@ class Assets
     }
 
     /**
-     * Replace the hostname in image URLs, for local development with remote images
-     * @param string $newHost The hostname to use instead of the current hostname
-     * @param array  $environments The environments in which to use the other host
+     * Replace the hostname in image URLs, for local development with remote images, for instance
+     * @param string   $newHost The hostname to use instead of the current hostname
+     * @param string[] $environments The environments in which to replace the host
      * @return self
      */
-    public function replaceImageUrlsHost(
+    public function replaceImagesHost(
         string $newHost,
         array $environments = ['local', 'development']
     ): self {
-        // Only replace the host during development/debugging
-        if (function_exists('wp_get_environment_type')) {
-            $environment = wp_get_environment_type();
-            if (! in_array($environment, $environments, true)) {
-                return $this;
-            }
-        } else if (WP_DEBUG === false) {
+        // Skip when the required environment value is not set
+        if (! defined('WP_ENVIRONMENT_TYPE')) {
+            return $this;
+        }
+
+        // Skip when not in the right environment
+        if (! in_array(WP_ENVIRONMENT_TYPE, $environments, true)) {
             return $this;
         }
 
@@ -201,11 +201,11 @@ class Assets
             }
 
             return $image;
-        }, 10, 4);
+        });
 
         add_filter('wp_get_attachment_url', function (string $url) use ($newHost) {
             return str_replace($_SERVER['HTTP_HOST'], $newHost, $url);
-        }, 10, 2);
+        });
 
         return $this;
     }
