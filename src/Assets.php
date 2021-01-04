@@ -174,4 +174,39 @@ class Assets
 
         return $this;
     }
+
+    /**
+     * Replace the hostname in image URLs, for local development with remote images
+     * @param string $newHost The hostname to use instead of the current hostname
+     * @param array  $environments The environments in which to use the other host
+     * @return self
+     */
+    public function replaceImageUrlsHost(
+        string $newHost,
+        array $environments = ['local', 'development']
+    ): self {
+        // Only replace the host during development/debugging
+        if (function_exists('wp_get_environment_type')) {
+            $environment = wp_get_environment_type();
+            if (! in_array($environment, $environments, true)) {
+                return $this;
+            }
+        } else if (WP_DEBUG === false) {
+            return $this;
+        }
+
+        add_filter('wp_get_attachment_image_src', function ($image) use ($newHost) {
+            if (isset($image[0])) {
+                $image[0] = str_replace($_SERVER['HTTP_HOST'], $newHost, $image[0]);
+            }
+
+            return $image;
+        }, 10, 4);
+
+        add_filter('wp_get_attachment_url', function (string $url) use ($newHost) {
+            return str_replace($_SERVER['HTTP_HOST'], $newHost, $url);
+        }, 10, 2);
+
+        return $this;
+    }
 }
