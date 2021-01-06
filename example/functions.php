@@ -68,7 +68,7 @@ $postTypesTaxonomies->createCalendarItemTagTaxonomy($cptCalendarItem);
     ->addImageSize('maximum', 'Maximum', 1200, 1200, false)
     // Allow SVG files in the media library
     ->addUploadSupport('svg', 'image/svg+xml')
-    ->temporaryImagesHost('example.com');
+    ->temporaryHost('example.com');
 
 (new Pages())
     ->automaticWindowTitle()

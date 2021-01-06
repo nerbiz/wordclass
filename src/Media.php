@@ -67,12 +67,12 @@ class Media
     }
 
     /**
-     * Replace the hostname in image URLs, for local development with remote images, for instance
+     * Replace the hostname in media URLs, for local development with remote media
      * @param string   $hostname     The hostname in 'example.com' or 'sub.example.com' format
      * @param string[] $environments The environments in which to replace the host
      * @return self
      */
-    public function temporaryImagesHost(
+    public function temporaryHost(
         string $hostname,
         array $environments = ['local', 'development']
     ): self {
