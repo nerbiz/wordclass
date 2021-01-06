@@ -68,7 +68,7 @@ class Media
 
     /**
      * Replace the hostname in image URLs, for local development with remote images, for instance
-     * @param string   $hostname     The hostname to use instead of the current
+     * @param string   $hostname     The hostname in 'example.com' or 'sub.example.com' format
      * @param string[] $environments The environments in which to replace the host
      * @return self
      */
