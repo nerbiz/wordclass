@@ -37,7 +37,8 @@ Webpack::readManifest($manifestPath);
     ->addAdminCss('theme-admin', Webpack::getAssetUrl('admin.css'))
     ->addAdminJs('theme-admin', Webpack::getAssetUrl('admin.js'))
     ->addLoginCss('theme-login', Webpack::getAssetUrl('login.css'))
-    ->addLoginJs('theme-login', Webpack::getAssetUrl('login.js'));
+    ->addLoginJs('theme-login', Webpack::getAssetUrl('login.js'))
+    ->hashVersionParameters('your-salt-string');
 
 // Create post types and/or taxonomies
 // Moved to a separate class, to not pollute the functions.php file too much
@@ -49,7 +50,6 @@ $postTypesTaxonomies->createCalendarItemTagTaxonomy($cptCalendarItem);
 (new Theme())
     // Don't show version information (for security)
     ->removeGeneratorMeta()
-    ->hashAssetVersions('your-salt-string')
     // You can enable featured images for specific post types (array)
     // (PostType objects are supported)
     ->enableFeaturedImages(['page', $cptCalendarItem])
@@ -67,7 +67,8 @@ $postTypesTaxonomies->createCalendarItemTagTaxonomy($cptCalendarItem);
     ->addImageSize('card', 'Card', 500, 500, false)
     ->addImageSize('maximum', 'Maximum', 1200, 1200, false)
     // Allow SVG files in the media library
-    ->addUploadSupport('svg', 'image/svg+xml');
+    ->addUploadSupport('svg', 'image/svg+xml')
+    ->temporaryImagesHost('example.com');
 
 (new Pages())
     ->automaticWindowTitle()
