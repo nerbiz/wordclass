@@ -23,23 +23,16 @@ class Helpers
         switch ($returnType) {
             case 'url':
                 return wp_get_attachment_image_url($imageId, $sizeName);
-                break;
-
             case 'array':
                 return wp_get_attachment_image_src($imageId, $sizeName);
-                break;
-
             case 'html':
                 return wp_get_attachment_image($imageId, $sizeName);
-                break;
-            
             default:
                 throw new InvalidArgumentException(sprintf(
                     "%s() expects parameter 'returnType' to be 'url', 'array' or 'html', '%s' given",
                     __METHOD__,
                     is_object($returnType) ? get_class($returnType) : gettype($returnType)
                 ));
-                break;
         }
     }
 

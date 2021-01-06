@@ -37,12 +37,23 @@ Webpack::readManifest($manifestPath);
     ->addAdminCss('theme-admin', Webpack::getAssetUrl('admin.css'))
     ->addAdminJs('theme-admin', Webpack::getAssetUrl('admin.js'))
     ->addLoginCss('theme-login', Webpack::getAssetUrl('login.css'))
-    ->addLoginJs('theme-login', Webpack::getAssetUrl('login.js'));
+    ->addLoginJs('theme-login', Webpack::getAssetUrl('login.js'))
+    ->hashVersionParameters('your-salt-string');
+
+// Create post types and/or taxonomies
+// Moved to a separate class, to not pollute the functions.php file too much
+$postTypesTaxonomies = new YourPostTypesTaxonomies();
+$cptCalendarItem = $postTypesTaxonomies->createCalendarItemPostType();
+$postTypesTaxonomies->createCalendarItemTagTaxonomy($cptCalendarItem);
 
 // Set some theme options
 (new Theme())
-    // Don't show WordPress version information (for security)
+    // Don't show version information (for security)
     ->removeGeneratorMeta()
+    // You can enable featured images for specific post types (array)
+    // (PostType objects are supported)
+    ->enableFeaturedImages(['page', $cptCalendarItem])
+    // Or enable it for all post types (empty)
     ->enableFeaturedImages()
     ->enableHtml5Support()
     ->addMenus([
@@ -56,7 +67,8 @@ Webpack::readManifest($manifestPath);
     ->addImageSize('card', 'Card', 500, 500, false)
     ->addImageSize('maximum', 'Maximum', 1200, 1200, false)
     // Allow SVG files in the media library
-    ->addUploadSupport('svg', 'image/svg+xml');
+    ->addUploadSupport('svg', 'image/svg+xml')
+    ->temporaryImagesHost('example.com');
 
 (new Pages())
     ->automaticWindowTitle()
@@ -88,12 +100,6 @@ global $wp_version;
 // Create a custom settings page
 // Moved to a separate class, to not pollute the functions.php file too much
 (new YourSettingsPage())->create();
-
-// Create post types and/or taxonomies
-// Moved to a separate class, to not pollute the functions.php file too much
-$postTypesTaxonomies = new YourPostTypesTaxonomies();
-$cptCalendarItem = $postTypesTaxonomies->createCalendarItemPostType();
-$postTypesTaxonomies->createCalendarItemTagTaxonomy($cptCalendarItem);
 
 // Adjust the TinyMCE editor (if you're not using Gutenberg)
 (new Editor())

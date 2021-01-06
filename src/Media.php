@@ -65,4 +65,39 @@ class Media
 
         return $this;
     }
+
+    /**
+     * Replace the hostname in image URLs, for local development with remote images, for instance
+     * @param string   $hostname     The hostname in 'example.com' or 'sub.example.com' format
+     * @param string[] $environments The environments in which to replace the host
+     * @return self
+     */
+    public function temporaryImagesHost(
+        string $hostname,
+        array $environments = ['local', 'development']
+    ): self {
+        // Skip when the required environment value is not set
+        if (! defined('WP_ENVIRONMENT_TYPE')) {
+            return $this;
+        }
+
+        // Skip when not in the right environment
+        if (! in_array(WP_ENVIRONMENT_TYPE, $environments, true)) {
+            return $this;
+        }
+
+        add_filter('wp_get_attachment_image_src', function ($image) use ($hostname) {
+            if (isset($image[0])) {
+                $image[0] = str_replace($_SERVER['HTTP_HOST'], $hostname, $image[0]);
+            }
+
+            return $image;
+        });
+
+        add_filter('wp_get_attachment_url', function (string $url) use ($hostname) {
+            return str_replace($_SERVER['HTTP_HOST'], $hostname, $url);
+        });
+
+        return $this;
+    }
 }

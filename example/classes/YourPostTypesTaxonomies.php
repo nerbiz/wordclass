@@ -19,7 +19,7 @@ class YourPostTypesTaxonomies
             ->setArguments([
                 'public' => true,
                 'publicly_queryable' => true,
-                // Enable Gutenberg editor
+                // Enable on Gutenberg edit page
                 'show_in_rest' => true,
             ])
             ->register();
