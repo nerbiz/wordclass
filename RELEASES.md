@@ -1,6 +1,11 @@
 # Release notes
 
-## 2.4.0
+## 2.5.1
+#### 2021-01-06
+
+* Renamed Media::temporaryImagesHost() to Media::temporaryHost().
+
+## 2.5.0
 #### 2021-01-06
 
 * Updated the readme file.
