@@ -1,6 +1,15 @@
 # Release notes
 
 ## 2.4.0
+#### 2021-01-06
+
+* Updated the readme file.
+* Added Media::temporaryImagesHost().
+* Moved Theme::hashAssetVersions() to Assets::hashVersionParameters() (deprecated Theme::hashAssetVersions()).
+* Updated example files.
+* Small code improvements.
+
+## 2.4.0
 #### 2021-01-03
 
 * Added Theme::hashAssetVersions().
