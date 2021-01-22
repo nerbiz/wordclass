@@ -71,9 +71,9 @@ class Admin
 
     /**
      * Add a button to the admin bar, for moving its location
-     * @return void
+     * @return self
      */
-    public function addMoveAdminBarButton(): void
+    public function addMoveAdminBarButton(): self
     {
         // Add the required styling and script
         $moveBarHandle = Init::getPrefix() . '-admin-bar';
@@ -100,5 +100,7 @@ class Admin
                 ]);
             }
         }, 100);
+
+        return $this;
     }
 }
