@@ -61,13 +61,7 @@ class Init
             static::setVendorPath(get_stylesheet_directory() . '/vendor/');
         }
 
-        // Append the extra path if not null
-        $vendorPath = static::$vendorPath;
-        if ($path !== null) {
-            $vendorPath .= $path;
-        }
-
-        return $vendorPath;
+        return static::$vendorPath . $path;
     }
 
     /**
@@ -91,13 +85,7 @@ class Init
             static::setVendorUri(get_stylesheet_directory_uri() . '/vendor/');
         }
 
-        // Append the extra path if not null
-        $vendorUri = static::$vendorUri;
-        if ($path !== null) {
-            $vendorUri .= $path;
-        }
-
-        return $vendorUri;
+        return static::$vendorUri . $path;
     }
 
     /**

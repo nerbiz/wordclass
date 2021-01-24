@@ -16,8 +16,7 @@ require get_stylesheet_directory() . '/vendor/autoload.php';
 
 // Initial settings and values
 Init::setPrefix('aaa');
-(new Init())->setTimezone()
-    ->loadTranslations()
+(new Init())->loadTranslations()
     ->defineConstants()
     ->includeHelperFunctions();
 

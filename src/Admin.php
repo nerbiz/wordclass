@@ -71,21 +71,16 @@ class Admin
 
     /**
      * Add a button to the admin bar, for moving its location
-     * @return void
+     * @return self
      */
-    public function addMoveAdminBarButton(): void
+    public function addMoveAdminBarButton(): self
     {
         // Add the required styling and script
         $moveBarHandle = Init::getPrefix() . '-admin-bar';
+        $includesDirUrl = Init::getVendorUri('nerbiz/wordclass/includes/');
         (new Assets())
-            ->addThemeCss(
-                $moveBarHandle,
-                Init::getVendorUri('nerbiz/wordclass/includes/css/admin-bar.css')
-            )
-            ->addThemeJs(
-                $moveBarHandle,
-                Init::getVendorUri('nerbiz/wordclass/includes/js/admin-bar.js')
-            );
+            ->addThemeCss($moveBarHandle, $includesDirUrl . 'css/admin-bar.css')
+            ->addThemeJs($moveBarHandle, $includesDirUrl . 'js/admin-bar.js');
 
         add_action('admin_bar_menu', function ($wpAdminBar) {
             if (! is_admin()) {
@@ -100,5 +95,7 @@ class Admin
                 ]);
             }
         }, 100);
+
+        return $this;
     }
 }
