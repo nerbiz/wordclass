@@ -1,5 +1,14 @@
 # Release notes
 
+## 2.5.2
+#### 2021-01-24
+
+* Removed a deprecated method from example functions.php.
+* Removed @throws DocBlocks for methods that don't throw an exception anymore.
+* Fixed: Admin::addMoveAdminBarButton() wasn't chainable.
+* Fixed: JavaScript error with 'move admin bar' button, if not logged in.
+* Fixed: movable admin bar at the bottom now also stays at the bottom on small screens.
+
 ## 2.5.1
 #### 2021-01-06
 
