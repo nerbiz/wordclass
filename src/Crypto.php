@@ -2,8 +2,6 @@
 
 namespace Nerbiz\Wordclass;
 
-use Exception;
-
 class Crypto
 {
     /**

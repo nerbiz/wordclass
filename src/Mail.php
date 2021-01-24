@@ -2,7 +2,6 @@
 
 namespace Nerbiz\Wordclass;
 
-use Exception;
 use Nerbiz\Wordclass\InputFields\CheckboxInputField;
 use Nerbiz\Wordclass\InputFields\PasswordInputField;
 use Nerbiz\Wordclass\InputFields\TextareaInputField;
@@ -29,7 +28,6 @@ class Mail
     /**
      * Add required elements for enabling sending mail with SMTP
      * @return self
-     * @throws Exception
      */
     public function addSmtpSupport(): self
     {
@@ -41,7 +39,6 @@ class Mail
 
     /**
      * @return self
-     * @throws Exception
      */
     protected function addSmtpSettingsPage(): self
     {
