@@ -19,6 +19,6 @@
     "tinymce/tinymce": "^4.6"
   },
   "support" : {
-    "docs": "https://github.com/nerbiz/wordclass"
+    "docs": "https://github.com/nerbiz/wordclass/wiki"
   }
 }
