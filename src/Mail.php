@@ -12,35 +12,24 @@ use WP_Error;
 class Mail
 {
     /**
-     * The key to encrypt and decrypt the SMTP password with
-     * @var string|null
-     */
-    protected $encryptionKey;
-
-    /**
-     * @param string|null $encryptionKey The key to encrypt and decrypt the SMTP password with
-     */
-    public function __construct(?string $encryptionKey = null)
-    {
-        $this->encryptionKey = $encryptionKey;
-    }
-
-    /**
-     * Add required elements for enabling sending mail with SMTP
+     * Enable SMTP for all mails, add a settings page
+     * @param string|null $encryptionKey The key for encrypting/decrypting the SMTP password
      * @return self
      */
-    public function addSmtpSupport(): self
+    public function addSmtpSupport(?string $encryptionKey = null): self
     {
         $this->addSmtpSettingsPage();
+        $this->addOptionHooks($encryptionKey);
         $this->addSmtpMailHook();
 
         return $this;
     }
 
     /**
-     * @return self
+     * Add the settings page for SMTP settings
+     * @return void
      */
-    protected function addSmtpSettingsPage(): self
+    protected function addSmtpSettingsPage(): void
     {
         // Create the settings page
         $settingsPage = new SettingsPage();
@@ -65,12 +54,16 @@ class Mail
                 ])
             )
             ->create();
+    }
 
-        if ($this->encryptionKey !== null) {
-            $crypto = new Crypto($this->encryptionKey);
-        } else {
-            $crypto = new Crypto();
-        }
+    /**
+     * Add hooks for storing/reading options
+     * @param string|null $encryptionKey
+     * @return void
+     */
+    protected function addOptionHooks(?string $encryptionKey = null): void
+    {
+        $crypto = new Crypto($encryptionKey);
         $passwordField = Init::getPrefix() . '_smtp_password';
         $enableTestField = Init::getPrefix() . '_smtp_test_enable';
 
@@ -93,25 +86,41 @@ class Mail
             // Always reset to unchecked
             return '';
         }, 10, 2);
-
-        return $this;
     }
 
     /**
      * Apply the SMTP settings to all outgoing WP mail
-     * @return self
+     * @return void
      */
-    protected function addSmtpMailHook(): self
+    protected function addSmtpMailHook(): void
     {
         add_action('phpmailer_init', function (PHPMailer $phpMailer) {
-            return $this->applySmtpToPhpMailer($phpMailer);
-        });
+            $options = new Options();
 
-        return $this;
+            if ($options->get('smtp_enable') === null) {
+                return $phpMailer;
+            }
+
+            $phpMailer->isSMTP();
+            $phpMailer->Host = $options->get('smtp_host');
+            $phpMailer->Port = $options->get('smtp_port');
+            $phpMailer->SMTPSecure = $options->get('smtp_encryption');
+
+            $username = $options->get('smtp_username');
+            $password = $options->get('smtp_password');
+            if ($username !== null || $password !== null) {
+                $phpMailer->SMTPAuth = true;
+                $phpMailer->Username = $username;
+                $phpMailer->Password = $password;
+            }
+
+            return $phpMailer;
+        });
     }
 
     /**
      * Send a testmail, using the filled in values
+     * @return void
      */
     protected function sendTestMail(): void
     {
@@ -128,18 +137,16 @@ class Mail
 
         // (Try to) send the email
         $options = new Options();
+        $headers = [
+            'Content-Type: text/html; charset=' . get_bloginfo('charset'),
+            'From: ' . sprintf('%s <%s>', get_bloginfo('name'), get_option('admin_email')),
+        ];
+
         $mailIsSent = wp_mail(
             $this->sanitizeValue($options->get('smtp_test_recipient')),
             $this->sanitizeValue($options->get('smtp_test_subject')),
             $this->sanitizeValue($options->get('smtp_test_content')),
-            [
-                'Content-Type: text/html; charset=' . get_bloginfo('charset') . "\r\n",
-                'From: ' . sprintf(
-                    '%s <%s>',
-                    get_bloginfo('name'),
-                    get_option('admin_email')
-                ) . "\r\n",
-            ]
+            $headers
         );
 
         // Mail is sent successfully
@@ -162,33 +169,5 @@ class Mail
     protected function sanitizeValue(?string $value): string
     {
         return nl2br(htmlentities(trim(strip_tags($value))));
-    }
-
-    /**
-     * @param PHPMailer $phpMailer
-     * @return PHPMailer
-     */
-    protected function applySmtpToPhpMailer(PHPMailer $phpMailer): PHPMailer
-    {
-        $options = new Options();
-
-        if ($options->get('smtp_enable') === null) {
-            return $phpMailer;
-        }
-
-        $phpMailer->isSMTP();
-        $phpMailer->Host = $options->get('smtp_host');
-        $phpMailer->Port = $options->get('smtp_port');
-        $phpMailer->SMTPSecure = $options->get('smtp_encryption');
-
-        $username = $options->get('smtp_username');
-        $password = $options->get('smtp_password');
-        if ($username !== null || $password !== null) {
-            $phpMailer->SMTPAuth = true;
-            $phpMailer->Username = $username;
-            $phpMailer->Password = $password;
-        }
-
-        return $phpMailer;
     }
 }
