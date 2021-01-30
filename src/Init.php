@@ -89,53 +89,6 @@ class Init
     }
 
     /**
-     * An autoloader for custom namespaces
-     * @param  string $namespace The name of the namespace
-     * @param  string $path      The full path to the classes of the namespace
-     * @param  bool   $relative  Remove the namespace from the path
-     *                             For instance: a Custom\General class is located at classes/General.php
-     *                             Then the autoloader shouldn't look for classes/Custom/General.php
-     * @return self
-     * @throws \Exception
-     * @deprecated since 2.2.1 Use the Composer autoloader instead
-     */
-    public function autoload(string $namespace, string $path, bool $relative = false): self
-    {
-        spl_autoload_register(function ($class) use ($namespace, $path, $relative) {
-            // Ensure 1 trailing slash
-            $path = rtrim($path, '/') . '/';
-
-            // Remove leading backslashes
-            $classPath = ltrim($class, '\\');
-
-            // Replace backslashes with directory separators
-            $classPath = str_replace('\\', DIRECTORY_SEPARATOR, $classPath);
-
-            // Construct the classpath
-            $classPath = $path . $classPath . '.php';
-
-            // Remove the namespace from the path, if needed
-            // Only the last occurence, because another directory might have the same name
-            if ($relative) {
-                // Get the position of the namespace in the path, and the length to remove
-                $position = strrpos($classPath, $namespace);
-                $replaceLength = strlen($namespace . DIRECTORY_SEPARATOR);
-
-                // Construct the new path, without the namespace in it
-                $start = substr($classPath, 0, $position);
-                $end = substr($classPath, ($position + $replaceLength));
-                $classPath = $start . $end;
-            }
-
-            if (is_readable($classPath)) {
-                require_once $classPath;
-            }
-        });
-
-        return $this;
-    }
-
-    /**
      * Define some useful constants
      * @return self
      */
@@ -187,26 +140,6 @@ class Init
             'wordclass',
             dirname(__FILE__, 2) . '/includes/languages'
         );
-
-        return $this;
-    }
-
-    /**
-     * Set the default timezone
-     * @param string $timezoneString
-     * @return self
-     * @deprecated 2.2.5 This causes problems, because WordPress sets this too
-     */
-    public function setTimezone(string $timezoneString = 'auto'): self
-    {
-        if ($timezoneString === 'auto') {
-            $timezoneString = get_option('timezone_string');
-        }
-
-        $timezoneString = trim($timezoneString);
-        if ($timezoneString !== '') {
-            date_default_timezone_set($timezoneString);
-        }
 
         return $this;
     }
