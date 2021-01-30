@@ -51,16 +51,16 @@ class Media
 
     /**
      * Add upload support for a specific file type
-     * @param string $name
+     * @param string $extensionRegEx
      * @param string $mimeType
      * @return self
      */
-    public function addUploadSupport(string $name, string $mimeType): self
+    public function addUploadSupport(string $extensionRegEx, string $mimeType): self
     {
-        add_filter('upload_mimes', function (array $mimeTypes) use ($name, $mimeType) {
-            return array_merge($mimeTypes, [
-                $name => $mimeType,
-            ]);
+        add_filter('upload_mimes', function (array $mimeTypes) use ($extensionRegEx, $mimeType) {
+            $mimeTypes[$extensionRegEx] = $mimeType;
+
+            return $mimeTypes;
         }, 10);
 
         return $this;
