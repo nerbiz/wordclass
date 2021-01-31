@@ -8,7 +8,7 @@ abstract class AbstractInputField
 {
     /**
      * Whether the input field spans the full width,
-     * instead of having title and field separately
+     * instead of having label and field separately
      * @var bool
      */
     protected $fullWidth = false;
@@ -20,10 +20,10 @@ abstract class AbstractInputField
     protected $name;
 
     /**
-     * The title of the input field
+     * The label of the input field
      * @var string
      */
-    protected $title;
+    protected $label;
 
     /**
      * The optional description below the input field
@@ -39,13 +39,13 @@ abstract class AbstractInputField
 
     /**
      * @param string      $name
-     * @param string      $title
+     * @param string      $label
      * @param string|null $description
      */
-    public function __construct(string $name, string $title, ?string $description = null)
+    public function __construct(string $name, string $label, ?string $description = null)
     {
         $this->name = $name;
-        $this->title = $title;
+        $this->label = $label;
         $this->description = $description;
     }
 
@@ -147,9 +147,9 @@ abstract class AbstractInputField
     /**
      * @return string
      */
-    public function getTitle(): string
+    public function getLabel(): string
     {
-        return $this->title;
+        return $this->label;
     }
 
     /**

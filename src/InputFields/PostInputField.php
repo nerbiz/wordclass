@@ -14,13 +14,13 @@ class PostInputField extends AbstractInputField
 
     public function __construct(
         string $name,
-        string $title,
+        string $label,
         ?string $description = null,
         array $postTypes = []
     ) {
         $this->postTypes = $postTypes;
 
-        parent::__construct($name, $title, $description);
+        parent::__construct($name, $label, $description);
     }
 
     /**

@@ -72,9 +72,9 @@ $currentTab = $_GET['tab'] ?? null;
                             <?php if ($field->isFullWidth()): ?>
                                 <tr>
                                     <td colspan="2" style="padding-left: 0;">
-                                        <?php if (($title = $field->getTitle()) !== ''): ?>
+                                        <?php if (($label = $field->getLabel()) !== ''): ?>
                                             <h3 style="margin: 0;">
-                                                <?php echo $field->getTitle(); ?>
+                                                <?php echo $label; ?>
                                             </h3>
                                         <?php endif; ?>
 
@@ -83,7 +83,7 @@ $currentTab = $_GET['tab'] ?? null;
                                 </tr>
                             <?php else: ?>
                                 <tr>
-                                    <th scope="row"><?php echo $field->getTitle(); ?></th>
+                                    <th scope="row"><?php echo $field->getLabel(); ?></th>
                                     <td><?php echo $field->render(); ?></td>
                                 </tr>
                             <?php endif; ?>
