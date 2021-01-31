@@ -42,7 +42,7 @@ class Mail
                     new TextInputField('port', __('Port', 'wordclass')),
                     new TextInputField('encryption', __('Encryption', 'wordclass')),
                     new TextInputField('username', __('Username', 'wordclass')),
-                    new PasswordInputField('password', __('Password', 'wordclass'), __('The password is stored encrypted', 'wordclass')),
+                    new PasswordInputField('password', __('Password', 'wordclass'), __('Encryption is used to store the password', 'wordclass')),
                 ])
             )
             ->addSection(
