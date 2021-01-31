@@ -50,6 +50,17 @@ abstract class AbstractInputField
     }
 
     /**
+     * @param bool $fullWidth
+     * @return self
+     */
+    public function setFullWidth(bool $fullWidth): self
+    {
+        $this->fullWidth = $fullWidth;
+
+        return $this;
+    }
+
+    /**
      * @param string $namePrefix
      * @return self
      */
