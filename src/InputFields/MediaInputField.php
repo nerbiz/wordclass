@@ -14,6 +14,9 @@ class MediaInputField extends AbstractInputField
      */
     protected static $scriptsAdded = false;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct(string $name, string $label, ?string $description = null)
     {
         // Add the required scripts (once)

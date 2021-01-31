@@ -12,6 +12,12 @@ class PostInputField extends AbstractInputField
      */
     protected $postTypes = [];
 
+    /**
+     * @param string      $name
+     * @param string      $label
+     * @param string|null $description
+     * @param array       $postTypes
+     */
     public function __construct(
         string $name,
         string $label,
