@@ -31,7 +31,10 @@ class EditorInputField extends AbstractInputField
      */
     protected function prependRender(): string
     {
-        $this->description .= '<br>&nbsp;';
+        if (trim($this->description) !== '') {
+            $this->description .= '<br>&nbsp;';
+        }
+
         return parent::appendRender();
     }
 
