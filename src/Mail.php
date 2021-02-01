@@ -174,7 +174,7 @@ class Mail
             Init::getVendorUri('nerbiz/wordclass/includes/css/admin-metaboxes.css')
         );
 
-        $cptSentEmail = $this->addSentEmailsPostType();
+        $cptSentEmail = $this->addSentEmailPostType();
         $this->addSentEmailMetaHook($cptSentEmail);
         $this->addStoreEmailHook();
 
@@ -185,7 +185,7 @@ class Mail
      * Add the post type containing sent emails
      * @return PostType
      */
-    protected function addSentEmailsPostType(): PostType
+    protected function addSentEmailPostType(): PostType
     {
         // Create the post type
         $cptSentEmail = (new PostType('sent_email'))
