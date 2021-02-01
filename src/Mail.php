@@ -143,9 +143,9 @@ class Mail
         ];
 
         $mailIsSent = wp_mail(
-            $this->sanitizeValue($options->get('smtp_test_recipient')),
-            $this->sanitizeValue($options->get('smtp_test_subject')),
-            $this->sanitizeValue($options->get('smtp_test_content')),
+            $options->get('smtp_test_recipient'),
+            $options->get('smtp_test_subject'),
+            nl2br($options->get('smtp_test_content')),
             $headers
         );
 
@@ -159,15 +159,5 @@ class Mail
                 );
             });
         }
-    }
-
-    /**
-     * Sanitize a value for sending the email
-     * @param string|null $value
-     * @return string
-     */
-    protected function sanitizeValue(?string $value): string
-    {
-        return nl2br(htmlentities(trim(strip_tags($value))));
     }
 }
