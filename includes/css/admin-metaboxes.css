@@ -1,0 +1,8 @@
+.email-properties-metabox {
+}
+
+.email-properties-metabox textarea {
+    width: 100%;
+    max-width: 700px;
+    min-height: 80px;
+}

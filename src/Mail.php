@@ -8,6 +8,7 @@ use Nerbiz\Wordclass\InputFields\TextareaInputField;
 use Nerbiz\Wordclass\InputFields\TextInputField;
 use PHPMailer\PHPMailer\PHPMailer;
 use WP_Error;
+use WP_Post;
 
 class Mail
 {
@@ -159,5 +160,134 @@ class Mail
                 );
             });
         }
+    }
+
+    /**
+     * Store every sent mail as a post
+     * @return self
+     */
+    public function storeSentEmails(): self
+    {
+        // Include the metaboxes CSS
+        (new Assets())->addAdminCss(
+            Init::getPrefix() . '-admin-metaboxes',
+            Init::getVendorUri('nerbiz/wordclass/includes/css/admin-metaboxes.css')
+        );
+
+        $cptSentEmail = $this->addSentEmailsPostType();
+        $this->addSentEmailMetaHook($cptSentEmail);
+        $this->addStoreEmailHook();
+
+        return $this;
+    }
+
+    /**
+     * Add the post type containing sent emails
+     * @return PostType
+     */
+    protected function addSentEmailsPostType(): PostType
+    {
+        // Create the post type
+        $cptSentEmail = (new PostType('sent_email'))
+            ->setSingularName(__('Sent email', 'wordclass'))
+            ->setPluralName(__('Sent emails', 'wordclass'))
+            ->setSupports(['title', 'editor'])
+            ->setArguments([
+                'menu_icon' => 'dashicons-email-alt',
+                'public' => true,
+                'publicly_queryable' => false,
+                // Enable Gutenberg editor
+                'show_in_rest' => true,
+            ])
+            ->register();
+
+        // Add a metabox for the post type
+        add_action('add_meta_boxes', function () use ($cptSentEmail) {
+            $metaboxId = 'email_properties';
+
+            add_meta_box(
+                $metaboxId,
+                __('Email properties', 'wordclass'),
+                function (WP_Post $currentPost, array $boxProperties) use ($metaboxId) {
+                    require __DIR__ . '/../includes/html/email-properties-metabox.php';
+                },
+                $cptSentEmail->getId()
+            );
+        });
+
+        return $cptSentEmail;
+    }
+
+    /**
+     * Add a hook for storing sent email post meta
+     * @param PostType $postType
+     * @return void
+     */
+    protected function addSentEmailMetaHook(PostType $postType): void
+    {
+        add_action('save_post', function (int $postId, WP_Post $post, bool $update) use ($postType) {
+            // Check for the right post type
+            if ($post->post_type !== $postType->getId()) {
+                return;
+            }
+
+            // Check if the nonce is valid
+            $nonceName = sprintf('%s_email_properties_nonce', Init::getPrefix());
+            if (isset($_POST[$nonceName]) && ! wp_verify_nonce($_POST[$nonceName] ?? '')) {
+                return;
+            }
+
+            // Skip autosaving
+            if (wp_is_post_autosave($post) !== false) {
+                return;
+            }
+
+            // Store the meta values
+            foreach ([
+                'email_properties_recipient',
+                'email_properties_attachments',
+                'email_properties_headers',
+            ] as $metaField) {
+                if (! isset($_POST[$metaField])) {
+                    continue;
+                }
+
+                update_post_meta($postId, $metaField, $_POST[$metaField]);
+            }
+        }, 10, 3);
+    }
+
+    /**
+     * Store emails when they're sent
+     * @return void
+     */
+    protected function addStoreEmailHook(): void
+    {
+        add_filter('wp_mail', function (array $mailProperties) {
+            // Store the sent email
+            $postId = wp_insert_post([
+                'post_type' => Init::getPrefix() . '_sent_email',
+                'post_status' => 'publish',
+                'post_title' => trim($mailProperties['subject'] !== '')
+                    ? $mailProperties['subject']
+                    : __('(no subject)', 'wordclass'),
+                'post_content' => '<!-- wp:paragraph -->'
+                    . (trim($mailProperties['message'] !== '')
+                        ? $mailProperties['message']
+                        : __('(no content)', 'wordclass'))
+                    . '<!-- /wp:paragraph -->',
+            ]);
+
+            // Store the recipient as post meta
+            update_post_meta($postId, 'email_properties_recipient', $mailProperties['to']);
+
+            // Store the attachments as post meta
+            $attachmentsString = implode(PHP_EOL, $mailProperties['attachments']);
+            update_post_meta($postId, 'email_properties_attachments', $attachmentsString);
+
+            // Store the headers as post meta
+            $headersString = implode(PHP_EOL, $mailProperties['headers']);
+            update_post_meta($postId, 'email_properties_headers', $headersString);
+        });
     }
 }
