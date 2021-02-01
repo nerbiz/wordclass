@@ -43,7 +43,7 @@ $currentTab = $_GET['tab'] ?? null;
     </nav>
 
     <form method="POST">
-        <?php wp_nonce_field(); ?>
+        <?php wp_nonce_field(-1, $settingsPage->getNonceName()); ?>
 
         <?php // Output sections, first is visible at page load ?>
         <?php $first = true; ?>

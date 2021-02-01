@@ -258,6 +258,16 @@ class SettingsPage
     }
 
     /**
+     * Get the nonce name used for validation
+     * @return string
+     */
+    public function getNonceName(): string
+    {
+        $nonceName = sprintf('%s_%s_nonce', Init::getPrefix(), $this->getPageSlug());
+        return str_replace('-', '_', $nonceName);
+    }
+
+    /**
      * Store submitted values
      * @return void
      */
@@ -274,7 +284,7 @@ class SettingsPage
         }
 
         // Check if the nonce is valid
-        if (! wp_verify_nonce($_POST['_wpnonce'] ?? '')) {
+        if (! wp_verify_nonce($_POST[$this->getNonceName()] ?? '')) {
             wp_die(__('Invalid nonce value, please refresh the page and try again.', 'wordclass'));
         }
 
