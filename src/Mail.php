@@ -3,6 +3,7 @@
 namespace Nerbiz\Wordclass;
 
 use Nerbiz\Wordclass\InputFields\CheckboxInputField;
+use Nerbiz\Wordclass\InputFields\EditorInputField;
 use Nerbiz\Wordclass\InputFields\PasswordInputField;
 use Nerbiz\Wordclass\InputFields\TextareaInputField;
 use Nerbiz\Wordclass\InputFields\TextInputField;
@@ -50,7 +51,7 @@ class Mail
                 new SettingsPageSection('smtp_test', __('Test settings', 'wordclass'), null, [
                     new TextInputField('recipient', __('Recipient', 'wordclass')),
                     new TextInputField('subject', __('Subject', 'wordclass')),
-                    new TextareaInputField('content', __('Content', 'wordclass')),
+                    new EditorInputField('content', __('Content', 'wordclass')),
                     new CheckboxInputField('enable', __('Send testmail?', 'wordclass'), __('If checked, a testmail will be sent when saving these settings', 'wordclass')),
                 ])
             )
