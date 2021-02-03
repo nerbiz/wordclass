@@ -10,6 +10,7 @@ use Nerbiz\Wordclass\InputFields\TextInputField;
 use PHPMailer\PHPMailer\PHPMailer;
 use WP_Error;
 use WP_Post;
+use WP_Query;
 
 class Mail
 {
@@ -176,6 +177,7 @@ class Mail
         );
 
         $cptSentEmail = $this->addSentEmailPostType();
+        $this->adjustSentEmailPostColumns($cptSentEmail);
         $this->addSentEmailMetaHook($cptSentEmail);
         $this->addStoreEmailHook();
 
@@ -217,6 +219,78 @@ class Mail
         });
 
         return $cptSentEmail;
+    }
+
+    /**
+     * Customize the columns on the sent emails post overview
+     * @param PostType $postType
+     * @return void
+     */
+    protected function adjustSentEmailPostColumns(PostType $postType): void
+    {
+        // Add orderby methods
+        foreach (['recipient', 'attachments', 'headers'] as $name) {
+            $methodName = sprintf('meta_email_%s', $name);
+
+            PostColumnsEditor::addOrderByMethod($methodName, function (WP_Query $query) use ($name) {
+                $metaKey = sprintf('email_properties_%s', $name);
+                $query->set('orderby', 'meta_value');
+                $query->set('meta_key', $metaKey);
+            });
+        }
+
+        // Create column objects
+        $recipientColumn = (new PostColumn('recipient', __('Recipient', 'wordclass')))
+            ->setAfter('title')
+            ->setOrderBy('meta_email_recipient')
+            ->setRenderFunction(function (int $postId) {
+                return htmlentities2(get_post_meta($postId, 'email_properties_recipient', true));
+            });
+
+        $contentColumn = (new PostColumn('content', __('Content', 'wordclass')))
+            ->setAfter('recipient')
+            ->setRenderFunction(function (int $postId) {
+                $content = wp_strip_all_tags(get_the_content(null, false, $postId));
+                if (mb_strlen($content) > 150) {
+                    return mb_substr($content, 0, 150) . '...';
+                }
+
+                return $content;
+            });
+
+        $attachmentsColumn = (new PostColumn('attachments', __('Attachments', 'wordclass')))
+            ->setAfter('content')
+            ->setOrderBy('meta_email_attachments')
+            ->setRenderFunction(function (int $postId) {
+                $attachmentsString = htmlentities2(
+                    get_post_meta($postId, 'email_properties_attachments', true)
+                );
+
+                if (trim($attachmentsString) === '') {
+                    return '-';
+                }
+
+                return str_replace(PHP_EOL, '<br><br>', $attachmentsString);
+            });
+
+        $headersColumn = (new PostColumn('headers', __('Headers', 'wordclass')))
+            ->setAfter('attachments')
+            ->setOrderBy('meta_email_headers')
+            ->setRenderFunction(function (int $postId) {
+                $headersString = htmlentities2(
+                    get_post_meta($postId, 'email_properties_headers', true)
+                );
+
+                return str_replace(PHP_EOL, '<br><br>', $headersString);
+            });
+
+        // Apply column adjustments
+        (new PostColumnsEditor($postType->getId()))
+            ->addColumn($recipientColumn)
+            ->addColumn($contentColumn)
+            ->addColumn($attachmentsColumn)
+            ->addColumn($headersColumn)
+            ->apply();
     }
 
     /**
