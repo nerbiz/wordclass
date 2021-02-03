@@ -40,13 +40,19 @@ class PostColumnsEditor
      * A list of columns to add
      * @var PostColumn[]
      */
-    protected $columnsToAdd = [];
+    protected $addColumns = [];
+
+    /**
+     * A list of columns to move
+     * @var string[]
+     */
+    protected $moveColumns = [];
 
     /**
      * A list of columns to remove
      * @var string[]
      */
-    protected $columnsToRemove = [];
+    protected $removeColumns = [];
 
     /**
      * @param string $postType
@@ -123,7 +129,22 @@ class PostColumnsEditor
      */
     public function addColumn(PostColumn $postColumn): self
     {
-        $this->columnsToAdd[] = $postColumn;
+        $this->addColumns[] = $postColumn;
+
+        return $this;
+    }
+
+    /**
+     * @param string $columnName
+     * @param string $afterColumnName
+     * @return self
+     */
+    public function moveColumn(string $columnName, string $afterColumnName): self
+    {
+        $this->moveColumns[] = [
+            'name' => $columnName,
+            'after' => $afterColumnName,
+        ];
 
         return $this;
     }
@@ -134,7 +155,7 @@ class PostColumnsEditor
      */
     public function removeColumn(string $columnName): self
     {
-        $this->columnsToRemove[] = $columnName;
+        $this->removeColumns[] = $columnName;
 
         return $this;
     }
@@ -158,8 +179,17 @@ class PostColumnsEditor
     protected function applyMutations(): void
     {
         add_filter('manage_' . $this->postType . '_posts_columns', function (array $columns) {
-            if (count($this->columnsToAdd) < 1) {
-                return $columns;
+            // Move columns
+            foreach ($this->moveColumns as $moveColumn) {
+                if (isset($columns[$moveColumn['name']])) {
+                    // Remove the column before placing it again
+                    $label = $columns[$moveColumn['name']];
+                    unset($columns[$moveColumn['name']]);
+
+                    $columns = $this->spliceAssociativeArray($columns, $moveColumn['after'], [
+                        $moveColumn['name'] => $label,
+                    ]);
+                }
             }
 
             // Get the IDs of all current and custom columns
@@ -167,13 +197,13 @@ class PostColumnsEditor
                 array_keys($columns),
                 array_map(function (PostColumn $postColumn) {
                     return $postColumn->getId();
-                }, $this->columnsToAdd),
+                }, $this->addColumns)
             );
 
             // This loop is needed, because before the foreach is done,
             // not all the columns are added, so the 'after' value wouldn't work
             // with a column that doesn't exist yet in the array
-            $addColumns = $this->columnsToAdd;
+            $addColumns = $this->addColumns;
             while (count($addColumns) > 0) {
                 foreach ($addColumns as $key => $postColumn) {
                     $id = $postColumn->getId();
@@ -189,12 +219,9 @@ class PostColumnsEditor
                         }
 
                         // Insert the new column after another column
-                        $offset = array_search($after, array_keys($columns)) + 1;
-                        $columns = array_merge(
-                            array_slice($columns, 0, $offset, true),
-                            [$id => $label],
-                            array_slice($columns, $offset, null, true)
-                        );
+                        $columns = $this->spliceAssociativeArray($columns, $after, [
+                            $id => $label,
+                        ]);
                     } else {
                         // Add the new column at the end of the array
                         $columns[$id] = $label;
@@ -206,7 +233,7 @@ class PostColumnsEditor
             }
 
             // Remove columns
-            foreach ($this->columnsToRemove as $columnName) {
+            foreach ($this->removeColumns as $columnName) {
                 if (isset($columns[$columnName])) {
                     unset($columns[$columnName]);
                 }
@@ -217,13 +244,35 @@ class PostColumnsEditor
     }
 
     /**
+     * Insert (splice) an entry into an associative array
+     * @param array  $original
+     * @param string $afterKey
+     * @param array  $insert
+     * @return array
+     */
+    protected function spliceAssociativeArray(
+        array $original,
+        string $afterKey,
+        array $insert
+    ): array {
+        // Get the offset of where to inser the item
+        $offset = array_search($afterKey, array_keys($original)) + 1;
+
+        return array_merge(
+            array_slice($original, 0, $offset, true),
+            $insert,
+            array_slice($original, $offset, null, true)
+        );
+    }
+
+    /**
      * Set the render functions from the PostColumns
      * @return void
      */
     protected function applyRenderFunctions(): void
     {
         add_action('manage_' . $this->postType . '_posts_custom_column', function (string $columnId, int $postId) {
-            foreach ($this->columnsToAdd as $postColumn) {
+            foreach ($this->addColumns as $postColumn) {
                 if ($columnId === $postColumn->getId()) {
                     $renderFunction = $postColumn->getRenderFunction();
 
@@ -243,7 +292,7 @@ class PostColumnsEditor
     {
         // Add the sorting names
         add_filter('manage_edit-' . $this->postType . '_sortable_columns', function (array $columns) {
-            foreach ($this->columnsToAdd as $postColumn) {
+            foreach ($this->addColumns as $postColumn) {
                 $orderBy = $postColumn->getOrderBy();
                 if ($orderBy !== null) {
                     $columns[$postColumn->getId()] = $orderBy;
