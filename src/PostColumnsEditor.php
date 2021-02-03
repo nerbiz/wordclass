@@ -162,47 +162,57 @@ class PostColumnsEditor
                 return $columns;
             }
 
-            // First add the columns that need to be placed at the end
-            foreach ($this->columnsToAdd as $postColumn) {
-                if ($postColumn->getAfter() === null) {
-                    $columns[$postColumn->getId()] = $postColumn->getLabel();
-                }
-            }
+            // Get the IDs of all current and custom columns
+            $allColumnIds = array_merge(
+                array_keys($columns),
+                array_map(function (PostColumn $postColumn) {
+                    return $postColumn->getId();
+                }, $this->columnsToAdd),
+            );
 
-            // Then add columns that need to be placed after another
-            $adjustedColumns = [];
-            foreach ($this->columnsToAdd as $postColumn) {
-                foreach ($columns as $key => $column) {
-                    // Duplicate the column into the new array
-                    $adjustedColumns[$key] = $column;
-
+            // This loop is needed, because before the foreach is done,
+            // not all the columns are added, so the 'after' value wouldn't work
+            // with a column that doesn't exist yet in the array
+            $addColumns = $this->columnsToAdd;
+            while (count($addColumns) > 0) {
+                foreach ($addColumns as $key => $postColumn) {
+                    $id = $postColumn->getId();
+                    $label = $postColumn->getLabel();
                     $after = $postColumn->getAfter();
-                    if ($after === null) {
-                        continue;
+                    // Set the 'after' value to null, if that column doesn't exist
+                    $after = in_array($after, $allColumnIds, true) ? $after : null;
+
+                    if ($after !== null) {
+                        // Skip for the next while-iteration, if the after-column doesn't exist
+                        if (! isset($columns[$after])) {
+                            continue;
+                        }
+
+                        // Insert the new column after another column
+                        $offset = array_search($after, array_keys($columns)) + 1;
+                        $columns = array_merge(
+                            array_slice($columns, 0, $offset, true),
+                            [$id => $label],
+                            array_slice($columns, $offset, null, true)
+                        );
+                    } else {
+                        // Add the new column at the end of the array
+                        $columns[$id] = $label;
                     }
 
-                    // Insert the new column after another column
-                    if ($key === $after) {
-                        $adjustedColumns[$postColumn->getId()] = $postColumn->getLabel();
-                    }
-                }
-            }
-
-            // Add any missing columns, in case the 'after' column was not found
-            foreach ($this->columnsToAdd as $postColumn) {
-                if (! isset($adjustedColumns[$postColumn->getId()])) {
-                    $adjustedColumns[$postColumn->getId()] = $postColumn->getLabel();
+                    // Take the new column out of the array
+                    unset($addColumns[$key]);
                 }
             }
 
             // Remove columns
             foreach ($this->columnsToRemove as $columnName) {
-                if (isset($adjustedColumns[$columnName])) {
-                    unset($adjustedColumns[$columnName]);
+                if (isset($columns[$columnName])) {
+                    unset($columns[$columnName]);
                 }
             }
 
-            return $adjustedColumns;
+            return $columns;
         }, 10);
     }
 
