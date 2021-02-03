@@ -309,7 +309,8 @@ class PostColumnsEditor
      */
     protected function applyDefaultSorting(): void
     {
-        if (! isset($this->defaultOrderByMethod, $this->defaultOrder)) {
+        // At least 1 default value is needed
+        if ($this->defaultOrderByMethod === null && $this->defaultOrder === null) {
             return;
         }
 
