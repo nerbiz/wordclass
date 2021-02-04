@@ -1,9 +1,9 @@
 <?php
 
-namespace Nerbiz\Wordclass\InputFields;
+namespace Nerbiz\WordClass\InputFields;
 
-use Nerbiz\Wordclass\Assets;
-use Nerbiz\Wordclass\Init;
+use Nerbiz\WordClass\Assets;
+use Nerbiz\WordClass\Init;
 
 class MediaInputField extends AbstractInputField
 {

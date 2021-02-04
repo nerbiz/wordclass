@@ -1,8 +1,8 @@
 <?php
 
-namespace Nerbiz\Wordclass\InputFields;
+namespace Nerbiz\WordClass\InputFields;
 
-use Nerbiz\Wordclass\Init;
+use Nerbiz\WordClass\Init;
 
 abstract class AbstractInputField
 {

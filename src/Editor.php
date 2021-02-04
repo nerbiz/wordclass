@@ -1,6 +1,6 @@
 <?php
 
-namespace Nerbiz\Wordclass;
+namespace Nerbiz\WordClass;
 
 class Editor
 {

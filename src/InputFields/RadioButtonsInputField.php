@@ -1,6 +1,6 @@
 <?php
 
-namespace Nerbiz\Wordclass\InputFields;
+namespace Nerbiz\WordClass\InputFields;
 
 class RadioButtonsInputField extends AbstractInputField
 {

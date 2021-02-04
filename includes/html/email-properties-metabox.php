@@ -1,6 +1,6 @@
 <?php
 
-use Nerbiz\Wordclass\Init;
+use Nerbiz\WordClass\Init;
 
 // A metabox ID and WP_Post object are required
 if (! isset($metaboxId, $currentPost) || ! ($currentPost instanceof WP_Post)) {

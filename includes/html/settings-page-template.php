@@ -1,6 +1,6 @@
 <?php
 
-use Nerbiz\Wordclass\SettingsPage;
+use Nerbiz\WordClass\SettingsPage;
 
 if (! isset($settingsPage) || ! $settingsPage instanceof SettingsPage) {
     return;

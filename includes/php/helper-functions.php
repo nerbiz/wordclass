@@ -1,8 +1,8 @@
 <?php
 
-use Nerbiz\Wordclass\Helpers;
-use Nerbiz\Wordclass\Options;
-use Nerbiz\Wordclass\Pool;
+use Nerbiz\WordClass\Helpers;
+use Nerbiz\WordClass\Options;
+use Nerbiz\WordClass\Pool;
 
 Pool::set('nw_helpers', new Helpers());
 Pool::set('nw_options', new Options());

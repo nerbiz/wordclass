@@ -1,4 +1,4 @@
-# Wordclass
+# WordClass
 
 Making programming with WordPress easier and more fun.
 
@@ -6,7 +6,7 @@ I created this, because I got confused with a number of WordPress functions, tha
 
 ## Installation
 
-Wordclass requires PHP 7.1 or higher, and can be installed with [Composer](https://getcomposer.org/):
+WordClass requires PHP 7.1 or higher, and can be installed with [Composer](https://getcomposer.org/):
 ```
 composer require nerbiz/wordclass
 ```

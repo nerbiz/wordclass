@@ -2,8 +2,8 @@
 
 namespace NewProject;
 
-use Nerbiz\Wordclass\PostType;
-use Nerbiz\Wordclass\Taxonomy;
+use Nerbiz\WordClass\PostType;
+use Nerbiz\WordClass\Taxonomy;
 
 class YourPostTypesTaxonomies
 {

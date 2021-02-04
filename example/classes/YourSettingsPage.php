@@ -2,10 +2,10 @@
 
 namespace NewProject;
 
-use Nerbiz\Wordclass\InputFields\MediaInputField;
-use Nerbiz\Wordclass\InputFields\TextInputField;
-use Nerbiz\Wordclass\SettingsPage;
-use Nerbiz\Wordclass\SettingsPageSection;
+use Nerbiz\WordClass\InputFields\MediaInputField;
+use Nerbiz\WordClass\InputFields\TextInputField;
+use Nerbiz\WordClass\SettingsPage;
+use Nerbiz\WordClass\SettingsPageSection;
 
 class YourSettingsPage
 {

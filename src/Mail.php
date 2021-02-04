@@ -1,11 +1,11 @@
 <?php
 
-namespace Nerbiz\Wordclass;
+namespace Nerbiz\WordClass;
 
-use Nerbiz\Wordclass\InputFields\CheckboxInputField;
-use Nerbiz\Wordclass\InputFields\EditorInputField;
-use Nerbiz\Wordclass\InputFields\PasswordInputField;
-use Nerbiz\Wordclass\InputFields\TextInputField;
+use Nerbiz\WordClass\InputFields\CheckboxInputField;
+use Nerbiz\WordClass\InputFields\EditorInputField;
+use Nerbiz\WordClass\InputFields\PasswordInputField;
+use Nerbiz\WordClass\InputFields\TextInputField;
 use PHPMailer\PHPMailer\PHPMailer;
 use WP_Error;
 use WP_Post;

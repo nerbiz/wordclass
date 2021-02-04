@@ -1,13 +1,13 @@
 <?php
 
-use Nerbiz\Wordclass\Admin;
-use Nerbiz\Wordclass\Assets;
-use Nerbiz\Wordclass\Editor;
-use Nerbiz\Wordclass\Init;
-use Nerbiz\Wordclass\Media;
-use Nerbiz\Wordclass\Pages;
-use Nerbiz\Wordclass\Theme;
-use Nerbiz\Wordclass\Webpack;
+use Nerbiz\WordClass\Admin;
+use Nerbiz\WordClass\Assets;
+use Nerbiz\WordClass\Editor;
+use Nerbiz\WordClass\Init;
+use Nerbiz\WordClass\Media;
+use Nerbiz\WordClass\Pages;
+use Nerbiz\WordClass\Theme;
+use Nerbiz\WordClass\Webpack;
 // Example namespace, autoloaded from composer.json
 use NewProject\YourPostTypesTaxonomies;
 use NewProject\YourSettingsPage;
