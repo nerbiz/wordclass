@@ -5,7 +5,6 @@ namespace Nerbiz\Wordclass;
 use Nerbiz\Wordclass\InputFields\CheckboxInputField;
 use Nerbiz\Wordclass\InputFields\EditorInputField;
 use Nerbiz\Wordclass\InputFields\PasswordInputField;
-use Nerbiz\Wordclass\InputFields\TextareaInputField;
 use Nerbiz\Wordclass\InputFields\TextInputField;
 use PHPMailer\PHPMailer\PHPMailer;
 use WP_Error;
