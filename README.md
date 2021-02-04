@@ -1,6 +1,6 @@
 # Wordclass
 
-Makes working with WordPress functionality easier and less bulky.
+Making programming with WordPress easier and more fun.
 
 I created this, because I got confused with a number of WordPress functions, that either look too similar, have an unreasonable amount of parameters, or are unnecessarily difficult to work with. And I didn't want to always search for the names of hooks.
 
