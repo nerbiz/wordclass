@@ -192,11 +192,11 @@ class PostColumnsEditor
                 }
             }
 
-            // Get the IDs of all current and custom columns
-            $allColumnIds = array_merge(
+            // Get the names of all current and custom columns
+            $allColumnNames = array_merge(
                 array_keys($columns),
                 array_map(function (PostColumn $postColumn) {
-                    return $postColumn->getId();
+                    return $postColumn->getName();
                 }, $this->addColumns)
             );
 
@@ -206,11 +206,11 @@ class PostColumnsEditor
             $addColumns = $this->addColumns;
             while (count($addColumns) > 0) {
                 foreach ($addColumns as $key => $postColumn) {
-                    $id = $postColumn->getId();
+                    $name = $postColumn->getName();
                     $label = $postColumn->getLabel();
                     $after = $postColumn->getAfter();
                     // Set the 'after' value to null, if that column doesn't exist
-                    $after = in_array($after, $allColumnIds, true) ? $after : null;
+                    $after = in_array($after, $allColumnNames, true) ? $after : null;
 
                     if ($after !== null) {
                         // Skip for the next while-iteration, if the after-column doesn't exist
@@ -220,11 +220,11 @@ class PostColumnsEditor
 
                         // Insert the new column after another column
                         $columns = $this->spliceAssociativeArray($columns, $after, [
-                            $id => $label,
+                            $name => $label,
                         ]);
                     } else {
                         // Add the new column at the end of the array
-                        $columns[$id] = $label;
+                        $columns[$name] = $label;
                     }
 
                     // Take the new column out of the array
@@ -271,9 +271,11 @@ class PostColumnsEditor
      */
     protected function applyRenderFunctions(): void
     {
-        add_action('manage_' . $this->postType . '_posts_custom_column', function (string $columnId, int $postId) {
+        $hookName = 'manage_' . $this->postType . '_posts_custom_column';
+
+        add_action($hookName, function (string $columnName, int $postId) {
             foreach ($this->addColumns as $postColumn) {
-                if ($columnId === $postColumn->getId()) {
+                if ($columnName === $postColumn->getName()) {
                     $renderFunction = $postColumn->getRenderFunction();
 
                     if (is_callable($renderFunction)) {
@@ -295,7 +297,7 @@ class PostColumnsEditor
             foreach ($this->addColumns as $postColumn) {
                 $orderBy = $postColumn->getOrderBy();
                 if ($orderBy !== null) {
-                    $columns[$postColumn->getId()] = $orderBy;
+                    $columns[$postColumn->getName()] = $orderBy;
                 }
             }
 

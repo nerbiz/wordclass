@@ -7,7 +7,7 @@ class PostColumn
     /**
      * @var string
      */
-    protected $id;
+    protected $name;
 
     /**
      * @var string
@@ -30,21 +30,21 @@ class PostColumn
     protected $renderFunction = null;
 
     /**
-     * @param string $id    The identifier of the column
+     * @param string $name  The identifier of the column
      * @param string $label The label in the column head
      */
-    public function __construct(string $id, string $label)
+    public function __construct(string $name, string $label)
     {
-        $this->id = $id;
+        $this->name = $name;
         $this->label = $label;
     }
 
     /**
      * @return string
      */
-    public function getId(): string
+    public function getName(): string
     {
-        return $this->id;
+        return $this->name;
     }
 
     /**
