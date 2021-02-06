@@ -2,6 +2,7 @@
 
 namespace Nerbiz\WordClass\InputFields;
 
+use Nerbiz\WordClass\Contracts\AbstractInputField;
 use WP_Post;
 
 class PostInputField extends AbstractInputField

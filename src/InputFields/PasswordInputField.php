@@ -2,6 +2,8 @@
 
 namespace Nerbiz\WordClass\InputFields;
 
+use Nerbiz\WordClass\Contracts\AbstractInputField;
+
 class PasswordInputField extends AbstractInputField
 {
     /**

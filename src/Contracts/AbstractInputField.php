@@ -1,6 +1,6 @@
 <?php
 
-namespace Nerbiz\WordClass\InputFields;
+namespace Nerbiz\WordClass\Contracts;
 
 use Nerbiz\WordClass\Init;
 
