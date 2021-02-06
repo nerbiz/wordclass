@@ -20,7 +20,7 @@ class Theme
                 // Enable only for the give post types
                 foreach ($postTypes as $key => $postType) {
                     if ($postType instanceof PostType) {
-                        $postTypes[$key] = $postType->getId();
+                        $postTypes[$key] = $postType->getName();
                     }
                 }
 

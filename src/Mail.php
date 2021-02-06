@@ -213,7 +213,7 @@ class Mail
                 function (WP_Post $currentPost, array $boxProperties) use ($metaboxId) {
                     require __DIR__ . '/../includes/html/email-properties-metabox.php';
                 },
-                $cptSentEmail->getId()
+                $cptSentEmail->getName()
             );
         });
 
@@ -284,7 +284,7 @@ class Mail
             });
 
         // Apply column adjustments
-        (new PostColumnsEditor($postType->getId()))
+        (new PostColumnsEditor($postType->getName()))
             ->addColumn($recipientColumn)
             ->addColumn($contentColumn)
             ->addColumn($attachmentsColumn)
@@ -301,7 +301,7 @@ class Mail
     {
         add_action('save_post', function (int $postId, WP_Post $post, bool $update) use ($postType) {
             // Check for the right post type
-            if ($post->post_type !== $postType->getId()) {
+            if ($post->post_type !== $postType->getName()) {
                 return;
             }
 

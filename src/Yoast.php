@@ -15,7 +15,7 @@ class Yoast
     {
         add_filter('wpseo_breadcrumb_links', function ($links) use ($postType, $postId, $offset) {
             if ($postType instanceof PostType) {
-                $postType = $postType->getId();
+                $postType = $postType->getName();
             }
 
             // Adjust the breadcrumbs for the posts
