@@ -5,10 +5,10 @@ namespace Nerbiz\WordClass;
 class Taxonomy
 {
     /**
-     * The ID of the taxonomy
+     * The name of the taxonomy
      * @var string
      */
-    protected $id;
+    protected $name;
 
     /**
      * The slug of the taxonomy
@@ -53,19 +53,19 @@ class Taxonomy
     protected $arguments = [];
 
     /**
-     * @param string $id The ID of the taxonomy
+     * @param string $name The name of the taxonomy
      */
-    public function __construct(string $id)
+    public function __construct(string $name)
     {
-        $this->id = Init::getPrefix() . '_' . $id;
+        $this->name = Init::getPrefix() . '_' . $name;
     }
 
     /**
      * @return string
      */
-    public function getId(): string
+    public function getName(): string
     {
-        return $this->id;
+        return $this->name;
     }
 
     /**
@@ -221,10 +221,10 @@ class Taxonomy
     public function register(): self
     {
         add_action('init', function () {
-            register_taxonomy($this->id, $this->postTypes, $this->getArguments());
+            register_taxonomy($this->getName(), $this->postTypes, $this->getArguments());
 
             foreach ($this->postTypes as $postType) {
-                register_taxonomy_for_object_type($this->id, $postType);
+                register_taxonomy_for_object_type($this->getName(), $postType);
             }
         }, 10);
 
