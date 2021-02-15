@@ -288,7 +288,7 @@ class Mail
             });
 
         // Apply column adjustments
-        (new PostColumnsEditor($postType->getName()))
+        (new PostColumnsEditor([$postType]))
             ->addColumn($recipientColumn)
             ->addColumn($contentColumn)
             ->addColumn($attachmentsColumn)
