@@ -44,7 +44,7 @@ class PostType
      * The features the post type supports
      * @var array
      */
-    protected $supports = [];
+    protected $features = [];
 
     /**
      * The taxonomies the post type has/belongs to
@@ -177,12 +177,12 @@ class PostType
     }
 
     /**
-     * @param array $supports
+     * @param array $features
      * @return self
      */
-    public function setSupports(array $supports): self
+    public function setFeatures(array $features): self
     {
-        $this->supports = $supports;
+        $this->features = $features;
 
         return $this;
     }
@@ -230,7 +230,7 @@ class PostType
             'label' => $this->pluralName,
             'labels' => $this->getLabels(),
             'description' => $this->description,
-            'supports' => $this->supports,
+            'supports' => $this->features,
             'taxonomies' => $this->taxonomies,
             'rewrite' => [
                 'slug' => $this->getSlug(),

@@ -193,7 +193,7 @@ class Mail
         $cptSentEmail = (new PostType('sent_email'))
             ->setSingularName(__('Sent email', 'wordclass'))
             ->setPluralName(__('Sent emails', 'wordclass'))
-            ->setSupports(['title', 'editor'])
+            ->setFeatures(['title', 'editor'])
             ->setArguments([
                 'menu_icon' => 'dashicons-email-alt',
                 'public' => true,
