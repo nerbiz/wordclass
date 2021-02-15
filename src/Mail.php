@@ -280,6 +280,10 @@ class Mail
                     get_post_meta($postId, 'email_properties_headers', true)
                 );
 
+                if (trim($headersString) === '') {
+                    return '-';
+                }
+
                 return str_replace(PHP_EOL, '<br><br>', $headersString);
             });
 
