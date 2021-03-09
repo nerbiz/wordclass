@@ -51,17 +51,52 @@ class Media
 
     /**
      * Add upload support for a specific file type
-     * @param string $extensionRegEx
+     * @param string $extension
      * @param string $mimeType
      * @return self
      */
-    public function addUploadSupport(string $extensionRegEx, string $mimeType): self
+    public function addUploadSupport(string $extension, string $mimeType): self
     {
-        add_filter('upload_mimes', function (array $mimeTypes) use ($extensionRegEx, $mimeType) {
-            $mimeTypes[$extensionRegEx] = $mimeType;
+        add_filter('upload_mimes', function (array $mimeTypes) use ($extension, $mimeType) {
+            $mimeTypes[$extension] = $mimeType;
 
             return $mimeTypes;
         }, 10);
+
+        return $this;
+    }
+
+    /**
+     * Add support for uploading SVG files
+     * @return self
+     */
+    public function addSvgSupport(): self
+    {
+        // Add SVG extension support
+        $this->addUploadSupport('svg|svgz', 'image/svg+xml');
+
+        // Adjust the SVG file if needed
+        add_filter('wp_handle_upload_prefilter', function ($file) {
+            // See if the file is an SVG file
+            if ($file['type'] !== 'image/svg+xml') {
+                return $file;
+            }
+
+            // Get the SVG file contents
+            $svgContents = trim(file_get_contents($file['tmp_name']));
+
+            // Add the '<?xml' line if it's missing
+            if (substr($svgContents, 0, 5) !== '<?xml') {
+                file_put_contents($file['tmp_name'], sprintf(
+                    '%s%s%s',
+                    '<?xml version="1.0" encoding="utf-8"?>',
+                    PHP_EOL,
+                    $svgContents
+                ));
+            }
+
+            return $file;
+        });
 
         return $this;
     }
