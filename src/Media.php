@@ -73,7 +73,7 @@ class Media
     public function addSvgSupport(): self
     {
         // Add SVG extension support
-        $this->addUploadSupport('svg|svgz', 'image/svg+xml');
+        $this->addUploadSupport('svg', 'image/svg+xml');
 
         // Adjust the SVG file if needed
         add_filter('wp_handle_upload_prefilter', function ($file) {
