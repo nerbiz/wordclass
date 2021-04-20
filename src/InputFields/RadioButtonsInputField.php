@@ -2,8 +2,6 @@
 
 namespace Nerbiz\WordClass\InputFields;
 
-use Nerbiz\WordClass\Contracts\AbstractInputField;
-
 class RadioButtonsInputField extends AbstractInputField
 {
     /**

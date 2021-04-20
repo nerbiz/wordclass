@@ -2,7 +2,7 @@
 
 namespace Nerbiz\WordClass;
 
-use Nerbiz\WordClass\Contracts\AbstractInputField;
+use Nerbiz\WordClass\InputFields\AbstractInputField;
 
 class SettingsPageSection
 {
