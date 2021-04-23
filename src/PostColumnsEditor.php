@@ -19,7 +19,7 @@ class PostColumnsEditor
     protected static $sortingHookAdded = false;
 
     /**
-     * The post type to edit the columns of
+     * The post types to edit the columns of
      * @var string[]
      */
     protected $postTypes;
