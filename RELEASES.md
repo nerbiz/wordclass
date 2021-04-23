@@ -1,5 +1,13 @@
 # Release notes
 
+## 2.5.3
+#### 2021-04-23
+
+* admin-bar.css now uses more specific CSS.
+* Fixed: EditorInputField added a newline, when there was no description text.
+* Fixed: wrong text domain in Mail.
+* Fixed: wronf if-statements in PostColumnsEditor.
+
 ## 2.5.2
 #### 2021-01-24
 
