@@ -19,6 +19,7 @@ class PostColumnsEditor
     protected static $sortingHookAdded = false;
 
     /**
+     * The post type to edit the columns of
      * @var string
      */
     protected $postType;
@@ -157,10 +158,6 @@ class PostColumnsEditor
     protected function applyMutations(): void
     {
         add_filter('manage_' . $this->postType . '_posts_columns', function (array $columns) {
-            if (count($this->columnsToAdd) < 1) {
-                return $columns;
-            }
-
             // First add the columns that need to be placed at the end
             foreach ($this->columnsToAdd as $postColumn) {
                 if ($postColumn->getAfter() === null) {
@@ -249,7 +246,8 @@ class PostColumnsEditor
      */
     protected function applyDefaultSorting(): void
     {
-        if (! isset($this->defaultOrderByMethod, $this->defaultOrder)) {
+        // At least 1 default value is needed
+        if ($this->defaultOrderByMethod === null && $this->defaultOrder === null) {
             return;
         }
 

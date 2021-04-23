@@ -120,7 +120,7 @@ class Mail
             add_action('admin_notices', function () use ($error) {
                 echo sprintf(
                     '<div class="notice notice-error is-dismissible"><p>%s<br>%s</p></div>',
-                    __('An error occured when trying to send the testmail:', 'wordpress'),
+                    __('An error occured when trying to send the testmail:', 'wordclass'),
                     $error->get_error_message()
                 );
             });
@@ -148,7 +148,7 @@ class Mail
             add_action('admin_notices', function () {
                 echo sprintf(
                     '<div class="notice notice-success is-dismissible"><p>%s</p></div>',
-                    __('The testmail was sent successfully.', 'wordpress')
+                    __('The testmail was sent successfully.', 'wordclass')
                 );
             });
         }
