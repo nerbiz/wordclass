@@ -1,274 +1,292 @@
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.0\n"
-"POT-Creation-Date: 2019-09-02 18:03+0000\n"
-"PO-Revision-Date: 2019-09-02 18:06+0000\n"
-"Last-Translator: Sybren Dijkstra <nerbiz@gmail.com>\n"
-"Language-Team: Nederlands\n"
-"Language: nl_NL\n"
+"Project-Id-Version: Wordclass\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-04-24 20:50+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/\n"
-"Report-Msgid-Bugs-To: \n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Loco-Version: 2.3.0; wp-5.2.2"
+"X-Loco-Version: 2.5.2; wp-5.7.1\n"
+"X-Domain: wordclass"
 
-#: vendor/nerbiz/wordclass/src/Taxonomy.php:185
-#: vendor/nerbiz/wordclass/src/PostType.php:206
-#, php-format
-msgid "All %s"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/Taxonomy.php:186
-#, php-format
-msgid "Parent %s"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/Taxonomy.php:187
-#: vendor/nerbiz/wordclass/src/PostType.php:205
-#, php-format
-msgid "Parent %s:"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/Taxonomy.php:188
-#, php-format
-msgid "New %s name"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/Taxonomy.php:189
-#: vendor/nerbiz/wordclass/src/PostType.php:207
-#: vendor/nerbiz/wordclass/src/PostType.php:208
-#, php-format
-msgid "Add new %s"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/Taxonomy.php:190
-#: vendor/nerbiz/wordclass/src/PostType.php:210
-#, php-format
-msgid "Edit %s"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/Taxonomy.php:191
-#: vendor/nerbiz/wordclass/src/PostType.php:211
-#, php-format
-msgid "Update %s"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/Taxonomy.php:192
-#: vendor/nerbiz/wordclass/src/PostType.php:212
-#, php-format
-msgid "View %s"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/Taxonomy.php:193
-#, php-format
-msgid "Separate %s with commas"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/Taxonomy.php:194
-#, php-format
-msgid "Add or remove %s"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/Taxonomy.php:195
-msgid "Choose from the most used"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/Taxonomy.php:196
-#, php-format
-msgid "Popular %s"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/Taxonomy.php:197
-#: vendor/nerbiz/wordclass/src/PostType.php:213
-#, php-format
-msgid "Search %s"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/Taxonomy.php:198
-#: vendor/nerbiz/wordclass/src/PostType.php:214
-msgid "Not found"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/Taxonomy.php:199
-#, php-format
-msgid "No %s"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/Taxonomy.php:200
-#: vendor/nerbiz/wordclass/src/PostType.php:222
-#, php-format
-msgid "%s list"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/Taxonomy.php:201
-#: vendor/nerbiz/wordclass/src/PostType.php:223
-#, php-format
-msgid "%s list navigation"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/PostType.php:204
+#: vendor/nerbiz/wordclass/src/PostType.php:155
 #, php-format
 msgid "%s archive"
 msgstr ""
 
-#: vendor/nerbiz/wordclass/src/PostType.php:209
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:163
+#: vendor/nerbiz/wordclass/src/PostType.php:173
 #, php-format
-msgid "New %s"
+msgid "%s list"
 msgstr ""
 
-#: vendor/nerbiz/wordclass/src/PostType.php:215
-msgid "Not found in trash"
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:164
+#: vendor/nerbiz/wordclass/src/PostType.php:174
+#, php-format
+msgid "%s list navigation"
 msgstr ""
 
-#: vendor/nerbiz/wordclass/src/PostType.php:216
+#: vendor/nerbiz/wordclass/src/Mail.php:355
+msgid "(no content)"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Mail.php:351
+msgid "(no subject)"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/InputFields/PostInputField.php:77
+msgid "- Choose one -"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:152
+#: vendor/nerbiz/wordclass/src/PostType.php:158
+#: vendor/nerbiz/wordclass/src/PostType.php:159
+#, php-format
+msgid "Add new %s"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:157
+#, php-format
+msgid "Add or remove %s"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:148
+#: vendor/nerbiz/wordclass/src/PostType.php:157
+#, php-format
+msgid "All %s"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Mail.php:134
+msgid "An error occured when trying to send the testmail:"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Mail.php:260
+#: vendor/nerbiz/wordclass/includes/html/email-properties-metabox.php:12
+msgid "Attachments"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:158
+msgid "Choose from the most used"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/includes/html/media-input-field.php:48
+msgid "Clear"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Mail.php:54
+#: vendor/nerbiz/wordclass/src/Mail.php:249
+msgid "Content"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:153
+#: vendor/nerbiz/wordclass/src/PostType.php:161
+#, php-format
+msgid "Edit %s"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Mail.php:212
+msgid "Email properties"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Mail.php:42
+msgid "Enable SMTP?"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Mail.php:45
+msgid "Encryption"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Mail.php:47
+msgid "Encryption is used to store the password"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/PostType.php:167
 msgid "Featured image"
 msgstr ""
 
-#: vendor/nerbiz/wordclass/src/PostType.php:217
-msgid "Set featured image"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/PostType.php:218
-msgid "Remove featured image"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/PostType.php:219
-msgid "Use as featured image"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/PostType.php:220
-#, php-format
-msgid "Insert into %s"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/PostType.php:221
-#, php-format
-msgid "Uploaded to this %s"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/PostType.php:224
+#: vendor/nerbiz/wordclass/src/PostType.php:175
 #, php-format
 msgid "Filter %s list"
 msgstr ""
 
-#: vendor/nerbiz/wordclass/src/Mail.php:29
-msgid "SMTP settings"
+#: vendor/nerbiz/wordclass/src/Mail.php:275
+#: vendor/nerbiz/wordclass/includes/html/email-properties-metabox.php:13
+msgid "Headers"
 msgstr ""
 
-#: vendor/nerbiz/wordclass/src/Mail.php:30
-msgid "SMTP values"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/Mail.php:31
-msgid "Enable SMTP?"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/Mail.php:32
-msgid "Host"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/Mail.php:33
-msgid "Port"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/Mail.php:34
-msgid "Encryption"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/Mail.php:35
-msgid "Username"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/Mail.php:38
-msgid "Password"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/Mail.php:39
-msgid "The password is stored encrypted"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/Mail.php:42
-msgid "Test settings"
+#. Name of the template
+msgid "Homepagina"
 msgstr ""
 
 #: vendor/nerbiz/wordclass/src/Mail.php:43
-msgid "Recipient"
+msgid "Host"
 msgstr ""
 
-#: vendor/nerbiz/wordclass/src/Mail.php:44
-msgid "Subject"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/Mail.php:45
-msgid "Content"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/Mail.php:48
-msgid "Send testmail?"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/Mail.php:49
+#: vendor/nerbiz/wordclass/src/Mail.php:55
 msgid "If checked, a testmail will be sent when saving these settings"
 msgstr ""
 
-#: vendor/nerbiz/wordclass/src/AdminBar.php:43
+#: vendor/nerbiz/wordclass/src/PostType.php:171
+#, php-format
+msgid "Insert into %s"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/SettingsPage.php:288
+msgid "Invalid nonce value, please refresh the page and try again."
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Admin.php:90
 msgid "Move bar"
 msgstr ""
 
-#: vendor/nerbiz/wordclass/includes/html/settings-page-template.php:89
+#: vendor/nerbiz/wordclass/src/PostType.php:160
+#, php-format
+msgid "New %s"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:151
+#, php-format
+msgid "New %s name"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:162
+#, php-format
+msgid "No %s"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/includes/html/media-input-field.php:9
+msgid "No media selected"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:161
+#: vendor/nerbiz/wordclass/src/PostType.php:165
+msgid "Not found"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/PostType.php:166
+msgid "Not found in trash"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:149
+#, php-format
+msgid "Parent %s"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:150
+#: vendor/nerbiz/wordclass/src/PostType.php:156
+#, php-format
+msgid "Parent %s:"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Mail.php:47
+msgid "Password"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:159
+#, php-format
+msgid "Popular %s"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Mail.php:44
+msgid "Port"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Mail.php:52
+#: vendor/nerbiz/wordclass/src/Mail.php:242
+#: vendor/nerbiz/wordclass/includes/html/email-properties-metabox.php:11
+msgid "Recipient"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/PostType.php:169
+msgid "Remove featured image"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/includes/html/settings-page-template.php:98
 msgid "Save settings"
 msgstr ""
 
-#: vendor/nerbiz/wordclass/src/Premade/Shortcodes.php:20
-msgid "Home URL"
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:160
+#: vendor/nerbiz/wordclass/src/PostType.php:164
+#, php-format
+msgid "Search %s"
 msgstr ""
 
-#: vendor/nerbiz/wordclass/src/Premade/Shortcodes.php:38
-msgid "Copyright"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/Premade/Shortcodes.php:41
-msgid "Year"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/Premade/Shortcodes.php:42
-msgid "Default value is the current year"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/Premade/Shortcodes.php:74
-msgid "- Please choose -"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/Premade/Shortcodes.php:92
-msgid "Page link"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/Premade/Shortcodes.php:95
-msgid "Page"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/Premade/Shortcodes.php:100
-msgid "CSS class"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/Premade/Shortcodes.php:104
-msgid "'target' attribute"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/Premade/Shortcodes.php:108
-msgid "Empty"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/SettingInputs/Post.php:26
-msgid "- Choose one -"
-msgstr ""
-
-#: vendor/nerbiz/wordclass/src/SettingInputs/Media.php:28
+#: vendor/nerbiz/wordclass/includes/html/media-input-field.php:41
 msgid "Select media"
 msgstr ""
 
-#: vendor/nerbiz/wordclass/src/SettingInputs/Media.php:29
-msgid "Clear"
+#: vendor/nerbiz/wordclass/src/Mail.php:55
+msgid "Send testmail?"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Mail.php:194
+msgid "Sent email"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Mail.php:195
+msgid "Sent emails"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:156
+#, php-format
+msgid "Separate %s with commas"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/PostType.php:168
+msgid "Set featured image"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Mail.php:39
+msgid "SMTP settings"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Mail.php:41
+msgid "SMTP values"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Mail.php:53
+msgid "Subject"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Mail.php:51
+msgid "Test settings"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Mail.php:160
+msgid "The testmail was sent successfully."
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:154
+#: vendor/nerbiz/wordclass/src/PostType.php:162
+#, php-format
+msgid "Update %s"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/PostType.php:172
+#, php-format
+msgid "Uploaded to this %s"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/PostType.php:170
+msgid "Use as featured image"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Mail.php:46
+msgid "Username"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/Taxonomy.php:155
+#: vendor/nerbiz/wordclass/src/PostType.php:163
+#, php-format
+msgid "View %s"
+msgstr ""
+
+#: vendor/nerbiz/wordclass/src/SettingsPage.php:283
+msgid "You don't have the right permissions to update these settings."
 msgstr ""
