@@ -1,5 +1,10 @@
 # Release notes
 
+## 2.5.4
+#### 2021-04-24
+
+* Updated Dutch translations.
+
 ## 2.5.3
 #### 2021-04-23
 
