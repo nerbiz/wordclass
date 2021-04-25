@@ -130,25 +130,6 @@ class Assets
     }
 
     /**
-     * Remove the jQuery asset
-     * @return self
-     */
-    public function removeJquery(): self
-    {
-        add_action('init', function () {
-            global $pagenow;
-
-            // Don't replace on admin
-            if (! is_admin() && $pagenow !== 'wp-login.php') {
-                // Remove the normal jQuery include
-                wp_deregister_script('jquery');
-            }
-        });
-
-        return $this;
-    }
-
-    /**
      * Replace the jQuery version with another one, using Google CDN
      * @param  string $version jQuery version to use
      * @return self
@@ -162,6 +143,10 @@ class Assets
 
             // Don't replace on admin
             if (! is_admin() && $pagenow !== 'wp-login.php') {
+                // Deregister the current jQuery
+                wp_deregister_script('jquery');
+
+                // Register the current jQuery
                 wp_enqueue_script(
                     'jquery',
                     sprintf('//ajax.googleapis.com/ajax/libs/jquery/%s/jquery.min.js', $version),

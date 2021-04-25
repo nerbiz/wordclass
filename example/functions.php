@@ -26,10 +26,8 @@ $manifestPath = get_stylesheet_directory() . '/dist/manifest.json';
 Webpack::readManifest($manifestPath);
 
 (new Assets())
-    // Set a custom jQuery version (front-end only)
-    ->jQueryVersion('3.5.1')
-    // Or remove it (front-end only)
-    ->removeJquery()
+    // Set a different jQuery version (front-end only)
+    ->jQueryVersion('3.6.0')
     // Add some assets to your pages
     ->addThemeCss('theme-front', get_stylesheet_uri() . '/dist/style.css')
     ->addThemeJs('theme-front', 'https://example.com/script.js')
