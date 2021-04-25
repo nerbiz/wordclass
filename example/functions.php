@@ -26,8 +26,6 @@ $manifestPath = get_stylesheet_directory() . '/dist/manifest.json';
 Webpack::readManifest($manifestPath);
 
 (new Assets())
-    // Set a different jQuery version (front-end only)
-    ->jQueryVersion('3.6.0')
     // Add some assets to your pages
     ->addThemeCss('theme-front', get_stylesheet_uri() . '/dist/style.css')
     ->addThemeJs('theme-front', 'https://example.com/script.js')
@@ -35,6 +33,7 @@ Webpack::readManifest($manifestPath);
     ->addAdminJs('theme-admin', Webpack::getAssetUrl('admin.js'))
     ->addLoginCss('theme-login', Webpack::getAssetUrl('login.css'))
     ->addLoginJs('theme-login', Webpack::getAssetUrl('login.js'))
+    // Replace '?ver=...' with a hash for security, hiding the WordPress version
     ->hashVersionParameters('your-salt-string');
 
 // Create post types and/or taxonomies

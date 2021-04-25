@@ -130,37 +130,6 @@ class Assets
     }
 
     /**
-     * Replace the jQuery version with another one, using Google CDN
-     * @param  string $version jQuery version to use
-     * @return self
-     */
-    public function jQueryVersion(string $version): self
-    {
-        $this->removeJquery();
-
-        add_action('init', function () use ($version) {
-            global $pagenow;
-
-            // Don't replace on admin
-            if (! is_admin() && $pagenow !== 'wp-login.php') {
-                // Deregister the current jQuery
-                wp_deregister_script('jquery');
-
-                // Register the current jQuery
-                wp_enqueue_script(
-                    'jquery',
-                    sprintf('//ajax.googleapis.com/ajax/libs/jquery/%s/jquery.min.js', $version),
-                    [],
-                    $version,
-                    true
-                );
-            }
-        });
-
-        return $this;
-    }
-
-    /**
      * Replace 'ver=' asset parameter values with a hash
      * @param string $salt
      * @return self
