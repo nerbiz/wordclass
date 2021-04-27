@@ -1,6 +1,6 @@
 <?php
 
-namespace Nerbiz\Wordclass\InputFields;
+namespace Nerbiz\WordClass\InputFields;
 
 use WP_Post;
 
@@ -12,15 +12,21 @@ class PostInputField extends AbstractInputField
      */
     protected $postTypes = [];
 
+    /**
+     * @param string      $name
+     * @param string      $label
+     * @param string|null $description
+     * @param array       $postTypes
+     */
     public function __construct(
         string $name,
-        string $title,
+        string $label,
         ?string $description = null,
         array $postTypes = []
     ) {
         $this->postTypes = $postTypes;
 
-        parent::__construct($name, $title, $description);
+        parent::__construct($name, $label, $description);
     }
 
     /**

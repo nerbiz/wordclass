@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "POT-Creation-Date: 2019-09-02 18:03+0000\n"
-"PO-Revision-Date: 2021-04-24 20:40+0000\n"
+"PO-Revision-Date: 2021-04-24 20:53+0000\n"
 "Language-Team: Nederlands\n"
 "Language: nl_NL\n"
 "MIME-Version: 1.0\n"
@@ -12,7 +12,6 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Loco-Version: 2.5.2; wp-5.7.1\n"
-"Last-Translator: "
 
 #: vendor/nerbiz/wordclass/src/PostType.php:155
 #, php-format

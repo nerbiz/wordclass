@@ -1,6 +1,6 @@
 <?php
 
-namespace Nerbiz\Wordclass;
+namespace Nerbiz\WordClass;
 
 class Theme
 {
@@ -20,7 +20,7 @@ class Theme
                 // Enable only for the give post types
                 foreach ($postTypes as $key => $postType) {
                     if ($postType instanceof PostType) {
-                        $postTypes[$key] = $postType->getId();
+                        $postTypes[$key] = $postType->getName();
                     }
                 }
 
@@ -67,59 +67,6 @@ class Theme
     public function removeGeneratorMeta(): self
     {
         remove_action('wp_head', 'wp_generator');
-
-        return $this;
-    }
-
-    /**
-     * @deprecated 2.1.0
-     * @see Pages::automaticWindowTitle()
-     * @return self
-     */
-    public function automaticTitle(): self
-    {
-        (new Pages())->automaticWindowTitle();
-
-        return $this;
-    }
-
-    /**
-     * @deprecated 2.2.0
-     * @see Media::setFeaturedImageSize()
-     * @return self
-     */
-    public function setFeaturedImageSize(int $width, int $height, bool $crop = false): self
-    {
-        (new Media())->setFeaturedImageSize($width, $height, $crop);
-
-        return $this;
-    }
-
-    /**
-     * @deprecated 2.2.0
-     * @see Media::addImageSize()
-     * @return self
-     */
-    public function addImageSize(
-        string $name,
-        string $nameInChooser,
-        int $width,
-        int $height,
-        bool $crop = false
-    ): self {
-        (new Media())->addImageSize($name, $nameInChooser, $width, $height, $crop);
-
-        return $this;
-    }
-
-    /**
-     * @deprecated 2.5.0
-     * @see Assets::hashVersionParameters()
-     * @return self
-     */
-    public function hashAssetVersions(string $salt): self
-    {
-        (new Assets())->hashVersionParameters($salt);
 
         return $this;
     }

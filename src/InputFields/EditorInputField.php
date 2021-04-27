@@ -1,6 +1,6 @@
 <?php
 
-namespace Nerbiz\Wordclass\InputFields;
+namespace Nerbiz\WordClass\InputFields;
 
 class EditorInputField extends AbstractInputField
 {
@@ -32,6 +32,7 @@ class EditorInputField extends AbstractInputField
     protected function prependRender(): string
     {
         if (trim($this->description) !== '') {
+            // Add a newline to the description text
             $this->description .= '<br>&nbsp;';
         }
 

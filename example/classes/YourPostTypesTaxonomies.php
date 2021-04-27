@@ -2,8 +2,8 @@
 
 namespace NewProject;
 
-use Nerbiz\Wordclass\PostType;
-use Nerbiz\Wordclass\Taxonomy;
+use Nerbiz\WordClass\PostType;
+use Nerbiz\WordClass\Taxonomy;
 
 class YourPostTypesTaxonomies
 {
@@ -15,7 +15,7 @@ class YourPostTypesTaxonomies
         return (new PostType('calendar_item'))
             ->setSingularName(__('Calendar item', 'project-text-domain'))
             ->setPluralName(__('Calendar items', 'project-text-domain'))
-            ->setSupports(['title', 'editor', 'thumbnail'])
+            ->setFeatures(['title', 'editor', 'thumbnail'])
             ->setArguments([
                 'public' => true,
                 'publicly_queryable' => true,

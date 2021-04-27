@@ -1,14 +1,14 @@
 <?php
 
-namespace Nerbiz\Wordclass;
+namespace Nerbiz\WordClass;
 
 class PostType
 {
     /**
-     * The ID of the post type
+     * The name of the post type
      * @var string
      */
-    protected $id;
+    protected $name;
 
     /**
      * The slug of the post type
@@ -44,7 +44,7 @@ class PostType
      * The features the post type supports
      * @var array
      */
-    protected $supports = [];
+    protected $features = [];
 
     /**
      * The taxonomies the post type has/belongs to
@@ -59,19 +59,19 @@ class PostType
     protected $arguments = [];
 
     /**
-     * @param string $id The ID of the taxonomy
+     * @param string $name The name of the post type
      */
-    public function __construct(string $id)
+    public function __construct(string $name)
     {
-        $this->id = Init::getPrefix() . '_' . $id;
+        $this->name = Init::getPrefix() . '_' . $name;
     }
 
     /**
      * @return string
      */
-    public function getId(): string
+    public function getName(): string
     {
-        return $this->id;
+        return $this->name;
     }
 
     /**
@@ -177,12 +177,12 @@ class PostType
     }
 
     /**
-     * @param array $supports
+     * @param array $features
      * @return self
      */
-    public function setSupports(array $supports): self
+    public function setFeatures(array $features): self
     {
-        $this->supports = $supports;
+        $this->features = $features;
 
         return $this;
     }
@@ -195,12 +195,12 @@ class PostType
     public function setTaxonomies(array $taxonomies): self
     {
         // Make sure the post types are a string
-        foreach ($taxonomies as $key => $name) {
+        foreach ($taxonomies as $key => $taxonomy) {
             // Taxonomy objects can be passed
-            if ($name instanceof Taxonomy) {
-                $taxonomies[$key] = $name->getId();
+            if ($taxonomy instanceof Taxonomy) {
+                $taxonomies[$key] = $taxonomy->getName();
             } else {
-                $taxonomies[$key] = $name;
+                $taxonomies[$key] = $taxonomy;
             }
         }
 
@@ -230,7 +230,7 @@ class PostType
             'label' => $this->pluralName,
             'labels' => $this->getLabels(),
             'description' => $this->description,
-            'supports' => $this->supports,
+            'supports' => $this->features,
             'taxonomies' => $this->taxonomies,
             'rewrite' => [
                 'slug' => $this->getSlug(),
@@ -245,7 +245,7 @@ class PostType
     public function register(): self
     {
         add_action('init', function () {
-            register_post_type($this->getId(), $this->getArguments());
+            register_post_type($this->getName(), $this->getArguments());
         }, 10);
 
         return $this;

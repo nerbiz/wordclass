@@ -1,6 +1,6 @@
 <?php
 
-use Nerbiz\Wordclass\SettingsPage;
+use Nerbiz\WordClass\SettingsPage;
 
 if (! isset($settingsPage) || ! $settingsPage instanceof SettingsPage) {
     return;
@@ -43,7 +43,7 @@ $currentTab = $_GET['tab'] ?? null;
     </nav>
 
     <form method="POST">
-        <?php wp_nonce_field(); ?>
+        <?php wp_nonce_field(-1, $settingsPage->getNonceName()); ?>
 
         <?php // Output sections, first is visible at page load ?>
         <?php $first = true; ?>
@@ -72,9 +72,9 @@ $currentTab = $_GET['tab'] ?? null;
                             <?php if ($field->isFullWidth()): ?>
                                 <tr>
                                     <td colspan="2" style="padding-left: 0;">
-                                        <?php if (($title = $field->getTitle()) !== ''): ?>
+                                        <?php if (($label = $field->getLabel()) !== ''): ?>
                                             <h3 style="margin: 0;">
-                                                <?php echo $field->getTitle(); ?>
+                                                <?php echo $label; ?>
                                             </h3>
                                         <?php endif; ?>
 
@@ -83,7 +83,7 @@ $currentTab = $_GET['tab'] ?? null;
                                 </tr>
                             <?php else: ?>
                                 <tr>
-                                    <th scope="row"><?php echo $field->getTitle(); ?></th>
+                                    <th scope="row"><?php echo $field->getLabel(); ?></th>
                                     <td><?php echo $field->render(); ?></td>
                                 </tr>
                             <?php endif; ?>
@@ -93,8 +93,7 @@ $currentTab = $_GET['tab'] ?? null;
             </div>
         <?php endforeach; ?>
 
-        <?php
-        submit_button(
+        <?php submit_button(
             __('Save settings', 'wordclass'),
             'primary',
             $settingsPage->getSubmitButtonName()

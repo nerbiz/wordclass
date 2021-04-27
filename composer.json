@@ -1,6 +1,6 @@
 {
   "name": "nerbiz/wordclass",
-  "description": "Class-based functions.php, utilities and helpers for WordPress",
+  "description": "Making programming with WordPress easier and more fun",
   "license": "Unlicense",
   "authors": [
     {
@@ -10,15 +10,14 @@
   ],
   "autoload": {
     "psr-4": {
-      "Nerbiz\\Wordclass\\": "src/"
+      "Nerbiz\\WordClass\\": "src/"
     }
   },
   "require": {
     "php": "^7.1",
-    "tgmpa/tgm-plugin-activation": "^2.6",
     "tinymce/tinymce": "^4.6"
   },
   "support" : {
-    "docs": "https://github.com/nerbiz/wordclass"
+    "docs": "https://github.com/nerbiz/wordclass/wiki"
   }
 }

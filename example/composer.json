@@ -6,7 +6,6 @@
     }
   },
   "require": {
-    "PHP": "^7.1",
     "nerbiz/wordclass": "^2.2"
   }
 }

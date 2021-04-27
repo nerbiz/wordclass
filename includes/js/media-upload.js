@@ -1,79 +1,75 @@
 /**
- * @param {jQuery|HTMLElement} $element
+ * @param {Element} element
  * @constructor
  */
-function MediaUploadInput($element)
+function WcMediaInput(element)
 {
     var self = this;
 
     /**
-     * The main element containing image preview and input
-     * @type {jQuery|HTMLElement}
+     * The main element containing media preview and input
+     * @type {Element}
      */
-    self.$element = $($element);
+    self.element = element;
 
     /**
      * The button that triggers the media selector
-     * @type {jQuery|HTMLElement}
+     * @type {Element}
      */
-    self.$uploadButton = self.$element.find('.upload-media-button');
+    self.uploadButton = self.element.querySelectorAll('.upload-media-button')[0];
 
     /**
      * The button that clears the current value
-     * @type {jQuery|HTMLElement}
+     * @type {Element}
      */
-    self.$clearButton = self.$element.find('.clear-media-button');
+    self.clearButton = self.element.querySelectorAll('.clear-media-button')[0];
 
     /**
-     * The image element that shows the selected attachment
-     * @type {jQuery|HTMLElement}
+     * The element that shows the selected attachment
+     * @type {Element}
      */
-    self.$imagePreview = self.$element.find('.media-preview');
+    self.mediaPreview = self.element.querySelectorAll('.media-preview')[0];
 
     /**
      * The input field containing the value (selected attachment ID)
-     * @type {jQuery|HTMLElement}
+     * @type {Element}
      */
-    self.$inputField = self.$element.find('input[type="hidden"]');
+    self.inputField = self.element.querySelectorAll('input[type="hidden"]')[0];
 
     /**
      * The element that contains the filename of the currently selected media
-     * @type {jQuery|HTMLElement}
+     * @type {Element}
      */
-    self.$chosenMediaFilename = self.$element.find('.chosen-media-filename');
+    self.chosenMediaFilename = self.element.querySelectorAll('.chosen-media-filename')[0];
 
     /**
-     * A 1x1 transparent white pixel, used as image placeholder
-     * @type {String}
+     * A 1x1 transparent pixel
+     * @type {string}
      */
-    self.transparentPixelBase64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
+    self.transparentPixelSrc = self.mediaPreview.dataset.transparentPixelSrc;
+
+    /**
+     * An empty file icon
+     * @type {string}
+     */
+    self.fileIconSrc = self.mediaPreview.dataset.fileIconSrc;
 
     /**
      * The media frame
-     * @type {Object|null}
+     * @type {object|null}
      */
     self.fileFrame = null;
-
-    /**
-     * Set a fallback 'src' for the preview image, if needed
-     * @return {void}
-     */
-    self.setFallbackImagePreview = function () {
-        if (! self.$imagePreview.attr('src')) {
-            self.$imagePreview.attr('src', self.transparentPixelBase64);
-        }
-    };
 
     /**
      * Enable the media upload/selector button
      * @return {void}
      */
     self.enableUploadButton = function () {
-        self.$uploadButton.on('click', function (event) {
+        self.uploadButton.addEventListener('click', function (event) {
             event.preventDefault();
 
             // Get the current attachment ID
-            var currentAttachmentId = self.$inputField.val();
+            var currentAttachmentId = self.inputField.value;
 
             // If the media frame already exists, reopen it.
             if (self.fileFrame) {
@@ -89,27 +85,29 @@ function MediaUploadInput($element)
 
             // Create the media frame
             self.fileFrame = wp.media.frames.file_frame = wp.media({
-                title: 'Select a image to upload',
+                title: 'Select media file to upload',
                 button: {
-                    text: 'Use this image',
+                    text: 'Use this file',
                 },
                 // Don't allow multiple files
-                multiple: false
+                multiple: false,
             });
 
-            // When an image is selected, run a callback.
+            // When an file is selected, run a callback.
             self.fileFrame.on('select', function () {
-                // We set multiple to false so only get one image from the uploader
                 var attachment = self.fileFrame.state().get('selection').first().toJSON();
 
                 // Set the attachment ID in the input field
-                self.$inputField.val(attachment.id);
-                // Show the image preview and filename
-                self.$imagePreview.attr('src', attachment.sizes.thumbnail.url);
-                self.$chosenMediaFilename.text(attachment.filename);
+                self.inputField.value = attachment.id;
+                // Show the media preview and filename
+                var imageSrc = (attachment.type === 'image')
+                    ? attachment.sizes.thumbnail.url
+                    : self.fileIconSrc;
+                self.mediaPreview.setAttribute('src', imageSrc);
+                self.chosenMediaFilename.innerHTML = attachment.filename;
 
                 // Restore the main post ID
-                wp.media.model.settings.post.id = window.mediaUploadInputSettings.oldAttachmentId;
+                wp.media.model.settings.post.id = window.WcMediaInputSettings.oldAttachmentId;
             });
 
             // Finally, open the modal
@@ -122,33 +120,39 @@ function MediaUploadInput($element)
      * @return {void}
      */
     self.enableClearButton = function () {
-        self.$clearButton.on('click', function (event) {
+        self.clearButton.addEventListener('click', function (event) {
             event.preventDefault();
 
-            self.$imagePreview.attr('src', self.transparentPixelBase64);
-            self.$inputField.val('');
-            self.$chosenMediaFilename.text(self.$chosenMediaFilename.data('fallbackText'));
+            self.mediaPreview.setAttribute('src', self.transparentPixelSrc);
+            self.inputField.value = '';
+            self.chosenMediaFilename.innerHTML = self.chosenMediaFilename.dataset.fallbackText;
         });
     };
 }
 
-jQuery(document).ready(function ($) {
-    window.mediaUploadInputSettings = {
+document.addEventListener('DOMContentLoaded', event => {
+    // Used by the for-loops below
+    var i;
+
+    window.WcMediaInputSettings = {
         // Store the old id
         oldAttachmentId: (wp.media)
             ? wp.media.model.settings.post.id
             : null
     };
 
-    $('.media-upload-input').each(function (index, element) {
-        var mediaUploadInput = new MediaUploadInput(element);
-        mediaUploadInput.setFallbackImagePreview();
+    var mediaInputElements = document.querySelectorAll('.wc-media-upload-input');
+    for (i = 0; i < mediaInputElements.length; i++) {
+        var mediaUploadInput = new WcMediaInput(mediaInputElements[i]);
         mediaUploadInput.enableUploadButton();
         mediaUploadInput.enableClearButton();
-    });
+    }
 
     // Restore the main ID when the add media button is pressed
-    $('.add_media').on('click', function () {
-        wp.media.model.settings.post.id = window.mediaUploadInputSettings.oldAttachmentId;
-    });
+    var addButtons = document.querySelectorAll('.add_media');
+    for (i = 0; i < addButtons.length; i++) {
+        addButtons[i].addEventListener('click', function () {
+            wp.media.model.settings.post.id = window.WcMediaInputSettings.oldAttachmentId;
+        });
+    }
 });

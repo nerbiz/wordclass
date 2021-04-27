@@ -1,6 +1,6 @@
 <?php
 
-namespace Nerbiz\Wordclass;
+namespace Nerbiz\WordClass;
 
 class Assets
 {
@@ -86,9 +86,11 @@ class Assets
 
             // Register the asset
             if ($assetType === 'css') {
-                wp_enqueue_style($handle, $options['uri'], $options['deps'], $options['ver'], $options['media']);
+                wp_enqueue_style($handle, $options['uri'], $options['deps'],
+                    $options['ver'], $options['media']);
             } elseif ($assetType === 'js') {
-                wp_enqueue_script($handle, $options['uri'], $options['deps'], $options['ver'], $options['footer']);
+                wp_enqueue_script($handle, $options['uri'], $options['deps'],
+                    $options['ver'], $options['footer']);
             }
         });
 
@@ -109,7 +111,7 @@ class Assets
         }
 
         // Prepend the URI with the (child)theme URI if it's relative
-        if (! preg_match('~^(https?:)?//~', $options['uri'])) {
+        if (! preg_match('/^(https?:)?\/\//', $options['uri'])) {
             $options['uri'] = '/' . ltrim($options['uri'], '/');
         }
 
@@ -130,52 +132,6 @@ class Assets
     }
 
     /**
-     * Remove the jQuery asset
-     * @return self
-     */
-    public function removeJquery(): self
-    {
-        add_action('init', function () {
-            global $pagenow;
-
-            // Don't replace on admin
-            if (! is_admin() && $pagenow !== 'wp-login.php') {
-                // Remove the normal jQuery include
-                wp_deregister_script('jquery');
-            }
-        });
-
-        return $this;
-    }
-
-    /**
-     * Replace the jQuery version with another one, using Google CDN
-     * @param  string $version jQuery version to use
-     * @return self
-     */
-    public function jQueryVersion(string $version): self
-    {
-        $this->removeJquery();
-
-        add_action('init', function () use ($version) {
-            global $pagenow;
-
-            // Don't replace on admin
-            if (! is_admin() && $pagenow !== 'wp-login.php') {
-                wp_enqueue_script(
-                    'jquery',
-                    sprintf('//ajax.googleapis.com/ajax/libs/jquery/%s/jquery.min.js', $version),
-                    [],
-                    $version,
-                    true
-                );
-            }
-        });
-
-        return $this;
-    }
-
-    /**
      * Replace 'ver=' asset parameter values with a hash
      * @param string $salt
      * @return self
@@ -186,7 +142,7 @@ class Assets
         {
             if (stripos($url, 'ver=') !== false) {
                 $url = preg_replace_callback(
-                    '~(?<=[?&]ver=)(?<version>[^&]+)~i',
+                    '/(?<=[?&]ver=)(?<version>[^&]+)/i',
                     function (array $matches) use ($salt) {
                         return hash('sha256', $matches['version'] . $salt);
                     },

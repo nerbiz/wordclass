@@ -1,12 +1,12 @@
-# Wordclass
+# WordClass
 
-Makes working with WordPress functionality easier and less bulky.
+Making programming with WordPress easier and more fun.
 
 I created this, because I got confused with a number of WordPress functions, that either look too similar, have an unreasonable amount of parameters, or are unnecessarily difficult to work with. And I didn't want to always search for the names of hooks.
 
 ## Installation
 
-Wordclass requires PHP 7.1 or higher, and can be installed with [Composer](https://getcomposer.org/):
+WordClass requires PHP 7.1 or higher, and can be installed with [Composer](https://getcomposer.org/):
 ```
 composer require nerbiz/wordclass
 ```
@@ -20,12 +20,6 @@ Read the [wiki pages](https://github.com/nerbiz/wordclass/wiki) for more informa
 ## Contributing
 
 If you have some ideas about expanding or improving this project, I'm open for suggestions and pull requests.
-
-## Credits
-
-These are the packages/plugins this project uses:
-* [TGM Plugin Activation](https://github.com/tgmpa/tgm-plugin-activation)
-* [TinyMCE](https://github.com/tinymce/tinymce)
 
 ## License
 

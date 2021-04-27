@@ -1,6 +1,6 @@
 <?php
 
-namespace Nerbiz\Wordclass;
+namespace Nerbiz\WordClass;
 
 class SettingsPage
 {
@@ -14,7 +14,7 @@ class SettingsPage
      * The slug of the parent page, if this needs to be a subpage
      * @var string|null
      */
-    protected $parentSlug;
+    protected $parentSlug = null;
 
     /**
      * The settings page slug, will be prepended with prefix
@@ -42,9 +42,9 @@ class SettingsPage
 
     /**
      * The button position in the menu
-     * @var int
+     * @var int|null
      */
-    protected $menuPosition;
+    protected $menuPosition = null;
 
     /**
      * The sections of the settings page
@@ -80,10 +80,10 @@ class SettingsPage
     }
 
     /**
-     * @param string|null $parentSlug
+     * @param string $parentSlug
      * @return self
      */
-    public function setParentSlug(?string $parentSlug): self
+    public function setParentSlug(string $parentSlug): self
     {
         $this->parentSlug = $parentSlug;
 
@@ -97,7 +97,7 @@ class SettingsPage
     {
         // Derive the page slug if it's not set yet
         if ($this->pageSlug === null) {
-            $this->setPageSlug(Utilities::createSlug($this->pageTitle));
+            $this->setPageSlug(Utilities::createSlug($this->getPageTitle()));
         }
 
         return $this->pageSlug;
@@ -112,10 +112,10 @@ class SettingsPage
         $this->pageSlug = $pageSlug;
 
         // Derive the submit button name from the page slug
-        $this->submitButtonName = sprintf(
+        $this->setSubmitButtonName(sprintf(
             'submit-settings-%s',
             $this->pageSlug
-        );
+        ));
 
         return $this;
     }
@@ -169,26 +169,26 @@ class SettingsPage
             case 'superadmin':
             case 'super admin':
             case 'super-admin':
-                $this->capability = 'manage_sites';
+                $this->setCapability('manage_sites');
                 break;
             case 'admin':
             case 'administrator':
-                $this->capability = 'manage_options';
+                $this->setCapability('manage_options');
                 break;
             case 'editor':
-                $this->capability = 'edit_pages';
+                $this->setCapability('edit_pages');
                 break;
             case 'author':
-                $this->capability = 'publish_posts';
+                $this->setCapability('publish_posts');
                 break;
             case 'contributor':
-                $this->capability = 'edit_posts';
+                $this->setCapability('edit_posts');
                 break;
             case 'subscriber':
-                $this->capability = 'read';
+                $this->setCapability('read');
                 break;
             default:
-                $this->capability = 'manage_options';
+                $this->setCapability('manage_options');
         }
 
         return $this;
@@ -214,9 +214,9 @@ class SettingsPage
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getMenuPosition(): int
+    public function getMenuPosition(): ?int
     {
         return $this->menuPosition;
     }
@@ -258,6 +258,16 @@ class SettingsPage
     }
 
     /**
+     * Get the nonce name used for validation
+     * @return string
+     */
+    public function getNonceName(): string
+    {
+        $nonceName = sprintf('%s_%s_nonce', Init::getPrefix(), $this->getPageSlug());
+        return str_replace('-', '_', $nonceName);
+    }
+
+    /**
      * Store submitted values
      * @return void
      */
@@ -269,12 +279,12 @@ class SettingsPage
         }
 
         // Check if the current user is allowed to update the values
-        if (! current_user_can($this->capability)) {
+        if (! current_user_can($this->getCapability())) {
             wp_die(__("You don't have the right permissions to update these settings.", 'wordclass'));
         }
 
         // Check if the nonce is valid
-        if (! wp_verify_nonce($_POST['_wpnonce'] ?? '')) {
+        if (! wp_verify_nonce($_POST[$this->getNonceName()] ?? '')) {
             wp_die(__('Invalid nonce value, please refresh the page and try again.', 'wordclass'));
         }
 
@@ -319,27 +329,27 @@ class SettingsPage
             };
 
             // Add the settings page
-            if ($this->parentSlug !== null) {
+            if ($this->getParentSlug() !== null) {
                 // As a subpage, if a parent slug is given
                 add_submenu_page(
-                    $this->parentSlug,
-                    $this->pageTitle,
-                    $this->pageTitle,
-                    $this->capability,
+                    $this->getParentSlug(),
+                    $this->getPageTitle(),
+                    $this->getPageTitle(),
+                    $this->getCapability(),
                     $pageSlug,
                     $renderFunction,
-                    $this->menuPosition
+                    $this->getMenuPosition()
                 );
             } else {
                 // Or as a separate page
                 add_menu_page(
-                    $this->pageTitle,
-                    $this->pageTitle,
-                    $this->capability,
+                    $this->getPageTitle(),
+                    $this->getPageTitle(),
+                    $this->getCapability(),
                     $pageSlug,
                     $renderFunction,
-                    $this->icon,
-                    $this->menuPosition
+                    $this->getIcon(),
+                    $this->getMenuPosition()
                 );
             }
         }, 100);

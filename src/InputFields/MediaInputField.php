@@ -1,9 +1,9 @@
 <?php
 
-namespace Nerbiz\Wordclass\InputFields;
+namespace Nerbiz\WordClass\InputFields;
 
-use Nerbiz\Wordclass\Assets;
-use Nerbiz\Wordclass\Init;
+use Nerbiz\WordClass\Assets;
+use Nerbiz\WordClass\Init;
 
 class MediaInputField extends AbstractInputField
 {
@@ -14,7 +14,10 @@ class MediaInputField extends AbstractInputField
      */
     protected static $scriptsAdded = false;
 
-    public function __construct(string $name, string $title, ?string $description = null)
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct(string $name, string $label, ?string $description = null)
     {
         // Add the required scripts (once)
         if (! static::$scriptsAdded) {
@@ -26,7 +29,7 @@ class MediaInputField extends AbstractInputField
             static::$scriptsAdded = true;
         }
 
-        parent::__construct($name, $title, $description);
+        parent::__construct($name, $label, $description);
     }
 
     /**

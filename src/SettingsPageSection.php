@@ -1,8 +1,8 @@
 <?php
 
-namespace Nerbiz\Wordclass;
+namespace Nerbiz\WordClass;
 
-use Nerbiz\Wordclass\InputFields\AbstractInputField;
+use Nerbiz\WordClass\InputFields\AbstractInputField;
 
 class SettingsPageSection
 {

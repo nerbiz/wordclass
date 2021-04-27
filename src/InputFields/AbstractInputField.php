@@ -1,18 +1,11 @@
 <?php
 
-namespace Nerbiz\Wordclass\InputFields;
+namespace Nerbiz\WordClass\InputFields;
 
-use Nerbiz\Wordclass\Init;
+use Nerbiz\WordClass\Init;
 
 abstract class AbstractInputField
 {
-    /**
-     * Whether the input field spans the full width,
-     * instead of having title and field separately
-     * @var bool
-     */
-    protected $fullWidth = false;
-
     /**
      * The name/id of the input field
      * @var string
@@ -20,16 +13,23 @@ abstract class AbstractInputField
     protected $name;
 
     /**
-     * The title of the input field
+     * The label of the input field
      * @var string
      */
-    protected $title;
+    protected $label;
 
     /**
      * The optional description below the input field
      * @var string|null
      */
     protected $description;
+
+    /**
+     * Whether the input field spans the full width,
+     * instead of having label and field separately
+     * @var bool
+     */
+    protected $fullWidth = false;
 
     /**
      * The prefix for the input name
@@ -39,14 +39,65 @@ abstract class AbstractInputField
 
     /**
      * @param string      $name
-     * @param string      $title
+     * @param string      $label
      * @param string|null $description
      */
-    public function __construct(string $name, string $title, ?string $description = null)
+    public function __construct(string $name, string $label, ?string $description = null)
     {
         $this->name = $name;
-        $this->title = $title;
+        $this->label = $label;
         $this->description = $description;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLabel(): string
+    {
+        return $this->label;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFullWidth(): bool
+    {
+        return $this->fullWidth;
+    }
+
+    /**
+     * @param bool $fullWidth
+     * @return self
+     */
+    public function setFullWidth(bool $fullWidth): self
+    {
+        $this->fullWidth = $fullWidth;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNamePrefix(): string
+    {
+        return $this->namePrefix;
     }
 
     /**
@@ -58,6 +109,21 @@ abstract class AbstractInputField
         $this->namePrefix = $namePrefix . '_';
 
         return $this;
+    }
+
+    /**
+     * Get a prefixed input name
+     * @return string
+     */
+    public function getPrefixedName(): string
+    {
+        // Return a longer name, if a prefix exists
+        return sprintf(
+            '%s_%s%s',
+            Init::getPrefix(),
+            $this->getNamePrefix(),
+            $this->getName()
+        );
     }
 
     /**
@@ -103,60 +169,5 @@ abstract class AbstractInputField
         }
 
         return '';
-    }
-
-    /**
-     * @return bool
-     */
-    public function isFullWidth(): bool
-    {
-        return $this->fullWidth;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @return string
-     */
-    public function getNamePrefix(): string
-    {
-        return $this->namePrefix;
-    }
-
-    /**
-     * Get a prefixed input name
-     * @return string
-     */
-    public function getPrefixedName(): string
-    {
-        // Return a longer name, if a prefix exists
-        return sprintf(
-            '%s_%s%s',
-            Init::getPrefix(),
-            $this->getNamePrefix(),
-            $this->getName()
-        );
-    }
-
-    /**
-     * @return string
-     */
-    public function getTitle(): string
-    {
-        return $this->title;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getDescription(): ?string
-    {
-        return $this->description;
     }
 }

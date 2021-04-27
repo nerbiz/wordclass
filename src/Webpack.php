@@ -1,6 +1,6 @@
 <?php
 
-namespace Nerbiz\Wordclass;
+namespace Nerbiz\WordClass;
 
 use Exception;
 
@@ -48,7 +48,7 @@ class Webpack
             return esc_url(home_url(static::$manifest->{$originalFilename}));
         }
 
-        throw new \Exception(sprintf(
+        throw new Exception(sprintf(
             "%s(): asset '%s' not found in the manifest",
             __METHOD__,
             $originalFilename
