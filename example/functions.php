@@ -4,10 +4,12 @@ use Nerbiz\WordClass\Admin;
 use Nerbiz\WordClass\Assets;
 use Nerbiz\WordClass\Editor;
 use Nerbiz\WordClass\Init;
+use Nerbiz\WordClass\Mail;
 use Nerbiz\WordClass\Media;
 use Nerbiz\WordClass\Pages;
 use Nerbiz\WordClass\Theme;
 use Nerbiz\WordClass\Webpack;
+use Nerbiz\WordClass\Yoast;
 // Example namespace, autoloaded from composer.json
 use NewProject\YourPostTypesTaxonomies;
 use NewProject\YourSettingsPage;
@@ -19,6 +21,21 @@ Init::setPrefix('aaa');
 (new Init())->loadTranslations()
     ->defineConstants()
     ->includeHelperFunctions();
+
+global $wp_version;
+(new Admin())
+    // Show a custom footer text in admin
+    ->footerText(sprintf(
+        '%s - <em>%s</em> (Wordpress v%s)',
+        get_bloginfo('name'),
+        get_bloginfo('description'),
+        $wp_version
+    ))
+    // Redirect users after they login (by role)
+    ->roleRedirect('editor', home_url('welcome'))
+    // Add an admin bar button,
+    // Which can move it to the bottom of the page
+    ->addMoveAdminBarButton();
 
 // This path is the default,
 // only shown here to illustrate that you can set a custom path
@@ -36,67 +53,6 @@ Webpack::readManifest($manifestPath);
     // Replace '?ver=...' with a hash for security, hiding the WordPress version
     ->hashVersionParameters('your-salt-string');
 
-// Create post types and/or taxonomies
-// Moved to a separate class, to not pollute the functions.php file too much
-$postTypesTaxonomies = new YourPostTypesTaxonomies();
-$cptCalendarItem = $postTypesTaxonomies->createCalendarItemPostType();
-$postTypesTaxonomies->createCalendarItemTagTaxonomy($cptCalendarItem);
-
-// Set some theme options
-(new Theme())
-    // Don't show version information (for security)
-    ->removeGeneratorMeta()
-    // You can enable featured images for specific post types (array)
-    // (PostType objects are supported)
-    ->enableFeaturedImages(['page', $cptCalendarItem])
-    // Or enable it for all post types (empty)
-    ->enableFeaturedImages()
-    ->enableHtml5Support()
-    ->addMenus([
-        'primary' => __('Main menu', 'project-text-domain'),
-        'footer' => __('Footer menu', 'project-text-domain'),
-    ]);
-
-(new Media())
-    ->setFeaturedImageSize(1024, 768)
-    // Add some useful image sizes
-    ->addImageSize('card', 'Card', 500, 500, false)
-    ->addImageSize('maximum', 'Maximum', 1200, 1200, false)
-    // Allow SVG files in the media library
-    ->addUploadSupport('svg', 'image/svg+xml')
-    ->temporaryHost('example.com');
-
-(new Pages())
-    ->automaticWindowTitle()
-    // The part between site and page title, e.g. 'About us - Company name'
-    // HTML is supported
-    ->setWindowTitleSeparator('&middot;')
-    // Disable search functionality if you wish
-    ->disableSearchFunctionality()
-    // Set page titles for 404 and search result pages
-    ->set404PageTitle('Not found')
-    ->setSearchPageTitle('Search results');
-
-// Login and admin options
-global $wp_version;
-(new Admin())
-    // Show a custom footer text in admin
-    ->footerText(sprintf(
-        '%s - <em>%s</em> (Wordpress v%s)',
-        get_bloginfo('name'),
-        get_bloginfo('description'),
-        $wp_version
-    ))
-    // Redirect users after they login (by role)
-    ->roleRedirect('editor', home_url('welcome'))
-    // Add an admin bar button,
-    // Which can move it to the bottom of the page
-    ->addMoveAdminBarButton();
-
-// Create a custom settings page
-// Moved to a separate class, to not pollute the functions.php file too much
-(new YourSettingsPage())->create();
-
 // Adjust the TinyMCE editor (if you're not using Gutenberg)
 (new Editor())
     ->removeH1FromFormats()
@@ -111,3 +67,65 @@ global $wp_version;
     // Add a 'table' button on the second toolbar,
     // after the 'indent' button
     ->addPlugin('table', 'indent', 2);
+
+(new Mail())
+    // Add support and a settings page for SMTP
+    ->addSmtpSupport('your-encryption-key')
+    // Store all sent emails as posts
+    ->storeSentEmails();
+
+(new Media())
+    ->setFeaturedImageSize(1024, 768)
+    // Add some useful image sizes
+    ->addImageSize('card', 'Card', 500, 500, false)
+    ->addImageSize('maximum', 'Maximum', 1200, 1200, false)
+    // Allow SVG files in the media library
+    ->addSvgSupport()
+    // '.bmp' files are probably supported already,
+    // this is just for illustrating how to add media support
+    ->addUploadSupport('bmp', 'image/bmp')
+    // Use a remote host for all media, for local development with remote media
+    ->temporaryHost('example.com');
+
+(new Pages())
+    ->automaticWindowTitle()
+    // The part between site and page title, e.g. 'About us - Company name'
+    // HTML is supported
+    ->setWindowTitleSeparator('&middot;')
+    // Disable search functionality if you wish
+    ->disableSearchFunctionality()
+    // Set page titles for 404 and search result pages
+    ->set404PageTitle(__('Not found', 'project-text-domain'))
+    ->setSearchPageTitle(__('Search results', 'project-text-domain'));
+
+// Create post types and/or taxonomies
+// Moved to a separate class, to not pollute the functions.php file too much
+$postTypesTaxonomies = new YourPostTypesTaxonomies();
+$cptCalendarItem = $postTypesTaxonomies->createCalendarItemPostType();
+$postTypesTaxonomies->createCalendarItemTagTaxonomy($cptCalendarItem);
+
+// Create a custom settings page
+// Moved to a separate class, to not pollute the functions.php file too much
+(new YourSettingsPage())->create();
+
+// Set some theme options
+(new Theme())
+    // Don't show version information (for security)
+    ->removeGeneratorMeta()
+    // You can enable featured images for specific post types (array)
+    // (PostType objects are supported)
+    ->enableFeaturedImages(['page', $cptCalendarItem])
+    // Or enable it for all post types
+    ->enableFeaturedImages()
+    ->enableHtml5Support()
+    ->addMenus([
+        'primary' => __('Main menu', 'project-text-domain'),
+        'footer' => __('Footer menu', 'project-text-domain'),
+    ]);
+
+// Add a breadcrumb, in case you're using Yoast breadcrumbs:
+// In this case a breadcrumb will be added to all calendar items,
+// linking to an example post with ID 123
+// Resulting in this:
+// Home > [added] > Calendar item
+(new Yoast())->addBreadcrumb($cptCalendarItem, 123);
