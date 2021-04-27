@@ -11,6 +11,7 @@ use Nerbiz\WordClass\Theme;
 use Nerbiz\WordClass\Webpack;
 use Nerbiz\WordClass\Yoast;
 // Example namespace, autoloaded from composer.json
+use NewProject\YourPostColumns;
 use NewProject\YourPostTypesTaxonomies;
 use NewProject\YourSettingsPage;
 
@@ -97,6 +98,9 @@ Webpack::readManifest($manifestPath);
     // Set page titles for 404 and search result pages
     ->set404PageTitle(__('Not found', 'project-text-domain'))
     ->setSearchPageTitle(__('Search results', 'project-text-domain'));
+
+// Adjust the columns for the calendar items overview page
+(new YourPostColumns())->register();
 
 // Create post types and/or taxonomies
 // Moved to a separate class, to not pollute the functions.php file too much
