@@ -45,4 +45,12 @@ class Pool
 
         return $default;
     }
+
+    /**
+     * @return array
+     */
+    public static function getAll(): array
+    {
+        return static::$contents;
+    }
 }
