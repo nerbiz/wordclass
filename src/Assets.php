@@ -86,9 +86,11 @@ class Assets
 
             // Register the asset
             if ($assetType === 'css') {
-                wp_enqueue_style($handle, $options['uri'], $options['deps'], $options['ver'], $options['media']);
+                wp_enqueue_style($handle, $options['uri'], $options['deps'],
+                    $options['ver'], $options['media']);
             } elseif ($assetType === 'js') {
-                wp_enqueue_script($handle, $options['uri'], $options['deps'], $options['ver'], $options['footer']);
+                wp_enqueue_script($handle, $options['uri'], $options['deps'],
+                    $options['ver'], $options['footer']);
             }
         });
 
