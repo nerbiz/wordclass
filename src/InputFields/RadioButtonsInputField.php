@@ -5,7 +5,7 @@ namespace Nerbiz\WordClass\InputFields;
 class RadioButtonsInputField extends AbstractInputField
 {
     /**
-     * The radio button values, in value => label pairs
+     * The radio button values, in value:label pairs
      * @var array
      */
     protected $values = [];
@@ -13,14 +13,14 @@ class RadioButtonsInputField extends AbstractInputField
     /**
      * @param string      $name
      * @param string      $label
-     * @param string|null $description
      * @param array       $values
+     * @param string|null $description
      */
     public function __construct(
         string $name,
         string $label,
-        ?string $description = null,
-        array $values
+        array $values,
+        ?string $description = null
     ) {
         $this->values = $values;
 
