@@ -7,13 +7,6 @@ use Nerbiz\WordClass\Init;
 abstract class AbstractInputField
 {
     /**
-     * Whether the input field spans the full width,
-     * instead of having label and field separately
-     * @var bool
-     */
-    protected $fullWidth = false;
-
-    /**
      * The name/id of the input field
      * @var string
      */
@@ -30,6 +23,13 @@ abstract class AbstractInputField
      * @var string|null
      */
     protected $description;
+
+    /**
+     * Whether the input field spans the full width,
+     * instead of having label and field separately
+     * @var bool
+     */
+    protected $fullWidth = false;
 
     /**
      * The prefix for the input name
@@ -50,6 +50,38 @@ abstract class AbstractInputField
     }
 
     /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLabel(): string
+    {
+        return $this->label;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFullWidth(): bool
+    {
+        return $this->fullWidth;
+    }
+
+    /**
      * @param bool $fullWidth
      * @return self
      */
@@ -61,6 +93,14 @@ abstract class AbstractInputField
     }
 
     /**
+     * @return string
+     */
+    public function getNamePrefix(): string
+    {
+        return $this->namePrefix;
+    }
+
+    /**
      * @param string $namePrefix
      * @return self
      */
@@ -69,6 +109,21 @@ abstract class AbstractInputField
         $this->namePrefix = $namePrefix . '_';
 
         return $this;
+    }
+
+    /**
+     * Get a prefixed input name
+     * @return string
+     */
+    public function getPrefixedName(): string
+    {
+        // Return a longer name, if a prefix exists
+        return sprintf(
+            '%s_%s%s',
+            Init::getPrefix(),
+            $this->getNamePrefix(),
+            $this->getName()
+        );
     }
 
     /**
@@ -114,60 +169,5 @@ abstract class AbstractInputField
         }
 
         return '';
-    }
-
-    /**
-     * @return bool
-     */
-    public function isFullWidth(): bool
-    {
-        return $this->fullWidth;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @return string
-     */
-    public function getNamePrefix(): string
-    {
-        return $this->namePrefix;
-    }
-
-    /**
-     * Get a prefixed input name
-     * @return string
-     */
-    public function getPrefixedName(): string
-    {
-        // Return a longer name, if a prefix exists
-        return sprintf(
-            '%s_%s%s',
-            Init::getPrefix(),
-            $this->getNamePrefix(),
-            $this->getName()
-        );
-    }
-
-    /**
-     * @return string
-     */
-    public function getLabel(): string
-    {
-        return $this->label;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getDescription(): ?string
-    {
-        return $this->description;
     }
 }
