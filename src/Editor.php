@@ -191,7 +191,7 @@ class Editor
      */
     public function removeH1FromFormats(): self
     {
-        add_filter('tiny_mce_before_init', function ($args) {
+        add_filter('tiny_mce_before_init', function (array $args) {
             $blockFormats = [
                 'Paragraph=p',
                 'Heading 2=h2',
