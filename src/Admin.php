@@ -28,7 +28,7 @@ class Admin
                 }
 
                 if ($newUrl !== null) {
-                    if (preg_match('~^https?://~', $newUrl)) {
+                    if (preg_match('/^https?:\/\//', $newUrl)) {
                         return esc_url($newUrl);
                     } else {
                         // Prepend a relative URL with the home URL

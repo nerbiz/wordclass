@@ -32,6 +32,7 @@ class EditorInputField extends AbstractInputField
     protected function prependRender(): string
     {
         if (trim($this->description) !== '') {
+            // Add a newline to the description text
             $this->description .= '<br>&nbsp;';
         }
 

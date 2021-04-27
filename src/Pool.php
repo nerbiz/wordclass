@@ -47,6 +47,7 @@ class Pool
     }
 
     /**
+     * Get all the items from the pool
      * @return array
      */
     public static function getAll(): array

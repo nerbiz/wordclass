@@ -111,7 +111,7 @@ class Assets
         }
 
         // Prepend the URI with the (child)theme URI if it's relative
-        if (! preg_match('~^(https?:)?//~', $options['uri'])) {
+        if (! preg_match('/^(https?:)?\/\//', $options['uri'])) {
             $options['uri'] = '/' . ltrim($options['uri'], '/');
         }
 
@@ -142,7 +142,7 @@ class Assets
         {
             if (stripos($url, 'ver=') !== false) {
                 $url = preg_replace_callback(
-                    '~(?<=[?&]ver=)(?<version>[^&]+)~i',
+                    '/(?<=[?&]ver=)(?<version>[^&]+)/i',
                     function (array $matches) use ($salt) {
                         return hash('sha256', $matches['version'] . $salt);
                     },

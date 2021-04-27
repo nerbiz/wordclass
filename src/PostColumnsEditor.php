@@ -7,7 +7,7 @@ use WP_Query;
 class PostColumnsEditor
 {
     /**
-     * Sorting callbacks in [name => callback] pairs
+     * Sorting callbacks in name:callback pairs
      * @var callable[]
      */
     protected static $sortingCallbacks = [];

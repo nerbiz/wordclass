@@ -15,9 +15,9 @@ class Utilities
         $slug = remove_accents($slug);
         $slug = strtolower($slug);
         // Replace any non-alphanumeric character to a hyphen
-        $slug = preg_replace('~[^a-z\d]~', '-', $slug);
+        $slug = preg_replace('/[^a-z\d]/', '-', $slug);
         // Remove consecutive hyphens
-        $slug = preg_replace('~-{2,}~', '-', $slug);
+        $slug = preg_replace('/-{2,}/', '-', $slug);
         // Remove leading and trailing hyphens
         $slug = trim($slug, '-');
 
