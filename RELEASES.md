@@ -1,5 +1,44 @@
 # Release notes
 
+## 3.0.0
+#### 2021-04-27
+
+* Renamed the project from Wordclass to WordClass, including the namespace.
+* Fixed: SettingsPage wasn't using a unique nonce for submitting.
+* Fixed: admin bar CSS wasn't specific enough.
+* Fixed: EditorInputField added a newline, when there was no description.
+* Fixed: PostColumnsEditor didn't add post columns reliably.
+* Fixed: wrong checks in PostColumnsEditor::applyDefaultSorting().
+* Added AbstractInputField::setFullWidth().
+* Added the RadioButtonsInputField class.
+* Added Mail::storeSentEmails().
+* Added PostColumnsEditor::moveColumn().
+* Added Media::addSvgSupport().
+* Added Pool::getAll().
+* Renamed $id to $name in PostColumn, PostType and Taxonomy, including the getter methods.
+* Renamed PostType::setSupports() to setFeatures().
+* The SMTP testmail content field now uses an editor, instead of a textarea.
+* PostColumnsEditor constructor now supports multiple post types.
+* MediaInputField now shows a general file icon for files that are not images.
+* media-upload.js now uses normal JS, instead of jQuery.
+* Pool::get() now uses a fallback value, instead of throwing an exception.
+* Removed the TGMPA dependency.
+* Removed the Plugins class, it's easier to just use TGMPA.
+* Removed the credits section from the readme file.
+* Removed the Mail constructor, encryption key parameter moved to addSmtpSupport() method.
+* Removed deprecated methods:
+  * Init::autoload().
+  * Init::setTimezone().
+  * Theme::automaticTitle().
+  * Theme::setFeaturedImageSize().
+  * Theme::addImageSize().
+  * Theme::hashAssetVersions().
+* Removed Assets::removeJquery().
+* Removed Assets::jQueryVersion().
+* Updated the example files.
+* Updated Dutch translations.
+* Code optimizations and small fixes.
+
 ## 2.5.4
 #### 2021-04-24
 
