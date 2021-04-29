@@ -13,14 +13,14 @@ class RadioButtonsInputField extends AbstractInputField
     /**
      * @param string      $name
      * @param string      $label
-     * @param array       $values
      * @param string|null $description
+     * @param array       $values
      */
     public function __construct(
         string $name,
         string $label,
-        array $values,
-        ?string $description = null
+        ?string $description,
+        array $values
     ) {
         $this->values = $values;
 
