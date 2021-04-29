@@ -10,7 +10,7 @@ class DescriptionText extends AbstractInputField
      */
     public function __construct(?string $title = null, ?string $description = null)
     {
-        $this->fullWidth = true;
+        $this->setFullWidth(true);
 
         parent::__construct('', $title ?? '', $description);
     }
