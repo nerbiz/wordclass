@@ -1,5 +1,10 @@
 # Release notes
 
+## 3.0.1
+#### 2021-04-29
+
+* RadioButtonsInputField constructor is now consistent with other input fields.
+
 ## 3.0.0
 #### 2021-04-27
 
