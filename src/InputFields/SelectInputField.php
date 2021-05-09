@@ -35,15 +35,15 @@ class SelectInputField extends AbstractInputField
     {
         $output = sprintf('<select name="%s">', $this->getName());
 
-        foreach ($this->values as $left => $right) {
-            if (is_string($right)) {
+        foreach ($this->values as $key => $value) {
+            if (is_string($value)) {
                 // Add an option, if it's a normal value:label pair
-                $output .= $this->createOptionField($left, $right);
-            } elseif (is_array($right)) {
+                $output .= $this->createOptionField($key, $value);
+            } elseif (is_array($value)) {
                 // Create an options group, if it's an array
-                $output .= sprintf('<optgroup label="%s">', $left);
-                foreach ($right as $value => $label) {
-                    $output .= $this->createOptionField($value, $label);
+                $output .= sprintf('<optgroup label="%s">', $key);
+                foreach ($value as $optionValue => $optionLabel) {
+                    $output .= $this->createOptionField($optionValue, $optionLabel);
                 }
                 $output .= '</optgroup>';
             }
