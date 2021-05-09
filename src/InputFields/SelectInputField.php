@@ -38,12 +38,12 @@ class SelectInputField extends AbstractInputField
         foreach ($this->values as $left => $right) {
             if (is_string($right)) {
                 // Add an option, if it's a normal value:label pair
-                $output .= sprintf('<option value="%s">%s</option>', $left, $right);
+                $output .= $this->createOptionField($left, $right);
             } elseif (is_array($right)) {
                 // Create an options group, if it's an array
                 $output .= sprintf('<optgroup label="%s">', $left);
                 foreach ($right as $value => $label) {
-                    $output .= sprintf('<option value="%s">%s</option>', $value, $label);
+                    $output .= $this->createOptionField($value, $label);
                 }
                 $output .= '</optgroup>';
             }
@@ -51,5 +51,21 @@ class SelectInputField extends AbstractInputField
 
         $output .= '</select>';
         return $output;
+    }
+
+    /**
+     * Create an HTML option element based on a value and label
+     * @param string $value
+     * @param string $label
+     * @return string
+     */
+    protected function createOptionField(string $value, string $label): string
+    {
+        return sprintf(
+            '<option value="%s" %s>%s</option>',
+            $value,
+            selected($value, get_option($this->getPrefixedName()), false),
+            $label
+        );
     }
 }
