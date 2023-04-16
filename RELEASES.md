@@ -1,5 +1,14 @@
 # Release notes
 
+## 3.1.0
+#### 2023-04-16
+
+* Added the SelectInputField class.
+* PostInputField now extends SelectInputField.
+* Simplified helper functions code.
+* Fixed some example code, according to new version.
+* Fixed: PostInputField didn't work with custom post types.
+
 ## 3.0.1
 #### 2021-04-29
 
