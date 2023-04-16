@@ -52,18 +52,16 @@ class PostInputField extends SelectInputField
 
         return array_merge(
             ['' => __('- Choose one -', 'wordclass')],
-            array_reduce($allPosts, function (array $current, WP_Post $post) {
-                $postTypeObject = get_post_type_object($post->post_type);
-
+            array_reduce($allPosts, function (array $postValues, WP_Post $post) {
                 // Create the post type key if it doesn't exist yet
-                if (! array_key_exists($postTypeObject->label, $current)) {
-                    $current[$postTypeObject->label] = [];
+                if (! array_key_exists($post->post_type, $postValues)) {
+                    $postValues[$post->post_type] = [];
                 }
 
                 // Add the post to the list
-                $current[$postTypeObject->label][$post->ID] = $post->post_title;
+                $postValues[$post->post_type][$post->ID] = $post->post_title;
 
-                return $current;
+                return $postValues;
             }, [])
         );
     }
