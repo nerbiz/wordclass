@@ -33,7 +33,7 @@ class SelectInputField extends AbstractInputField
      */
     protected function renderField(): string
     {
-        $output = sprintf('<select name="%s">', $this->getName());
+        $output = sprintf('<select name="%s">', $this->getPrefixedName());
 
         foreach ($this->values as $key => $value) {
             if (is_string($value)) {
