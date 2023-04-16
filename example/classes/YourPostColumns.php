@@ -39,7 +39,7 @@ class YourPostColumns
 
         // Change the post columns for the calendar items post overview
         $postType = Init::getPrefix() . '_calendar_item';
-        (new PostColumnsEditor($postType))
+        (new PostColumnsEditor([$postType]))
             // Remove a column from the overview
             ->removeColumn('author')
             // Add the new column
