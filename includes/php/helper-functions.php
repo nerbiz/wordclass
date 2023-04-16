@@ -17,13 +17,7 @@ if (! function_exists('nw_get_image')) {
      */
     function nw_get_image(int $imageId, string $sizeName = 'large', string $returnType = 'url')
     {
-        try {
-            /** @var Helpers $helpers */
-            $helpers = Pool::get('nw_helpers');
-            return $helpers->getImage($imageId, $sizeName, $returnType);
-        } catch (Exception $exception) {
-            // The try will always succeed, because Pool::set() is called in this file
-        }
+        return Pool::get('nw_helpers')->getImage($imageId, $sizeName, $returnType);
     }
 }
 
@@ -37,13 +31,7 @@ if (! function_exists('nw_get_featured_image')) {
      */
     function nw_get_featured_image(int $postId, string $sizeName = 'large', string $returnType = 'url')
     {
-        try {
-            /** @var Helpers $helpers */
-            $helpers = Pool::get('nw_helpers');
-            return $helpers->getFeaturedImage($postId, $sizeName, $returnType);
-        } catch (Exception $exception) {
-            // The try will always succeed, because Pool::set() is called in this file
-        }
+        return Pool::get('nw_helpers')->getFeaturedImage($postId, $sizeName, $returnType);
     }
 }
 
@@ -57,13 +45,7 @@ if (! function_exists('nw_get_option_image')) {
      */
     function nw_get_option_image(string $optionName, string $sizeName = 'large', string $returnType = 'url')
     {
-        try {
-            /** @var Helpers $helpers */
-            $helpers = Pool::get('nw_helpers');
-            return $helpers->getOptionImage($optionName, $sizeName, $returnType);
-        } catch (Exception $exception) {
-            // The try will always succeed, because Pool::set() is called in this file
-        }
+        return Pool::get('nw_helpers')->getOptionImage($optionName, $sizeName, $returnType);
     }
 }
 
@@ -76,12 +58,6 @@ if (! function_exists('nw_get_option')) {
      */
     function nw_get_option(string $name, $default = null)
     {
-        try {
-            /** @var Options $options */
-            $options = Pool::get('nw_options');
-            return $options->get($name, $default);
-        } catch (Exception $exception) {
-            // The try will always succeed, because Pool::set() is called in this file
-        }
+        return Pool::get('nw_options')->get($name, $default);
     }
 }
