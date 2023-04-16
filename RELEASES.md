@@ -1,5 +1,10 @@
 # Release notes
 
+## 3.1.1
+#### 2023-04-16
+
+* Updated the PHP requirement in composer.json.
+
 ## 3.1.0
 #### 2023-04-16
 
