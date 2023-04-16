@@ -36,7 +36,7 @@ class SettingsPageSection
      * @param string|null          $subtitle
      * @param AbstractInputField[] $fields
      */
-    public function __construct(string $id, string $title, string $subtitle, array $fields)
+    public function __construct(string $id, string $title, ?string $subtitle, array $fields)
     {
         $this->setId($id);
         $this->setTitle($title);
