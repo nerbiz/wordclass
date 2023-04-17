@@ -1,5 +1,10 @@
 # Release notes
 
+## 3.1.2
+#### 2023-04-17
+
+* A sender can now be set when testing SMTP.
+
 ## 3.1.1
 #### 2023-04-16
 
