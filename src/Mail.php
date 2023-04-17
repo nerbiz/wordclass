@@ -49,6 +49,7 @@ class Mail
             )
             ->addSection(
                 new SettingsPageSection('smtp_test', __('Test settings', 'wordclass'), null, [
+                    new TextInputField('sender', __('Sender', 'wordclass'), __('If empty, the sender will be the site title + admin email from general settings<br>The "Example &lt;test@example.com&gt;" format is supported', 'wordclass')),
                     new TextInputField('recipient', __('Recipient', 'wordclass')),
                     new TextInputField('subject', __('Subject', 'wordclass')),
                     new EditorInputField('content', __('Content', 'wordclass')),
@@ -141,7 +142,11 @@ class Mail
         $options = new Options();
         $headers = [
             'Content-Type: text/html; charset=' . get_bloginfo('charset'),
-            'From: ' . sprintf('%s <%s>', get_bloginfo('name'), get_option('admin_email')),
+            'From: ' . ($options->get('smtp_test_sender') ?? sprintf(
+                '%s <%s>',
+                get_bloginfo('name'),
+                get_option('admin_email')
+            )),
         ];
 
         $mailIsSent = wp_mail(
