@@ -110,8 +110,8 @@ class Assets
             $options = ['uri' => $options];
         }
 
-        // Prepend the URI with the (child)theme URI if it's relative
-        if (! preg_match('/^(https?:)?\/\//', $options['uri'])) {
+        // Make sure relative URIs have a leading slash
+        if (! preg_match('~^(https?:)?//~', $options['uri'])) {
             $options['uri'] = '/' . ltrim($options['uri'], '/');
         }
 
