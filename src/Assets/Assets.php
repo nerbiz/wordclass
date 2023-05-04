@@ -1,6 +1,6 @@
 <?php
 
-namespace Nerbiz\WordClass;
+namespace Nerbiz\WordClass\Assets;
 
 class Assets
 {

@@ -2,7 +2,7 @@
 
 namespace Nerbiz\WordClass\InputFields;
 
-use Nerbiz\WordClass\Assets;
+use Nerbiz\WordClass\Assets\Assets;
 use Nerbiz\WordClass\Init;
 
 class MediaInputField extends AbstractInputField
