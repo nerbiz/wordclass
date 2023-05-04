@@ -120,7 +120,6 @@ class ViteAssets extends Assets
     protected function parseOptions(string $assetType, $options): array
     {
         $options = parent::parseOptions($assetType, $options);
-        $options['uri'] = ltrim($options['uri'], '/');
 
         if ($this->usingDevServer === true) {
             $options['uri'] = sprintf(

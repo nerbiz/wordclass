@@ -36,10 +36,9 @@ class WebpackAssets extends Assets
     protected function parseOptions(string $assetType, $options): array
     {
         $options = parent::parseOptions($assetType, $options);
-        $options['uri'] = ltrim($options['uri'], '/');
 
         $options['uri'] = (isset($this->manifest->{$options['uri']}))
-            ? home_url($this->manifest->{$options['uri']})
+            ? $this->manifest->{$options['uri']}
             : '/' . $options['uri'];
 
         return $options;

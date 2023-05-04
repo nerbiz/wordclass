@@ -105,14 +105,9 @@ class Assets
      */
     protected function parseOptions(string $assetType, $options): array
     {
-        // Convert the shorthand URI to an options array
+        // Convert to options array, if only a URI is given
         if (is_string($options)) {
             $options = ['uri' => $options];
-        }
-
-        // Make sure relative URIs have a leading slash
-        if (! preg_match('~^(https?:)?//~', $options['uri'])) {
-            $options['uri'] = '/' . ltrim($options['uri'], '/');
         }
 
         // Merge the options with default ones
