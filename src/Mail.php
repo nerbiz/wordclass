@@ -2,6 +2,7 @@
 
 namespace Nerbiz\WordClass;
 
+use Nerbiz\WordClass\Assets\Assets;
 use Nerbiz\WordClass\InputFields\CheckboxInputField;
 use Nerbiz\WordClass\InputFields\EditorInputField;
 use Nerbiz\WordClass\InputFields\PasswordInputField;

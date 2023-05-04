@@ -2,6 +2,8 @@
 
 namespace Nerbiz\WordClass;
 
+use Nerbiz\WordClass\Assets\Assets;
+
 class Admin
 {
     /**
