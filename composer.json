@@ -14,8 +14,7 @@
     }
   },
   "require": {
-    "php": ">=7.1",
-    "tinymce/tinymce": "^4.6"
+    "php": ">=7.1"
   },
   "support" : {
     "docs": "https://github.com/nerbiz/wordclass/wiki"
