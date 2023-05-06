@@ -317,7 +317,7 @@ class Mail
 
             // Check if the nonce is valid
             $nonceName = sprintf('%s_email_properties_nonce', Init::getPrefix());
-            if (isset($_POST[$nonceName]) && ! wp_verify_nonce($_POST[$nonceName] ?? '')) {
+            if (! wp_verify_nonce($_POST[$nonceName] ?? '')) {
                 return;
             }
 
