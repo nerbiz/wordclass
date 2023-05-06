@@ -90,7 +90,7 @@ class Pages
      * Disable search page, search form and search widget
      * @return self
      */
-    public function disableSearchFunctionality(): self
+    public function disableSearch(): self
     {
         // Show a 404 page instead of search page
         add_action('parse_query', function (WP_Query $query) {
