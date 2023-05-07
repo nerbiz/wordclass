@@ -32,7 +32,7 @@ global $wp_version;
         get_bloginfo('description'),
         $wp_version
     ))
-    // Redirect users after they login (by role)
+    // Redirect users after they log in (by role)
     ->roleRedirect('editor', home_url('welcome'))
     // Add an admin bar button,
     // Which can move it to the bottom of the page
@@ -94,7 +94,7 @@ Webpack::readManifest($manifestPath);
     // HTML is supported
     ->setWindowTitleSeparator('&middot;')
     // Disable search functionality if you wish
-    ->disableSearchFunctionality()
+    ->disableSearch()
     // Set page titles for 404 and search result pages
     ->set404PageTitle(__('Not found', 'project-text-domain'))
     ->setSearchPageTitle(__('Search results', 'project-text-domain'));
