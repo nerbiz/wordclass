@@ -8,49 +8,49 @@ class SettingsPage
      * The title of the settings page
      * @var string
      */
-    protected $pageTitle = 'Theme settings';
+    protected string $pageTitle = 'Theme settings';
 
     /**
      * The slug of the parent page, if this needs to be a subpage
      * @var string|null
      */
-    protected $parentSlug = null;
+    protected ?string $parentSlug = null;
 
     /**
      * The settings page slug, will be prepended with prefix
-     * @var string
+     * @var string|null
      */
-    protected $pageSlug;
+    protected ?string $pageSlug = null;
 
     /**
      * The unique name of the submit butten
      * @var string
      */
-    protected $submitButtonName;
+    protected string $submitButtonName;
 
     /**
      * The capability required for using the settings page
      * @var string
      */
-    protected $capability = 'manage_options';
+    protected string $capability = 'manage_options';
 
     /**
      * The icon of the menu item
      * @var string
      */
-    protected $icon = 'dashicons-admin-settings';
+    protected string $icon = 'dashicons-admin-settings';
 
     /**
      * The button position in the menu
      * @var int|null
      */
-    protected $menuPosition = null;
+    protected ?int $menuPosition = null;
 
     /**
      * The sections of the settings page
      * @var SettingsPageSection[]
      */
-    protected $sections = [];
+    protected array $sections = [];
 
     /**
      * @return string
@@ -325,7 +325,7 @@ class SettingsPage
             $renderFunction = function () {
                 // For use in the template
                 $settingsPage = $this;
-                require __DIR__ . '/../includes/html/settings-page-template.php';
+                require dirname(__FILE__, 2) . '/includes/html/settings-page-template.php';
             };
 
             // Add the settings page

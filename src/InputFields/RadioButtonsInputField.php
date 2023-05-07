@@ -8,7 +8,7 @@ class RadioButtonsInputField extends AbstractInputField
      * The radio button values, in value:label pairs
      * @var array
      */
-    protected $values = [];
+    protected array $values = [];
 
     /**
      * @param string      $name

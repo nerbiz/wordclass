@@ -5,14 +5,14 @@ namespace Nerbiz\WordClass\InputFields;
 class DescriptionText extends AbstractInputField
 {
     /**
-     * @param string|null $title
+     * @param string      $title
      * @param string|null $description
      */
-    public function __construct(?string $title = null, ?string $description = null)
+    public function __construct(string $title = '', ?string $description = null)
     {
         $this->setFullWidth(true);
 
-        parent::__construct('', $title ?? '', $description);
+        parent::__construct('', $title, $description);
     }
 
     /**

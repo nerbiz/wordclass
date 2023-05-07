@@ -33,7 +33,7 @@ class WebpackAssets extends Assets
     /**
      * {@inheritdoc}
      */
-    protected function parseOptions(string $assetType, $options): array
+    protected function parseOptions(string $assetType, array|string $options): array
     {
         $options = parent::parseOptions($assetType, $options);
 

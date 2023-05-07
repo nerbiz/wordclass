@@ -86,7 +86,7 @@ class Media
             $svgContents = trim(file_get_contents($file['tmp_name']));
 
             // Add the '<?xml' line if it's missing
-            if (substr($svgContents, 0, 5) !== '<?xml') {
+            if (! str_starts_with($svgContents, '<?xml')) {
                 file_put_contents($file['tmp_name'], sprintf(
                     '%s%s%s',
                     '<?xml version="1.0" encoding="utf-8"?>',
@@ -103,34 +103,29 @@ class Media
 
     /**
      * Replace the hostname in media URLs, for local development with remote media
-     * @param string   $hostname     The hostname in 'example.com' or 'sub.example.com' format
+     * @param string   $hostName The hostname in 'example.com' or 'sub.example.com' format
      * @param string[] $environments The environments in which to replace the host
      * @return self
      */
     public function temporaryHost(
-        string $hostname,
-        array $environments = ['local', 'development']
+        string $hostName,
+        array  $environments = ['local', 'development']
     ): self {
-        // Skip when the required environment value is not set
-        if (! defined('WP_ENVIRONMENT_TYPE')) {
-            return $this;
-        }
-
         // Skip when not in the right environment
-        if (! in_array(WP_ENVIRONMENT_TYPE, $environments, true)) {
+        if (! in_array(wp_get_environment_type(), $environments, true)) {
             return $this;
         }
 
-        add_filter('wp_get_attachment_image_src', function ($image) use ($hostname) {
+        add_filter('wp_get_attachment_image_src', function ($image) use ($hostName) {
             if (isset($image[0])) {
-                $image[0] = str_replace($_SERVER['HTTP_HOST'], $hostname, $image[0]);
+                $image[0] = str_replace($_SERVER['HTTP_HOST'], $hostName, $image[0]);
             }
 
             return $image;
         });
 
-        add_filter('wp_get_attachment_url', function (string $url) use ($hostname) {
-            return str_replace($_SERVER['HTTP_HOST'], $hostname, $url);
+        add_filter('wp_get_attachment_url', function (string $url) use ($hostName) {
+            return str_replace($_SERVER['HTTP_HOST'], $hostName, $url);
         });
 
         return $this;

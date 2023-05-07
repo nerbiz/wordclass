@@ -8,19 +8,19 @@ class Init
      * The default prefix to use
      * @var string
      */
-    protected static $prefix = 'nw';
+    protected static string $prefix = 'nw';
 
     /**
      * The path to the vendor directory
      * @var string
      */
-    protected static $vendorPath;
+    protected static string $vendorPath;
 
     /**
      * The URI to the vendor directory
      * @var string
      */
-    protected static $vendorUri;
+    protected static string $vendorUri;
 
     /**
      * Set the prefix to use for various things
@@ -56,8 +56,8 @@ class Init
      */
     public static function getVendorPath(?string $path = null): string
     {
-        // The default value is the 'vendor' directory in a (child-)theme directory
-        if(static::$vendorPath === null) {
+        // The default value is the 'vendor' directory in the (child-)theme directory
+        if (! isset(static::$vendorPath)) {
             static::setVendorPath(get_stylesheet_directory() . '/vendor/');
         }
 
@@ -80,8 +80,8 @@ class Init
      */
     public static function getVendorUri(?string $path = null): string
     {
-        // The default value is the 'vendor' directory in a (child-)theme directory
-        if (static::$vendorUri === null) {
+        // The default value is the 'vendor' directory in the (child-)theme directory
+        if (! isset(static::$vendorUri)) {
             static::setVendorUri(get_stylesheet_directory_uri() . '/vendor/');
         }
 
@@ -150,7 +150,7 @@ class Init
      */
     public function includeHelperFunctions(): self
     {
-        require_once __DIR__ . '/../includes/php/helper-functions.php';
+        require_once dirname(__FILE__, 2) . '/includes/php/helper-functions.php';
 
         return $this;
     }

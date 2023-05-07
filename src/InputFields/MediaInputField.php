@@ -12,7 +12,7 @@ class MediaInputField extends AbstractInputField
      * Prevents including twice
      * @var bool
      */
-    protected static $scriptsAdded = false;
+    protected static bool $scriptsAdded = false;
 
     /**
      * {@inheritdoc}
@@ -54,7 +54,7 @@ class MediaInputField extends AbstractInputField
         $inputValue = esc_attr(get_option($this->getPrefixedName()));
 
         ob_start();
-        require __DIR__ . '/../../includes/html/media-input-field.php';
+        require dirname(__FILE__, 3) . '/includes/html/media-input-field.php';
         return ob_get_clean();
     }
 }

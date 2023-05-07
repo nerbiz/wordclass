@@ -7,42 +7,17 @@ use Nerbiz\WordClass\InputFields\AbstractInputField;
 class SettingsPageSection
 {
     /**
-     * The unique ID of the section
-     * @var string
+     * @param string               $id       The unique ID of the section
+     * @param string               $title    The section title
+     * @param string|null          $subtitle The section subtitle
+     * @param AbstractInputField[] $fields   The input fields of the section
      */
-    protected $id;
-
-    /**
-     * The section title
-     * @var string
-     */
-    protected $title;
-
-    /**
-     * The section subtitle
-     * @var string|null
-     */
-    protected $subtitle = null;
-
-    /**
-     * The fields of the section
-     * @var AbstractInputField[]
-     */
-    protected $fields = [];
-
-    /**
-     * @param string               $id
-     * @param string               $title
-     * @param string|null          $subtitle
-     * @param AbstractInputField[] $fields
-     */
-    public function __construct(string $id, string $title, ?string $subtitle, array $fields)
-    {
-        $this->setId($id);
-        $this->setTitle($title);
-        $this->setSubtitle($subtitle);
-        $this->setFields($fields);
-    }
+    public function __construct(
+        protected string $id,
+        protected string $title,
+        protected ?string $subtitle,
+        protected array $fields
+    ) {}
 
     /**
      * @return string
@@ -50,16 +25,6 @@ class SettingsPageSection
     public function getId(): string
     {
         return $this->id;
-    }
-
-    /**
-     * @param string $id
-     * @return self
-     */
-    public function setId(string $id): self
-    {
-        $this->id = $id;
-        return $this;
     }
 
     /**
@@ -71,16 +36,6 @@ class SettingsPageSection
     }
 
     /**
-     * @param string $title
-     * @return self
-     */
-    public function setTitle(string $title): self
-    {
-        $this->title = $title;
-        return $this;
-    }
-
-    /**
      * @return string|null
      */
     public function getSubtitle(): ?string
@@ -89,30 +44,10 @@ class SettingsPageSection
     }
 
     /**
-     * @param string|null $subtitle
-     * @return self
-     */
-    public function setSubtitle(?string $subtitle): self
-    {
-        $this->subtitle = $subtitle;
-        return $this;
-    }
-
-    /**
      * @return AbstractInputField[]
      */
     public function getFields(): array
     {
         return $this->fields;
-    }
-
-    /**
-     * @param AbstractInputField[] $fields
-     * @return self
-     */
-    public function setFields(array $fields): self
-    {
-        $this->fields = $fields;
-        return $this;
     }
 }

@@ -7,47 +7,28 @@ use Nerbiz\WordClass\Init;
 abstract class AbstractInputField
 {
     /**
-     * The name/id of the input field
-     * @var string
-     */
-    protected $name;
-
-    /**
-     * The label of the input field
-     * @var string
-     */
-    protected $label;
-
-    /**
-     * The optional description below the input field
-     * @var string|null
-     */
-    protected $description;
-
-    /**
      * Whether the input field spans the full width,
      * instead of having label and field separately
      * @var bool
      */
-    protected $fullWidth = false;
+    protected bool $fullWidth = false;
 
     /**
      * The prefix for the input name
      * @var string
      */
-    protected $namePrefix = '';
+    protected string $namePrefix = '';
 
     /**
-     * @param string      $name
-     * @param string      $label
-     * @param string|null $description
+     * @param string      $name The name/id of the input field
+     * @param string      $label The label of the input field
+     * @param string|null $description The optional description below the input field
      */
-    public function __construct(string $name, string $label, ?string $description = null)
-    {
-        $this->name = $name;
-        $this->label = $label;
-        $this->description = $description;
-    }
+    public function __construct(
+        protected string $name,
+        protected string $label,
+        protected ?string $description = null
+    ) {}
 
     /**
      * @return string
@@ -117,7 +98,6 @@ abstract class AbstractInputField
      */
     public function getPrefixedName(): string
     {
-        // Return a longer name, if a prefix exists
         return sprintf(
             '%s_%s%s',
             Init::getPrefix(),

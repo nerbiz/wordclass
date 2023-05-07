@@ -8,55 +8,55 @@ class PostType
      * The name of the post type
      * @var string
      */
-    protected $name;
+    protected string $name;
 
     /**
      * The slug of the post type
      * @var string
      */
-    protected $slug;
+    protected string $slug;
 
     /**
      * The singular name of the post type
      * @var string
      */
-    protected $singularName;
+    protected string $singularName;
 
     /**
      * The plural name of the post type
      * @var string
      */
-    protected $pluralName;
+    protected string $pluralName;
 
     /**
      * The description of the post type
-     * @var string
+     * @var string|null
      */
-    protected $description;
+    protected ?string $description = null;
 
     /**
      * The labels for the post type
      * @var array
      */
-    protected $labels = [];
+    protected array $labels = [];
 
     /**
      * The features the post type supports
      * @var array
      */
-    protected $features = [];
+    protected array $features = [];
 
     /**
      * The taxonomies the post type has/belongs to
      * @var array
      */
-    protected $taxonomies = [];
+    protected array $taxonomies = [];
 
     /**
      * The arguments for the post type
      * @var array
      */
-    protected $arguments = [];
+    protected array $arguments = [];
 
     /**
      * @param string $name The name of the post type
@@ -194,9 +194,8 @@ class PostType
      */
     public function setTaxonomies(array $taxonomies): self
     {
-        // Make sure the post types are a string
+        // Make sure the taxonomies are a string
         foreach ($taxonomies as $key => $taxonomy) {
-            // Taxonomy objects can be passed
             if ($taxonomy instanceof Taxonomy) {
                 $taxonomies[$key] = $taxonomy->getName();
             } else {

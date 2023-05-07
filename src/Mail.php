@@ -217,7 +217,7 @@ class Mail
                 $metaboxId,
                 __('Email properties', 'wordclass'),
                 function (WP_Post $currentPost, array $boxProperties) use ($metaboxId) {
-                    require __DIR__ . '/../includes/html/email-properties-metabox.php';
+                    require dirname(__FILE__, 2) . '/includes/html/email-properties-metabox.php';
                 },
                 $cptSentEmail->getName()
             );

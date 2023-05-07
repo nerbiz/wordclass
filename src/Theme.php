@@ -6,15 +6,15 @@ class Theme
 {
     /**
      * Enable the featured image on post edit screens
-     * @param array|null $postTypes Array of strings and/or PostType objects,
-     *                              enable for specific post types only
+     * @param array $postTypes Enable for all post types (empty array)
+     *                         or specific types (array of strings and/or PostType objects)
      * @return self
      */
-    public function enableFeaturedImages(array $postTypes = null): self
+    public function enableFeaturedImages(array $postTypes = []): self
     {
         add_action('after_setup_theme', function () use ($postTypes) {
             // Enable for all post types
-            if ($postTypes === null) {
+            if (count($postTypes) === 0) {
                 add_theme_support('post-thumbnails');
             } else {
                 // Enable only for the give post types
@@ -61,7 +61,7 @@ class Theme
     }
 
     /**
-     * Remove the <meta name="generator" content="WordPress [version]" /> tag
+     * Remove the meta[name="generator"] tag
      * @return self
      */
     public function removeGeneratorMeta(): self

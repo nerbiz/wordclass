@@ -11,7 +11,7 @@ class Yoast
      * @param int             $offset   The location of the breadcrumb
      * @return self
      */
-    public function addBreadcrumb($postType, int $postId, int $offset = -1): self
+    public function addBreadcrumb(string|PostType $postType, int $postId, int $offset = -1): self
     {
         add_filter('wpseo_breadcrumb_links', function ($links) use ($postType, $postId, $offset) {
             if ($postType instanceof PostType) {
@@ -20,7 +20,6 @@ class Yoast
 
             // Adjust the breadcrumbs for the posts
             if (is_singular($postType)) {
-                // Add the custom breadcrumb
                 array_splice($links, $offset, 0, [
                     [
                         'url'  => get_permalink($postId),

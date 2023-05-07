@@ -10,7 +10,7 @@ class PostInputField extends SelectInputField
      * The post types to select from
      * @var array
      */
-    protected $postTypes = [];
+    protected array $postTypes = [];
 
     /**
      * @param string      $name

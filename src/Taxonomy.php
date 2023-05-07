@@ -8,49 +8,49 @@ class Taxonomy
      * The name of the taxonomy
      * @var string
      */
-    protected $name;
+    protected string $name;
 
     /**
      * The slug of the taxonomy
      * @var string
      */
-    protected $slug;
+    protected string $slug;
 
     /**
      * The singular name of the taxonomy
      * @var string
      */
-    protected $singularName;
+    protected string $singularName;
 
     /**
      * The plural name of the taxonomy
      * @var string
      */
-    protected $pluralName;
+    protected string $pluralName;
 
     /**
      * The description of the taxonomy
-     * @var string
+     * @var string|null
      */
-    protected $description;
+    protected ?string $description = null;
 
     /**
      * The labels of the taxonomy
      * @var array
      */
-    protected $labels = [];
+    protected array $labels = [];
 
     /**
      * The post types that have this taxonomy
      * @var array
      */
-    protected $postTypes = [];
+    protected array $postTypes = [];
 
     /**
      * The arguments of the taxonomy
      * @var array
      */
-    protected $arguments = [];
+    protected array $arguments = [];
 
     /**
      * @param string $name The name of the taxonomy

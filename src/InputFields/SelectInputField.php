@@ -9,7 +9,7 @@ class SelectInputField extends AbstractInputField
      * Can also be an array with a groupName:[value:label, value:label] structure
      * @var array
      */
-    protected $values = [];
+    protected array $values = [];
 
     /**
      * @param string      $name

@@ -5,24 +5,13 @@ namespace Nerbiz\WordClass;
 class Crypto
 {
     /**
-     * The encryption key
-     * @var string
-     */
-    protected $encryptionKey;
-
-    /**
-     * The cipher to use for encrypting and decrypting
-     * @var string
-     */
-    protected $cipher = 'aes-256-cbc';
-
-    /**
      * @param string $encryptionKey
+     * @param string $cipher The cipher to use for encrypting and decrypting
      */
-    public function __construct(string $encryptionKey = SECURE_AUTH_KEY)
-    {
-        $this->encryptionKey = $encryptionKey;
-    }
+    public function __construct(
+        protected string $encryptionKey = SECURE_AUTH_KEY,
+        protected string $cipher = 'aes-256-cbc'
+    ) {}
 
     /**
      * Encrypt a plaintext value
@@ -46,7 +35,7 @@ class Crypto
     public function decrypt(string $encrypted): string
     {
         // Extract the encrypted value and the used IV
-        list($encrypted, $iv) = explode(':', $encrypted, 2);
+        [$encrypted, $iv] = explode(':', $encrypted, 2);
         $iv = base64_decode($iv);
 
         return openssl_decrypt($encrypted, $this->cipher, $this->encryptionKey, 0, $iv);

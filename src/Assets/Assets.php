@@ -7,10 +7,10 @@ class Assets
     /**
      * Add CSS asset to the theme
      * @param string       $handle
-     * @param string|array $options
+     * @param array|string $options
      * @return self
      */
-    public function addThemeCss(string $handle, $options): self
+    public function addThemeCss(string $handle, array|string $options): self
     {
         return $this->add('css', 'wp_enqueue_scripts', $handle, $options);
     }
@@ -18,10 +18,10 @@ class Assets
     /**
      * Add JavaScript asset to the theme
      * @param string       $handle
-     * @param string|array $options
+     * @param array|string $options
      * @return self
      */
-    public function addThemeJs(string $handle, $options): self
+    public function addThemeJs(string $handle, array|string $options): self
     {
         return $this->add('js', 'wp_enqueue_scripts', $handle, $options);
     }
@@ -29,10 +29,10 @@ class Assets
     /**
      * Add CSS asset to admin
      * @param string       $handle
-     * @param string|array $options
+     * @param array|string $options
      * @return self
      */
-    public function addAdminCss(string $handle, $options): self
+    public function addAdminCss(string $handle, array|string $options): self
     {
         return $this->add('css', 'admin_enqueue_scripts', $handle, $options);
     }
@@ -40,10 +40,10 @@ class Assets
     /**
      * Add JavaScript asset to admin
      * @param string       $handle
-     * @param string|array $options
+     * @param array|string $options
      * @return self
      */
-    public function addAdminJs(string $handle, $options): self
+    public function addAdminJs(string $handle, array|string $options): self
     {
         return $this->add('js', 'admin_enqueue_scripts', $handle, $options);
     }
@@ -51,10 +51,10 @@ class Assets
     /**
      * Add CSS asset to the login screen
      * @param string       $handle
-     * @param string|array $options
+     * @param array|string $options
      * @return self
      */
-    public function addLoginCss(string $handle, $options): self
+    public function addLoginCss(string $handle, array|string $options): self
     {
         return $this->add('css', 'login_enqueue_scripts', $handle, $options);
     }
@@ -62,10 +62,10 @@ class Assets
     /**
      * Add JavaScript asset to the login screen
      * @param string       $handle
-     * @param string|array $options
+     * @param array|string $options
      * @return self
      */
-    public function addLoginJs(string $handle, $options): self
+    public function addLoginJs(string $handle, array|string $options): self
     {
         return $this->add('js', 'login_enqueue_scripts', $handle, $options);
     }
@@ -75,11 +75,11 @@ class Assets
      * @param string       $assetType The type of asset, 'css' or 'js'
      * @param string       $hook      The hook to register the asset in
      * @param string       $handle
-     * @param string|array $options
+     * @param array|string $options
      * @return self
      * @see Assets::parseOptions()
      */
-    protected function add(string $assetType, string $hook, string $handle, $options): self
+    protected function add(string $assetType, string $hook, string $handle, array|string $options): self
     {
         add_action($hook, function () use ($assetType, $handle, $options) {
             $options = $this->parseOptions($assetType, $options);
@@ -103,7 +103,7 @@ class Assets
      * @param array|string $options   Either an options array, or only a URI
      * @return array
      */
-    protected function parseOptions(string $assetType, $options): array
+    protected function parseOptions(string $assetType, array|string $options): array
     {
         // Convert to options array, if only a URI is given
         if (is_string($options)) {

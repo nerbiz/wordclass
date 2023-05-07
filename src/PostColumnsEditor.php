@@ -2,64 +2,65 @@
 
 namespace Nerbiz\WordClass;
 
+use Closure;
 use WP_Query;
 
 class PostColumnsEditor
 {
     /**
      * Sorting callbacks in name:callback pairs
-     * @var callable[]
+     * @var Closure[]
      */
-    protected static $sortingCallbacks = [];
+    protected static array $sortingCallbacks = [];
 
     /**
      * Indicates whether the 'pre_get_posts' hook has been added
      * @var bool
      */
-    protected static $sortingHookAdded = false;
+    protected static bool $sortingHookAdded = false;
 
     /**
      * The post types to edit the columns of
      * @var string[]
      */
-    protected $postTypes;
+    protected array $postTypes;
 
     /**
      * The default 'orderby' method to use
      * @var string|null
      */
-    protected $defaultOrderByMethod = null;
+    protected ?string $defaultOrderByMethod = null;
 
     /**
      * The default 'order' value to use (asc / desc)
      * @var string|null
      */
-    protected $defaultOrder = null;
+    protected ?string $defaultOrder = null;
 
     /**
      * A list of columns to add
      * @var PostColumn[]
      */
-    protected $addColumns = [];
+    protected array $addColumns = [];
 
     /**
      * A list of columns to move
      * @var string[]
      */
-    protected $moveColumns = [];
+    protected array $moveColumns = [];
 
     /**
      * A list of columns to remove
      * @var string[]
      */
-    protected $removeColumns = [];
+    protected array $removeColumns = [];
 
     /**
      * @param array $postTypes Post types as a string or PostType object
      */
     public function __construct(array $postTypes)
     {
-        // Convert PostType objects to strings
+        // Make sure the post types are a string
         foreach ($postTypes as $postType) {
             if ($postType instanceof PostType) {
                 $this->postTypes[] = $postType->getName();
@@ -100,11 +101,11 @@ class PostColumnsEditor
     }
 
     /**
-     * @param string   $name
-     * @param callable $callback
+     * @param string  $name
+     * @param Closure $callback
      * @return void
      */
-    public static function addOrderByMethod(string $name, callable $callback): void
+    public static function addOrderByMethod(string $name, Closure $callback): void
     {
         static::$sortingCallbacks[$name] = $callback;
     }
@@ -172,7 +173,7 @@ class PostColumnsEditor
      * Apply the post column adjustments
      * @return void
      */
-    public function apply()
+    public function apply(): void
     {
         $this->applyMutations();
         $this->applyRenderFunctions();
