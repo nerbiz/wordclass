@@ -6,14 +6,14 @@ I created this, because I got confused with a number of WordPress functions, tha
 
 ## Installation
 
-WordClass requires PHP 7.1 or higher, and can be installed with [Composer](https://getcomposer.org/):
+WordClass requires PHP 8 and can be installed with [Composer](https://getcomposer.org/):
 ```
 composer require nerbiz/wordclass
 ```
 
 ## Usage
 
-You can find usage examples in the [example files](https://github.com/nerbiz/wordclass/tree/master/example).
+You can find usage examples in the [example files](https://github.com/nerbiz/wordclass/tree/master/example), most notably the [functions.php](https://github.com/nerbiz/wordclass/blob/master/example/functions.php) file.
 
 Read the [wiki pages](https://github.com/nerbiz/wordclass/wiki) for more information.
 
