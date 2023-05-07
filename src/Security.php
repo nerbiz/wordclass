@@ -42,4 +42,23 @@ class Security
 
         return $this;
     }
+
+    /**
+     * Disable XML-RPC functionality
+     * @return self
+     */
+    public function disableXmlRpc(): self
+    {
+        // Replace the normal class with a dummy
+        add_filter('wp_xmlrpc_server_class', function () {
+            require_once dirname(__FILE__, 2) . '/includes/php/BrokenXmlRpcServer.php';
+            return BrokenXmlRpcServer::class;
+        });
+
+        // For completeness, disable it and remove methods
+        add_filter('xmlrpc_enabled', '__return_false');
+        add_filter('xmlrpc_methods', '__return_empty_array');
+
+        return $this;
+    }
 }
