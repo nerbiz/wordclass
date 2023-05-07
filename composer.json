@@ -14,7 +14,7 @@
     }
   },
   "require": {
-    "php": ">=7.1"
+    "php": "^8.0"
   },
   "support" : {
     "docs": "https://github.com/nerbiz/wordclass/wiki"
