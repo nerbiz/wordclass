@@ -59,15 +59,4 @@ class Theme
 
         return $this;
     }
-
-    /**
-     * Remove the meta[name="generator"] tag
-     * @return self
-     */
-    public function removeGeneratorMeta(): self
-    {
-        remove_action('wp_head', 'wp_generator');
-
-        return $this;
-    }
 }
