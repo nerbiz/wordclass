@@ -19,28 +19,10 @@ class ViteAssets extends Assets
     protected stdClass $manifest;
 
     /**
-     * Whether the dev server is used
-     * @var bool
+     * The address of the development server
+     * @var string|null
      */
-    protected bool $usingDevServer = false;
-
-    /**
-     * The host for the dev server
-     * @var string
-     */
-    protected string $serverHost;
-
-    /**
-     * The port for the dev server
-     * @var int
-     */
-    protected int $serverPort;
-
-    /**
-     * Whether to use https for the dev server
-     * @var bool
-     */
-    protected bool $serverSecure = true;
+    protected ?string $devServer = null;
 
     /**
      * Handles of scripts that should be modules (for dev server)
@@ -67,29 +49,19 @@ class ViteAssets extends Assets
     }
 
     /**
-     * @param string $host
-     * @param int    $port
-     * @param bool   $secure
+     * @param string $address
      * @return self
      */
-    public function useDevServer(string $host = '0.0.0.0', int $port = 5173, bool $secure = true): self
+    public function useDevServer(string $address = 'https://localhost:5173'): self
     {
-        $this->usingDevServer = true;
-        $this->serverHost = $host;
-        $this->serverPort = $port;
-        $this->serverSecure = $secure;
+        $this->devServer = rtrim($address, '/') . '/';
 
         // Add the dev server script
         add_action('wp_enqueue_scripts', function () {
-            $serverUrl = sprintf(
-                'http%s://%s:%d/@vite/client',
-                $this->serverSecure ? 's' : '',
-                $this->serverHost,
-                $this->serverPort
-            );
+            $serverUrl = $this->devServer . '@vite/client';
+            wp_enqueue_script('vite-client', $serverUrl, [], null, true);
 
-            wp_enqueue_script('vite-dev', $serverUrl, [], null, true);
-            $this->moduleHandles[] = 'vite-dev';
+            $this->moduleHandles[] = 'vite-client';
         });
 
         // Set the type to 'module' for applicable scripts
@@ -107,7 +79,7 @@ class ViteAssets extends Assets
      */
     protected function add(string $assetType, string $hook, string $handle, array|string $options): self
     {
-        if ($this->usingDevServer === true && $assetType === 'js') {
+        if ($this->devServer !== null && $assetType === 'js') {
             $this->moduleHandles[] = $handle;
         }
 
@@ -121,17 +93,13 @@ class ViteAssets extends Assets
     {
         $options = parent::parseOptions($assetType, $options);
 
-        if ($this->usingDevServer === true) {
-            $options['uri'] = sprintf(
-                'http%s://%s:%d/%s',
-                $this->serverSecure ? 's' : '',
-                $this->serverHost,
-                $this->serverPort,
-                $options['uri']
-            );
+        if ($this->devServer !== null) {
+            $options['uri'] = $this->devServer . $options['uri'];
         } else {
-            if (isset($this->manifest->{$options['uri']}->file)) {
-                $actualPath = $this->manifest->{$options['uri']}->file;
+            // Get the actual asset path from the manifest
+            $actualPath = $this->manifest->{$options['uri']}->file ?? null;
+
+            if (isset($actualPath)) {
                 $actualPath = '/' . ltrim($actualPath, '/');
                 $options['uri'] = get_theme_file_uri($this->distDirectory . $actualPath);
             } else {
