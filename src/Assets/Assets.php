@@ -5,93 +5,97 @@ namespace Nerbiz\WordClass\Assets;
 class Assets
 {
     /**
-     * Add CSS asset to the theme
+     * Hooks for adding assets to different locations
+     * @var string
+     */
+    const HOOK_THEME = 'wp_enqueue_scripts';
+    const HOOK_ADMIN = 'admin_enqueue_scripts';
+    const HOOK_LOGIN = 'login_enqueue_scripts';
+
+    /**
+     * Add a CSS asset to the theme
      * @param string       $handle
      * @param array|string $options
      * @return self
      */
     public function addThemeCss(string $handle, array|string $options): self
     {
-        return $this->add('css', 'wp_enqueue_scripts', $handle, $options);
+        return $this->add(static::HOOK_THEME, 'css', $handle, $options);
     }
 
     /**
-     * Add JavaScript asset to the theme
+     * Add a JavaScript asset to the theme
      * @param string       $handle
      * @param array|string $options
      * @return self
      */
     public function addThemeJs(string $handle, array|string $options): self
     {
-        return $this->add('js', 'wp_enqueue_scripts', $handle, $options);
+        return $this->add(static::HOOK_THEME, 'js', $handle, $options);
     }
 
     /**
-     * Add CSS asset to admin
+     * Add a CSS asset to the admin panel
      * @param string       $handle
      * @param array|string $options
      * @return self
      */
     public function addAdminCss(string $handle, array|string $options): self
     {
-        return $this->add('css', 'admin_enqueue_scripts', $handle, $options);
+        return $this->add(static::HOOK_ADMIN, 'css', $handle, $options);
     }
 
     /**
-     * Add JavaScript asset to admin
+     * Add a JavaScript asset to the admin panel
      * @param string       $handle
      * @param array|string $options
      * @return self
      */
     public function addAdminJs(string $handle, array|string $options): self
     {
-        return $this->add('js', 'admin_enqueue_scripts', $handle, $options);
+        return $this->add(static::HOOK_ADMIN, 'js', $handle, $options);
     }
 
     /**
-     * Add CSS asset to the login screen
+     * Add a CSS asset to the login screen
      * @param string       $handle
      * @param array|string $options
      * @return self
      */
     public function addLoginCss(string $handle, array|string $options): self
     {
-        return $this->add('css', 'login_enqueue_scripts', $handle, $options);
+        return $this->add(static::HOOK_LOGIN, 'css', $handle, $options);
     }
 
     /**
-     * Add JavaScript asset to the login screen
+     * Add a JavaScript asset to the login screen
      * @param string       $handle
      * @param array|string $options
      * @return self
      */
     public function addLoginJs(string $handle, array|string $options): self
     {
-        return $this->add('js', 'login_enqueue_scripts', $handle, $options);
+        return $this->add(static::HOOK_LOGIN, 'js', $handle, $options);
     }
 
     /**
-     * Add a CSS or JavaSscript asset
-     * @param string       $assetType The type of asset, 'css' or 'js'
+     * Add a CSS or JavaScript asset
      * @param string       $hook      The hook to register the asset in
+     * @param string       $assetType The type of asset, 'css' or 'js'
      * @param string       $handle
      * @param array|string $options
      * @return self
-     * @see Assets::parseOptions()
      */
-    protected function add(string $assetType, string $hook, string $handle, array|string $options): self
+    protected function add(string $hook, string $assetType, string $handle, array|string $options): self
     {
         add_action($hook, function () use ($assetType, $handle, $options) {
             $options = $this->parseOptions($assetType, $options);
 
             // Register the asset
-            if ($assetType === 'css') {
-                wp_enqueue_style($handle, $options['uri'], $options['deps'],
-                    $options['ver'], $options['media']);
-            } elseif ($assetType === 'js') {
-                wp_enqueue_script($handle, $options['uri'], $options['deps'],
-                    $options['ver'], $options['footer']);
-            }
+            match ($assetType) {
+                'css' => wp_enqueue_style($handle, $options['uri'], $options['deps'], $options['ver'], $options['media']),
+                'js' => wp_enqueue_script($handle, $options['uri'], $options['deps'], $options['ver'], $options['footer']),
+            };
         });
 
         return $this;
@@ -110,19 +114,17 @@ class Assets
             $options = ['uri' => $options];
         }
 
-        // Merge the options with default ones
-        if ($assetType === 'css') {
-            return array_replace([
-                'deps'  => [],
-                'ver'   => null,
-                'media' => 'all',
-            ], $options);
-        } elseif ($assetType === 'js') {
-            return array_replace([
-                'deps'  => [],
-                'ver'   => null,
-                'footer' => true,
-            ], $options);
-        }
+        // Default values for CSS and JavaScript
+        $default = [
+            'deps' => [],
+            'ver' => null,
+        ];
+
+        // Merge the options with the default
+        return match ($assetType) {
+            'css' => array_replace($default, ['media' => 'all'], $options),
+            'js' => array_replace($default, ['footer' => true], $options),
+            default => [],
+        };
     }
 }

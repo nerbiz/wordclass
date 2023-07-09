@@ -77,13 +77,13 @@ class ViteAssets extends Assets
     /**
      * {@inheritdoc}
      */
-    protected function add(string $assetType, string $hook, string $handle, array|string $options): self
+    protected function add(string $hook, string $assetType, string $handle, array|string $options): self
     {
         if ($this->devServer !== null && $assetType === 'js') {
             $this->moduleHandles[] = $handle;
         }
 
-        return parent::add($assetType, $hook, $handle, $options);
+        return parent::add($hook, $assetType, $handle, $options);
     }
 
     /**
