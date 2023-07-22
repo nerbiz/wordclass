@@ -2,15 +2,19 @@
 
 namespace Nerbiz\WordClass\InputFields;
 
-class PasswordInputField extends AbstractInputField
+class GeneralInputField extends AbstractInputField
 {
     /**
      * {@inheritdoc}
      */
     public function renderField(): string
     {
+        if (! isset($this->attributes['type'])) {
+            $this->attributes['type'] = 'text';
+        }
+
         return sprintf(
-            '<input type="password" class="regular-text" name="%s" value="%s" %s>',
+            '<input class="regular-text" name="%s" value="%s" %s>',
             $this->getFullName(),
             $this->getStoredValue(),
             $this->getAttributesString()

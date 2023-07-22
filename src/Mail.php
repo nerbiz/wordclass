@@ -5,8 +5,7 @@ namespace Nerbiz\WordClass;
 use Nerbiz\WordClass\Assets\Assets;
 use Nerbiz\WordClass\InputFields\CheckboxInputField;
 use Nerbiz\WordClass\InputFields\EditorInputField;
-use Nerbiz\WordClass\InputFields\PasswordInputField;
-use Nerbiz\WordClass\InputFields\TextInputField;
+use Nerbiz\WordClass\InputFields\GeneralInputField;
 use PHPMailer\PHPMailer\PHPMailer;
 use WP_Error;
 use WP_Post;
@@ -41,20 +40,21 @@ class Mail
             ->addSection(
                 new SettingsPageSection('smtp', __('SMTP values', 'wordclass'), null, [
                     new CheckboxInputField('enable', __('Enable SMTP?', 'wordclass')),
-                    new TextInputField('host', __('Host', 'wordclass')),
-                    new TextInputField('port', __('Port', 'wordclass')),
-                    new TextInputField('encryption', __('Encryption', 'wordclass')),
-                    new TextInputField('username', __('Username', 'wordclass')),
-                    (new PasswordInputField('password', __('Password', 'wordclass')))
+                    new GeneralInputField('host', __('Host', 'wordclass')),
+                    new GeneralInputField('port', __('Port', 'wordclass')),
+                    new GeneralInputField('encryption', __('Encryption', 'wordclass')),
+                    new GeneralInputField('username', __('Username', 'wordclass')),
+                    (new GeneralInputField('password', __('Password', 'wordclass')))
+                        ->setAttributes(['type' => 'password'])
                         ->setDescription(__('Encryption is used to store the password', 'wordclass')),
                 ])
             )
             ->addSection(
                 new SettingsPageSection('smtp_test', __('Test settings', 'wordclass'), null, [
-                    (new TextInputField('sender', __('Sender', 'wordclass')))
+                    (new GeneralInputField('sender', __('Sender', 'wordclass')))
                         ->setDescription(__('If empty, the sender will be the site title + admin email from general settings<br>The "Example &lt;test@example.com&gt;" format is supported', 'wordclass')),
-                    new TextInputField('recipient', __('Recipient', 'wordclass')),
-                    new TextInputField('subject', __('Subject', 'wordclass')),
+                    new GeneralInputField('recipient', __('Recipient', 'wordclass')),
+                    new GeneralInputField('subject', __('Subject', 'wordclass')),
                     new EditorInputField('content', __('Content', 'wordclass')),
                     (new CheckboxInputField('enable', __('Send testmail?', 'wordclass')))
                         ->setDescription(__('If checked, a testmail will be sent when saving these settings', 'wordclass')),

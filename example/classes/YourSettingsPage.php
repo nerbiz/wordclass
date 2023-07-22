@@ -4,7 +4,7 @@ namespace NewProject;
 
 use Nerbiz\WordClass\InputFields\MediaInputField;
 use Nerbiz\WordClass\InputFields\RadioButtonsInputField;
-use Nerbiz\WordClass\InputFields\TextInputField;
+use Nerbiz\WordClass\InputFields\GeneralInputField;
 use Nerbiz\WordClass\SettingsPage;
 use Nerbiz\WordClass\SettingsPageSection;
 
@@ -44,13 +44,13 @@ class YourSettingsPage
             (new MediaInputField('logo_id', __('Logo', 'project-text-domain')))
                 // All fields support an optional description
                 ->setDescription(__('The company logo', 'project-text-domain')),
-            new TextInputField('company', __('Company name', 'project-text-domain')),
-            new TextInputField('street', __('Address', 'project-text-domain')),
-            new TextInputField('postcode', __('Postcode', 'project-text-domain')),
-            new TextInputField('city', __('City', 'project-text-domain')),
-            new TextInputField('phone', __('Phone number', 'project-text-domain')),
-            new TextInputField('email', __('Email address', 'project-text-domain')),
-            new TextInputField('vat_number', __('VAT number', 'project-text-domain')),
+            new GeneralInputField('company', __('Company name', 'project-text-domain')),
+            new GeneralInputField('street', __('Address', 'project-text-domain')),
+            new GeneralInputField('postcode', __('Postcode', 'project-text-domain')),
+            new GeneralInputField('city', __('City', 'project-text-domain')),
+            new GeneralInputField('phone', __('Phone number', 'project-text-domain')),
+            new GeneralInputField('email', __('Email address', 'project-text-domain')),
+            new GeneralInputField('vat_number', __('VAT number', 'project-text-domain')),
             // Radio button fields expect an array of values, for each radio button
             (new RadioButtonsInputField('show_map', __('Show map', 'project-text-domain'), [
                 '1' => __('Yes', 'project-text-domain'),
@@ -67,10 +67,10 @@ class YourSettingsPage
     protected function addSocialMediaSection(): void
     {
         $section = new SettingsPageSection('social', __('Social media', 'project-text-domain'), null, [
-            new TextInputField('facebook_url', __('Facebook', 'project-text-domain')),
-            new TextInputField('instagram_url', __('Instagram', 'project-text-domain')),
-            new TextInputField('twitter_url', __('Twitter', 'project-text-domain')),
-            new TextInputField('linkedin_url', __('LinkedIn', 'project-text-domain')),
+            new GeneralInputField('facebook_url', __('Facebook', 'project-text-domain')),
+            new GeneralInputField('instagram_url', __('Instagram', 'project-text-domain')),
+            new GeneralInputField('twitter_url', __('Twitter', 'project-text-domain')),
+            new GeneralInputField('linkedin_url', __('LinkedIn', 'project-text-domain')),
         ]);
 
         $this->settingsPage->addSection($section);
