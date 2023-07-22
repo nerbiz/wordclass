@@ -241,7 +241,10 @@ class SettingsPage
     {
         // Use the section ID as the input field name prefix
         foreach ($section->getFields() as $field) {
-            $field->setNamePrefix($section->getId());
+            $currentPrefix = trim($field->getNamePrefix());
+            if ($currentPrefix === '') {
+                $field->setNamePrefix($section->getId());
+            }
         }
 
         $this->sections[] = $section;
