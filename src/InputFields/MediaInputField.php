@@ -17,7 +17,7 @@ class MediaInputField extends AbstractInputField
     /**
      * {@inheritdoc}
      */
-    public function __construct(string $name, string $label, ?string $description = null)
+    public function __construct(string $name, string $label)
     {
         // Add the required scripts (once)
         if (! static::$scriptsAdded) {
@@ -29,7 +29,7 @@ class MediaInputField extends AbstractInputField
             static::$scriptsAdded = true;
         }
 
-        parent::__construct($name, $label, $description);
+        parent::__construct($name, $label);
     }
 
     /**

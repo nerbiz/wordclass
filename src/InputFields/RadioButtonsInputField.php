@@ -11,20 +11,14 @@ class RadioButtonsInputField extends AbstractInputField
     protected array $values = [];
 
     /**
-     * @param string      $name
-     * @param string      $label
-     * @param string|null $description
-     * @param array       $values
+     * @param string $name
+     * @param string $label
+     * @param array  $values
      */
-    public function __construct(
-        string $name,
-        string $label,
-        ?string $description,
-        array $values
-    ) {
+    public function __construct(string $name, string $label, array $values) {
         $this->values = $values;
 
-        parent::__construct($name, $label, $description);
+        parent::__construct($name, $label);
     }
 
     /**

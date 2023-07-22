@@ -45,16 +45,19 @@ class Mail
                     new TextInputField('port', __('Port', 'wordclass')),
                     new TextInputField('encryption', __('Encryption', 'wordclass')),
                     new TextInputField('username', __('Username', 'wordclass')),
-                    new PasswordInputField('password', __('Password', 'wordclass'), __('Encryption is used to store the password', 'wordclass')),
+                    (new PasswordInputField('password', __('Password', 'wordclass')))
+                        ->setDescription(__('Encryption is used to store the password', 'wordclass')),
                 ])
             )
             ->addSection(
                 new SettingsPageSection('smtp_test', __('Test settings', 'wordclass'), null, [
-                    new TextInputField('sender', __('Sender', 'wordclass'), __('If empty, the sender will be the site title + admin email from general settings<br>The "Example &lt;test@example.com&gt;" format is supported', 'wordclass')),
+                    (new TextInputField('sender', __('Sender', 'wordclass')))
+                        ->setDescription(__('If empty, the sender will be the site title + admin email from general settings<br>The "Example &lt;test@example.com&gt;" format is supported', 'wordclass')),
                     new TextInputField('recipient', __('Recipient', 'wordclass')),
                     new TextInputField('subject', __('Subject', 'wordclass')),
                     new EditorInputField('content', __('Content', 'wordclass')),
-                    new CheckboxInputField('enable', __('Send testmail?', 'wordclass'), __('If checked, a testmail will be sent when saving these settings', 'wordclass')),
+                    (new CheckboxInputField('enable', __('Send testmail?', 'wordclass')))
+                        ->setDescription(__('If checked, a testmail will be sent when saving these settings', 'wordclass')),
                 ])
             )
             ->create();

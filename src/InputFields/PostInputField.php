@@ -13,21 +13,15 @@ class PostInputField extends SelectInputField
     protected array $postTypes = [];
 
     /**
-     * @param string      $name
-     * @param string      $label
-     * @param string|null $description
-     * @param array       $postTypes
+     * @param string $name
+     * @param string $label
+     * @param array  $postTypes
      */
-    public function __construct(
-        string $name,
-        string $label,
-        ?string $description = null,
-        array $postTypes = []
-    ) {
+    public function __construct(string $name, string $label, array $postTypes = []) {
         $this->postTypes = $postTypes;
         $values = $this->createValuesArray();
 
-        parent::__construct($name, $label, $description, $values);
+        parent::__construct($name, $label, $values);
     }
 
     /**

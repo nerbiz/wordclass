@@ -12,20 +12,14 @@ class SelectInputField extends AbstractInputField
     protected array $values = [];
 
     /**
-     * @param string      $name
-     * @param string      $label
-     * @param string|null $description
-     * @param array       $values
+     * @param string $name
+     * @param string $label
+     * @param array  $values
      */
-    public function __construct(
-        string $name,
-        string $label,
-        ?string $description,
-        array $values
-    ) {
+    public function __construct(string $name, string $label, array $values) {
         $this->values = $values;
 
-        parent::__construct($name, $label, $description);
+        parent::__construct($name, $label);
     }
 
     /**
@@ -64,7 +58,7 @@ class SelectInputField extends AbstractInputField
         return sprintf(
             '<option value="%s" %s>%s</option>',
             $value,
-            selected($value, get_option($this->getFullName()), false),
+            selected($value, $this->getStoredValue(), false),
             $label
         );
     }
