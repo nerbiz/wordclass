@@ -10,9 +10,10 @@ class TextInputField extends AbstractInputField
     public function renderField(): string
     {
         return sprintf(
-            '<input type="text" class="regular-text" name="%s" value="%s">',
+            '<input type="text" class="regular-text" name="%s" value="%s" %s>',
             $this->getFullName(),
-            $this->getStoredValue()
+            $this->getStoredValue(),
+            $this->getAttributesString()
         );
     }
 }

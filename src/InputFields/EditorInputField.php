@@ -12,13 +12,15 @@ class EditorInputField extends AbstractInputField
         // Buffer the output, because wp_editor() echoes
         ob_start();
 
+        $inputName = $this->getFullName();
+
         wp_editor(
-            apply_filters('the_content', get_option($this->getFullName())),
-            $this->getFullName(),
+            apply_filters('the_content', get_option($inputName)),
+            $inputName,
             [
                 'wpautop'       => true,
                 'media_buttons' => true,
-                'textarea_name' => $this->getFullName(),
+                'textarea_name' => $inputName,
                 'editor_height' => 200
             ]
         );

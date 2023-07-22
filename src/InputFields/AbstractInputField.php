@@ -7,6 +7,13 @@ use Nerbiz\WordClass\Init;
 abstract class AbstractInputField
 {
     /**
+     * Attributes of the input field, as key/value pairs
+     * Boolean attributes don't need a value, only the name will suffice
+     * @var array
+     */
+    protected array $attributes = [];
+
+    /**
      * The description below the input field
      * @var string
      */
@@ -48,6 +55,51 @@ abstract class AbstractInputField
     public function getLabel(): string
     {
         return $this->label;
+    }
+
+    /**
+     * @param array $attributes
+     * @return self
+     */
+    public function setAttributes(array $attributes): self
+    {
+        $this->attributes = $attributes;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAttributes(): array
+    {
+        return $this->attributes;
+    }
+
+    /**
+     * Convert all attributes to a single string
+     * @return string
+     */
+    public function getAttributesString(): string
+    {
+        $attributes = [];
+
+        foreach ($this->getAttributes() as $name => $value) {
+            // Boolean attributes like 'required' and 'disabled'
+            if (is_numeric($name)) {
+                $attributes[] = $value;
+                continue;
+            }
+
+            // Convert true/false to strings, for attributes like 'draggable' and 'contenteditable'
+            if (is_bool($value)) {
+                $value = $value ? 'true' : 'false';
+            }
+
+            $attributes[] = sprintf('%s="%s"', $name, $value);
+        }
+
+        return implode(' ', $attributes);
     }
 
     /**

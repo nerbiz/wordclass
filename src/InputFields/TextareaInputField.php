@@ -10,8 +10,9 @@ class TextareaInputField extends AbstractInputField
     public function renderField(): string
     {
         return sprintf(
-            '<textarea class="regular-text" name="%s">%s</textarea>',
+            '<textarea class="regular-text" name="%s" %s>%s</textarea>',
             $this->getFullName(),
+            $this->getAttributesString(),
             $this->getStoredValue()
         );
     }

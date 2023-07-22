@@ -31,12 +31,13 @@ class RadioButtonsInputField extends AbstractInputField
         foreach ($this->values as $value => $label) {
             $output .= sprintf(
                 '<p><label>
-                    <input type="radio" name="%s" value="%s" %s>
+                    <input type="radio" name="%s" value="%s" %s %s>
                     %s
                 </label></p>',
                 $this->getFullName(),
                 $value,
                 checked($value, $this->getStoredValue(), false),
+                $this->getAttributesString(),
                 $label
             );
         }
