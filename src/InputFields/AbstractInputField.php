@@ -70,14 +70,6 @@ abstract class AbstractInputField
     }
 
     /**
-     * @return bool
-     */
-    public function isFullWidth(): bool
-    {
-        return $this->fullWidth;
-    }
-
-    /**
      * @param bool $fullWidth
      * @return self
      */
@@ -89,11 +81,11 @@ abstract class AbstractInputField
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getNamePrefix(): string
+    public function isFullWidth(): bool
     {
-        return $this->namePrefix;
+        return $this->fullWidth;
     }
 
     /**
@@ -105,6 +97,14 @@ abstract class AbstractInputField
         $this->namePrefix = $namePrefix . '_';
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNamePrefix(): string
+    {
+        return $this->namePrefix;
     }
 
     /**
