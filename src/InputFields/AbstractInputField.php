@@ -7,6 +7,12 @@ use Nerbiz\WordClass\Init;
 abstract class AbstractInputField
 {
     /**
+     * The description below the input field
+     * @var string
+     */
+    protected string $description = '';
+
+    /**
      * Whether the input field spans the full width,
      * instead of having label and field separately
      * @var bool
@@ -22,12 +28,10 @@ abstract class AbstractInputField
     /**
      * @param string      $name The name/id of the input field
      * @param string      $label The label of the input field
-     * @param string|null $description The optional description below the input field
      */
     public function __construct(
         protected string $name,
-        protected string $label,
-        protected ?string $description = null
+        protected string $label
     ) {}
 
     /**
@@ -44,6 +48,17 @@ abstract class AbstractInputField
     public function getLabel(): string
     {
         return $this->label;
+    }
+
+    /**
+     * @param string $description
+     * @return self
+     */
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
     }
 
     /**
@@ -141,10 +156,12 @@ abstract class AbstractInputField
      */
     protected function appendRender(): string
     {
-        if ($this->description !== null) {
+        $description = trim($this->description);
+
+        if ($description !== '') {
             return sprintf(
                 '<p class="description">%s</p>',
-                $this->description
+                $description
             );
         }
 
