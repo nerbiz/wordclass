@@ -2,7 +2,7 @@
 
 use Nerbiz\WordClass\Init;
 
-if (! isset($currentMediaUrl, $currentMediaFilename, $prefixedName, $inputValue)) {
+if (! isset($currentMediaUrl, $currentMediaFilename, $inputName, $inputValue)) {
     return;
 }
 
@@ -49,6 +49,6 @@ if (trim($currentMediaUrl) === '') {
     </a>
 
     <input type="hidden"
-           name="<?php echo $prefixedName; ?>"
+           name="<?php echo $inputName; ?>"
            value="<?php echo $inputValue; ?>">
 </div>

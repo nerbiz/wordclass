@@ -96,7 +96,7 @@ abstract class AbstractInputField
      * Get a prefixed input name
      * @return string
      */
-    public function getPrefixedName(): string
+    public function getFullName(): string
     {
         return sprintf(
             '%s_%s%s',

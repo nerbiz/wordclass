@@ -294,7 +294,7 @@ class SettingsPage
         // Store all submitted values
         foreach ($this->sections as $section) {
             foreach ($section->getFields() as $field) {
-                $name = $field->getPrefixedName();
+                $name = $field->getFullName();
 
                 if (isset($_POST[$name])) {
                     update_option($name, $_POST[$name]);

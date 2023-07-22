@@ -11,8 +11,8 @@ class PasswordInputField extends AbstractInputField
     {
         return sprintf(
             '<input type="password" class="regular-text" name="%s" value="%s">',
-            $this->getPrefixedName(),
-            esc_attr(get_option($this->getPrefixedName()))
+            $this->getFullName(),
+            esc_attr(get_option($this->getFullName()))
         );
     }
 }
