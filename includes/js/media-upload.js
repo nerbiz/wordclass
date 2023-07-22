@@ -2,7 +2,7 @@
  * @param {Element} element
  * @constructor
  */
-function WcMediaInput(element)
+function NwMediaInput(element)
 {
     var self = this;
 
@@ -107,7 +107,7 @@ function WcMediaInput(element)
                 self.chosenMediaFilename.innerHTML = attachment.filename;
 
                 // Restore the main post ID
-                wp.media.model.settings.post.id = window.WcMediaInputSettings.oldAttachmentId;
+                wp.media.model.settings.post.id = window.NwMediaInputSettings.oldAttachmentId;
             });
 
             // Finally, open the modal
@@ -134,16 +134,16 @@ document.addEventListener('DOMContentLoaded', event => {
     // Used by the for-loops below
     var i;
 
-    window.WcMediaInputSettings = {
+    window.NwMediaInputSettings = {
         // Store the old id
         oldAttachmentId: (wp.media)
             ? wp.media.model.settings.post.id
             : null
     };
 
-    var mediaInputElements = document.querySelectorAll('.wc-media-upload-input');
+    var mediaInputElements = document.querySelectorAll('.nw-media-upload-input');
     for (i = 0; i < mediaInputElements.length; i++) {
-        var mediaUploadInput = new WcMediaInput(mediaInputElements[i]);
+        var mediaUploadInput = new NwMediaInput(mediaInputElements[i]);
         mediaUploadInput.enableUploadButton();
         mediaUploadInput.enableClearButton();
     }
@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', event => {
     var addButtons = document.querySelectorAll('.add_media');
     for (i = 0; i < addButtons.length; i++) {
         addButtons[i].addEventListener('click', function () {
-            wp.media.model.settings.post.id = window.WcMediaInputSettings.oldAttachmentId;
+            wp.media.model.settings.post.id = window.NwMediaInputSettings.oldAttachmentId;
         });
     }
 });

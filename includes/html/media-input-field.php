@@ -25,7 +25,7 @@ if (trim($currentMediaUrl) === '') {
 }
 ?>
 
-<div class="wc-media-upload-input">
+<div class="nw-media-upload-input">
     <div class="media-preview-wrapper">
         <img class="media-preview"
              src="<?php echo $currentMediaUrl; ?>"
