@@ -40,18 +40,15 @@ class MediaInputField extends AbstractInputField
         // Enqueue the required scripts
         wp_enqueue_media();
 
+        $storedValue = $this->getStoredValue();
+
         // The currently stored value
-        $currentMediaUrl = wp_get_attachment_image_url(
-            esc_attr(get_option($this->getFullName())),
-            'thumbnail'
-        );
+        $currentMediaUrl = wp_get_attachment_image_url($storedValue, 'thumbnail');
 
         // Other values for the template
-        $currentMediaFilename = basename(get_attached_file(
-            esc_attr(get_option($this->getFullName()))
-        ));
+        $currentMediaFilename = basename(get_attached_file($storedValue));
         $inputName = $this->getFullName();
-        $inputValue = esc_attr(get_option($this->getFullName()));
+        $inputValue = $storedValue;
 
         ob_start();
         require dirname(__FILE__, 3) . '/includes/html/media-input-field.php';

@@ -121,6 +121,11 @@ abstract class AbstractInputField
         );
     }
 
+    public function getStoredValue(): string
+    {
+        return esc_attr(get_option($this->getFullName()));
+    }
+
     /**
      * Render the input field
      * @return string
@@ -158,13 +163,8 @@ abstract class AbstractInputField
     {
         $description = trim($this->description);
 
-        if ($description !== '') {
-            return sprintf(
-                '<p class="description">%s</p>',
-                $description
-            );
-        }
-
-        return '';
+        return ($description !== '')
+            ? sprintf('<p class="description">%s</p>', $description)
+            : '';
     }
 }

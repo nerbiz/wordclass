@@ -12,7 +12,7 @@ class PasswordInputField extends AbstractInputField
         return sprintf(
             '<input type="password" class="regular-text" name="%s" value="%s">',
             $this->getFullName(),
-            esc_attr(get_option($this->getFullName()))
+            $this->getStoredValue()
         );
     }
 }

@@ -12,7 +12,7 @@ class TextInputField extends AbstractInputField
         return sprintf(
             '<input type="text" class="regular-text" name="%s" value="%s">',
             $this->getFullName(),
-            esc_attr(get_option($this->getFullName()))
+            $this->getStoredValue()
         );
     }
 }

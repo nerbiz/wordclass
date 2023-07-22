@@ -12,7 +12,7 @@ class TextareaInputField extends AbstractInputField
         return sprintf(
             '<textarea class="regular-text" name="%s">%s</textarea>',
             $this->getFullName(),
-            esc_attr(get_option($this->getFullName()))
+            $this->getStoredValue()
         );
     }
 }

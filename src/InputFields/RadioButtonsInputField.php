@@ -42,7 +42,7 @@ class RadioButtonsInputField extends AbstractInputField
                 </label></p>',
                 $this->getFullName(),
                 $value,
-                checked($value, esc_attr(get_option($this->getFullName())), false),
+                checked($value, $this->getStoredValue(), false),
                 $label
             );
         }
