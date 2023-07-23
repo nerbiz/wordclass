@@ -1,82 +1,94 @@
 /**
- * @param {Element} element
+ *
  * @constructor
  */
-function NwMediaInput(element)
+class NwMediaInput
 {
-    var self = this;
-
     /**
      * The main element containing media preview and input
-     * @type {Element}
+     * @var {Element}
      */
-    self.element = element;
+    element;
 
     /**
      * The button that triggers the media selector
      * @type {Element}
      */
-    self.uploadButton = self.element.querySelectorAll('.upload-media-button')[0];
+    uploadButton;
 
     /**
      * The button that clears the current value
      * @type {Element}
      */
-    self.clearButton = self.element.querySelectorAll('.clear-media-button')[0];
+    clearButton;
 
     /**
      * The element that shows the selected attachment
      * @type {Element}
      */
-    self.mediaPreview = self.element.querySelectorAll('.media-preview')[0];
+    mediaPreview;
 
     /**
      * The input field containing the value (selected attachment ID)
      * @type {Element}
      */
-    self.inputField = self.element.querySelectorAll('input[type="hidden"]')[0];
+    inputField;
 
     /**
      * The element that contains the filename of the currently selected media
      * @type {Element}
      */
-    self.chosenMediaFilename = self.element.querySelectorAll('.chosen-media-filename')[0];
+    chosenMediaFilename;
 
     /**
      * A 1x1 transparent pixel
      * @type {string}
      */
-    self.transparentPixelSrc = self.mediaPreview.dataset.transparentPixelSrc;
+    transparentPixelSrc;
 
     /**
      * An empty file icon
      * @type {string}
      */
-    self.fileIconSrc = self.mediaPreview.dataset.fileIconSrc;
+    fileIconSrc;
 
     /**
      * The media frame
      * @type {object|null}
      */
-    self.fileFrame = null;
+    fileFrame = null;
+
+    /**
+     * @param {Element} element
+     */
+    constructor(element) {
+        this.element = element;
+        this.uploadButton = this.element.querySelector('.upload-media-button');
+        this.clearButton = this.element.querySelector('.clear-media-button');
+        this.mediaPreview = this.element.querySelector('.media-preview');
+        this.inputField = this.element.querySelector('input[type="hidden"]');
+        this.chosenMediaFilename = this.element.querySelector('.chosen-media-filename');
+        this.transparentPixelSrc = this.mediaPreview.dataset.transparentPixelSrc;
+        this.fileIconSrc = this.mediaPreview.dataset.fileIconSrc;
+    }
 
     /**
      * Enable the media upload/selector button
      * @return {void}
      */
-    self.enableUploadButton = function () {
-        self.uploadButton.addEventListener('click', function (event) {
+    enableUploadButton() {
+        this.uploadButton.addEventListener('click', event => {
             event.preventDefault();
 
             // Get the current attachment ID
-            var currentAttachmentId = self.inputField.value;
+            const currentAttachmentId = this.inputField.value;
 
             // If the media frame already exists, reopen it.
-            if (self.fileFrame) {
+            if (this.fileFrame) {
                 // Set the post ID to what we want
-                self.fileFrame.uploader.uploader.param('post_id', currentAttachmentId);
+                this.fileFrame.uploader.uploader.param('post_id', currentAttachmentId);
                 // Open frame
-                self.fileFrame.open();
+                this.fileFrame.open();
                 return;
             } else {
                 // Set the wp.media post id so the uploader grabs the ID we want when initialised
@@ -84,7 +96,7 @@ function NwMediaInput(element)
             }
 
             // Create the media frame
-            self.fileFrame = wp.media.frames.file_frame = wp.media({
+            this.fileFrame = wp.media.frames.file_frame = wp.media({
                 title: 'Select media file to upload',
                 button: {
                     text: 'Use this file',
@@ -94,46 +106,43 @@ function NwMediaInput(element)
             });
 
             // When an file is selected, run a callback.
-            self.fileFrame.on('select', function () {
-                var attachment = self.fileFrame.state().get('selection').first().toJSON();
+            this.fileFrame.on('select', () => {
+                const attachment = this.fileFrame.state().get('selection').first().toJSON();
 
                 // Set the attachment ID in the input field
-                self.inputField.value = attachment.id;
+                this.inputField.value = attachment.id;
                 // Show the media preview and filename
-                var imageSrc = (attachment.type === 'image')
+                const imageSrc = (attachment.type === 'image')
                     ? attachment.sizes.thumbnail.url
-                    : self.fileIconSrc;
-                self.mediaPreview.setAttribute('src', imageSrc);
-                self.chosenMediaFilename.innerHTML = attachment.filename;
+                    : this.fileIconSrc;
+                this.mediaPreview.setAttribute('src', imageSrc);
+                this.chosenMediaFilename.innerHTML = attachment.filename;
 
                 // Restore the main post ID
                 wp.media.model.settings.post.id = window.NwMediaInputSettings.oldAttachmentId;
             });
 
             // Finally, open the modal
-            self.fileFrame.open();
+            this.fileFrame.open();
         });
-    };
+    }
 
     /**
      * Enable the button that clears the current value
      * @return {void}
      */
-    self.enableClearButton = function () {
-        self.clearButton.addEventListener('click', function (event) {
+    enableClearButton() {
+        this.clearButton.addEventListener('click', event => {
             event.preventDefault();
 
-            self.mediaPreview.setAttribute('src', self.transparentPixelSrc);
-            self.inputField.value = '';
-            self.chosenMediaFilename.innerHTML = self.chosenMediaFilename.dataset.fallbackText;
+            this.mediaPreview.setAttribute('src', this.transparentPixelSrc);
+            this.inputField.value = '';
+            this.chosenMediaFilename.innerHTML = this.chosenMediaFilename.dataset.fallbackText;
         });
-    };
+    }
 }
 
-document.addEventListener('DOMContentLoaded', event => {
-    // Used by the for-loops below
-    var i;
-
+document.addEventListener('DOMContentLoaded', () => {
     window.NwMediaInputSettings = {
         // Store the old id
         oldAttachmentId: (wp.media)
@@ -141,18 +150,18 @@ document.addEventListener('DOMContentLoaded', event => {
             : null
     };
 
-    var mediaInputElements = document.querySelectorAll('.nw-media-upload-input');
-    for (i = 0; i < mediaInputElements.length; i++) {
-        var mediaUploadInput = new NwMediaInput(mediaInputElements[i]);
-        mediaUploadInput.enableUploadButton();
-        mediaUploadInput.enableClearButton();
-    }
+    document.querySelectorAll('.nw-media-upload-input')
+        .forEach(element => {
+            const mediaUploadInput = new NwMediaInput(element);
+            mediaUploadInput.enableUploadButton();
+            mediaUploadInput.enableClearButton();
+        });
 
     // Restore the main ID when the add media button is pressed
-    var addButtons = document.querySelectorAll('.add_media');
-    for (i = 0; i < addButtons.length; i++) {
-        addButtons[i].addEventListener('click', function () {
-            wp.media.model.settings.post.id = window.NwMediaInputSettings.oldAttachmentId;
+    document.querySelectorAll('.add_media')
+        .forEach(button => {
+            button.addEventListener('click', () => {
+                wp.media.model.settings.post.id = window.NwMediaInputSettings.oldAttachmentId;
+            });
         });
-    }
 });
