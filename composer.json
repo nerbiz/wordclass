@@ -1,7 +1,7 @@
 {
   "name": "nerbiz/wordclass",
   "description": "Making programming with WordPress easier and more fun",
-  "license": "Unlicense",
+  "license": "GPL-3.0-or-later",
   "authors": [
     {
       "name": "Sybren Dijkstra",
