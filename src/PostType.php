@@ -195,15 +195,12 @@ class PostType
     public function setTaxonomies(array $taxonomies): self
     {
         // Make sure the taxonomies are a string
-        foreach ($taxonomies as $key => $taxonomy) {
-            if ($taxonomy instanceof Taxonomy) {
-                $taxonomies[$key] = $taxonomy->getName();
-            } else {
-                $taxonomies[$key] = $taxonomy;
-            }
-        }
-
-        $this->taxonomies = $taxonomies;
+        $this->taxonomies = array_map(
+            fn ($taxonomy) => ($taxonomy instanceof Taxonomy)
+                ? $taxonomy->getName()
+                : $taxonomy,
+            $taxonomies
+        );
 
         return $this;
     }

@@ -173,16 +173,12 @@ class Taxonomy
     public function setPostTypes(array $postTypes): self
     {
         // Make sure the post types are a string
-        foreach ($postTypes as $key => $postType) {
-            // Post type objects can be passed
-            if ($postType instanceof PostType) {
-                $postTypes[$key] = $postType->getName();
-            } else {
-                $postTypes[$key] = (string) $postType;
-            }
-        }
-
-        $this->postTypes = $postTypes;
+        $this->postTypes = array_map(
+            fn ($postType) => ($postType instanceof PostType)
+                ? $postType->getName()
+                : $postType,
+            $postTypes
+        );
 
         return $this;
     }

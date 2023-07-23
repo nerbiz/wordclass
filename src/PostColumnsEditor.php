@@ -23,7 +23,7 @@ class PostColumnsEditor
      * The post types to edit the columns of
      * @var string[]
      */
-    protected array $postTypes;
+    protected array $postTypes = [];
 
     /**
      * The default 'orderby' method to use
@@ -61,13 +61,12 @@ class PostColumnsEditor
     public function __construct(array $postTypes)
     {
         // Make sure the post types are a string
-        foreach ($postTypes as $postType) {
-            if ($postType instanceof PostType) {
-                $this->postTypes[] = $postType->getName();
-            } else {
-                $this->postTypes[] = $postType;
-            }
-        }
+        $this->postTypes = array_map(
+            fn ($postType) => ($postType instanceof PostType)
+                ? $postType->getName()
+                : $postType,
+            $postTypes
+        );
 
         if (! static::$sortingHookAdded) {
             static::$sortingHookAdded = true;
