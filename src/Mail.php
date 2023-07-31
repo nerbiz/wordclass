@@ -74,14 +74,10 @@ class Mail
         $enableTestField = Init::getPrefix() . '_smtp_test_enable';
 
         // Encrypt the SMTP password before storing
-        add_filter('pre_update_option_' . $passwordField, function ($newValue, $oldValue) use ($encryption) {
-            return $encryption->encrypt($newValue);
-        }, 10, 2);
+        add_filter('pre_update_option_' . $passwordField, fn ($newValue) => $encryption->encrypt($newValue));
 
         // Decrypt the SMTP password before using
-        add_filter('option_' . $passwordField, function ($value, $optionName) use ($encryption) {
-            return $encryption->decrypt($value);
-        }, 10, 2);
+        add_filter('option_' . $passwordField, fn ($value) => $encryption->decrypt($value));
 
         // Send a testmail if requested
         add_filter('pre_update_option_' . $enableTestField, function ($newValue, $oldValue) {
