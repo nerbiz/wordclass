@@ -60,11 +60,6 @@ $currentTab = $_GET['tab'] ?? null;
                  id="<?php echo $section->getId(); ?>"
                  style="<?php echo $active ? '' : 'display: none;'; ?>"
             >
-                <?php // Subtitle callback ?>
-                <?php if (($subtitle = $section->getSubtitle()) !== null): ?>
-                    <h2><?php echo $subtitle; ?></h2>
-                <?php endif; ?>
-
                 <table class="form-table">
                     <tbody>
                         <?php // Output settings fields ?>

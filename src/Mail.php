@@ -37,7 +37,7 @@ class Mail
         (new SettingsPage(__('SMTP settings', 'wordclass')))
             ->setParentSlug('options-general.php')
             ->addSection(
-                new SettingsPageSection('smtp', __('SMTP values', 'wordclass'), null, [
+                new SettingsPageSection('smtp', __('SMTP values', 'wordclass'), [
                     new CheckboxInputField('enable', __('Enable SMTP?', 'wordclass')),
                     new GeneralInputField('host', __('Host', 'wordclass')),
                     new GeneralInputField('port', __('Port', 'wordclass')),
@@ -49,7 +49,7 @@ class Mail
                 ])
             )
             ->addSection(
-                new SettingsPageSection('smtp_test', __('Test settings', 'wordclass'), null, [
+                new SettingsPageSection('smtp_test', __('Test settings', 'wordclass'), [
                     (new GeneralInputField('sender', __('Sender', 'wordclass')))
                         ->setDescription(__('If empty, the sender will be the site title + admin email from general settings<br>The "Example &lt;test@example.com&gt;" format is supported', 'wordclass')),
                     new GeneralInputField('recipient', __('Recipient', 'wordclass')),
