@@ -69,18 +69,18 @@ class Mail
      */
     protected function addOptionHooks(?string $encryptionKey = null): void
     {
-        $crypto = new Crypto($encryptionKey);
+        $encryption = new Encryption($encryptionKey);
         $passwordField = Init::getPrefix() . '_smtp_password';
         $enableTestField = Init::getPrefix() . '_smtp_test_enable';
 
         // Encrypt the SMTP password before storing
-        add_filter('pre_update_option_' . $passwordField, function ($newValue, $oldValue) use ($crypto) {
-            return $crypto->encrypt($newValue);
+        add_filter('pre_update_option_' . $passwordField, function ($newValue, $oldValue) use ($encryption) {
+            return $encryption->encrypt($newValue);
         }, 10, 2);
 
         // Decrypt the SMTP password before using
-        add_filter('option_' . $passwordField, function ($value, $optionName) use ($crypto) {
-            return $crypto->decrypt($value);
+        add_filter('option_' . $passwordField, function ($value, $optionName) use ($encryption) {
+            return $encryption->decrypt($value);
         }, 10, 2);
 
         // Send a testmail if requested
