@@ -2,6 +2,7 @@
 
 namespace Nerbiz\WordClass\InputFields;
 
+use Nerbiz\WordClass\PostType;
 use WP_Post;
 
 class PostInputField extends SelectInputField
@@ -18,7 +19,13 @@ class PostInputField extends SelectInputField
      * @param array  $postTypes
      */
     public function __construct(string $name, string $label, array $postTypes = []) {
-        $this->postTypes = $postTypes;
+        // Make sure the post types are a string
+        $this->postTypes = array_map(
+            fn ($postType) => ($postType instanceof PostType)
+                ? $postType->getName()
+                : $postType,
+            $postTypes
+        );
         $values = $this->createValuesArray();
 
         parent::__construct($name, $label, $values);
