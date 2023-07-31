@@ -21,8 +21,9 @@ class YourSettingsPage
      */
     public function create(): void
     {
-        $this->settingsPage = (new SettingsPage())
-            ->setPageTitle(__('Website settings', 'project-text-domain'))
+        $settingsPageTitle = __('Website settings', 'project-text-domain');
+
+        $this->settingsPage = (new SettingsPage($settingsPageTitle))
             // Make it a submenu of the normal WordPress settings
             ->setParentSlug('options-general.php')
             // Allow editors to use this settings page

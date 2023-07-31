@@ -34,9 +34,8 @@ class Mail
     protected function addSmtpSettingsPage(): void
     {
         // Create the settings page
-        $settingsPage = new SettingsPage();
-        $settingsPage->setParentSlug('options-general.php')
-            ->setPageTitle(__('SMTP settings', 'wordclass'))
+        (new SettingsPage(__('SMTP settings', 'wordclass')))
+            ->setParentSlug('options-general.php')
             ->addSection(
                 new SettingsPageSection('smtp', __('SMTP values', 'wordclass'), null, [
                     new CheckboxInputField('enable', __('Enable SMTP?', 'wordclass')),

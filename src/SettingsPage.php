@@ -11,16 +11,16 @@ class SettingsPage
     protected string $pageTitle = 'Theme settings';
 
     /**
+     * The settings page slug, will be prepended with prefix
+     * @var string
+     */
+    protected string $pageSlug;
+
+    /**
      * The slug of the parent page, if this needs to be a subpage
      * @var string|null
      */
     protected ?string $parentSlug = null;
-
-    /**
-     * The settings page slug, will be prepended with prefix
-     * @var string|null
-     */
-    protected ?string $pageSlug = null;
 
     /**
      * The unique name of the submit butten
@@ -52,6 +52,14 @@ class SettingsPage
      */
     protected array $sections = [];
 
+    public function __construct(?string $pageTitle = null)
+    {
+        $this->pageTitle = $pageTitle ?? __('Theme settings');
+
+        // Derive the page slug from the title
+        $this->setPageSlug(Utilities::createSlug($this->getPageTitle()));
+    }
+
     /**
      * @return string
      */
@@ -61,12 +69,26 @@ class SettingsPage
     }
 
     /**
-     * @param string $pageTitle
+     * @return string
+     */
+    public function getPageSlug(): string
+    {
+        return $this->pageSlug;
+    }
+
+    /**
+     * @param string $pageSlug
      * @return self
      */
-    public function setPageTitle(string $pageTitle): self
+    public function setPageSlug(string $pageSlug): self
     {
-        $this->pageTitle = $pageTitle;
+        $this->pageSlug = $pageSlug;
+
+        // Derive the submit button name from the page slug
+        $this->setSubmitButtonName(sprintf(
+            'submit-settings-%s',
+            $this->pageSlug
+        ));
 
         return $this;
     }
@@ -86,36 +108,6 @@ class SettingsPage
     public function setParentSlug(string $parentSlug): self
     {
         $this->parentSlug = $parentSlug;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPageSlug(): string
-    {
-        // Derive the page slug if it's not set yet
-        if ($this->pageSlug === null) {
-            $this->setPageSlug(Utilities::createSlug($this->getPageTitle()));
-        }
-
-        return $this->pageSlug;
-    }
-
-    /**
-     * @param string $pageSlug
-     * @return self
-     */
-    public function setPageSlug(string $pageSlug): self
-    {
-        $this->pageSlug = $pageSlug;
-
-        // Derive the submit button name from the page slug
-        $this->setSubmitButtonName(sprintf(
-            'submit-settings-%s',
-            $this->pageSlug
-        ));
 
         return $this;
     }
