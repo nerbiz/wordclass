@@ -15,13 +15,15 @@ class Mail
 {
     /**
      * Enable SMTP for all mails, add a settings page
-     * @param string|null $encryptionKey The key for encrypting/decrypting the SMTP password
+     * @param string $encryptionKey The key for encrypting/decrypting the SMTP password
      * @return self
      */
-    public function addSmtpSupport(?string $encryptionKey = null): self
+    public function addSmtpSupport(string $encryptionKey): self
     {
+        $encryption = new Encryption($encryptionKey);
+
         $this->addSmtpSettingsPage();
-        $this->addOptionHooks($encryptionKey);
+        $this->addOptionHooks($encryption);
         $this->addSmtpMailHook();
 
         return $this;
@@ -64,12 +66,11 @@ class Mail
 
     /**
      * Add hooks for storing/reading options
-     * @param string|null $encryptionKey
+     * @param Encryption $encryption
      * @return void
      */
-    protected function addOptionHooks(?string $encryptionKey = null): void
+    protected function addOptionHooks(Encryption $encryption): void
     {
-        $encryption = new Encryption($encryptionKey);
         $passwordField = Init::getPrefix() . '_smtp_password';
         $enableTestField = Init::getPrefix() . '_smtp_test_enable';
 
