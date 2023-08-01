@@ -226,7 +226,8 @@ class Mail
             add_meta_box(
                 $metaboxId,
                 __('Email properties', 'wordclass'),
-                function (WP_Post $currentPost, array $boxProperties) use ($metaboxId) {
+                // Parameter(s) are needed in the template, not this function
+                function (WP_Post $currentPost, array $boxProperties) {
                     require dirname(__FILE__, 2) . '/includes/html/email-properties-metabox.php';
                 },
                 $cptSentEmail->getName()
@@ -336,12 +337,12 @@ class Mail
                 'email_properties_recipient',
                 'email_properties_attachments',
                 'email_properties_headers',
-            ] as $metaField) {
-                if (! isset($_POST[$metaField])) {
+            ] as $metaKey) {
+                if (! isset($_POST[$metaKey])) {
                     continue;
                 }
 
-                update_post_meta($postId, $metaField, $_POST[$metaField]);
+                update_post_meta($postId, $metaKey, $_POST[$metaKey]);
             }
         }, 10, 3);
     }

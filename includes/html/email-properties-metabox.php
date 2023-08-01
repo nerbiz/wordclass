@@ -2,8 +2,8 @@
 
 use Nerbiz\WordClass\Init;
 
-// A metabox ID and WP_Post object are required
-if (! isset($metaboxId, $currentPost) || ! ($currentPost instanceof WP_Post)) {
+// A WP_Post object is required
+if (! isset($currentPost) || ! ($currentPost instanceof WP_Post)) {
     return;
 }
 
