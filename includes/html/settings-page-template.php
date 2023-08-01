@@ -109,7 +109,7 @@ $currentTab = $_GET['tab'] ?? null;
         queryParameters[key] = value;
     }
 
-    function wcSwitchToTab(tabId) {
+    function nwSwitchToTab(tabId) {
         // Construct a new query string with a different tab value
         queryParameters.tab = tabId;
         const queryString = Object.entries(queryParameters)
@@ -126,7 +126,7 @@ $currentTab = $_GET['tab'] ?? null;
         const tabButton = event.target.closest('.nav-tab');
         if (tabButton !== null) {
             const tabId = tabButton.dataset.tabId;
-            wcSwitchToTab(tabId);
+            nwSwitchToTab(tabId);
 
             // Set the clicked tab button as active
             for (const button of tabButtons) {
