@@ -201,12 +201,23 @@ class Mail
             ->setFeatures(['title', 'editor'])
             ->setArguments([
                 'menu_icon' => 'dashicons-email-alt',
-                'public' => true,
-                'publicly_queryable' => false,
+                'public' => false,
+                'show_ui' => true,
                 // Enable Gutenberg editor
                 'show_in_rest' => true,
             ])
             ->register();
+
+        // Extra prevention from front-end access to the posts
+        add_action('pre_get_posts', function(WP_Query $query) use ($cptSentEmail) {
+            if (! is_admin() && $query->get('post_type') === $cptSentEmail->getName()) {
+                wp_die(
+                    '<h1>Access Denied</h1><p>You do not have permission to view this content.</p>',
+                    'Unauthorized Access',
+                    ['response' => 401]
+                );
+            }
+        });
 
         // Add a metabox for the post type
         add_action('add_meta_boxes', function () use ($cptSentEmail) {
@@ -255,11 +266,10 @@ class Mail
             ->setAfter('recipient')
             ->setRenderFunction(function (int $postId) {
                 $content = wp_strip_all_tags(get_the_content(null, false, $postId));
-                if (mb_strlen($content) > 150) {
-                    return mb_substr($content, 0, 150) . '...';
-                }
 
-                return $content;
+                return (mb_strlen($content) > 150)
+                    ? mb_substr($content, 0, 150) . '&hellip;'
+                    : $content;
             });
 
         $attachmentsColumn = (new PostColumn('attachments', __('Attachments', 'wordclass')))
@@ -270,11 +280,9 @@ class Mail
                     get_post_meta($postId, 'email_properties_attachments', true)
                 );
 
-                if (trim($attachmentsString) === '') {
-                    return '-';
-                }
-
-                return str_replace(PHP_EOL, '<br><br>', $attachmentsString);
+                return (trim($attachmentsString) === '')
+                    ? '-'
+                    : str_replace(PHP_EOL, '<br><br>', $attachmentsString);
             });
 
         $headersColumn = (new PostColumn('headers', __('Headers', 'wordclass')))
@@ -285,11 +293,9 @@ class Mail
                     get_post_meta($postId, 'email_properties_headers', true)
                 );
 
-                if (trim($headersString) === '') {
-                    return '-';
-                }
-
-                return str_replace(PHP_EOL, '<br><br>', $headersString);
+                return (trim($headersString) === '')
+                    ? '-'
+                    : str_replace(PHP_EOL, '<br><br>', $headersString);
             });
 
         // Apply column adjustments
