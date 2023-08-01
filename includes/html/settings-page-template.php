@@ -35,8 +35,7 @@ $currentTab = $_GET['tab'] ?? null;
 
             <a href="#"
                class="nav-tab <?php echo $active ? 'nav-tab-active' : ''; ?>"
-               data-tab-id="<?php echo $section->getId(); ?>"
-            >
+               data-tab-id="<?php echo $section->getId(); ?>">
                 <?php echo $section->getTitle(); ?>
             </a>
         <?php endforeach; ?>
@@ -56,10 +55,8 @@ $currentTab = $_GET['tab'] ?? null;
             $first = false;
             ?>
 
-            <div class="wordclass-settings-section"
-                 id="<?php echo $section->getId(); ?>"
-                 style="<?php echo $active ? '' : 'display: none;'; ?>"
-            >
+            <div class="wordclass-settings-section <?php echo $active ? '' : 'hidden'; ?>"
+                 id="<?php echo $section->getId(); ?>">
                 <table class="form-table">
                     <tbody>
                         <?php // Output settings fields ?>
@@ -97,53 +94,53 @@ $currentTab = $_GET['tab'] ?? null;
 </div>
 
 <script>
-    function setCurrentTab(value) {
-        var parameters = {};
+    const tabButtons = document.querySelectorAll('.nav-tab');
+    const tabContents = document.querySelectorAll('.wordclass-settings-section');
 
-        // Convert the query string to a parameters object
-        var matches;
-        var regEx = /[?&]?([^=&]+)(?:=([^&]*)|)/g;
-        while (matches = regEx.exec(window.location.search)) {
-            parameters[matches[1]] = matches[2];
-        }
+    // The URL query string as key-value pairs
+    const queryParameters = {};
 
-        // Set or overwrite the tab parameter value
-        parameters.tab = value;
+    // Matches a query string like "?page=website-settings&tab=contact"
+    const queryRegEx = /[?&](?<key>[^=&]+)=?(?<value>[^&]+|)/g;
 
-        // Convert the parameters object back to a query string
-        var queryStringArray = [];
-        for (var key in parameters) {
-            queryStringArray.push(key + '=' + parameters[key]);
-        }
-
-        // Update the page URL (history) and referrer input field
-        var newQueryString = window.location.pathname + '?' + queryStringArray.join('&');
-        window.history.replaceState('', '', newQueryString);
-        $('[name="_wp_http_referer"]').val(newQueryString);
+    // Store the query parameters
+    for (const match of window.location.search.matchAll(queryRegEx)) {
+        const {key, value} = match.groups;
+        queryParameters[key] = value;
     }
 
-    // The tab switching mechanism
-    jQuery(document).ready(function ($) {
-        var $tabButtons = $('.nav-tab');
-        var $sections = $('.wordclass-settings-section');
+    function wcSwitchToTab(tabId) {
+        // Construct a new query string with a different tab value
+        queryParameters.tab = tabId;
+        const queryString = Object.entries(queryParameters)
+            .map(entry => entry.join('='))
+            .join('&');
 
-        $tabButtons.on('click', function (event) {
-            event.preventDefault();
-            var $clickedButton = $(event.target);
-            var tabId = $clickedButton.data('tabId');
+        // Update the URL and referrer input field
+        const newUrl = window.location.pathname + '?' + queryString;
+        window.history.replaceState({}, '', newUrl);
+        document.querySelector('[name="_wp_http_referer"]').value = newUrl;
+    }
 
-            // Update the tab ID in the URL
-            setCurrentTab(tabId);
+    document.addEventListener('click', event => {
+        const tabButton = event.target.closest('.nav-tab');
+        if (tabButton !== null) {
+            const tabId = tabButton.dataset.tabId;
+            wcSwitchToTab(tabId);
 
-            // Make the clicked button visually active
-            $tabButtons.removeClass('nav-tab-active')
-                .filter($clickedButton)
-                .addClass('nav-tab-active');
+            // Set the clicked tab button as active
+            for (const button of tabButtons) {
+                (button === tabButton)
+                    ? button.classList.add('nav-tab-active')
+                    : button.classList.remove('nav-tab-active');
+            }
 
-            // Show the corresponding section
-            $sections.css('display', 'none')
-                .filter('#' + tabId)
-                .css('display', 'block');
-        });
+            // Show the corresponding tab content
+            for (const content of tabContents) {
+                (content.id === tabId)
+                    ? content.classList.remove('hidden')
+                    : content.classList.add('hidden');
+            }
+        }
     });
 </script>
