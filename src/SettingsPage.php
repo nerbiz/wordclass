@@ -275,11 +275,13 @@ class SettingsPage
 
         // Check if the current user is allowed to update the values
         if (! current_user_can($this->getCapability())) {
+            // translators: Error message on a settings page
             wp_die(__("You don't have the right permissions to update these settings.", 'wordclass'));
         }
 
         // Check if the nonce is valid
         if (! wp_verify_nonce($_POST[$this->getNonceName()] ?? '')) {
+            // translators: Error message on a settings page
             wp_die(__('Invalid nonce value, please refresh the page and try again.', 'wordclass'));
         }
 

@@ -89,6 +89,7 @@ class Admin
                 $wpAdminBar->add_node([
                     'id' => 'adminbar-location-toggle',
                     'title' => '<span class="ab-icon dashicons dashicons-arrow-down-alt"></span>'
+                        // translators: Button text for moving the admin bar
                         . __('Move bar', 'wordclass'),
                     'href' => '#',
                     'meta' => [

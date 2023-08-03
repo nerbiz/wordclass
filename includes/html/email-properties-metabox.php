@@ -9,7 +9,9 @@ if (! isset($currentPost) || ! ($currentPost instanceof WP_Post)) {
 
 // Define input field labels
 $recipientLabel = __('Recipient', 'wordclass');
+// translators: Email attachments
 $attachmentsLabel = __('Attachments', 'wordclass');
+// translators: Email headers
 $headersLabel = __('Headers', 'wordclass');
 
 // Get post meta values

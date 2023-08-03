@@ -39,25 +39,40 @@ class Mail
         (new SettingsPage(__('SMTP settings', 'wordclass')))
             ->setParentSlug('options-general.php')
             ->addSection(
+                // translators: Section title for SMTP settings
                 new SettingsPageSection('smtp', __('SMTP values', 'wordclass'), [
                     new CheckboxInputField('enable', __('Enable SMTP?', 'wordclass')),
+                    // translators: Email SMTP host
                     new GeneralInputField('host', __('Host', 'wordclass')),
+                    // translators: Email SMTP port
                     new GeneralInputField('port', __('Port', 'wordclass')),
                     new GeneralInputField('encryption', __('Encryption', 'wordclass')),
                     new GeneralInputField('username', __('Username', 'wordclass')),
                     (new GeneralInputField('password', __('Password', 'wordclass')))
                         ->setAttributes(['type' => 'password'])
+                        // translators: Hint for SMTP password field
                         ->setDescription(__('Encryption is used to store the password', 'wordclass')),
                 ])
             )
             ->addSection(
+                // translators: Section title for SMTP testing
                 new SettingsPageSection('smtp_test', __('Test settings', 'wordclass'), [
                     (new GeneralInputField('sender', __('Sender', 'wordclass')))
-                        ->setDescription(__('If empty, the sender will be the site title + admin email from general settings<br>The "Example &lt;test@example.com&gt;" format is supported', 'wordclass')),
+                        ->setDescription(sprintf(
+                            '%s<br>%s',
+                            // translators: Hint for the sender field in SMTP testing
+                            __('If empty, the sender will be the site title + admin email from general settings.', 'wordclass'),
+                            sprintf(
+                                // translators: Hint for the sender field in SMTP testing. %s: Example sender format 'Example <test@example.com>'
+                                __("The '%s' format is supported", 'wordclass'),
+                                'Example &lt;test@example.com&gt;'
+                            )
+                        )),
                     new GeneralInputField('recipient', __('Recipient', 'wordclass')),
                     new GeneralInputField('subject', __('Subject', 'wordclass')),
                     new EditorInputField('content', __('Content', 'wordclass')),
                     (new CheckboxInputField('enable', __('Send testmail?', 'wordclass')))
+                        // translators: Explanation for the 'send email' switch in SMTP testing
                         ->setDescription(__('If checked, a testmail will be sent when saving these settings', 'wordclass')),
                 ])
             )
@@ -132,6 +147,7 @@ class Mail
             add_action('admin_notices', function () use ($error) {
                 echo sprintf(
                     '<div class="notice notice-error is-dismissible"><p>%s<br>%s</p></div>',
+                    // translators: Error message in SMTP testing
                     __('An error occured when trying to send the testmail:', 'wordclass'),
                     $error->get_error_message()
                 );
@@ -162,6 +178,7 @@ class Mail
             add_action('admin_notices', function () {
                 echo sprintf(
                     '<div class="notice notice-success is-dismissible"><p>%s</p></div>',
+                    // translators: Success message in SMTP testing
                     __('The testmail was sent successfully.', 'wordclass')
                 );
             });
@@ -212,8 +229,15 @@ class Mail
         add_action('pre_get_posts', function(WP_Query $query) use ($cptSentEmail) {
             if (! is_admin() && $query->get('post_type') === $cptSentEmail->getName()) {
                 wp_die(
-                    '<h1>Access Denied</h1><p>You do not have permission to view this content.</p>',
-                    'Unauthorized Access',
+                    sprintf(
+                        '<h1>%s</h1><p>%s</p>',
+                        // translators: Content title on 'forbidden' error page
+                        __('Access denied', 'wordclass'),
+                        // translators: Explanation on 'forbidden' error page
+                        __('You do not have permission to view this content.', 'wordclass')
+                    ),
+                    // translators: Page title of 'forbidden' error page
+                    __('Unauthorized access', 'wordclass'),
                     ['response' => 401]
                 );
             }
@@ -225,6 +249,7 @@ class Mail
 
             add_meta_box(
                 $metaboxId,
+                // translators: Title of the 'sent email' metabox
                 __('Email properties', 'wordclass'),
                 // Parameter(s) are needed in the template, not this function
                 function (WP_Post $currentPost, array $boxProperties) {
@@ -273,6 +298,7 @@ class Mail
                     : $content;
             });
 
+        // translators: Email attachments
         $attachmentsColumn = (new PostColumn('attachments', __('Attachments', 'wordclass')))
             ->setAfter('content')
             ->setOrderBy('meta_email_attachments')
@@ -286,6 +312,7 @@ class Mail
                     : str_replace(PHP_EOL, '<br><br>', $attachmentsString);
             });
 
+        // translators: Email headers
         $headersColumn = (new PostColumn('headers', __('Headers', 'wordclass')))
             ->setAfter('attachments')
             ->setOrderBy('meta_email_headers')

@@ -86,6 +86,7 @@ $currentTab = $_GET['tab'] ?? null;
         <?php endforeach; ?>
 
         <?php submit_button(
+            // translators: Text for the button that saves all settings/options
             __('Save settings', 'wordclass'),
             'primary',
             $settingsPage->getSubmitButtonName()

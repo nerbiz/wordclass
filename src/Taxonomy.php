@@ -142,26 +142,43 @@ class Taxonomy
     public function getLabels(): array
     {
         return array_replace_recursive([
-            'name'                       => $this->pluralName,
-            'singular_name'              => $this->singularName,
-            'menu_name'                  => $this->pluralName,
-            'all_items'                  => sprintf(__('All %s', 'wordclass'), $this->pluralName),
-            'parent_item'                => sprintf(__('Parent %s', 'wordclass'), $this->singularName),
-            'parent_item_colon'          => sprintf(__('Parent %s:', 'wordclass'), $this->singularName),
-            'new_item_name'              => sprintf(__('New %s name', 'wordclass'), $this->singularName),
-            'add_new_item'               => sprintf(__('Add new %s', 'wordclass'), $this->singularName),
-            'edit_item'                  => sprintf(__('Edit %s', 'wordclass'), $this->singularName),
-            'update_item'                => sprintf(__('Update %s', 'wordclass'), $this->singularName),
-            'view_item'                  => sprintf(__('View %s', 'wordclass'), $this->singularName),
+            'name' => $this->pluralName,
+            'singular_name' => $this->singularName,
+            'menu_name' => $this->pluralName,
+            // translators: Label for a post type or taxonomy. %s: plural name of it
+            'all_items' => sprintf(__('All %s', 'wordclass'), $this->pluralName),
+            // translators: Label for a post type or taxonomy. %s: plural name of it
             'separate_items_with_commas' => sprintf(__('Separate %s with commas', 'wordclass'), $this->pluralName),
-            'add_or_remove_items'        => sprintf(__('Add or remove %s', 'wordclass'), $this->pluralName),
-            'choose_from_most_used'      => __('Choose from the most used', 'wordclass'),
-            'popular_items'              => sprintf(__('Popular %s', 'wordclass'), $this->pluralName),
-            'search_items'               => sprintf(__('Search %s', 'wordclass'), $this->pluralName),
-            'not_found'                  => __('Not found', 'wordclass'),
-            'no_terms'                   => sprintf(__('No %s', 'wordclass'), $this->pluralName),
-            'items_list'                 => sprintf(__('%s list', 'wordclass'), $this->pluralName),
-            'items_list_navigation'      => sprintf(__('%s list navigation', 'wordclass'), $this->pluralName),
+            // translators: Label for a post type or taxonomy. %s: plural name of it
+            'add_or_remove_items' => sprintf(__('Add or remove %s', 'wordclass'), $this->pluralName),
+            // translators: Label for a post type or taxonomy. %s: plural name of it
+            'popular_items' => sprintf(__('Popular %s', 'wordclass'), $this->pluralName),
+            // translators: Label for a post type or taxonomy. %s: plural name of it
+            'search_items' => sprintf(__('Search %s', 'wordclass'), $this->pluralName),
+            // translators: Label for a post type or taxonomy. %s: plural name of it
+            'no_terms' => sprintf(__('No %s', 'wordclass'), $this->pluralName),
+            // translators: Label for a post type or taxonomy. %s: plural name of it
+            'items_list' => sprintf(__('%s list', 'wordclass'), $this->pluralName),
+            // translators: Label for a post type or taxonomy. %s: plural name of it
+            'items_list_navigation' => sprintf(__('%s list navigation', 'wordclass'), $this->pluralName),
+            // translators: Label for a post type or taxonomy. %s: singular name of it
+            'parent_item' => sprintf(__('Parent %s', 'wordclass'), $this->singularName),
+            // translators: Label for a post type or taxonomy. %s: singular name of it
+            'parent_item_colon' => sprintf(__('Parent %s:', 'wordclass'), $this->singularName),
+            // translators: Label for a post type or taxonomy. %s: singular name of it
+            'new_item_name' => sprintf(__('New %s name', 'wordclass'), $this->singularName),
+            // translators: Label for a post type or taxonomy. %s: singular name of it
+            'add_new_item' => sprintf(__('Add new %s', 'wordclass'), $this->singularName),
+            // translators: Label for a post type or taxonomy. %s: singular name of it
+            'edit_item' => sprintf(__('Edit %s', 'wordclass'), $this->singularName),
+            // translators: Label for a post type or taxonomy. %s: singular name of it
+            'update_item' => sprintf(__('Update %s', 'wordclass'), $this->singularName),
+            // translators: Label for a post type or taxonomy. %s: singular name of it
+            'view_item' => sprintf(__('View %s', 'wordclass'), $this->singularName),
+            // translators: Label for a post type or taxonomy
+            'choose_from_most_used' => __('Choose from the most used', 'wordclass'),
+            // translators: Label for a post type or taxonomy
+            'not_found' => __('Not found', 'wordclass'),
         ], $this->labels);
     }
 

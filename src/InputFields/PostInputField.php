@@ -52,6 +52,7 @@ class PostInputField extends SelectInputField
         ]);
 
         return array_merge(
+            // translators: Empty placeholder option in post-select dropdown
             ['' => __('- Choose one -', 'wordclass')],
             array_reduce($allPosts, function (array $postValues, WP_Post $post) {
                 // Create the post type key if it doesn't exist yet

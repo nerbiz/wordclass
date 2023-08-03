@@ -152,27 +152,48 @@ class PostType
             'singular_name' => $this->singularName,
             'menu_name' => $this->pluralName,
             'name_admin_bar' => $this->singularName,
+            // translators: Label for a post type or taxonomy. %s: plural name of it
             'archives' => sprintf(__('%s archive', 'wordclass'), $this->pluralName),
-            'parent_item_colon' => sprintf(__('Parent %s:', 'wordclass'), $this->singularName),
+            // translators: Label for a post type or taxonomy. %s: plural name of it
             'all_items' => sprintf(__('All %s', 'wordclass'), $this->pluralName),
-            'add_new_item' => sprintf(__('Add new %s', 'wordclass'), $this->singularName),
-            'add_new' => sprintf(__('Add new %s', 'wordclass'), $this->singularName),
-            'new_item' => sprintf(__('New %s', 'wordclass'), $this->singularName),
-            'edit_item' => sprintf(__('Edit %s', 'wordclass'), $this->singularName),
-            'update_item' => sprintf(__('Update %s', 'wordclass'), $this->singularName),
-            'view_item' => sprintf(__('View %s', 'wordclass'), $this->singularName),
-            'search_items' => sprintf(__('Search %s', 'wordclass'), $this->singularName),
-            'not_found' => __('Not found', 'wordclass'),
-            'not_found_in_trash' => __('Not found in trash', 'wordclass'),
-            'featured_image' => __('Featured image', 'wordclass'),
-            'set_featured_image' => __('Set featured image', 'wordclass'),
-            'remove_featured_image' => __('Remove featured image', 'wordclass'),
-            'use_featured_image' => __('Use as featured image', 'wordclass'),
-            'insert_into_item' => sprintf(__('Insert into %s', 'wordclass'), $this->singularName),
-            'uploaded_to_this_item' => sprintf(__('Uploaded to this %s', 'wordclass'), $this->singularName),
+            // translators: Label for a post type or taxonomy. %s: plural name of it
             'items_list' => sprintf(__('%s list', 'wordclass'), $this->pluralName),
+            // translators: Label for a post type or taxonomy. %s: plural name of it
             'items_list_navigation' => sprintf(__('%s list navigation', 'wordclass'), $this->pluralName),
+            // translators: Label for a post type or taxonomy. %s: plural name of it
             'filter_items_list' => sprintf(__('Filter %s list', 'wordclass'), $this->pluralName),
+            // translators: Label for a post type or taxonomy. %s: singular name of it
+            'parent_item_colon' => sprintf(__('Parent %s:', 'wordclass'), $this->singularName),
+            // translators: Label for a post type or taxonomy. %s: singular name of it
+            'add_new_item' => sprintf(__('Add new %s', 'wordclass'), $this->singularName),
+            // translators: Label for a post type or taxonomy. %s: singular name of it
+            'add_new' => sprintf(__('Add new %s', 'wordclass'), $this->singularName),
+            // translators: Label for a post type or taxonomy. %s: singular name of it
+            'new_item' => sprintf(__('New %s', 'wordclass'), $this->singularName),
+            // translators: Label for a post type or taxonomy. %s: singular name of it
+            'edit_item' => sprintf(__('Edit %s', 'wordclass'), $this->singularName),
+            // translators: Label for a post type or taxonomy. %s: singular name of it
+            'update_item' => sprintf(__('Update %s', 'wordclass'), $this->singularName),
+            // translators: Label for a post type or taxonomy. %s: singular name of it
+            'view_item' => sprintf(__('View %s', 'wordclass'), $this->singularName),
+            // translators: Label for a post type or taxonomy. %s: singular name of it
+            'search_items' => sprintf(__('Search %s', 'wordclass'), $this->singularName),
+            // translators: Label for a post type or taxonomy. %s: singular name of it
+            'insert_into_item' => sprintf(__('Insert into %s', 'wordclass'), $this->singularName),
+            // translators: Label for a post type or taxonomy. %s: singular name of it
+            'uploaded_to_this_item' => sprintf(__('Uploaded to this %s', 'wordclass'), $this->singularName),
+            // translators: Label for a post type or taxonomy
+            'not_found' => __('Not found', 'wordclass'),
+            // translators: Label for a post type or taxonomy
+            'not_found_in_trash' => __('Not found in trash', 'wordclass'),
+            // translators: Label for a post type or taxonomy
+            'featured_image' => __('Featured image', 'wordclass'),
+            // translators: Label for a post type or taxonomy
+            'set_featured_image' => __('Set featured image', 'wordclass'),
+            // translators: Label for a post type or taxonomy
+            'remove_featured_image' => __('Remove featured image', 'wordclass'),
+            // translators: Label for a post type or taxonomy
+            'use_featured_image' => __('Use as featured image', 'wordclass'),
         ], $this->labels);
     }
 

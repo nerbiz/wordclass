@@ -6,6 +6,7 @@ if (! isset($currentMediaUrl, $currentMediaFilename, $inputName, $inputValue)) {
     return;
 }
 
+// translators: Notice/message in media input field
 $noMediaSelectedText = __('No media selected', 'wordclass');
 
 $imagesDirectory = Init::getVendorUri('nerbiz/wordclass/includes/images/');
@@ -38,6 +39,7 @@ if (trim($currentMediaUrl) === '') {
 
     <input type="button"
            class="button upload-media-button"
+           <?php // translators: Button text for opening the media library ?>
            value="<?php echo __('Select media', 'wordclass'); ?>"><br>
 
     <span class="chosen-media-filename" data-fallback-text="<?php echo $noMediaSelectedText; ?>">
@@ -45,6 +47,7 @@ if (trim($currentMediaUrl) === '') {
     </span><br>
 
     <a href="#" class="clear-media-button">
+        <?php // translators: Button text for clearing a media input field ?>
         <?php echo __('Clear', 'wordclass'); ?>
     </a>
 
