@@ -13,20 +13,16 @@ class WebpackAssets extends Assets
     protected stdClass $manifest;
 
     /**
-     * @param string $distDirectory The name of the compiled assets directory
+     * @param string|null $distDirectory The full path of the compiled assets directory
      */
-    public function __construct(string $distDirectory = 'dist')
+    public function __construct(?string $distDirectory = null)
     {
-        $distDirectory = trim($distDirectory, '/');
+        $distDirectory = $distDirectory ?? get_stylesheet_directory() . '/dist';
+        $distDirectory = rtrim($distDirectory, '/');
+        $manifestFile = $distDirectory . '/manifest.json';
 
-        $manifestPath = sprintf(
-            '%s/%s/manifest.json',
-            get_stylesheet_directory(),
-            $distDirectory
-        );
-
-        $this->manifest = is_readable($manifestPath)
-            ? json_decode(file_get_contents($manifestPath))
+        $this->manifest = is_readable($manifestFile)
+            ? json_decode(file_get_contents($manifestFile))
             : new stdClass();
     }
 
@@ -36,10 +32,7 @@ class WebpackAssets extends Assets
     protected function parseOptions(string $assetType, array|string $options): array
     {
         $options = parent::parseOptions($assetType, $options);
-
-        $options['uri'] = (isset($this->manifest->{$options['uri']}))
-            ? $this->manifest->{$options['uri']}
-            : '/' . $options['uri'];
+        $options['uri'] = $this->manifest->{$options['uri']} ?? '/' . ltrim($options['uri'], '/');
 
         return $options;
     }

@@ -10,7 +10,7 @@ class ViteAssets extends Assets
      * The name of the compiled assets directory
      * @var string
      */
-    protected string $distDirectory;
+    protected string $relativeDistPath;
 
     /**
      * Parsed contents of the manifest file
@@ -31,20 +31,22 @@ class ViteAssets extends Assets
     protected array $moduleHandles = [];
 
     /**
-     * @param string $distDirectory The name of the compiled assets directory
+     * @param string|null $distDirectory The full path of the compiled assets directory
      */
-    public function __construct(string $distDirectory = 'dist')
+    public function __construct(?string $distDirectory = null)
     {
-        $this->distDirectory = trim($distDirectory, '/');
+        $distDirectory = $distDirectory ?? get_stylesheet_directory() . '/dist';
+        $distDirectory = rtrim($distDirectory, '/');
+        $this->relativeDistPath = str_replace(ABSPATH, '', $distDirectory);
 
-        $manifestPath = sprintf(
+        $manifestFile = sprintf(
             '%s/%s/manifest.json',
-            get_stylesheet_directory(),
-            $this->distDirectory
+            ABSPATH,
+            $this->relativeDistPath
         );
 
-        $this->manifest = is_readable($manifestPath)
-            ? json_decode(file_get_contents($manifestPath))
+        $this->manifest = is_readable($manifestFile)
+            ? json_decode(file_get_contents($manifestFile))
             : new stdClass();
     }
 
@@ -57,12 +59,8 @@ class ViteAssets extends Assets
         $this->devServer = rtrim($address, '/') . '/';
 
         // Add the dev server script
-        add_action('wp_enqueue_scripts', function () {
-            $serverUrl = $this->devServer . '@vite/client';
-            wp_enqueue_script('vite-client', $serverUrl, [], null, true);
-
-            $this->moduleHandles[] = 'vite-client';
-        });
+        $this->addThemeJs('vite-client', '@vite/client');
+        $this->moduleHandles[] = 'vite-client';
 
         // Set the type to 'module' for applicable scripts
         add_filter('script_loader_tag', function ($tag, $handle) {
@@ -101,7 +99,7 @@ class ViteAssets extends Assets
 
             if (isset($actualPath)) {
                 $actualPath = '/' . ltrim($actualPath, '/');
-                $options['uri'] = get_theme_file_uri($this->distDirectory . $actualPath);
+                $options['uri'] = get_site_url(null, $this->relativeDistPath . $actualPath);
             } else {
                 $options['uri'] = '/' . $options['uri'];
             }
