@@ -75,7 +75,7 @@ class Admin
      * Add a button to the admin bar, for moving its location
      * @return self
      */
-    public function addMoveAdminBarButton(): self
+    public function makeAdminBarMovable(): self
     {
         // Add the required styling and script
         $moveBarHandle = Init::getPrefix() . '-admin-bar';
