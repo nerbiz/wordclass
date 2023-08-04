@@ -96,7 +96,7 @@ class Init
     {
         load_theme_textdomain(
             'wordclass',
-            dirname(__FILE__, 2) . '/includes/languages'
+            dirname(__FILE__, 2) . '/languages'
         );
 
         return $this;

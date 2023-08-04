@@ -1,0 +1,341 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2023-08-03T23:47:31+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.8.1\n"
+"X-Domain: wordclass\n"
+
+#: includes/html/email-properties-metabox.php:11
+#: src/Mail.php:71
+#: src/Mail.php:284
+msgid "Recipient"
+msgstr ""
+
+#. translators: Email attachments
+#: includes/html/email-properties-metabox.php:13
+#: src/Mail.php:302
+msgid "Attachments"
+msgstr ""
+
+#. translators: Email headers
+#: includes/html/email-properties-metabox.php:15
+#: src/Mail.php:316
+msgid "Headers"
+msgstr ""
+
+#. translators: Notice/message in media input field
+#: includes/html/media-input-field.php:10
+msgid "No media selected"
+msgstr ""
+
+#. translators: Button text for opening the media library
+#: includes/html/media-input-field.php:43
+msgid "Select media"
+msgstr ""
+
+#. translators: Button text for clearing a media input field
+#: includes/html/media-input-field.php:51
+msgid "Clear"
+msgstr ""
+
+#. translators: Text for the button that saves all settings/options
+#: includes/html/settings-page-template.php:90
+msgid "Save settings"
+msgstr ""
+
+#. translators: Button text for moving the admin bar
+#: src/Admin.php:93
+msgid "Move bar"
+msgstr ""
+
+#. translators: Empty placeholder option in post-select dropdown
+#: src/InputFields/PostInputField.php:56
+msgid "- Choose one -"
+msgstr ""
+
+#: src/Mail.php:39
+msgid "SMTP settings"
+msgstr ""
+
+#. translators: Section title for SMTP settings
+#: src/Mail.php:43
+msgid "SMTP values"
+msgstr ""
+
+#: src/Mail.php:44
+msgid "Enable SMTP?"
+msgstr ""
+
+#. translators: Email SMTP host
+#: src/Mail.php:46
+msgid "Host"
+msgstr ""
+
+#. translators: Email SMTP port
+#: src/Mail.php:48
+msgid "Port"
+msgstr ""
+
+#: src/Mail.php:49
+msgid "Encryption"
+msgstr ""
+
+#: src/Mail.php:50
+msgid "Username"
+msgstr ""
+
+#: src/Mail.php:51
+msgid "Password"
+msgstr ""
+
+#. translators: Hint for SMTP password field
+#: src/Mail.php:54
+msgid "Encryption is used to store the password"
+msgstr ""
+
+#. translators: Section title for SMTP testing
+#: src/Mail.php:59
+msgid "Test settings"
+msgstr ""
+
+#: src/Mail.php:60
+msgid "Sender"
+msgstr ""
+
+#. translators: Hint for the sender field in SMTP testing
+#: src/Mail.php:64
+msgid "If empty, the sender will be the site title + admin email from general settings."
+msgstr ""
+
+#. translators: Hint for the sender field in SMTP testing. %s: Example sender format 'Example <test@example.com>'
+#: src/Mail.php:67
+msgid "The '%s' format is supported"
+msgstr ""
+
+#: src/Mail.php:72
+msgid "Subject"
+msgstr ""
+
+#: src/Mail.php:73
+#: src/Mail.php:291
+msgid "Content"
+msgstr ""
+
+#: src/Mail.php:74
+msgid "Send testmail?"
+msgstr ""
+
+#. translators: Explanation for the 'send email' switch in SMTP testing
+#: src/Mail.php:76
+msgid "If checked, a testmail will be sent when saving these settings"
+msgstr ""
+
+#. translators: Error message in SMTP testing
+#: src/Mail.php:151
+msgid "An error occured when trying to send the testmail:"
+msgstr ""
+
+#. translators: Success message in SMTP testing
+#: src/Mail.php:182
+msgid "The testmail was sent successfully."
+msgstr ""
+
+#: src/Mail.php:216
+msgid "Sent email"
+msgstr ""
+
+#: src/Mail.php:217
+msgid "Sent emails"
+msgstr ""
+
+#. translators: Content title on 'forbidden' error page
+#: src/Mail.php:235
+msgid "Access denied"
+msgstr ""
+
+#. translators: Explanation on 'forbidden' error page
+#: src/Mail.php:237
+msgid "You do not have permission to view this content."
+msgstr ""
+
+#. translators: Page title of 'forbidden' error page
+#: src/Mail.php:240
+msgid "Unauthorized access"
+msgstr ""
+
+#. translators: Title of the 'sent email' metabox
+#: src/Mail.php:253
+msgid "Email properties"
+msgstr ""
+
+#: src/Mail.php:390
+msgid "(no subject)"
+msgstr ""
+
+#: src/Mail.php:394
+msgid "(no content)"
+msgstr ""
+
+#. translators: Label for a post type or taxonomy. %s: plural name of it
+#: src/PostType.php:156
+msgid "%s archive"
+msgstr ""
+
+#. translators: Label for a post type or taxonomy. %s: plural name of it
+#: src/PostType.php:158
+#: src/Taxonomy.php:149
+msgid "All %s"
+msgstr ""
+
+#. translators: Label for a post type or taxonomy. %s: plural name of it
+#: src/PostType.php:160
+#: src/Taxonomy.php:161
+msgid "%s list"
+msgstr ""
+
+#. translators: Label for a post type or taxonomy. %s: plural name of it
+#: src/PostType.php:162
+#: src/Taxonomy.php:163
+msgid "%s list navigation"
+msgstr ""
+
+#. translators: Label for a post type or taxonomy. %s: plural name of it
+#: src/PostType.php:164
+msgid "Filter %s list"
+msgstr ""
+
+#. translators: Label for a post type or taxonomy. %s: singular name of it
+#: src/PostType.php:166
+#: src/Taxonomy.php:167
+msgid "Parent %s:"
+msgstr ""
+
+#. translators: Label for a post type or taxonomy. %s: singular name of it
+#: src/PostType.php:168
+#: src/PostType.php:170
+#: src/Taxonomy.php:171
+msgid "Add new %s"
+msgstr ""
+
+#. translators: Label for a post type or taxonomy. %s: singular name of it
+#: src/PostType.php:172
+msgid "New %s"
+msgstr ""
+
+#. translators: Label for a post type or taxonomy. %s: singular name of it
+#: src/PostType.php:174
+#: src/Taxonomy.php:173
+msgid "Edit %s"
+msgstr ""
+
+#. translators: Label for a post type or taxonomy. %s: singular name of it
+#: src/PostType.php:176
+#: src/Taxonomy.php:175
+msgid "Update %s"
+msgstr ""
+
+#. translators: Label for a post type or taxonomy. %s: singular name of it
+#: src/PostType.php:178
+#: src/Taxonomy.php:177
+msgid "View %s"
+msgstr ""
+
+#. translators: Label for a post type or taxonomy. %s: singular name of it
+#. translators: Label for a post type or taxonomy. %s: plural name of it
+#: src/PostType.php:180
+#: src/Taxonomy.php:157
+msgid "Search %s"
+msgstr ""
+
+#. translators: Label for a post type or taxonomy. %s: singular name of it
+#: src/PostType.php:182
+msgid "Insert into %s"
+msgstr ""
+
+#. translators: Label for a post type or taxonomy. %s: singular name of it
+#: src/PostType.php:184
+msgid "Uploaded to this %s"
+msgstr ""
+
+#. translators: Label for a post type or taxonomy
+#: src/PostType.php:186
+#: src/Taxonomy.php:181
+msgid "Not found"
+msgstr ""
+
+#. translators: Label for a post type or taxonomy
+#: src/PostType.php:188
+msgid "Not found in trash"
+msgstr ""
+
+#. translators: Label for a post type or taxonomy
+#: src/PostType.php:190
+msgid "Featured image"
+msgstr ""
+
+#. translators: Label for a post type or taxonomy
+#: src/PostType.php:192
+msgid "Set featured image"
+msgstr ""
+
+#. translators: Label for a post type or taxonomy
+#: src/PostType.php:194
+msgid "Remove featured image"
+msgstr ""
+
+#. translators: Label for a post type or taxonomy
+#: src/PostType.php:196
+msgid "Use as featured image"
+msgstr ""
+
+#. translators: Error message on a settings page
+#: src/SettingsPage.php:279
+msgid "You don't have the right permissions to update these settings."
+msgstr ""
+
+#. translators: Error message on a settings page
+#: src/SettingsPage.php:285
+msgid "Invalid nonce value, please refresh the page and try again."
+msgstr ""
+
+#. translators: Label for a post type or taxonomy. %s: plural name of it
+#: src/Taxonomy.php:151
+msgid "Separate %s with commas"
+msgstr ""
+
+#. translators: Label for a post type or taxonomy. %s: plural name of it
+#: src/Taxonomy.php:153
+msgid "Add or remove %s"
+msgstr ""
+
+#. translators: Label for a post type or taxonomy. %s: plural name of it
+#: src/Taxonomy.php:155
+msgid "Popular %s"
+msgstr ""
+
+#. translators: Label for a post type or taxonomy. %s: plural name of it
+#: src/Taxonomy.php:159
+msgid "No %s"
+msgstr ""
+
+#. translators: Label for a post type or taxonomy. %s: singular name of it
+#: src/Taxonomy.php:165
+msgid "Parent %s"
+msgstr ""
+
+#. translators: Label for a post type or taxonomy. %s: singular name of it
+#: src/Taxonomy.php:169
+msgid "New %s name"
+msgstr ""
+
+#. translators: Label for a post type or taxonomy
+#: src/Taxonomy.php:179
+msgid "Choose from the most used"
+msgstr ""
