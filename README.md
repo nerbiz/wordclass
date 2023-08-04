@@ -20,7 +20,3 @@ Read the [wiki pages](https://github.com/nerbiz/wordclass/wiki) for more informa
 ## Contributing
 
 If you have some ideas about expanding or improving this project, I'm open for suggestions and pull requests.
-
-## License
-
-This project uses the [Unlicense](http://unlicense.org/).
