@@ -41,6 +41,27 @@ class Init
     }
 
     /**
+     * Load translation files
+     * @return void
+     */
+    public static function loadTranslations(): void
+    {
+        load_theme_textdomain(
+            'wordclass',
+            dirname(__FILE__, 2) . '/languages'
+        );
+    }
+
+    /**
+     * Include the functions file for convenience
+     * @return void
+     */
+    public static function includeHelperFunctions(): void
+    {
+        require_once dirname(__FILE__, 2) . '/includes/php/helper-functions.php';
+    }
+
+    /**
      * @param string $vendorPath
      * @return void
      */
@@ -86,30 +107,5 @@ class Init
         }
 
         return static::$vendorUri . $path;
-    }
-
-    /**
-     * Load translation files
-     * @return self
-     */
-    public function loadTranslations(): self
-    {
-        load_theme_textdomain(
-            'wordclass',
-            dirname(__FILE__, 2) . '/languages'
-        );
-
-        return $this;
-    }
-
-    /**
-     * Include the functions file for convenience
-     * @return self
-     */
-    public function includeHelperFunctions(): self
-    {
-        require_once dirname(__FILE__, 2) . '/includes/php/helper-functions.php';
-
-        return $this;
     }
 }
