@@ -62,48 +62,30 @@ class Init
     }
 
     /**
-     * @param string $vendorPath
-     * @return void
-     */
-    public static function setVendorPath(string $vendorPath): void
-    {
-        static::$vendorPath = rtrim($vendorPath, '/') . '/';
-    }
-
-    /**
-     * Get the vendor path, optionally appended with an extra path
+     * Get the path to this package, optionally appended with an extra path
      * @param  string|null $path
      * @return string
      */
-    public static function getVendorPath(?string $path = null): string
+    public static function getPackagePath(?string $path = null): string
     {
-        // The default value is the 'vendor' directory in the (child-)theme directory
         if (! isset(static::$vendorPath)) {
-            static::setVendorPath(get_stylesheet_directory() . '/vendor/');
+            $relativePath = rtrim(str_replace(ABSPATH, '', dirname(__DIR__)), '/') . '/';
+            static::$vendorPath = ABSPATH . $relativePath;
         }
 
         return static::$vendorPath . $path;
     }
 
     /**
-     * @param string $vendorUri
-     * @return void
-     */
-    public static function setVendorUri(string $vendorUri): void
-    {
-        static::$vendorUri = rtrim($vendorUri, '/') . '/';
-    }
-
-    /**
-     * Get the vendor URI, optionally appended with an extra path
+     * Get the URI to this package, optionally appended with an extra path
      * @param  string|null $path
      * @return string
      */
-    public static function getVendorUri(?string $path = null): string
+    public static function getPackageUri(?string $path = null): string
     {
-        // The default value is the 'vendor' directory in the (child-)theme directory
         if (! isset(static::$vendorUri)) {
-            static::setVendorUri(get_stylesheet_directory_uri() . '/vendor/');
+            $relativePath = rtrim(str_replace(ABSPATH, '', dirname(__DIR__)), '/') . '/';
+            static::$vendorUri = get_site_url(null, $relativePath);
         }
 
         return static::$vendorUri . $path;

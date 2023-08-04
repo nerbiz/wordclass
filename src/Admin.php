@@ -79,7 +79,7 @@ class Admin
     {
         // Add the required styling and script
         $moveBarHandle = Init::getPrefix() . '-admin-bar';
-        $includesDirUrl = Init::getVendorUri('nerbiz/wordclass/includes/');
+        $includesDirUrl = Init::getPackageUri('includes/');
         (new Assets())
             ->addThemeCss($moveBarHandle, $includesDirUrl . 'css/admin-bar.css')
             ->addThemeJs($moveBarHandle, $includesDirUrl . 'js/admin-bar.js');

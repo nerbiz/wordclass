@@ -9,7 +9,7 @@ if (! isset($currentMediaUrl, $currentMediaFilename, $inputName, $inputValue)) {
 // translators: Notice/message in media input field
 $noMediaSelectedText = __('No media selected', 'wordclass');
 
-$imagesDirectory = Init::getVendorUri('nerbiz/wordclass/includes/images/');
+$imagesDirectory = Init::getPackageUri('includes/images/');
 $transparentPixelSrc = $imagesDirectory . 'transparent-pixel.png';
 // Public domain icon downloaded from
 // https://publicdomainvectors.org/en/free-clipart/Paper-sheet-vector-image/13299.html

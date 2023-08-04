@@ -194,7 +194,7 @@ class Mail
         // Include the metaboxes CSS
         (new Assets())->addAdminCss(
             Init::getPrefix() . '-admin-metaboxes',
-            Init::getVendorUri('nerbiz/wordclass/includes/css/admin-metaboxes.css')
+            Init::getPackageUri('includes/css/admin-metaboxes.css')
         );
 
         $cptSentEmail = $this->addSentEmailPostType();
