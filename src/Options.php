@@ -5,15 +5,30 @@ namespace Nerbiz\WordClass;
 class Options
 {
     /**
+     * Check whether an option exists in the database
+     * @param string $name The name of the option (without prefix)
+     * @return bool
+     */
+    public static function exists(string $name): bool
+    {
+        $optionName = Init::getPrefix() . '_' . $name;
+        return (get_option($optionName) !== false);
+    }
+
+    /**
      * Get an option, implicitly using a prefix
      * @param string     $name    The name of the option (without prefix)
-     * @param mixed|null $default The value to use when the option is empty
+     * @param mixed|null $default The value to use when the option is empty, or doesn't exist
      * @return mixed
      */
     public static function get(string $name, mixed $default = null): mixed
     {
         $optionName = Init::getPrefix() . '_' . $name;
-        return get_option($optionName, $default);
+        $value = get_option($optionName);
+
+        return ($value === false || $value === '')
+            ? $default
+            : $value;
     }
 
     /**
