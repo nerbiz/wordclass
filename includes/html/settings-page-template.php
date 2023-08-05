@@ -126,6 +126,7 @@ $currentTab = $_GET['tab'] ?? null;
     document.addEventListener('click', event => {
         const tabButton = event.target.closest('.nav-tab');
         if (tabButton !== null) {
+            event.preventDefault();
             const tabId = tabButton.dataset.tabId;
             nwSwitchToTab(tabId);
 
