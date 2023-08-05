@@ -13,13 +13,7 @@ class Options
     public function get(string $name, mixed $default = null): mixed
     {
         $optionName = Init::getPrefix() . '_' . $name;
-        $value = trim(get_option($optionName));
-
-        if ($value === '') {
-            return $default;
-        }
-
-        return $value;
+        return get_option($optionName, $default);
     }
 
     /**
