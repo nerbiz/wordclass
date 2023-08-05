@@ -18,7 +18,7 @@ class Helpers
      * @return array|string
      * @throws InvalidArgumentException
      */
-    public function getImage(
+    public static function getImage(
         int $imageId,
         string $sizeName = 'large',
         string $returnType = 'url'
@@ -43,14 +43,14 @@ class Helpers
      * @return array|string
      * @see self::getImage()
      */
-    public function getFeaturedImage(
+    public static function getFeaturedImage(
         int $postId,
         string $sizeName = 'large',
         string $returnType = 'url'
     ): array|string {
         $imageId = get_post_thumbnail_id($postId);
 
-        return $this->getImage((int)$imageId, $sizeName, $returnType);
+        return static::getImage((int)$imageId, $sizeName, $returnType);
     }
 
     /**
@@ -61,13 +61,13 @@ class Helpers
      * @return array|string
      * @see self::getImage()
      */
-    public function getOptionImage(
+    public static function getOptionImage(
         string $optionName,
         string $sizeName = 'large',
         string $returnType = 'url'
     ): array|string {
         $imageId = (new Options())->get($optionName);
 
-        return $this->getImage((int)$imageId, $sizeName, $returnType);
+        return static::getImage((int)$imageId, $sizeName, $returnType);
     }
 }

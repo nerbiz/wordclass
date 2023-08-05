@@ -6,11 +6,11 @@ class Options
 {
     /**
      * Get an option, implicitly using a prefix
-     * @param string     $name The name of the option (without prefix)
+     * @param string     $name    The name of the option (without prefix)
      * @param mixed|null $default The value to use when the option is empty
      * @return mixed
      */
-    public function get(string $name, mixed $default = null): mixed
+    public static function get(string $name, mixed $default = null): mixed
     {
         $optionName = Init::getPrefix() . '_' . $name;
         return get_option($optionName, $default);
@@ -18,28 +18,24 @@ class Options
 
     /**
      * Set an option, prefix will be added to the name
-     * @param  string $name The name of the option (without prefix)
-     * @param  mixed  $value
-     * @return self
+     * @param string $name The name of the option (without prefix)
+     * @param mixed  $value
+     * @return void
      */
-    public function set(string $name, mixed $value): self
+    public static function set(string $name, mixed $value): void
     {
         $optionName = Init::getPrefix() . '_' . $name;
         update_option($optionName, $value);
-
-        return $this;
     }
 
     /**
      * Delete an option, implicitly using a prefix
-     * @param  string $name The name of the option (without prefix)
-     * @return self
+     * @param string $name The name of the option (without prefix)
+     * @return void
      */
-    public function delete(string $name): self
+    public static function delete(string $name): void
     {
         $optionName = Init::getPrefix() . '_' . $name;
         delete_option($optionName);
-
-        return $this;
     }
 }

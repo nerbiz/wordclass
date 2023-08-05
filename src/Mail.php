@@ -113,19 +113,17 @@ class Mail
     protected function addSmtpMailHook(): void
     {
         add_action('phpmailer_init', function (PHPMailer $phpMailer) {
-            $options = new Options();
-
-            if ($options->get('smtp_enable') === null) {
+            if (Options::get('smtp_enable') === null) {
                 return $phpMailer;
             }
 
             $phpMailer->isSMTP();
-            $phpMailer->Host = $options->get('smtp_host');
-            $phpMailer->Port = $options->get('smtp_port');
-            $phpMailer->SMTPSecure = $options->get('smtp_encryption');
+            $phpMailer->Host = Options::get('smtp_host');
+            $phpMailer->Port = Options::get('smtp_port');
+            $phpMailer->SMTPSecure = Options::get('smtp_encryption');
 
-            $username = $options->get('smtp_username');
-            $password = $options->get('smtp_password');
+            $username = Options::get('smtp_username');
+            $password = Options::get('smtp_password');
             if ($username !== null || $password !== null) {
                 $phpMailer->SMTPAuth = true;
                 $phpMailer->Username = $username;
@@ -155,10 +153,9 @@ class Mail
         });
 
         // (Try to) send the email
-        $options = new Options();
         $headers = [
             'Content-Type: text/html; charset=' . get_bloginfo('charset'),
-            'From: ' . ($options->get('smtp_test_sender') ?? sprintf(
+            'From: ' . (Options::get('smtp_test_sender') ?? sprintf(
                 '%s <%s>',
                 get_bloginfo('name'),
                 get_option('admin_email')
@@ -166,9 +163,9 @@ class Mail
         ];
 
         $mailIsSent = wp_mail(
-            $options->get('smtp_test_recipient'),
-            $options->get('smtp_test_subject'),
-            nl2br($options->get('smtp_test_content')),
+            Options::get('smtp_test_recipient'),
+            Options::get('smtp_test_subject'),
+            nl2br(Options::get('smtp_test_content')),
             $headers
         );
 
