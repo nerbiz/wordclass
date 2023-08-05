@@ -6,6 +6,7 @@ use Nerbiz\WordClass\Assets\Assets;
 use Nerbiz\WordClass\InputFields\CheckboxInputField;
 use Nerbiz\WordClass\InputFields\EditorInputField;
 use Nerbiz\WordClass\InputFields\GeneralInputField;
+use Nerbiz\WordClass\InputFields\RadioButtonsInputField;
 use PHPMailer\PHPMailer\PHPMailer;
 use WP_Error;
 use WP_Post;
@@ -35,6 +36,8 @@ class Mail
      */
     protected function addSmtpSettingsPage(): void
     {
+        require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
+
         // Create the settings page
         (new SettingsPage(__('SMTP settings', 'wordclass')))
             ->setParentSlug('options-general.php')
@@ -46,12 +49,15 @@ class Mail
                     new GeneralInputField('host', __('Host', 'wordclass')),
                     // translators: Email SMTP port
                     new GeneralInputField('port', __('Port', 'wordclass')),
-                    new GeneralInputField('encryption', __('Encryption', 'wordclass')),
+                    new RadioButtonsInputField('encryption', __('Encryption', 'wordclass'), [
+                        // translators: Option for SMTP settings
+                        '' => __('No encryption', 'wordclass'),
+                        PHPMailer::ENCRYPTION_STARTTLS => 'TLS',
+                        PHPMailer::ENCRYPTION_SMTPS => 'SSL',
+                    ]),
                     new GeneralInputField('username', __('Username', 'wordclass')),
                     (new GeneralInputField('password', __('Password', 'wordclass')))
-                        ->setAttributes(['type' => 'password'])
-                        // translators: Hint for SMTP password field
-                        ->setDescription(__('Encryption is used to store the password', 'wordclass')),
+                        ->setAttributes(['type' => 'password']),
                 ])
             )
             ->addSection(
