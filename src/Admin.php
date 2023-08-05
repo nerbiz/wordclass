@@ -3,6 +3,9 @@
 namespace Nerbiz\WordClass;
 
 use Nerbiz\WordClass\Assets\Assets;
+use WP_Admin_Bar;
+use WP_Error;
+use WP_User;
 
 class Admin
 {
@@ -14,34 +17,16 @@ class Admin
      */
     public function roleRedirect(string $role, string $url): self
     {
-        // Specific roles take precedence over a wildcard
-        $priority = ($role === '*') ? 10 : 20;
-
-        add_filter('login_redirect', function ($redirectUrl, $request, $user) use ($role, $url) {
-            // Check if the user has roles
-            if (isset($user->roles) && is_array($user->roles)) {
-                // If there weren't any matches, look for a wildcard
-                if ($role === '*') {
-                    $newUrl = $url;
-                } else if (in_array($role, $user->roles)) {
-                    $newUrl = $url;
-                } else {
-                    $newUrl = null;
-                }
-
-                if ($newUrl !== null) {
-                    if (preg_match('/^https?:\/\//', $newUrl)) {
-                        return esc_url($newUrl);
-                    } else {
-                        // Prepend a relative URL with the home URL
-                        return esc_url(home_url('/' . ltrim($newUrl, '/')));
-                    }
-                }
+        add_filter('login_redirect', function (string $redirectUrl, string $request, WP_User|WP_Error $user) use ($role, $url) {
+            // See if the role matches, or if there is a wildcard ('*')
+            $userRoles = $user->roles ?? [];
+            if ($user instanceof WP_User && ($role === '*' || in_array($role, $userRoles, true))) {
+                return esc_url($url);
             }
 
-            // Use the default URL
+            // In case of no match or no roles, use the default URL
             return $redirectUrl;
-        }, $priority, 3);
+        }, 10, 3);
 
         return $this;
     }
@@ -58,14 +43,12 @@ class Admin
      */
     public function footerText(string $html, ?string $place = null): self
     {
-        add_filter('admin_footer_text', function ($current) use ($html, $place) {
-            if ($place === 'before') {
-                return $html . ' ' . $current;
-            } elseif ($place === 'after') {
-                return $current . ' ' . $html;
-            } else {
-                return $html;
-            }
+        add_filter('admin_footer_text', function (string $current) use ($html, $place) {
+            return match ($place) {
+                'before' => $html . ' ' . $current,
+                'after' => $current . ' ' . $html,
+                default => $html,
+            };
         });
 
         return $this;
@@ -84,19 +67,22 @@ class Admin
             ->addThemeCss($moveBarHandle, $includesDirUrl . 'css/admin-bar.css')
             ->addThemeJs($moveBarHandle, $includesDirUrl . 'js/admin-bar.js');
 
-        add_action('admin_bar_menu', function ($wpAdminBar) {
-            if (! is_admin()) {
-                $wpAdminBar->add_node([
-                    'id' => 'adminbar-location-toggle',
-                    'title' => '<span class="ab-icon dashicons dashicons-arrow-down-alt"></span>'
-                        // translators: Button text for moving the admin bar
-                        . __('Move bar', 'wordclass'),
-                    'href' => '#',
-                    'meta' => [
-                        'class' => 'adminbar-location-toggle-button',
-                    ],
-                ]);
+        add_action('admin_bar_menu', function (WP_Admin_Bar $wpAdminBar) {
+            // Don't change it on admin screens, only on front-end
+            if (is_admin()) {
+                return;
             }
+
+            $wpAdminBar->add_node([
+                'id' => 'adminbar-location-toggle',
+                'title' => '<span class="ab-icon dashicons dashicons-arrow-down-alt"></span>'
+                    // translators: Button text for moving the admin bar
+                    . __('Move bar', 'wordclass'),
+                'href' => '#',
+                'meta' => [
+                    'class' => 'adminbar-location-toggle-button',
+                ],
+            ]);
         }, 100);
 
         return $this;
