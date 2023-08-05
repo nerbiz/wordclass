@@ -53,15 +53,6 @@ class Init
     }
 
     /**
-     * Include the functions file for convenience
-     * @return void
-     */
-    public static function includeHelperFunctions(): void
-    {
-        require_once dirname(__FILE__, 2) . '/includes/php/helper-functions.php';
-    }
-
-    /**
      * Get the path to this package, optionally appended with an extra path
      * @param  string|null $path
      * @return string
