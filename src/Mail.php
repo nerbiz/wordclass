@@ -16,13 +16,11 @@ class Mail
 {
     /**
      * Enable SMTP for all mails, add a settings page
-     * @param string $encryptionKey The key for encrypting/decrypting the SMTP password
+     * @param Encrypter $encrypter The encrypter for the SMTP password
      * @return self
      */
-    public function addSmtpSupport(string $encryptionKey): self
+    public function addSmtpSupport(Encrypter $encrypter): self
     {
-        $encrypter = new Encrypter($encryptionKey);
-
         $this->addSmtpSettingsPage();
         $this->addOptionHooks($encrypter);
         $this->addSmtpMailHook();
