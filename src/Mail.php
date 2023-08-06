@@ -21,10 +21,10 @@ class Mail
      */
     public function addSmtpSupport(string $encryptionKey): self
     {
-        $encryption = new Encryption($encryptionKey);
+        $encrypter = new Encrypter($encryptionKey);
 
         $this->addSmtpSettingsPage();
-        $this->addOptionHooks($encryption);
+        $this->addOptionHooks($encrypter);
         $this->addSmtpMailHook();
 
         return $this;
@@ -87,10 +87,10 @@ class Mail
 
     /**
      * Add hooks for storing/reading options
-     * @param Encryption $encryption
+     * @param Encrypter $encryption
      * @return void
      */
-    protected function addOptionHooks(Encryption $encryption): void
+    protected function addOptionHooks(Encrypter $encryption): void
     {
         $passwordField = Init::getPrefix() . '_smtp_password';
         $enableTestField = Init::getPrefix() . '_smtp_test_enable';

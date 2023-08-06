@@ -2,7 +2,7 @@
 
 namespace Nerbiz\WordClass;
 
-class Encryption
+class Encrypter
 {
     /**
      * @param string $key
