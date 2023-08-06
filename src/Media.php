@@ -57,7 +57,7 @@ class Media
      * @param string $mimeType
      * @return self
      */
-    public function addUploadSupport(string $extension, string $mimeType): self
+    public function enableUploadSupport(string $extension, string $mimeType): self
     {
         add_filter('upload_mimes', function (array $mimeTypes) use ($extension, $mimeType) {
             $mimeTypes[$extension] = $mimeType;
@@ -72,14 +72,14 @@ class Media
      * Add support for uploading SVG files
      * @return self
      */
-    public function addSvgSupport(): self
+    public function enableSvgSupport(): self
     {
         // Add SVG extension support
-        $this->addUploadSupport('svg', 'image/svg+xml');
+        $this->enableUploadSupport('svg', 'image/svg+xml');
 
         // Adjust the SVG file if needed
         add_filter('wp_handle_upload_prefilter', function ($file) {
-            // See if the file is an SVG file
+            // Skip if it's not an SVG file
             if ($file['type'] !== 'image/svg+xml') {
                 return $file;
             }
