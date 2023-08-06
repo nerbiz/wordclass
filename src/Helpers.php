@@ -8,25 +8,25 @@ class Helpers
 {
     /**
      * Get the URL of a featured image
-     * @param  int    $imageId    The ID of the image
-     * @param  string $sizeName   The name of one of the regisered image sizes
-     * @param  string $returnType The type of data to return
+     * @param  int    $attachmentId The ID of the image
+     * @param  string $sizeName     The name of one of the regisered image sizes
+     * @param  string $returnType   The type of data to return
      * Return types:
-     * url: the image URL
-     * array: [url, width, height, is_intermediate]
-     * html: an 'img' HTML tag
+     * 'url': the image URL
+     * 'array': [url, width, height, is_resized]
+     * 'html': an 'img' HTML tag
      * @return array|string
      * @throws InvalidArgumentException
      */
     public static function getImage(
-        int $imageId,
+        int    $attachmentId,
         string $sizeName = 'large',
         string $returnType = 'url'
     ): array|string {
         return match ($returnType) {
-            'url' => wp_get_attachment_image_url($imageId, $sizeName),
-            'array' => wp_get_attachment_image_src($imageId, $sizeName),
-            'html' => wp_get_attachment_image($imageId, $sizeName),
+            'url' => wp_get_attachment_image_url($attachmentId, $sizeName),
+            'array' => wp_get_attachment_image_src($attachmentId, $sizeName),
+            'html' => wp_get_attachment_image($attachmentId, $sizeName),
             default => throw new InvalidArgumentException(sprintf(
                 "%s() expects parameter 'returnType' to be 'url', 'array' or 'html', '%s' given",
                 __METHOD__,
@@ -44,13 +44,13 @@ class Helpers
      * @see self::getImage()
      */
     public static function getFeaturedImage(
-        int $postId,
+        int    $postId,
         string $sizeName = 'large',
         string $returnType = 'url'
     ): array|string {
-        $imageId = get_post_thumbnail_id($postId);
+        $attachmentId = get_post_thumbnail_id($postId);
 
-        return static::getImage((int)$imageId, $sizeName, $returnType);
+        return static::getImage((int)$attachmentId, $sizeName, $returnType);
     }
 
     /**
@@ -66,8 +66,8 @@ class Helpers
         string $sizeName = 'large',
         string $returnType = 'url'
     ): array|string {
-        $imageId = (new Options())->get($optionName);
+        $attachmentId = Options::get($optionName);
 
-        return static::getImage((int)$imageId, $sizeName, $returnType);
+        return static::getImage((int)$attachmentId, $sizeName, $returnType);
     }
 }

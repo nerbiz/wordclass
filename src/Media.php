@@ -6,12 +6,13 @@ class Media
 {
     /**
      * Set the size of featured images
-     * @param  int  $width
-     * @param  int  $height
-     * @param  bool $crop Whether to resize (false) or crop (true) images
+     * @param int        $width
+     * @param int        $height
+     * @param array|bool $crop Whether to resize (false) or crop (true) images,
+     *                         or positioning of crop area, as an array
      * @return self
      */
-    public function setFeaturedImageSize(int $width, int $height, bool $crop = false): self
+    public function setFeaturedImageSize(int $width, int $height, array|bool $crop = false): self
     {
         add_action('after_setup_theme', function () use ($width, $height, $crop) {
             set_post_thumbnail_size($width, $height, $crop);
@@ -22,26 +23,27 @@ class Media
 
     /**
      * Add a new image size, and add it to the size chooser
-     * @param  string $name          Key name for the $sizes array
-     * @param  string $nameInChooser Name in the size chooser
-     * @param  int    $width
-     * @param  int    $height
-     * @param  bool   $crop          Whether to resize (false) or crop (true) images
+     * @param string     $name Key name for the $sizes array
+     * @param string     $label Size name in the dropdown when selecting an image
+     * @param int        $width
+     * @param int        $height
+     * @param array|bool $crop Whether to resize (false) or crop (true) images,
+     *                         or positioning of crop area, as an array
      * @return self
      */
     public function addImageSize(
-        string $name,
-        string $nameInChooser,
-        int $width,
-        int $height,
-        bool $crop = false
+        string     $name,
+        string     $label,
+        int        $width,
+        int        $height,
+        array|bool $crop = false
     ): self {
-        add_action('after_setup_theme', function () use ($name, $nameInChooser, $width, $height, $crop) {
+        add_action('after_setup_theme', function () use ($name, $label, $width, $height, $crop) {
             add_image_size($name, $width, $height, $crop);
 
             // Set the image size name for the chooser
-            add_filter('image_size_names_choose', function ($sizes) use ($name, $nameInChooser) {
-                $sizes[$name] = $nameInChooser;
+            add_filter('image_size_names_choose', function ($sizes) use ($name, $label) {
+                $sizes[$name] = $label;
                 return $sizes;
             });
         });
@@ -103,7 +105,7 @@ class Media
 
     /**
      * Replace the hostname in media URLs, for local development with remote media
-     * @param string   $hostName The hostname in 'example.com' or 'sub.example.com' format
+     * @param string   $hostName     The hostname in 'example.com' or 'sub.example.com' format
      * @param string[] $environments The environments in which to replace the host
      * @return self
      */
