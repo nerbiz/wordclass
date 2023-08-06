@@ -104,12 +104,12 @@ class Media
     }
 
     /**
-     * Replace the hostname in media URLs, for local development with remote media
+     * Replace the hostname in attachment URLs, for local development with remote media
      * @param string   $hostName     The hostname in 'example.com' or 'sub.example.com' format
      * @param string[] $environments The environments in which to replace the host
      * @return self
      */
-    public function temporaryHost(
+    public function useRemoteAttachmentUrls(
         string $hostName,
         array  $environments = ['local', 'development']
     ): self {
