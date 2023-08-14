@@ -38,11 +38,9 @@ class Theme
      * @return self
      */
     public function enableHtml5Support(
-        array $features = ['caption', 'comment-form', 'comment-list', 'gallery', 'search-form']
+        array $features = ['comment-list', 'comment-form', 'search-form', 'gallery', 'caption', 'style', 'script']
     ): self {
-        add_action('after_setup_theme', function () use ($features) {
-            add_theme_support('html5', $features);
-        });
+        add_action('after_setup_theme', fn () => add_theme_support('html5', $features));
 
         return $this;
     }
