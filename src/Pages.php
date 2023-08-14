@@ -13,16 +13,14 @@ class Pages
      */
     public function automaticWindowTitle(): self
     {
-        add_action('after_setup_theme', function () {
-            add_theme_support('title-tag');
-        }, 10);
+        add_action('after_setup_theme', fn () => add_theme_support('title-tag'));
 
         return $this;
     }
 
     /**
      * Change the separator between the page title and site name
-     * i.e. the dash in 'About us - Company name'
+     * i.e. the hyphen in 'About us - Company name'
      * @param string $separator
      * @return self
      */
@@ -33,9 +31,7 @@ class Pages
             return $this;
         }
 
-        add_filter('document_title_separator', function (string $wpSeparator) use ($separator) {
-            return $separator;
-        }, 10);
+        add_filter('document_title_separator', fn (string $wpSeparator) => $separator);
 
         return $this;
     }
@@ -104,15 +100,13 @@ class Pages
                 $query->set_404();
                 status_header(404);
             }
-        }, 10);
+        });
 
         // Replace the search form HTML with an empty string
-        add_filter('get_search_form', '__return_empty_string', 10);
+        add_filter('get_search_form', '__return_empty_string');
 
         // Unregister the search widget
-        add_action('widgets_init', function () {
-            unregister_widget('WP_Widget_Search');
-        }, 10);
+        add_action('widgets_init', fn () => unregister_widget('WP_Widget_Search'));
 
         return $this;
     }

@@ -18,11 +18,12 @@ class Theme
                 add_theme_support('post-thumbnails');
             } else {
                 // Enable only for the give post types
-                foreach ($postTypes as $key => $postType) {
-                    if ($postType instanceof PostType) {
-                        $postTypes[$key] = $postType->getName();
-                    }
-                }
+                $postTypes = array_map(
+                    fn ($postType) => ($postType instanceof PostType)
+                        ? $postType->getName()
+                        : $postType,
+                    $postTypes
+                );
 
                 add_theme_support('post-thumbnails', $postTypes);
             }
