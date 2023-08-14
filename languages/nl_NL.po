@@ -6,25 +6,25 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-08-03T23:47:31+00:00\n"
-"PO-Revision-Date: 2023-08-03 23:47+0000\n"
+"POT-Creation-Date: 2023-08-14T20:21:55+00:00\n"
+"PO-Revision-Date: 2023-08-14 20:22+0000\n"
 "X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: wordclass\n"
 "Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: includes/html/email-properties-metabox.php:11 src/Mail.php:71
-#: src/Mail.php:284
+#: includes/html/email-properties-metabox.php:11 src/Mail.php:75
+#: src/Mail.php:285
 msgid "Recipient"
 msgstr "Ontvanger"
 
 #. translators: Email attachments
-#: includes/html/email-properties-metabox.php:13 src/Mail.php:302
+#: includes/html/email-properties-metabox.php:13 src/Mail.php:303
 msgid "Attachments"
 msgstr "Bijlagen"
 
 #. translators: Email headers
-#: includes/html/email-properties-metabox.php:15 src/Mail.php:316
+#: includes/html/email-properties-metabox.php:15 src/Mail.php:317
 msgid "Headers"
 msgstr "Headers"
 
@@ -49,7 +49,7 @@ msgid "Save settings"
 msgstr "Instellingen opslaan"
 
 #. translators: Button text for moving the admin bar
-#: src/Admin.php:93
+#: src/Admin.php:80
 msgid "Move bar"
 msgstr "Balk verplaatsen"
 
@@ -58,127 +58,127 @@ msgstr "Balk verplaatsen"
 msgid "- Choose one -"
 msgstr "- Kies een -"
 
-#: src/Mail.php:39
+#: src/Mail.php:40
 msgid "SMTP settings"
 msgstr "SMTP-instellingen"
 
 #. translators: Section title for SMTP settings
-#: src/Mail.php:43
-msgid "SMTP values"
-msgstr "SMTP waarden"
-
 #: src/Mail.php:44
+msgid "SMTP values"
+msgstr "SMTP-waarden"
+
+#: src/Mail.php:45
 msgid "Enable SMTP?"
 msgstr "SMTP inschakelen?"
 
 #. translators: Email SMTP host
-#: src/Mail.php:46
+#: src/Mail.php:47
 msgid "Host"
 msgstr "Host"
 
 #. translators: Email SMTP port
-#: src/Mail.php:48
+#: src/Mail.php:49
 msgid "Port"
 msgstr "Poort"
 
-#: src/Mail.php:49
+#: src/Mail.php:50
 msgid "Encryption"
 msgstr "Versleuteling"
 
-#: src/Mail.php:50
+#. translators: Option for SMTP settings
+#: src/Mail.php:52
+msgid "No encryption"
+msgstr "Geen versleuteling"
+
+#: src/Mail.php:56
 msgid "Username"
 msgstr "Gebruikersnaam"
 
-#: src/Mail.php:51
+#: src/Mail.php:57
 msgid "Password"
 msgstr "Wachtwoord"
 
-#. translators: Hint for SMTP password field
-#: src/Mail.php:54
-msgid "Encryption is used to store the password"
-msgstr "Versleuteling wordt gebruikt om het wachtwoord op te slaan"
-
 #. translators: Section title for SMTP testing
-#: src/Mail.php:59
+#: src/Mail.php:63
 msgid "Test settings"
 msgstr "Instellingen testen"
 
-#: src/Mail.php:60
+#: src/Mail.php:64
 msgid "Sender"
 msgstr "Afzender"
 
 #. translators: Hint for the sender field in SMTP testing
-#: src/Mail.php:64
+#: src/Mail.php:68
 msgid ""
 "If empty, the sender will be the site title + admin email from general "
 "settings."
 msgstr "Indien leeg, zal de afzender de site titel + beheerders e-mail zijn uit de algemene instellingen."
 
 #. translators: Hint for the sender field in SMTP testing. %s: Example sender format 'Example <test@example.com>'
-#: src/Mail.php:67
+#: src/Mail.php:71
 msgid "The '%s' format is supported"
 msgstr "Het '%s' formaat wordt ondersteund"
 
-#: src/Mail.php:72
+#: src/Mail.php:76
 msgid "Subject"
 msgstr "Onderwerp"
 
-#: src/Mail.php:73 src/Mail.php:291
+#: src/Mail.php:77 src/Mail.php:292
 msgid "Content"
 msgstr "Inhoud"
 
-#: src/Mail.php:74
+#: src/Mail.php:78
 msgid "Send testmail?"
 msgstr "Testmail versturen?"
 
 #. translators: Explanation for the 'send email' switch in SMTP testing
-#: src/Mail.php:76
+#: src/Mail.php:80
 msgid "If checked, a testmail will be sent when saving these settings"
-msgstr "Indien aangevinkt, wordt een testmail verstuurd bij het opslaan van deze instellingen"
+msgstr "Indien aangevinkt, wordt er een testmail verzonden bij het opslaan van deze instellingen"
 
 #. translators: Error message in SMTP testing
-#: src/Mail.php:151
+#: src/Mail.php:153
 msgid "An error occured when trying to send the testmail:"
 msgstr "Er is een fout opgetreden bij het proberen te verzenden van de testmail:"
 
 #. translators: Success message in SMTP testing
-#: src/Mail.php:182
+#: src/Mail.php:183
 msgid "The testmail was sent successfully."
-msgstr "De testmail is succesvol verzonden."
+msgstr "De testmail is met succes verzonden."
 
-#: src/Mail.php:216
+#: src/Mail.php:217
 msgid "Sent email"
 msgstr "Verzonden e-mail"
 
-#: src/Mail.php:217
+#: src/Mail.php:218
 msgid "Sent emails"
 msgstr "Verzonden e-mails"
 
 #. translators: Content title on 'forbidden' error page
-#: src/Mail.php:235
+#: src/Mail.php:236
 msgid "Access denied"
 msgstr "Toegang geweigerd"
 
 #. translators: Explanation on 'forbidden' error page
-#: src/Mail.php:237
+#: src/Mail.php:238
 msgid "You do not have permission to view this content."
 msgstr "U heeft geen toestemming om deze inhoud te bekijken."
 
 #. translators: Page title of 'forbidden' error page
-#: src/Mail.php:240
+#: src/Mail.php:241
 msgid "Unauthorized access"
 msgstr "Ongeautoriseerde toegang"
 
 #. translators: Title of the 'sent email' metabox
-#: src/Mail.php:253
+#: src/Mail.php:254
 msgid "Email properties"
-msgstr "E-mail eigenschappen"
+msgstr "E-maileigenschappen"
 
-#: src/Mail.php:390
+#: src/Mail.php:391
 msgid "(no subject)"
 msgstr "(geen onderwerp)"
 
-#: src/Mail.php:394
+#: src/Mail.php:395
 msgid "(no content)"
 msgstr "(geen inhoud)"
 
@@ -284,12 +284,12 @@ msgid "Use as featured image"
 msgstr "Gebruik als uitgelichte afbeelding"
 
 #. translators: Error message on a settings page
-#: src/SettingsPage.php:279
+#: src/SettingsPage.php:283
 msgid "You don't have the right permissions to update these settings."
 msgstr "U heeft niet de juiste rechten om deze instellingen bij te werken."
 
 #. translators: Error message on a settings page
-#: src/SettingsPage.php:285
+#: src/SettingsPage.php:289
 msgid "Invalid nonce value, please refresh the page and try again."
 msgstr "Ongeldige nonce-waarde, ververs de pagina en probeer het opnieuw."
 
