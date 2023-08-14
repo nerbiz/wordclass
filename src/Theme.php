@@ -34,12 +34,12 @@ class Theme
 
     /**
      * Allow the use of HTML5 in core WordPress features
-     * @param  array $features The list of features to enable HTML5 for
+     * @param array|null $features The list of enabled HTML5 features (all features if null)
      * @return self
      */
-    public function enableHtml5Support(
-        array $features = ['comment-list', 'comment-form', 'search-form', 'gallery', 'caption', 'style', 'script']
-    ): self {
+    public function enableHtml5Support(?array $features = null): self {
+        $features ??= ['comment-list', 'comment-form', 'search-form', 'gallery', 'caption', 'style', 'script'];
+
         add_action('after_setup_theme', fn () => add_theme_support('html5', $features));
 
         return $this;
