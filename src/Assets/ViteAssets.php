@@ -35,7 +35,7 @@ class ViteAssets extends Assets
      */
     public function __construct(?string $distDirectory = null)
     {
-        $distDirectory = $distDirectory ?? get_stylesheet_directory() . '/dist';
+        $distDirectory ??= get_stylesheet_directory() . '/dist';
         $distDirectory = rtrim($distDirectory, '/');
         $this->relativeDistPath = str_replace(ABSPATH, '', $distDirectory);
 

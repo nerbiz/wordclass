@@ -17,7 +17,7 @@ class WebpackAssets extends Assets
      */
     public function __construct(?string $distDirectory = null)
     {
-        $distDirectory = $distDirectory ?? get_stylesheet_directory() . '/dist';
+        $distDirectory ??= get_stylesheet_directory() . '/dist';
         $distDirectory = rtrim($distDirectory, '/');
         $manifestFile = $distDirectory . '/manifest.json';
 
