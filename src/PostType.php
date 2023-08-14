@@ -91,7 +91,7 @@ class PostType
     public function getSlug(): string
     {
         if (! isset($this->slug)) {
-            $this->slug = Utilities::createSlug($this->pluralName);
+            $this->setSlug(Utilities::createSlug($this->pluralName));
         }
 
         return $this->slug;
@@ -263,7 +263,7 @@ class PostType
     {
         add_action('init', function () {
             register_post_type($this->getName(), $this->getArguments());
-        }, 10);
+        });
 
         return $this;
     }

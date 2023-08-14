@@ -85,7 +85,7 @@ class Taxonomy
     public function getSlug(): string
     {
         if (! isset($this->slug)) {
-            $this->slug = Utilities::createSlug($this->pluralName);
+            $this->setSlug(Utilities::createSlug($this->pluralName));
         }
 
         return $this->slug;
@@ -141,7 +141,7 @@ class Taxonomy
      */
     public function getLabels(): array
     {
-        return array_replace_recursive([
+        return array_replace([
             'name' => $this->pluralName,
             'singular_name' => $this->singularName,
             'menu_name' => $this->pluralName,
@@ -218,10 +218,10 @@ class Taxonomy
     public function getArguments(): array
     {
         return array_replace_recursive([
-            'label'       => $this->pluralName,
-            'labels'      => $this->getLabels(),
+            'label' => $this->pluralName,
+            'labels' => $this->getLabels(),
             'description' => $this->description,
-            'rewrite'     => [
+            'rewrite' => [
                 'slug' => $this->getSlug(),
             ],
         ], $this->arguments);
@@ -235,11 +235,7 @@ class Taxonomy
     {
         add_action('init', function () {
             register_taxonomy($this->getName(), $this->postTypes, $this->getArguments());
-
-            foreach ($this->postTypes as $postType) {
-                register_taxonomy_for_object_type($this->getName(), $postType);
-            }
-        }, 10);
+        });
 
         return $this;
     }
