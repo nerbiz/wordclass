@@ -50,11 +50,9 @@ class Theme
      * @param  array $menus Menus in location:description pairs
      * @return self
      */
-    public function addMenus(array $menus): self
+    public function registerMenus(array $menus): self
     {
-        add_action('after_setup_theme', function () use ($menus) {
-            register_nav_menus($menus);
-        });
+        add_action('after_setup_theme', fn () => register_nav_menus($menus));
 
         return $this;
     }
