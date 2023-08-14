@@ -1,6 +1,6 @@
 <?php
 
-namespace NewProject;
+namespace YourNamespace;
 
 use Nerbiz\WordClass\InputFields\CheckboxInputField;
 use Nerbiz\WordClass\InputFields\EditorInputField;
@@ -27,11 +27,6 @@ class YourSettingsPage
      */
     public function create(): void
     {
-        /**
-         * This class doesn't use the translate function, for brevity.
-         * Of course you can replace 'Some text' with __('Some text', 'project-text-domain').
-         */
-
         $this->settingsPage = (new SettingsPage('Website settings'))
             // Make it a submenu of the normal WordPress settings
             ->setParentSlug('options-general.php')
@@ -57,7 +52,8 @@ class YourSettingsPage
             (new ExplanationText('Contact information settings'))
                 ->setDescription('Several values to be shown on the contact page'),
             // Some general input fields with type="text"
-            new GeneralInputField('street', 'Street and house number'),
+            new GeneralInputField('street', 'Street'),
+            new GeneralInputField('house_number', 'House number'),
             new GeneralInputField('postcode', 'Postcode'),
             new GeneralInputField('city', 'City'),
             (new GeneralInputField('phone', 'Phone number'))
@@ -107,7 +103,7 @@ class YourSettingsPage
             // A text editor for rich text
             (new EditorInputField('footer_content', 'Footer content'))
                 ->setDescription('Company description on each page in the footer'),
-            // An input using the WordPress media library
+            // An input field using the WordPress media library
             new MediaInputField('logo_id', 'Logo'),
             // A subheading can be placed anywhere in between
             new ExplanationText('Some settings with predefined options'),

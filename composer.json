@@ -17,6 +17,6 @@
     "php": "^8.0"
   },
   "support" : {
-    "docs": "https://github.com/nerbiz/wordclass/wiki"
+    "docs": "https://github.com/nerbiz/wordclass"
   }
 }
