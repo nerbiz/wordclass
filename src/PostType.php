@@ -249,6 +249,8 @@ class PostType
             'description' => $this->description,
             'supports' => $this->features,
             'taxonomies' => $this->taxonomies,
+            // Enable Gutenberg editor
+            'show_in_rest' => true,
             'rewrite' => [
                 'slug' => $this->getSlug(),
             ],
