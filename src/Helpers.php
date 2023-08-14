@@ -7,6 +7,18 @@ use InvalidArgumentException;
 class Helpers
 {
     /**
+     * Prepend a value with the current prefix in the Init class
+     * @param string $value
+     * @param string $separator Character(s) between prefix and value
+     * @return string
+     * @see Init::getPrefix()
+     */
+    public static function withPrefix(string $value, string $separator = '_'): string
+    {
+        return Init::getPrefix() . $separator . $value;
+    }
+
+    /**
      * Get the URL of a featured image
      * @param  int    $attachmentId The ID of the image
      * @param  string $sizeName     The name of one of the regisered image sizes

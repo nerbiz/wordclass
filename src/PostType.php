@@ -63,7 +63,7 @@ class PostType
      */
     public function __construct(string $name)
     {
-        $this->name = Init::getPrefix() . '_' . $name;
+        $this->name = Helpers::withPrefix($name);
     }
 
     /**

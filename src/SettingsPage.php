@@ -258,7 +258,11 @@ class SettingsPage
      */
     public function getNonceName(): string
     {
-        $nonceName = sprintf('%s_%s_nonce', Init::getPrefix(), $this->getPageSlug());
+        $nonceName = Helpers::withPrefix(sprintf(
+            '%s_nonce',
+            $this->getPageSlug()
+        ));
+
         return str_replace('-', '_', $nonceName);
     }
 
@@ -311,7 +315,7 @@ class SettingsPage
     {
         add_action('admin_menu', function () {
             // Ensure creation of page slug (and submit button name)
-            $pageSlug = Init::getPrefix() . '-' . $this->getPageSlug();
+            $pageSlug = Helpers::withPrefix($this->getPageSlug(), '-');
 
             // Store values, if submitted
             if (isset($_POST[$this->getSubmitButtonName()])) {

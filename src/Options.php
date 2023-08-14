@@ -11,7 +11,7 @@ class Options
      */
     public static function exists(string $name): bool
     {
-        $optionName = Init::getPrefix() . '_' . $name;
+        $optionName = Helpers::withPrefix($name);
         return (get_option($optionName) !== false);
     }
 
@@ -23,7 +23,7 @@ class Options
      */
     public static function get(string $name, mixed $default = null): mixed
     {
-        $optionName = Init::getPrefix() . '_' . $name;
+        $optionName = Helpers::withPrefix($name);
         $value = get_option($optionName);
 
         return ($value === false || $value === '')
@@ -39,7 +39,7 @@ class Options
      */
     public static function set(string $name, mixed $value): void
     {
-        $optionName = Init::getPrefix() . '_' . $name;
+        $optionName = Helpers::withPrefix($name);
         update_option($optionName, $value);
     }
 
@@ -50,7 +50,7 @@ class Options
      */
     public static function delete(string $name): void
     {
-        $optionName = Init::getPrefix() . '_' . $name;
+        $optionName = Helpers::withPrefix($name);
         delete_option($optionName);
     }
 }

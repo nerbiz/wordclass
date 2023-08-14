@@ -3,6 +3,7 @@
 namespace Nerbiz\WordClass\InputFields;
 
 use Nerbiz\WordClass\Assets\Assets;
+use Nerbiz\WordClass\Helpers;
 use Nerbiz\WordClass\Init;
 
 class MediaInputField extends AbstractInputField
@@ -22,7 +23,7 @@ class MediaInputField extends AbstractInputField
         // Add the required scripts (once)
         if (! static::$scriptsAdded) {
             (new Assets())->addAdminJs(
-                Init::getPrefix() . '-media-upload',
+                Helpers::withPrefix('media-upload', '-'),
                 Init::getPackageUri('includes/js/media-upload.js')
             );
 

@@ -90,8 +90,8 @@ class Mail
      */
     protected function addOptionHooks(Encrypter $encryption): void
     {
-        $passwordField = Init::getPrefix() . '_smtp_password';
-        $enableTestField = Init::getPrefix() . '_smtp_test_enable';
+        $passwordField = Helpers::withPrefix('smtp_password');
+        $enableTestField = Helpers::withPrefix('smtp_test_enable');
 
         // Encrypt the SMTP password before storing
         add_filter('pre_update_option_' . $passwordField, fn ($newValue) => $encryption->encrypt($newValue));
@@ -194,7 +194,7 @@ class Mail
     {
         // Include the metaboxes CSS
         (new Assets())->addAdminCss(
-            Init::getPrefix() . '-admin-metaboxes',
+            Helpers::withPrefix('admin-metaboxes', '-'),
             Init::getPackageUri('includes/css/admin-metaboxes.css')
         );
 
@@ -350,7 +350,7 @@ class Mail
             }
 
             // Check if the nonce is valid
-            $nonceName = sprintf('%s_email_properties_nonce', Init::getPrefix());
+            $nonceName = Helpers::withPrefix('email_properties_nonce');
             if (! wp_verify_nonce($_POST[$nonceName] ?? '')) {
                 return;
             }
@@ -384,7 +384,7 @@ class Mail
         add_filter('wp_mail', function (array $mailProperties) {
             // Store the sent email
             $postId = wp_insert_post([
-                'post_type' => Init::getPrefix() . '_sent_email',
+                'post_type' => Helpers::withPrefix('sent_email'),
                 'post_status' => 'publish',
                 'post_title' => trim($mailProperties['subject'] !== '')
                     ? $mailProperties['subject']
