@@ -2,7 +2,7 @@
  *
  * @constructor
  */
-class NwMediaInput
+class WordClassMediaInput
 {
     /**
      * The main element containing media preview and input
@@ -119,7 +119,7 @@ class NwMediaInput
                 this.chosenMediaFilename.innerHTML = attachment.filename;
 
                 // Restore the main post ID
-                wp.media.model.settings.post.id = window.NwMediaInputSettings.oldAttachmentId;
+                wp.media.model.settings.post.id = window.WordClassMediaInputSettings.oldAttachmentId;
             });
 
             // Finally, open the modal
@@ -143,16 +143,16 @@ class NwMediaInput
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    window.NwMediaInputSettings = {
+    window.WordClassMediaInputSettings = {
         // Store the old id
         oldAttachmentId: (wp.media)
             ? wp.media.model.settings.post.id
             : null
     };
 
-    document.querySelectorAll('.nw-media-upload-input')
+    document.querySelectorAll('.wordclass-media-upload-input')
         .forEach(element => {
-            const mediaUploadInput = new NwMediaInput(element);
+            const mediaUploadInput = new WordClassMediaInput(element);
             mediaUploadInput.enableUploadButton();
             mediaUploadInput.enableClearButton();
         });
@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.add_media')
         .forEach(button => {
             button.addEventListener('click', () => {
-                wp.media.model.settings.post.id = window.NwMediaInputSettings.oldAttachmentId;
+                wp.media.model.settings.post.id = window.WordClassMediaInputSettings.oldAttachmentId;
             });
         });
 });

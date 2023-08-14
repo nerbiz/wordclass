@@ -110,7 +110,7 @@ $currentTab = $_GET['tab'] ?? null;
         queryParameters[key] = value;
     }
 
-    function nwSwitchToTab(tabId) {
+    function wordClassSwitchToTab(tabId) {
         // Construct a new query string with a different tab value
         queryParameters.tab = tabId;
         const queryString = Object.entries(queryParameters)
@@ -128,7 +128,7 @@ $currentTab = $_GET['tab'] ?? null;
         if (tabButton !== null) {
             event.preventDefault();
             const tabId = tabButton.dataset.tabId;
-            nwSwitchToTab(tabId);
+            wordClassSwitchToTab(tabId);
 
             // Set the clicked tab button as active
             for (const button of tabButtons) {

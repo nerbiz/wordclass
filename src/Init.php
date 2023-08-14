@@ -8,7 +8,7 @@ class Init
      * The default prefix to use
      * @var string
      */
-    protected static string $prefix = 'nw';
+    protected static string $prefix = 'xyz';
 
     /**
      * The path to the vendor directory
