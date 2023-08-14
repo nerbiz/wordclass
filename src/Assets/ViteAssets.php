@@ -63,10 +63,16 @@ class ViteAssets extends Assets
         $this->moduleHandles[] = 'vite-client';
 
         // Set the type to 'module' for applicable scripts
-        add_filter('script_loader_tag', function ($tag, $handle) {
-            return (in_array($handle, $this->moduleHandles))
-                ? str_replace('text/javascript', 'module', $tag)
-                : $tag;
+        add_filter('script_loader_tag', function (string $tag, string $handle) {
+            if (in_array($handle, $this->moduleHandles, true)) {
+                return (stripos($tag, 'type=') !== false)
+                    // Replace the 'type' attribute value with "module"
+                    ? preg_replace('/(?<=type=)(["\']).*?\1/i', '"module"', $tag)
+                    // Add the 'type' attribute if it doesn't exist
+                    : str_replace('src=', 'type="module" src=', $tag);
+            }
+
+            return $tag;
         }, 10, 2);
 
         return $this;
