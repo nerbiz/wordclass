@@ -1,5 +1,62 @@
 # Release notes
 
+## 4.0.0
+#### 2023-08-15
+
+* Changed the license from Unlicense to MIT license.
+* Added the ViteAssets class.
+* Added the WebpackAssets class.
+* Added a new Assets namespace for the new assets classes.
+* Added the Security class, moved security-related methods to it.
+* Added Security::disableXmlRpc().
+* Added (union) types to parameters and properties, added constructor property promotion where applicable.
+* Added AbstractInputField::getStoredValue().
+* Added Helpers::withPrefix().
+* Added Options::exists().
+* Added extra protection for sent_emails post type, to forbid them on front-end.
+* Custom attributes can now be set on SettingsPage input fields.
+* A page title is now required for SettingsPage.
+* InputField descriptions are now optional with a setter method.
+* Encrypter class doesn't have a default encryption key anymore.
+* Mail::addSmtpSupport() now expects an Encrypter object instead of key.
+* Init::loadTranslations() is now static.
+* Changed the default prefix in Init to 'xyz'.
+* Helpers and Options methods are now static.
+* Updated the default list of supported HTML5 features in Theme::enableHtml5Support(), also simplified the code.
+* Utilities::createSlug() now supports a custom separator.
+* The Gutenberg editor is now enabled by default for custom post types.
+* PostInputField now supports PostType objects.
+* SMTP encryption setting is now set with radio buttons.
+* Modernized the JavaScripts.
+* Changed function name prefixes.
+* Updated translations.
+* Updated the example files for version 4.
+* Swapped $assetType and $hook parameters in Assets::add().
+* Renamed PostColumnsEditor::isOnAdminPage() to PostColumnsEditor::adminPageMatches().
+* Renamed the DescriptionText class to ExplanationText.
+* Renamed the TextInputField class to GeneralInputField, removed PasswordInputField, because of attributes.
+* Renamed the Crypto class to Encrypter.
+* Renamed 'getVendor' methods in Init to 'getPackage', also improved the mechanism.
+* Renamed Media::temporaryHost() to Media::useRemoteAttachmentUrls().
+* Renamed the 'add support' methods in Media to 'enable support'.
+* Renamed Theme::addMenus() to Theme::registerMenus().
+* Renamed Admin::addMoveAdminBarButton() to Admin::makeAdminBarMovable().
+* Renamed Pages::disableSearchFunctionality() to Pages::disableSearch().
+* Renamed AbstractInputField::getPrefixedName() to getFullName().
+* Removed subtitle from SettingsPageSection, in favour of the ExplanationText class.
+* Removed Init::defineConstants().
+* Removed the Webpack class, in favour of the new WebpackAssets class.
+* Removed the Editor class.
+* Removed the Fixes class.
+* Removed the Yoast class.
+* Removed helper functions.
+* Fixed: nonce check in sent_email post type was incorrect/unsafe.
+* Fixed: a custom input name prefix would always be overriden in SettingsPage.
+* Fixed: Options::get() would break if the value wasn't scalar.
+* Changed the required PHP version to 8.
+* Many code improvements.
+* Small bug fixes.
+
 ## 3.1.2
 #### 2023-04-17
 
