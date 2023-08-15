@@ -61,7 +61,7 @@ class Admin
     public function makeAdminBarMovable(): self
     {
         // Add the required styling and script
-        $moveBarHandle = Init::getPrefix() . '-admin-bar';
+        $moveBarHandle = Helpers::withPrefix('admin-bar', '-');
         $includesDirUrl = Init::getPackageUri('includes/');
         (new Assets())
             ->addThemeCss($moveBarHandle, $includesDirUrl . 'css/admin-bar.css')

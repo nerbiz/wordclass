@@ -2,6 +2,7 @@
 
 namespace Nerbiz\WordClass\InputFields;
 
+use Nerbiz\WordClass\Helpers;
 use Nerbiz\WordClass\Init;
 
 abstract class AbstractInputField
@@ -165,11 +166,10 @@ abstract class AbstractInputField
      */
     public function getFullName(): string
     {
-        return sprintf(
-            '%s_%s%s',
-            Init::getPrefix(),
+        return Helpers::withPrefix(sprintf(
+            '%s%s',
             $this->getNamePrefix(),
-            $this->getName()
+            $this->getName())
         );
     }
 
