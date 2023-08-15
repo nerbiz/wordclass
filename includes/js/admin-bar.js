@@ -1,4 +1,4 @@
-class AdminBar
+class WordClassAdminBar
 {
     /**
      * The button that toggles the bar location
@@ -70,7 +70,7 @@ class AdminBar
      * @return {void}
      */
     init() {
-        const toggleButtonParent = document.getElementById('wp-admin-bar-adminbar-location-toggle');
+        const toggleButtonParent = document.getElementById('wp-admin-bar-wordclass-adminbar-location-toggle');
 
         // Disable if the element doesn't exist
         if (toggleButtonParent === null) {
@@ -90,7 +90,4 @@ class AdminBar
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const adminBar = new AdminBar();
-    adminBar.init();
-});
+document.addEventListener('DOMContentLoaded', () => new WordClassAdminBar().init());
