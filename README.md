@@ -11,6 +11,12 @@ WordClass requires PHP 8 and can be installed with [Composer](https://getcompose
 composer require nerbiz/wordclass
 ```
 
+## Wiki
+
+### Please note:
+
+The [Wiki pages](https://github.com/nerbiz/wordclass/wiki) are outdated (version 3). They will be updated, or maybe the examples are sufficient. Either way, they're not entirely accurate anymore.
+
 ## Usage
 
 All features are shown and documented in the [example files](https://github.com/nerbiz/wordclass/tree/master/example) directory.
