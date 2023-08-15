@@ -101,12 +101,12 @@ class Mail
 
         // Send a testmail if requested
         add_filter('pre_update_option_' . $enableTestField, function ($newValue, $oldValue) {
-            if ($newValue == 1) {
+            if ((bool) $newValue === true) {
                 $this->sendTestMail();
             }
 
-            // Always reset to unchecked
-            return '';
+            // Always reset to off
+            return '0';
         }, 10, 2);
     }
 
@@ -117,7 +117,7 @@ class Mail
     protected function addSmtpMailHook(): void
     {
         add_action('phpmailer_init', function (PHPMailer $phpMailer) {
-            if (Options::get('smtp_enable') === null) {
+            if ((bool) Options::get('smtp_enable') === false) {
                 return $phpMailer;
             }
 
