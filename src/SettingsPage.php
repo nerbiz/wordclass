@@ -8,49 +8,57 @@ class SettingsPage
      * The title of the settings page
      * @var string
      */
-    protected $pageTitle = 'Theme settings';
-
-    /**
-     * The slug of the parent page, if this needs to be a subpage
-     * @var string|null
-     */
-    protected $parentSlug = null;
+    protected string $pageTitle = 'Theme settings';
 
     /**
      * The settings page slug, will be prepended with prefix
      * @var string
      */
-    protected $pageSlug;
+    protected string $pageSlug;
+
+    /**
+     * The slug of the parent page, if this needs to be a subpage
+     * @var string|null
+     */
+    protected ?string $parentSlug = null;
 
     /**
      * The unique name of the submit butten
      * @var string
      */
-    protected $submitButtonName;
+    protected string $submitButtonName;
 
     /**
      * The capability required for using the settings page
      * @var string
      */
-    protected $capability = 'manage_options';
+    protected string $capability = 'manage_options';
 
     /**
      * The icon of the menu item
      * @var string
      */
-    protected $icon = 'dashicons-admin-settings';
+    protected string $icon = 'dashicons-admin-settings';
 
     /**
      * The button position in the menu
      * @var int|null
      */
-    protected $menuPosition = null;
+    protected ?int $menuPosition = null;
 
     /**
      * The sections of the settings page
      * @var SettingsPageSection[]
      */
-    protected $sections = [];
+    protected array $sections = [];
+
+    public function __construct(?string $pageTitle = null)
+    {
+        $this->pageTitle = $pageTitle ?? __('Theme settings');
+
+        // Derive the page slug from the title
+        $this->setPageSlug(Utilities::createSlug($this->getPageTitle()));
+    }
 
     /**
      * @return string
@@ -61,12 +69,26 @@ class SettingsPage
     }
 
     /**
-     * @param string $pageTitle
+     * @return string
+     */
+    public function getPageSlug(): string
+    {
+        return $this->pageSlug;
+    }
+
+    /**
+     * @param string $pageSlug
      * @return self
      */
-    public function setPageTitle(string $pageTitle): self
+    public function setPageSlug(string $pageSlug): self
     {
-        $this->pageTitle = $pageTitle;
+        $this->pageSlug = $pageSlug;
+
+        // Derive the submit button name from the page slug
+        $this->setSubmitButtonName(sprintf(
+            'submit-settings-%s',
+            $this->pageSlug
+        ));
 
         return $this;
     }
@@ -86,36 +108,6 @@ class SettingsPage
     public function setParentSlug(string $parentSlug): self
     {
         $this->parentSlug = $parentSlug;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPageSlug(): string
-    {
-        // Derive the page slug if it's not set yet
-        if ($this->pageSlug === null) {
-            $this->setPageSlug(Utilities::createSlug($this->getPageTitle()));
-        }
-
-        return $this->pageSlug;
-    }
-
-    /**
-     * @param string $pageSlug
-     * @return self
-     */
-    public function setPageSlug(string $pageSlug): self
-    {
-        $this->pageSlug = $pageSlug;
-
-        // Derive the submit button name from the page slug
-        $this->setSubmitButtonName(sprintf(
-            'submit-settings-%s',
-            $this->pageSlug
-        ));
 
         return $this;
     }
@@ -241,7 +233,10 @@ class SettingsPage
     {
         // Use the section ID as the input field name prefix
         foreach ($section->getFields() as $field) {
-            $field->setNamePrefix($section->getId());
+            $currentPrefix = trim($field->getNamePrefix());
+            if ($currentPrefix === '') {
+                $field->setNamePrefix($section->getId());
+            }
         }
 
         $this->sections[] = $section;
@@ -263,7 +258,11 @@ class SettingsPage
      */
     public function getNonceName(): string
     {
-        $nonceName = sprintf('%s_%s_nonce', Init::getPrefix(), $this->getPageSlug());
+        $nonceName = Helpers::withPrefix(sprintf(
+            '%s_nonce',
+            $this->getPageSlug()
+        ));
+
         return str_replace('-', '_', $nonceName);
     }
 
@@ -280,11 +279,13 @@ class SettingsPage
 
         // Check if the current user is allowed to update the values
         if (! current_user_can($this->getCapability())) {
+            // translators: Error message on a settings page
             wp_die(__("You don't have the right permissions to update these settings.", 'wordclass'));
         }
 
         // Check if the nonce is valid
         if (! wp_verify_nonce($_POST[$this->getNonceName()] ?? '')) {
+            // translators: Error message on a settings page
             wp_die(__('Invalid nonce value, please refresh the page and try again.', 'wordclass'));
         }
 
@@ -294,7 +295,7 @@ class SettingsPage
         // Store all submitted values
         foreach ($this->sections as $section) {
             foreach ($section->getFields() as $field) {
-                $name = $field->getPrefixedName();
+                $name = $field->getFullName();
 
                 if (isset($_POST[$name])) {
                     update_option($name, $_POST[$name]);
@@ -314,7 +315,7 @@ class SettingsPage
     {
         add_action('admin_menu', function () {
             // Ensure creation of page slug (and submit button name)
-            $pageSlug = Init::getPrefix() . '-' . $this->getPageSlug();
+            $pageSlug = Helpers::withPrefix($this->getPageSlug(), '-');
 
             // Store values, if submitted
             if (isset($_POST[$this->getSubmitButtonName()])) {
@@ -325,7 +326,7 @@ class SettingsPage
             $renderFunction = function () {
                 // For use in the template
                 $settingsPage = $this;
-                require __DIR__ . '/../includes/html/settings-page-template.php';
+                require dirname(__FILE__, 2) . '/includes/html/settings-page-template.php';
             };
 
             // Add the settings page

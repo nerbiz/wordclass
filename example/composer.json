@@ -1,11 +1,11 @@
 {
-  "name": "project/name",
+  "name": "vendor/project",
   "autoload": {
     "psr-4": {
-      "NewProject\\": "classes/"
+      "YourNamespace\\": "classes/"
     }
   },
   "require": {
-    "nerbiz/wordclass": "^2.2"
+    "nerbiz/wordclass": "^4.0"
   }
 }

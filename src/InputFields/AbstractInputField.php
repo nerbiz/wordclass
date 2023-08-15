@@ -7,47 +7,39 @@ use Nerbiz\WordClass\Init;
 abstract class AbstractInputField
 {
     /**
-     * The name/id of the input field
-     * @var string
+     * Attributes of the input field, as key/value pairs
+     * Boolean attributes don't need a value, only the name will suffice
+     * @var array
      */
-    protected $name;
+    protected array $attributes = [];
 
     /**
-     * The label of the input field
+     * The description below the input field
      * @var string
      */
-    protected $label;
-
-    /**
-     * The optional description below the input field
-     * @var string|null
-     */
-    protected $description;
+    protected string $description = '';
 
     /**
      * Whether the input field spans the full width,
      * instead of having label and field separately
      * @var bool
      */
-    protected $fullWidth = false;
+    protected bool $fullWidth = false;
 
     /**
      * The prefix for the input name
      * @var string
      */
-    protected $namePrefix = '';
+    protected string $namePrefix = '';
 
     /**
-     * @param string      $name
-     * @param string      $label
-     * @param string|null $description
+     * @param string      $name The name/id of the input field
+     * @param string      $label The label of the input field
      */
-    public function __construct(string $name, string $label, ?string $description = null)
-    {
-        $this->name = $name;
-        $this->label = $label;
-        $this->description = $description;
-    }
+    public function __construct(
+        protected string $name,
+        protected string $label
+    ) {}
 
     /**
      * @return string
@@ -66,19 +58,67 @@ abstract class AbstractInputField
     }
 
     /**
+     * @param array $attributes
+     * @return self
+     */
+    public function setAttributes(array $attributes): self
+    {
+        $this->attributes = $attributes;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAttributes(): array
+    {
+        return $this->attributes;
+    }
+
+    /**
+     * Convert all attributes to a single string
+     * @return string
+     */
+    public function getAttributesString(): string
+    {
+        $attributes = [];
+
+        foreach ($this->getAttributes() as $name => $value) {
+            // Boolean attributes like 'required' and 'disabled'
+            if (is_numeric($name)) {
+                $attributes[] = $value;
+                continue;
+            }
+
+            // Convert true/false to strings, for attributes like 'draggable' and 'contenteditable'
+            if (is_bool($value)) {
+                $value = $value ? 'true' : 'false';
+            }
+
+            $attributes[] = sprintf('%s="%s"', $name, $value);
+        }
+
+        return implode(' ', $attributes);
+    }
+
+    /**
+     * @param string $description
+     * @return self
+     */
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
      * @return string|null
      */
     public function getDescription(): ?string
     {
         return $this->description;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isFullWidth(): bool
-    {
-        return $this->fullWidth;
     }
 
     /**
@@ -93,11 +133,11 @@ abstract class AbstractInputField
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getNamePrefix(): string
+    public function isFullWidth(): bool
     {
-        return $this->namePrefix;
+        return $this->fullWidth;
     }
 
     /**
@@ -112,18 +152,30 @@ abstract class AbstractInputField
     }
 
     /**
+     * @return string
+     */
+    public function getNamePrefix(): string
+    {
+        return $this->namePrefix;
+    }
+
+    /**
      * Get a prefixed input name
      * @return string
      */
-    public function getPrefixedName(): string
+    public function getFullName(): string
     {
-        // Return a longer name, if a prefix exists
         return sprintf(
             '%s_%s%s',
             Init::getPrefix(),
             $this->getNamePrefix(),
             $this->getName()
         );
+    }
+
+    public function getStoredValue(): string
+    {
+        return esc_attr(get_option($this->getFullName()));
     }
 
     /**
@@ -161,13 +213,10 @@ abstract class AbstractInputField
      */
     protected function appendRender(): string
     {
-        if ($this->description !== null) {
-            return sprintf(
-                '<p class="description">%s</p>',
-                $this->description
-            );
-        }
+        $description = trim($this->description);
 
-        return '';
+        return ($description !== '')
+            ? sprintf('<p class="description">%s</p>', $description)
+            : '';
     }
 }

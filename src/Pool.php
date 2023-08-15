@@ -8,15 +8,15 @@ class Pool
      * The contents of the pool
      * @var array
      */
-    protected static $contents = [];
+    protected static array $contents = [];
 
     /**
      * Add or overwrite an item in the pool
      * @param string $key
-     * @param        $value
+     * @param mixed  $value
      * @return void
      */
-    public static function set(string $key, $value): void
+    public static function set(string $key, mixed $value): void
     {
         static::$contents[$key] = $value;
     }
@@ -34,10 +34,10 @@ class Pool
     /**
      * Get an item from the pool
      * @param string $key
-     * @param null   $default The value to use when the option is empty
+     * @param mixed  $default The value to use when the option is empty
      * @return mixed
      */
-    public static function get(string $key, $default = null)
+    public static function get(string $key, mixed $default = null): mixed
     {
         if (static::has($key)) {
             return static::$contents[$key];

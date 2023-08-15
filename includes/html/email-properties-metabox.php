@@ -1,15 +1,17 @@
 <?php
 
-use Nerbiz\WordClass\Init;
+use Nerbiz\WordClass\Helpers;
 
-// A metabox ID and WP_Post object are required
-if (! isset($metaboxId, $currentPost) || ! ($currentPost instanceof WP_Post)) {
+// A WP_Post object is required
+if (! isset($currentPost) || ! ($currentPost instanceof WP_Post)) {
     return;
 }
 
 // Define input field labels
 $recipientLabel = __('Recipient', 'wordclass');
+// translators: Email attachments
 $attachmentsLabel = __('Attachments', 'wordclass');
+// translators: Email headers
 $headersLabel = __('Headers', 'wordclass');
 
 // Get post meta values
@@ -18,7 +20,7 @@ $recipientValue = $emailMeta['email_properties_recipient'][0] ?? '';
 $attachmentsValue = $emailMeta['email_properties_attachments'][0] ?? '';
 $headersValue = $emailMeta['email_properties_headers'][0] ?? '';
 
-$nonceName = sprintf('%s_email_properties_nonce', Init::getPrefix());
+$nonceName = Helpers::withPrefix('email_properties_nonce');
 wp_nonce_field(-1, $nonceName);
 ?>
 

@@ -2,42 +2,33 @@
 
 namespace Nerbiz\WordClass;
 
+use Closure;
+
 class PostColumn
 {
     /**
-     * @var string
+     * @var string|null
      */
-    protected $name;
-
-    /**
-     * @var string
-     */
-    protected $label;
+    protected ?string $orderBy = null;
 
     /**
      * @var string|null
      */
-    protected $orderBy = null;
+    protected ?string $after = null;
 
     /**
-     * @var string|null
+     * @var Closure|null
      */
-    protected $after = null;
-
-    /**
-     * @var callable
-     */
-    protected $renderFunction = null;
+    protected Closure|null $renderFunction = null;
 
     /**
      * @param string $name  The identifier of the column
      * @param string $label The label in the column head
      */
-    public function __construct(string $name, string $label)
-    {
-        $this->name = $name;
-        $this->label = $label;
-    }
+    public function __construct(
+        protected string $name,
+        protected string $label
+    ) {}
 
     /**
      * @return string
@@ -94,18 +85,18 @@ class PostColumn
     }
 
     /**
-     * @return callable
+     * @return Closure|null
      */
-    public function getRenderFunction(): callable
+    public function getRenderFunction(): ?Closure
     {
         return $this->renderFunction;
     }
 
     /**
-     * @param callable $renderFunction
+     * @param Closure $renderFunction
      * @return self
      */
-    public function setRenderFunction(callable $renderFunction): self
+    public function setRenderFunction(Closure $renderFunction): self
     {
         $this->renderFunction = $renderFunction;
 

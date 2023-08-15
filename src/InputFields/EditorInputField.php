@@ -12,13 +12,15 @@ class EditorInputField extends AbstractInputField
         // Buffer the output, because wp_editor() echoes
         ob_start();
 
+        $inputName = $this->getFullName();
+
         wp_editor(
-            apply_filters('the_content', get_option($this->getPrefixedName())),
-            $this->getPrefixedName(),
+            apply_filters('the_content', get_option($inputName)),
+            $inputName,
             [
                 'wpautop'       => true,
                 'media_buttons' => true,
-                'textarea_name' => $this->getPrefixedName(),
+                'textarea_name' => $inputName,
                 'editor_height' => 200
             ]
         );
@@ -31,11 +33,14 @@ class EditorInputField extends AbstractInputField
      */
     protected function prependRender(): string
     {
-        if (trim($this->description ?? '') !== '') {
+        $description = trim($this->description);
+
+        if ($description !== '') {
             // Add a newline to the description text
-            $this->description .= '<br>&nbsp;';
+            $this->description = $description . '<br>&nbsp;';
         }
 
+        // Prepend the description, instead of appending
         return parent::appendRender();
     }
 

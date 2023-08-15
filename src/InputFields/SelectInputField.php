@@ -9,23 +9,17 @@ class SelectInputField extends AbstractInputField
      * Can also be an array with a groupName:[value:label, value:label] structure
      * @var array
      */
-    protected $values = [];
+    protected array $values = [];
 
     /**
-     * @param string      $name
-     * @param string      $label
-     * @param string|null $description
-     * @param array       $values
+     * @param string $name
+     * @param string $label
+     * @param array  $values
      */
-    public function __construct(
-        string $name,
-        string $label,
-        ?string $description,
-        array $values
-    ) {
+    public function __construct(string $name, string $label, array $values) {
         $this->values = $values;
 
-        parent::__construct($name, $label, $description);
+        parent::__construct($name, $label);
     }
 
     /**
@@ -33,7 +27,11 @@ class SelectInputField extends AbstractInputField
      */
     protected function renderField(): string
     {
-        $output = sprintf('<select name="%s">', $this->getPrefixedName());
+        $output = sprintf(
+            '<select name="%s" %s>',
+            $this->getFullName(),
+            $this->getAttributesString()
+        );
 
         foreach ($this->values as $key => $value) {
             if (is_string($value)) {
@@ -64,7 +62,7 @@ class SelectInputField extends AbstractInputField
         return sprintf(
             '<option value="%s" %s>%s</option>',
             $value,
-            selected($value, get_option($this->getPrefixedName()), false),
+            selected($value, $this->getStoredValue(), false),
             $label
         );
     }

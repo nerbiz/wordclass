@@ -5,47 +5,52 @@ namespace Nerbiz\WordClass;
 class Options
 {
     /**
-     * Get an option, implicitly using a prefix
-     * @param string $name    The name of the option (without prefix)
-     * @param mixed  $default The value to use when the option is empty
-     * @return mixed
+     * Check whether an option exists in the database
+     * @param string $name The name of the option (without prefix)
+     * @return bool
      */
-    public function get(string $name, $default = null)
+    public static function exists(string $name): bool
     {
-        $optionName = Init::getPrefix() . '_' . $name;
-        $value = trim(get_option($optionName));
-
-        if ($value === '') {
-            return $default;
-        }
-
-        return $value;
+        $optionName = Helpers::withPrefix($name);
+        return (get_option($optionName) !== false);
     }
 
     /**
-     * Set an option, implicitly using a prefix
-     * @param  string $name The name of the option (without prefix)
-     * @param  mixed  $value
-     * @return self
+     * Get an option, implicitly using a prefix
+     * @param string     $name    The name of the option (without prefix)
+     * @param mixed|null $default The value to use when the option is empty, or doesn't exist
+     * @return mixed
      */
-    public function set(string $name, $value): self
+    public static function get(string $name, mixed $default = null): mixed
     {
-        $optionName = Init::getPrefix() . '_' . $name;
-        update_option($optionName, $value);
+        $optionName = Helpers::withPrefix($name);
+        $value = get_option($optionName);
 
-        return $this;
+        return ($value === false || $value === '')
+            ? $default
+            : $value;
+    }
+
+    /**
+     * Set an option, prefix will be added to the name
+     * @param string $name The name of the option (without prefix)
+     * @param mixed  $value
+     * @return void
+     */
+    public static function set(string $name, mixed $value): void
+    {
+        $optionName = Helpers::withPrefix($name);
+        update_option($optionName, $value);
     }
 
     /**
      * Delete an option, implicitly using a prefix
-     * @param  string $name The name of the option (without prefix)
-     * @return self
+     * @param string $name The name of the option (without prefix)
+     * @return void
      */
-    public function delete(string $name): self
+    public static function delete(string $name): void
     {
-        $optionName = Init::getPrefix() . '_' . $name;
+        $optionName = Helpers::withPrefix($name);
         delete_option($optionName);
-
-        return $this;
     }
 }

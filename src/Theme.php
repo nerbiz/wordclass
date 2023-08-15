@@ -6,23 +6,24 @@ class Theme
 {
     /**
      * Enable the featured image on post edit screens
-     * @param array|null $postTypes Array of strings and/or PostType objects,
-     *                              enable for specific post types only
+     * @param array $postTypes Enable for all post types (empty array)
+     *                         or specific types (array of strings and/or PostType objects)
      * @return self
      */
-    public function enableFeaturedImages(array $postTypes = null): self
+    public function enableFeaturedImages(array $postTypes = []): self
     {
         add_action('after_setup_theme', function () use ($postTypes) {
             // Enable for all post types
-            if ($postTypes === null) {
+            if (count($postTypes) === 0) {
                 add_theme_support('post-thumbnails');
             } else {
                 // Enable only for the give post types
-                foreach ($postTypes as $key => $postType) {
-                    if ($postType instanceof PostType) {
-                        $postTypes[$key] = $postType->getName();
-                    }
-                }
+                $postTypes = array_map(
+                    fn ($postType) => ($postType instanceof PostType)
+                        ? $postType->getName()
+                        : $postType,
+                    $postTypes
+                );
 
                 add_theme_support('post-thumbnails', $postTypes);
             }
@@ -33,15 +34,13 @@ class Theme
 
     /**
      * Allow the use of HTML5 in core WordPress features
-     * @param  array $features The list of features to enable HTML5 for
+     * @param array|null $features The list of enabled HTML5 features (all features if null)
      * @return self
      */
-    public function enableHtml5Support(
-        array $features = ['caption', 'comment-form', 'comment-list', 'gallery', 'search-form']
-    ): self {
-        add_action('after_setup_theme', function () use ($features) {
-            add_theme_support('html5', $features);
-        });
+    public function enableHtml5Support(?array $features = null): self {
+        $features ??= ['comment-list', 'comment-form', 'search-form', 'gallery', 'caption', 'style', 'script'];
+
+        add_action('after_setup_theme', fn () => add_theme_support('html5', $features));
 
         return $this;
     }
@@ -51,22 +50,9 @@ class Theme
      * @param  array $menus Menus in location:description pairs
      * @return self
      */
-    public function addMenus(array $menus): self
+    public function registerMenus(array $menus): self
     {
-        add_action('after_setup_theme', function () use ($menus) {
-            register_nav_menus($menus);
-        });
-
-        return $this;
-    }
-
-    /**
-     * Remove the <meta name="generator" content="WordPress [version]" /> tag
-     * @return self
-     */
-    public function removeGeneratorMeta(): self
-    {
-        remove_action('wp_head', 'wp_generator');
+        add_action('after_setup_theme', fn () => register_nav_menus($menus));
 
         return $this;
     }

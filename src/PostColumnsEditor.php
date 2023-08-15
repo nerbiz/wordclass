@@ -2,77 +2,77 @@
 
 namespace Nerbiz\WordClass;
 
+use Closure;
 use WP_Query;
 
 class PostColumnsEditor
 {
     /**
      * Sorting callbacks in name:callback pairs
-     * @var callable[]
+     * @var Closure[]
      */
-    protected static $sortingCallbacks = [];
+    protected static array $sortingCallbacks = [];
 
     /**
      * Indicates whether the 'pre_get_posts' hook has been added
      * @var bool
      */
-    protected static $sortingHookAdded = false;
+    protected static bool $sortingHookAdded = false;
 
     /**
      * The post types to edit the columns of
      * @var string[]
      */
-    protected $postTypes;
+    protected array $postTypes = [];
 
     /**
      * The default 'orderby' method to use
      * @var string|null
      */
-    protected $defaultOrderByMethod = null;
+    protected ?string $defaultOrderByMethod = null;
 
     /**
      * The default 'order' value to use (asc / desc)
      * @var string|null
      */
-    protected $defaultOrder = null;
+    protected ?string $defaultOrder = null;
 
     /**
      * A list of columns to add
      * @var PostColumn[]
      */
-    protected $addColumns = [];
+    protected array $addColumns = [];
 
     /**
      * A list of columns to move
      * @var string[]
      */
-    protected $moveColumns = [];
+    protected array $moveColumns = [];
 
     /**
      * A list of columns to remove
      * @var string[]
      */
-    protected $removeColumns = [];
+    protected array $removeColumns = [];
 
     /**
-     * @param array $postTypes Post types as a string or PostType object
+     * @param array $postTypes Post types as strings or PostType objects
      */
     public function __construct(array $postTypes)
     {
-        // Convert PostType objects to strings
-        foreach ($postTypes as $postType) {
-            if ($postType instanceof PostType) {
-                $this->postTypes[] = $postType->getName();
-            } else {
-                $this->postTypes[] = $postType;
-            }
-        }
+        // Make sure the post types are a string
+        $this->postTypes = array_map(
+            fn ($postType) => ($postType instanceof PostType)
+                ? $postType->getName()
+                : $postType,
+            $postTypes
+        );
 
         if (! static::$sortingHookAdded) {
             static::$sortingHookAdded = true;
 
             add_action('pre_get_posts', function (WP_Query $query) {
-                if (! $this->isOnAdminPage($query)) {
+                if (! $this->adminPageMatches($query)) {
                     return;
                 }
 
@@ -86,11 +86,11 @@ class PostColumnsEditor
     }
 
     /**
-     * Indicates whether the current page is the admin overview page for this post type
+     * Indicates whether the current overview page should be changed
      * @param WP_Query $query
      * @return bool
      */
-    protected function isOnAdminPage(WP_Query $query): bool
+    protected function adminPageMatches(WP_Query $query): bool
     {
         global $pagenow;
         $currentPostType = $query->get('post_type');
@@ -100,11 +100,11 @@ class PostColumnsEditor
     }
 
     /**
-     * @param string   $name
-     * @param callable $callback
+     * @param string  $name
+     * @param Closure $callback
      * @return void
      */
-    public static function addOrderByMethod(string $name, callable $callback): void
+    public static function addOrderByMethod(string $name, Closure $callback): void
     {
         static::$sortingCallbacks[$name] = $callback;
     }
@@ -172,7 +172,7 @@ class PostColumnsEditor
      * Apply the post column adjustments
      * @return void
      */
-    public function apply()
+    public function apply(): void
     {
         $this->applyMutations();
         $this->applyRenderFunctions();
@@ -187,7 +187,7 @@ class PostColumnsEditor
     protected function applyMutations(): void
     {
         foreach ($this->postTypes as $postType) {
-            $hookName = 'manage_' . $postType . '_posts_columns';
+            $hookName = sprintf('manage_%s_posts_columns', $postType);
 
             add_filter($hookName, function (array $columns) {
                 // Move columns
@@ -206,9 +206,10 @@ class PostColumnsEditor
                 // Get the names of all current and custom columns
                 $allColumnNames = array_merge(
                     array_keys($columns),
-                    array_map(function (PostColumn $postColumn) {
-                        return $postColumn->getName();
-                    }, $this->addColumns)
+                    array_map(
+                        fn (PostColumn $postColumn) => $postColumn->getName(),
+                        $this->addColumns
+                    )
                 );
 
                 // This loop is needed, because before the foreach is done,
@@ -262,11 +263,7 @@ class PostColumnsEditor
      * @param array  $insert
      * @return array
      */
-    protected function spliceAssociativeArray(
-        array $original,
-        string $afterKey,
-        array $insert
-    ): array {
+    protected function spliceAssociativeArray(array $original, string $afterKey, array $insert): array {
         // Get the offset of where to inser the item
         $offset = array_search($afterKey, array_keys($original)) + 1;
 
@@ -284,15 +281,12 @@ class PostColumnsEditor
     protected function applyRenderFunctions(): void
     {
         foreach ($this->postTypes as $postType) {
-            $hookName = 'manage_' . $postType . '_posts_custom_column';
+            $hookName = sprintf('manage_%s_posts_custom_column', $postType);
 
             add_action($hookName, function (string $columnName, int $postId) {
                 foreach ($this->addColumns as $postColumn) {
                     if ($columnName === $postColumn->getName()) {
-                        $renderFunction = $postColumn->getRenderFunction();
-                        if (is_callable($renderFunction)) {
-                            echo call_user_func($renderFunction, $postId);
-                        }
+                        echo call_user_func($postColumn->getRenderFunction(), $postId);
                     }
                 }
             }, 10, 2);
@@ -334,7 +328,7 @@ class PostColumnsEditor
         }
 
         add_action('pre_get_posts', function (WP_Query $query) {
-            if (! $this->isOnAdminPage($query)) {
+            if (! $this->adminPageMatches($query)) {
                 return;
             }
 

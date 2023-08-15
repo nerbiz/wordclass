@@ -2,6 +2,7 @@
 
 namespace Nerbiz\WordClass\InputFields;
 
+use Nerbiz\WordClass\PostType;
 use WP_Post;
 
 class PostInputField extends SelectInputField
@@ -10,24 +11,24 @@ class PostInputField extends SelectInputField
      * The post types to select from
      * @var array
      */
-    protected $postTypes = [];
+    protected array $postTypes = [];
 
     /**
-     * @param string      $name
-     * @param string      $label
-     * @param string|null $description
-     * @param array       $postTypes
+     * @param string $name
+     * @param string $label
+     * @param array  $postTypes
      */
-    public function __construct(
-        string $name,
-        string $label,
-        ?string $description = null,
-        array $postTypes = []
-    ) {
-        $this->postTypes = $postTypes;
+    public function __construct(string $name, string $label, array $postTypes = []) {
+        // Make sure the post types are a string
+        $this->postTypes = array_map(
+            fn ($postType) => ($postType instanceof PostType)
+                ? $postType->getName()
+                : $postType,
+            $postTypes
+        );
         $values = $this->createValuesArray();
 
-        parent::__construct($name, $label, $description, $values);
+        parent::__construct($name, $label, $values);
     }
 
     /**
@@ -51,6 +52,7 @@ class PostInputField extends SelectInputField
         ]);
 
         return array_merge(
+            // translators: Empty placeholder option in post-select dropdown
             ['' => __('- Choose one -', 'wordclass')],
             array_reduce($allPosts, function (array $postValues, WP_Post $post) {
                 // Create the post type key if it doesn't exist yet

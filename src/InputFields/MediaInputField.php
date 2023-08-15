@@ -2,7 +2,8 @@
 
 namespace Nerbiz\WordClass\InputFields;
 
-use Nerbiz\WordClass\Assets;
+use Nerbiz\WordClass\Assets\Assets;
+use Nerbiz\WordClass\Helpers;
 use Nerbiz\WordClass\Init;
 
 class MediaInputField extends AbstractInputField
@@ -12,24 +13,24 @@ class MediaInputField extends AbstractInputField
      * Prevents including twice
      * @var bool
      */
-    protected static $scriptsAdded = false;
+    protected static bool $scriptsAdded = false;
 
     /**
      * {@inheritdoc}
      */
-    public function __construct(string $name, string $label, ?string $description = null)
+    public function __construct(string $name, string $label)
     {
         // Add the required scripts (once)
         if (! static::$scriptsAdded) {
             (new Assets())->addAdminJs(
-                Init::getPrefix() . '-media-upload',
-                Init::getVendorUri('nerbiz/wordclass/includes/js/media-upload.js')
+                Helpers::withPrefix('media-upload', '-'),
+                Init::getPackageUri('includes/js/media-upload.js')
             );
 
             static::$scriptsAdded = true;
         }
 
-        parent::__construct($name, $label, $description);
+        parent::__construct($name, $label);
     }
 
     /**
@@ -40,21 +41,18 @@ class MediaInputField extends AbstractInputField
         // Enqueue the required scripts
         wp_enqueue_media();
 
+        $storedValue = $this->getStoredValue();
+
         // The currently stored value
-        $currentMediaUrl = wp_get_attachment_image_url(
-            esc_attr(get_option($this->getPrefixedName())),
-            'thumbnail'
-        );
+        $currentMediaUrl = wp_get_attachment_image_url($storedValue, 'thumbnail');
 
         // Other values for the template
-        $currentMediaFilename = basename(get_attached_file(
-            esc_attr(get_option($this->getPrefixedName()))
-        ));
-        $prefixedName = $this->getPrefixedName();
-        $inputValue = esc_attr(get_option($this->getPrefixedName()));
+        $currentMediaFilename = basename(get_attached_file($storedValue));
+        $inputName = $this->getFullName();
+        $inputValue = $storedValue;
 
         ob_start();
-        require __DIR__ . '/../../includes/html/media-input-field.php';
+        require dirname(__FILE__, 3) . '/includes/html/media-input-field.php';
         return ob_get_clean();
     }
 }

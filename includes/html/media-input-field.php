@@ -2,13 +2,14 @@
 
 use Nerbiz\WordClass\Init;
 
-if (! isset($currentMediaUrl, $currentMediaFilename, $prefixedName, $inputValue)) {
+if (! isset($currentMediaUrl, $currentMediaFilename, $inputName, $inputValue)) {
     return;
 }
 
+// translators: Notice/message in media input field
 $noMediaSelectedText = __('No media selected', 'wordclass');
 
-$imagesDirectory = Init::getVendorUri('nerbiz/wordclass/includes/images/');
+$imagesDirectory = Init::getPackageUri('includes/images/');
 $transparentPixelSrc = $imagesDirectory . 'transparent-pixel.png';
 // Public domain icon downloaded from
 // https://publicdomainvectors.org/en/free-clipart/Paper-sheet-vector-image/13299.html
@@ -25,7 +26,7 @@ if (trim($currentMediaUrl) === '') {
 }
 ?>
 
-<div class="wc-media-upload-input">
+<div class="wordclass-media-upload-input">
     <div class="media-preview-wrapper">
         <img class="media-preview"
              src="<?php echo $currentMediaUrl; ?>"
@@ -38,6 +39,7 @@ if (trim($currentMediaUrl) === '') {
 
     <input type="button"
            class="button upload-media-button"
+           <?php // translators: Button text for opening the media library ?>
            value="<?php echo __('Select media', 'wordclass'); ?>"><br>
 
     <span class="chosen-media-filename" data-fallback-text="<?php echo $noMediaSelectedText; ?>">
@@ -45,10 +47,11 @@ if (trim($currentMediaUrl) === '') {
     </span><br>
 
     <a href="#" class="clear-media-button">
+        <?php // translators: Button text for clearing a media input field ?>
         <?php echo __('Clear', 'wordclass'); ?>
     </a>
 
     <input type="hidden"
-           name="<?php echo $prefixedName; ?>"
+           name="<?php echo $inputName; ?>"
            value="<?php echo $inputValue; ?>">
 </div>

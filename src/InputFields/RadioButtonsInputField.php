@@ -8,23 +8,17 @@ class RadioButtonsInputField extends AbstractInputField
      * The radio button values, in value:label pairs
      * @var array
      */
-    protected $values = [];
+    protected array $values = [];
 
     /**
-     * @param string      $name
-     * @param string      $label
-     * @param string|null $description
-     * @param array       $values
+     * @param string $name
+     * @param string $label
+     * @param array  $values
      */
-    public function __construct(
-        string $name,
-        string $label,
-        ?string $description,
-        array $values
-    ) {
+    public function __construct(string $name, string $label, array $values) {
         $this->values = $values;
 
-        parent::__construct($name, $label, $description);
+        parent::__construct($name, $label);
     }
 
     /**
@@ -37,12 +31,13 @@ class RadioButtonsInputField extends AbstractInputField
         foreach ($this->values as $value => $label) {
             $output .= sprintf(
                 '<p><label>
-                    <input type="radio" name="%s" value="%s" %s>
+                    <input type="radio" name="%s" value="%s" %s %s>
                     %s
                 </label></p>',
-                $this->getPrefixedName(),
+                $this->getFullName(),
                 $value,
-                checked($value, esc_attr(get_option($this->getPrefixedName())), false),
+                checked($value, $this->getStoredValue(), false),
+                $this->getAttributesString(),
                 $label
             );
         }

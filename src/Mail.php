@@ -2,10 +2,11 @@
 
 namespace Nerbiz\WordClass;
 
+use Nerbiz\WordClass\Assets\Assets;
 use Nerbiz\WordClass\InputFields\CheckboxInputField;
 use Nerbiz\WordClass\InputFields\EditorInputField;
-use Nerbiz\WordClass\InputFields\PasswordInputField;
-use Nerbiz\WordClass\InputFields\TextInputField;
+use Nerbiz\WordClass\InputFields\GeneralInputField;
+use Nerbiz\WordClass\InputFields\RadioButtonsInputField;
 use PHPMailer\PHPMailer\PHPMailer;
 use WP_Error;
 use WP_Post;
@@ -15,13 +16,13 @@ class Mail
 {
     /**
      * Enable SMTP for all mails, add a settings page
-     * @param string|null $encryptionKey The key for encrypting/decrypting the SMTP password
+     * @param Encrypter $encrypter The encrypter for the SMTP password
      * @return self
      */
-    public function addSmtpSupport(?string $encryptionKey = null): self
+    public function addSmtpSupport(Encrypter $encrypter): self
     {
         $this->addSmtpSettingsPage();
-        $this->addOptionHooks($encryptionKey);
+        $this->addOptionHooks($encrypter);
         $this->addSmtpMailHook();
 
         return $this;
@@ -33,27 +34,50 @@ class Mail
      */
     protected function addSmtpSettingsPage(): void
     {
+        require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
+
         // Create the settings page
-        $settingsPage = new SettingsPage();
-        $settingsPage->setParentSlug('options-general.php')
-            ->setPageTitle(__('SMTP settings', 'wordclass'))
+        (new SettingsPage(__('SMTP settings', 'wordclass')))
+            ->setParentSlug('options-general.php')
             ->addSection(
-                new SettingsPageSection('smtp', __('SMTP values', 'wordclass'), null, [
+                // translators: Section title for SMTP settings
+                new SettingsPageSection('smtp', __('SMTP values', 'wordclass'), [
                     new CheckboxInputField('enable', __('Enable SMTP?', 'wordclass')),
-                    new TextInputField('host', __('Host', 'wordclass')),
-                    new TextInputField('port', __('Port', 'wordclass')),
-                    new TextInputField('encryption', __('Encryption', 'wordclass')),
-                    new TextInputField('username', __('Username', 'wordclass')),
-                    new PasswordInputField('password', __('Password', 'wordclass'), __('Encryption is used to store the password', 'wordclass')),
+                    // translators: Email SMTP host
+                    new GeneralInputField('host', __('Host', 'wordclass')),
+                    // translators: Email SMTP port
+                    new GeneralInputField('port', __('Port', 'wordclass')),
+                    new RadioButtonsInputField('encryption', __('Encryption', 'wordclass'), [
+                        // translators: Option for SMTP settings
+                        '' => __('No encryption', 'wordclass'),
+                        PHPMailer::ENCRYPTION_STARTTLS => 'TLS',
+                        PHPMailer::ENCRYPTION_SMTPS => 'SSL',
+                    ]),
+                    new GeneralInputField('username', __('Username', 'wordclass')),
+                    (new GeneralInputField('password', __('Password', 'wordclass')))
+                        ->setAttributes(['type' => 'password']),
                 ])
             )
             ->addSection(
-                new SettingsPageSection('smtp_test', __('Test settings', 'wordclass'), null, [
-                    new TextInputField('sender', __('Sender', 'wordclass'), __('If empty, the sender will be the site title + admin email from general settings<br>The "Example &lt;test@example.com&gt;" format is supported', 'wordclass')),
-                    new TextInputField('recipient', __('Recipient', 'wordclass')),
-                    new TextInputField('subject', __('Subject', 'wordclass')),
+                // translators: Section title for SMTP testing
+                new SettingsPageSection('smtp_test', __('Test settings', 'wordclass'), [
+                    (new GeneralInputField('sender', __('Sender', 'wordclass')))
+                        ->setDescription(sprintf(
+                            '%s<br>%s',
+                            // translators: Hint for the sender field in SMTP testing
+                            __('If empty, the sender will be the site title + admin email from general settings.', 'wordclass'),
+                            sprintf(
+                                // translators: Hint for the sender field in SMTP testing. %s: Example sender format 'Example <test@example.com>'
+                                __("The '%s' format is supported", 'wordclass'),
+                                'Example &lt;test@example.com&gt;'
+                            )
+                        )),
+                    new GeneralInputField('recipient', __('Recipient', 'wordclass')),
+                    new GeneralInputField('subject', __('Subject', 'wordclass')),
                     new EditorInputField('content', __('Content', 'wordclass')),
-                    new CheckboxInputField('enable', __('Send testmail?', 'wordclass'), __('If checked, a testmail will be sent when saving these settings', 'wordclass')),
+                    (new CheckboxInputField('enable', __('Send testmail?', 'wordclass')))
+                        // translators: Explanation for the 'send email' switch in SMTP testing
+                        ->setDescription(__('If checked, a testmail will be sent when saving these settings', 'wordclass')),
                 ])
             )
             ->create();
@@ -61,24 +85,19 @@ class Mail
 
     /**
      * Add hooks for storing/reading options
-     * @param string|null $encryptionKey
+     * @param Encrypter $encryption
      * @return void
      */
-    protected function addOptionHooks(?string $encryptionKey = null): void
+    protected function addOptionHooks(Encrypter $encryption): void
     {
-        $crypto = new Crypto($encryptionKey);
-        $passwordField = Init::getPrefix() . '_smtp_password';
-        $enableTestField = Init::getPrefix() . '_smtp_test_enable';
+        $passwordField = Helpers::withPrefix('smtp_password');
+        $enableTestField = Helpers::withPrefix('smtp_test_enable');
 
         // Encrypt the SMTP password before storing
-        add_filter('pre_update_option_' . $passwordField, function ($newValue, $oldValue) use ($crypto) {
-            return $crypto->encrypt($newValue);
-        }, 10, 2);
+        add_filter('pre_update_option_' . $passwordField, fn ($newValue) => $encryption->encrypt($newValue));
 
         // Decrypt the SMTP password before using
-        add_filter('option_' . $passwordField, function ($value, $optionName) use ($crypto) {
-            return $crypto->decrypt($value);
-        }, 10, 2);
+        add_filter('option_' . $passwordField, fn ($value) => $encryption->decrypt($value));
 
         // Send a testmail if requested
         add_filter('pre_update_option_' . $enableTestField, function ($newValue, $oldValue) {
@@ -98,19 +117,17 @@ class Mail
     protected function addSmtpMailHook(): void
     {
         add_action('phpmailer_init', function (PHPMailer $phpMailer) {
-            $options = new Options();
-
-            if ($options->get('smtp_enable') === null) {
+            if (Options::get('smtp_enable') === null) {
                 return $phpMailer;
             }
 
             $phpMailer->isSMTP();
-            $phpMailer->Host = $options->get('smtp_host');
-            $phpMailer->Port = $options->get('smtp_port');
-            $phpMailer->SMTPSecure = $options->get('smtp_encryption');
+            $phpMailer->Host = Options::get('smtp_host');
+            $phpMailer->Port = Options::get('smtp_port');
+            $phpMailer->SMTPSecure = Options::get('smtp_encryption');
 
-            $username = $options->get('smtp_username');
-            $password = $options->get('smtp_password');
+            $username = Options::get('smtp_username');
+            $password = Options::get('smtp_password');
             if ($username !== null || $password !== null) {
                 $phpMailer->SMTPAuth = true;
                 $phpMailer->Username = $username;
@@ -132,6 +149,7 @@ class Mail
             add_action('admin_notices', function () use ($error) {
                 echo sprintf(
                     '<div class="notice notice-error is-dismissible"><p>%s<br>%s</p></div>',
+                    // translators: Error message in SMTP testing
                     __('An error occured when trying to send the testmail:', 'wordclass'),
                     $error->get_error_message()
                 );
@@ -139,10 +157,9 @@ class Mail
         });
 
         // (Try to) send the email
-        $options = new Options();
         $headers = [
             'Content-Type: text/html; charset=' . get_bloginfo('charset'),
-            'From: ' . ($options->get('smtp_test_sender') ?? sprintf(
+            'From: ' . (Options::get('smtp_test_sender') ?? sprintf(
                 '%s <%s>',
                 get_bloginfo('name'),
                 get_option('admin_email')
@@ -150,9 +167,9 @@ class Mail
         ];
 
         $mailIsSent = wp_mail(
-            $options->get('smtp_test_recipient'),
-            $options->get('smtp_test_subject'),
-            nl2br($options->get('smtp_test_content')),
+            Options::get('smtp_test_recipient'),
+            Options::get('smtp_test_subject'),
+            nl2br(Options::get('smtp_test_content')),
             $headers
         );
 
@@ -162,6 +179,7 @@ class Mail
             add_action('admin_notices', function () {
                 echo sprintf(
                     '<div class="notice notice-success is-dismissible"><p>%s</p></div>',
+                    // translators: Success message in SMTP testing
                     __('The testmail was sent successfully.', 'wordclass')
                 );
             });
@@ -176,8 +194,8 @@ class Mail
     {
         // Include the metaboxes CSS
         (new Assets())->addAdminCss(
-            Init::getPrefix() . '-admin-metaboxes',
-            Init::getVendorUri('nerbiz/wordclass/includes/css/admin-metaboxes.css')
+            Helpers::withPrefix('admin-metaboxes', '-'),
+            Init::getPackageUri('includes/css/admin-metaboxes.css')
         );
 
         $cptSentEmail = $this->addSentEmailPostType();
@@ -201,12 +219,30 @@ class Mail
             ->setFeatures(['title', 'editor'])
             ->setArguments([
                 'menu_icon' => 'dashicons-email-alt',
-                'public' => true,
-                'publicly_queryable' => false,
+                'public' => false,
+                'show_ui' => true,
                 // Enable Gutenberg editor
                 'show_in_rest' => true,
             ])
             ->register();
+
+        // Extra prevention from front-end access to the posts
+        add_action('pre_get_posts', function(WP_Query $query) use ($cptSentEmail) {
+            if (! is_admin() && $query->get('post_type') === $cptSentEmail->getName()) {
+                wp_die(
+                    sprintf(
+                        '<h1>%s</h1><p>%s</p>',
+                        // translators: Content title on 'forbidden' error page
+                        __('Access denied', 'wordclass'),
+                        // translators: Explanation on 'forbidden' error page
+                        __('You do not have permission to view this content.', 'wordclass')
+                    ),
+                    // translators: Page title of 'forbidden' error page
+                    __('Unauthorized access', 'wordclass'),
+                    ['response' => 401]
+                );
+            }
+        });
 
         // Add a metabox for the post type
         add_action('add_meta_boxes', function () use ($cptSentEmail) {
@@ -214,9 +250,11 @@ class Mail
 
             add_meta_box(
                 $metaboxId,
+                // translators: Title of the 'sent email' metabox
                 __('Email properties', 'wordclass'),
-                function (WP_Post $currentPost, array $boxProperties) use ($metaboxId) {
-                    require __DIR__ . '/../includes/html/email-properties-metabox.php';
+                // Parameter(s) are needed in the template, not this function
+                function (WP_Post $currentPost, array $boxProperties) {
+                    require dirname(__FILE__, 2) . '/includes/html/email-properties-metabox.php';
                 },
                 $cptSentEmail->getName()
             );
@@ -255,13 +293,13 @@ class Mail
             ->setAfter('recipient')
             ->setRenderFunction(function (int $postId) {
                 $content = wp_strip_all_tags(get_the_content(null, false, $postId));
-                if (mb_strlen($content) > 150) {
-                    return mb_substr($content, 0, 150) . '...';
-                }
 
-                return $content;
+                return (mb_strlen($content) > 150)
+                    ? mb_substr($content, 0, 150) . '&hellip;'
+                    : $content;
             });
 
+        // translators: Email attachments
         $attachmentsColumn = (new PostColumn('attachments', __('Attachments', 'wordclass')))
             ->setAfter('content')
             ->setOrderBy('meta_email_attachments')
@@ -270,13 +308,12 @@ class Mail
                     get_post_meta($postId, 'email_properties_attachments', true)
                 );
 
-                if (trim($attachmentsString) === '') {
-                    return '-';
-                }
-
-                return str_replace(PHP_EOL, '<br><br>', $attachmentsString);
+                return (trim($attachmentsString) === '')
+                    ? '-'
+                    : str_replace(PHP_EOL, '<br><br>', $attachmentsString);
             });
 
+        // translators: Email headers
         $headersColumn = (new PostColumn('headers', __('Headers', 'wordclass')))
             ->setAfter('attachments')
             ->setOrderBy('meta_email_headers')
@@ -285,11 +322,9 @@ class Mail
                     get_post_meta($postId, 'email_properties_headers', true)
                 );
 
-                if (trim($headersString) === '') {
-                    return '-';
-                }
-
-                return str_replace(PHP_EOL, '<br><br>', $headersString);
+                return (trim($headersString) === '')
+                    ? '-'
+                    : str_replace(PHP_EOL, '<br><br>', $headersString);
             });
 
         // Apply column adjustments
@@ -315,8 +350,8 @@ class Mail
             }
 
             // Check if the nonce is valid
-            $nonceName = sprintf('%s_email_properties_nonce', Init::getPrefix());
-            if (isset($_POST[$nonceName]) && ! wp_verify_nonce($_POST[$nonceName] ?? '')) {
+            $nonceName = Helpers::withPrefix('email_properties_nonce');
+            if (! wp_verify_nonce($_POST[$nonceName] ?? '')) {
                 return;
             }
 
@@ -330,12 +365,12 @@ class Mail
                 'email_properties_recipient',
                 'email_properties_attachments',
                 'email_properties_headers',
-            ] as $metaField) {
-                if (! isset($_POST[$metaField])) {
+            ] as $metaKey) {
+                if (! isset($_POST[$metaKey])) {
                     continue;
                 }
 
-                update_post_meta($postId, $metaField, $_POST[$metaField]);
+                update_post_meta($postId, $metaKey, $_POST[$metaKey]);
             }
         }, 10, 3);
     }
@@ -349,7 +384,7 @@ class Mail
         add_filter('wp_mail', function (array $mailProperties) {
             // Store the sent email
             $postId = wp_insert_post([
-                'post_type' => Init::getPrefix() . '_sent_email',
+                'post_type' => Helpers::withPrefix('sent_email'),
                 'post_status' => 'publish',
                 'post_title' => trim($mailProperties['subject'] !== '')
                     ? $mailProperties['subject']
