@@ -60,6 +60,8 @@ class ViteAssets extends Assets
 
         // Add the dev server script
         $this->addThemeJs('vite-client', '@vite/client');
+        $this->addAdminJs('vite-client', '@vite/client');
+        $this->addLoginJs('vite-client', '@vite/client');
         $this->moduleHandles[] = 'vite-client';
 
         // Set the type to 'module' for applicable scripts
