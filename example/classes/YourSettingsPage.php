@@ -109,6 +109,8 @@ class YourSettingsPage
             new ExplanationText('Some settings with predefined options'),
             // Checkboxes and radio buttons for simple or predefined settings
             new CheckboxInputField('show_map', 'Show a map on the contact page'),
+            // Checkbox values are stored as 1/0 by default, but can be changed
+            new CheckboxInputField('sort_items', 'Sort items in ascending order?', 'asc', 'desc'),
             // Radio button fields expect an array of value=>label pairs
             new RadioButtonsInputField('map_type', 'The type of map to show', [
                 'roadmap' => 'Default map with roads',

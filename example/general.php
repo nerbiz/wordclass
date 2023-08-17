@@ -53,6 +53,10 @@ $companyName = Options::get('company_name');
 // A fallback value can be set, for when the option doesn't exist or is empty
 $firstName = Options::get('first_name', 'John Doe');
 Options::delete('company_name');
+// 'Before save' and 'after get' hooks are made a little easier, using encryption as an example here
+// The priority argument is optional (default 10)
+Options::beforeSave('some_password', fn ($newValue) => $encrypter->encrypt($newValue), 10);
+Options::afterGet('some_password', fn ($value) => $encrypter->decrypt($value), 10);
 
 
 

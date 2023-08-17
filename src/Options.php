@@ -2,6 +2,8 @@
 
 namespace Nerbiz\WordClass;
 
+use Closure;
+
 class Options
 {
     /**
@@ -52,5 +54,38 @@ class Options
     {
         $optionName = Helpers::withPrefix($name);
         delete_option($optionName);
+    }
+
+    /**
+     * Adjust an option value before it's stored
+     * @param string  $name
+     * @param Closure $callback Parameters are:
+     *   - mixed $newValue
+     *   - mixed $oldValue
+     *   - string $optionName
+     * @param int     $priority
+     * @return void
+     */
+    public static function beforeSave(string $name, Closure $callback, int $priority = 10): void
+    {
+        $filterName = sprintf('pre_update_option_%s', Helpers::withPrefix($name));
+
+        add_filter($filterName, $callback, $priority, 3);
+    }
+
+    /**
+     * Adjust an option value after it's retrieved
+     * @param string  $name
+     * @param Closure $callback Parameters are:
+     *   - mixed $value
+     *   - string $optionName
+     * @param int     $priority
+     * @return void
+     */
+    public static function afterGet(string $name, Closure $callback, int $priority = 10): void
+    {
+        $filterName = sprintf('option_%s', Helpers::withPrefix($name));
+
+        add_filter($filterName, $callback, $priority, 2);
     }
 }

@@ -85,29 +85,24 @@ class Mail
 
     /**
      * Add hooks for storing/reading options
-     * @param Encrypter $encryption
+     * @param Encrypter $encrypter
      * @return void
      */
-    protected function addOptionHooks(Encrypter $encryption): void
+    protected function addOptionHooks(Encrypter $encrypter): void
     {
-        $passwordField = Helpers::withPrefix('smtp_password');
-        $enableTestField = Helpers::withPrefix('smtp_test_enable');
-
-        // Encrypt the SMTP password before storing
-        add_filter('pre_update_option_' . $passwordField, fn ($newValue) => $encryption->encrypt($newValue));
-
-        // Decrypt the SMTP password before using
-        add_filter('option_' . $passwordField, fn ($value) => $encryption->decrypt($value));
+        // Encrypt/decrypt the SMTP password when saving/getting
+        Options::beforeSave('smtp_password', fn ($newValue) => $encrypter->encrypt($newValue));
+        Options::afterGet('smtp_password', fn ($value) => $encrypter->decrypt($value));
 
         // Send a testmail if requested
-        add_filter('pre_update_option_' . $enableTestField, function ($newValue, $oldValue) {
-            if ($newValue == 1) {
+        Options::beforeSave('smtp_test_enable', function ($newValue) {
+            if ((bool) $newValue === true) {
                 $this->sendTestMail();
             }
 
-            // Always reset to unchecked
-            return '';
-        }, 10, 2);
+            // Always reset to off
+            return '0';
+        });
     }
 
     /**
@@ -117,7 +112,7 @@ class Mail
     protected function addSmtpMailHook(): void
     {
         add_action('phpmailer_init', function (PHPMailer $phpMailer) {
-            if (Options::get('smtp_enable') === null) {
+            if ((bool) Options::get('smtp_enable') === false) {
                 return $phpMailer;
             }
 

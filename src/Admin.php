@@ -61,7 +61,7 @@ class Admin
     public function makeAdminBarMovable(): self
     {
         // Add the required styling and script
-        $moveBarHandle = Init::getPrefix() . '-admin-bar';
+        $moveBarHandle = Helpers::withPrefix('admin-bar', '-');
         $includesDirUrl = Init::getPackageUri('includes/');
         (new Assets())
             ->addThemeCss($moveBarHandle, $includesDirUrl . 'css/admin-bar.css')
@@ -74,14 +74,11 @@ class Admin
             }
 
             $wpAdminBar->add_node([
-                'id' => 'adminbar-location-toggle',
+                'id' => 'wordclass-adminbar-location-toggle',
                 'title' => '<span class="ab-icon dashicons dashicons-arrow-down-alt"></span>'
                     // translators: Button text for moving the admin bar
                     . __('Move bar', 'wordclass'),
                 'href' => '#',
-                'meta' => [
-                    'class' => 'adminbar-location-toggle-button',
-                ],
             ]);
         }, 100);
 
