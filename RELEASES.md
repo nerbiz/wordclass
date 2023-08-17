@@ -1,5 +1,13 @@
 # Release notes
 
+## 4.1.0
+#### 2023-08-17
+
+* Added Options::beforeSave() and Options::afterGet().
+* SettingsPage checkboxes now support on/off values, unchecked checkboxes are also submitted.
+* Added prefixes to the 'move admin bar' script, to prevent naming conflicts.
+* Fixed: Vite dev server wasn't enabled on admin and login pages.
+
 ## 4.0.0
 #### 2023-08-15
 
